@@ -32,6 +32,7 @@ public class GameInput : MonoBehaviour
         if(PlayerPrefs.HasKey(PLAYER_PREFS_BINDINGS)){ //Checks if there are saved bindings and loads them
             playerInputActions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PLAYER_PREFS_BINDINGS));
         }
+        playerInputActions.Enable();
 
         //DontDestroyOnLoad(this.gameObject);
     }
@@ -82,7 +83,7 @@ public class GameInput : MonoBehaviour
             case Binding.Move_Right:
                 inputAction = playerInputActions.Player.Move;
                 bindingIndex=4;
-                break
+                break;
         }
 
         inputAction.PerformInteractiveRebinding(bindingIndex)

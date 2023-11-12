@@ -1,18 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 
-public class PlayerStateMachine : MonoBehaviour
+public class PlayerStateMachine : StateMachine
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    [HideInInspector]
+    public PlayerIdleState idleState;
+    [HideInInspector]
+    public PlayerMovingState movingState;
+    public Transform player;
+
+    public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
+
+    public class OnStateChangedEventArgs: EventArgs{
+        public BaseState state;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+
+
+    private void Awake(){
+        idleState = new PlayerIdleState(this);
+        movingState = new PlayerMovingState(this);
     }
+    protected override BaseState GetInitialState()
+    {
+        return idleState;
+    }
+
+    public override void ChangeState(BaseState newState)
+    {
+        base.ChangeState(newState);
+        OnStateChanged?.Invoke(this, new OnStateChangedEventArgs{
+            state=newState
+        });
+    }
+
+
+
 }
