@@ -12,7 +12,8 @@ public static class Loader
     public enum Scene{
         MainMenuScene,
         LoadingScene,
-        SpireLobby
+        SpireLobby,
+        TestInterior
     }
 
     private static Scene targetScene;

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpireLobby.unity
     guid: cec682a77717b324ab003ac308ce73f6
+  - enabled: 1
+    path: Assets/Scenes/TestMap.unity
+    guid: 7b533dfe561bc47c8975c955fe4ef3d3
   m_configObjects: {}
