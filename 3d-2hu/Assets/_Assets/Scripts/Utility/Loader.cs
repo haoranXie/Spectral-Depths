@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,12 +12,12 @@ public static class Loader
     public enum Scene{
         MainMenuScene,
         LoadingScene,
-        GameScene
+        SpireLobby
     }
 
     private static Scene targetScene;
 
-    private static void Load(Scene targetScene){
+    public static void Load(Scene targetScene){
         Loader.targetScene=targetScene;
         SceneManager.LoadScene(Scene.LoadingScene.ToString());
         SceneManager.LoadScene(targetScene.ToString());

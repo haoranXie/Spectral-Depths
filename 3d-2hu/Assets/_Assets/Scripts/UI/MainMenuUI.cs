@@ -10,10 +10,10 @@ public class MainMenuUI : MonoBehaviour
 
     private void Awake(){
         playButton.onClick.AddListener(()=>{
-
+            Loader.Load(Loader.Scene.SpireLobby);
         });
         quitButton.onClick.AddListener(()=>{
-
+            Application.Quit();
         });
 
         Time.timeScale=1f; //Unpauses Game
