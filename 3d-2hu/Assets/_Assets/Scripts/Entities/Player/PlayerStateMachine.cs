@@ -29,6 +29,7 @@ public class PlayerStateMachine : StateMachine
         idleState = new PlayerIdleState(this);
         movingState = new PlayerMovingState(this);
         gunState = new PlayerGunState(this);
+        playerFpsState = new PlayerFpsState(this);
     }
     protected override BaseState GetInitialState()
     {

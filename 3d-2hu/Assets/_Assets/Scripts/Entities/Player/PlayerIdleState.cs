@@ -16,7 +16,7 @@ public class PlayerIdleState: BaseState
     {
         Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
         if(inputVector!=Vector2.zero){ // If Player doesn't press any movement keys
-            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).movingState);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).gunState);
         }
     }
 

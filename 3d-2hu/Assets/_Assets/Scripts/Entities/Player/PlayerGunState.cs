@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerGunState : BaseState
@@ -13,19 +14,38 @@ public class PlayerGunState : BaseState
     [SerializeField] private float idleThreshold = 0.1f; //How slow player should be before changing to IdleState
 
     private Vector3 velocity;
+    private Vector3 lookPos;
+    private Transform player;
     public PlayerGunState(PlayerStateMachine stateMachine) : base("Moving",stateMachine){}
     public override void Enter()
     {
         base.Enter();
+
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+        player = ((PlayerStateMachine)stateMachine).player; 
     }
 
     public override void Update()
     {
         base.Update();
         HandleMovement();
-        if(velocity.magnitude<idleThreshold){
-            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).idleState);
+        AimAtMouse();
+    }
+
+    private void AimAtMouse(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        float range = 100f; //Sets Range
+        if(Physics.Raycast(ray,out hit,range)){
+            lookPos = hit.point;
         }
+        Vector3 lookDir=lookPos-player.transform.position;
+        lookDir.y=0;
+        player.transform.LookAt(player.transform.position+lookDir,Vector3.up);
     }
 
     private void HandleMovement(){
@@ -39,7 +59,7 @@ public class PlayerGunState : BaseState
         //Apply Friction to gradually slow down
         velocity -= velocity*friction*Time.deltaTime;
         //Translates Player based on velocity
-        ((PlayerStateMachine)stateMachine).player.transform.Translate(velocity*Time.deltaTime,Space.World);
+        player.transform.Translate(velocity*Time.deltaTime,Space.World);
         //((PlayerStateMachine)stateMachine).player.GetComponent<Rigidbody>().MovePosition(((PlayerStateMachine)stateMachine).player.transform.position+velocity*Time.deltaTime);
 
         //Turns Player based on movement keys
