@@ -7,10 +7,14 @@ public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private LevelLoader levelLoader;
+
 
     private void Awake(){
+        levelLoader.gameObject.SetActive(false);
         playButton.onClick.AddListener(()=>{
-            Loader.Load(Loader.Scene.SpireLobby);
+            levelLoader.gameObject.SetActive(true);
+            levelLoader.Load(LevelLoader.Scene.SpireLobby);
         });
         quitButton.onClick.AddListener(()=>{
             Application.Quit();

@@ -10,6 +10,10 @@ public class PlayerStateMachine : StateMachine
     public PlayerIdleState idleState;
     [HideInInspector]
     public PlayerMovingState movingState;
+    [HideInInspector]
+    public PlayerGunState gunState;
+    [HideInInspector]
+    public PlayerFpsState playerFpsState;
     public Transform player;
 
     public event EventHandler<OnStateChangedEventArgs> OnStateChanged;
@@ -24,6 +28,7 @@ public class PlayerStateMachine : StateMachine
     private void Awake(){
         idleState = new PlayerIdleState(this);
         movingState = new PlayerMovingState(this);
+        gunState = new PlayerGunState(this);
     }
     protected override BaseState GetInitialState()
     {

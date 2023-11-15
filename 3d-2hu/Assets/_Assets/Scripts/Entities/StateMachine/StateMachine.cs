@@ -38,7 +38,7 @@ public class StateMachine : MonoBehaviour
         newState.Enter();
     }
 
-    /* Debug Option for putting current state on UI
+    // Debug Option for putting current state on UI
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10f, 10f, 200f, 100f));
@@ -46,5 +46,5 @@ public class StateMachine : MonoBehaviour
         GUILayout.Label($"<color='black'><size=40>{content}</size></color>");
         GUILayout.EndArea();
     }
-    */
+    
 }

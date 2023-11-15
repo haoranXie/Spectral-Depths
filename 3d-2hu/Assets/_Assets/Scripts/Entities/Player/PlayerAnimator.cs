@@ -11,6 +11,8 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Awake(){
         playerStateMachine.OnStateChanged+=PlayerStateMachine_OnStateChanged;
+
+
         animator = GetComponent<Animator>();
     }
 
@@ -18,8 +20,9 @@ public class PlayerAnimator : MonoBehaviour
     {
         if(e.state==playerStateMachine.idleState){
             animator.SetBool(IS_WALKING,false);
-        } else{
+        } else if(e.state==playerStateMachine.gunState||e.state==playerStateMachine.movingState){
             animator.SetBool(IS_WALKING,true);
         }
     }
+
 }
