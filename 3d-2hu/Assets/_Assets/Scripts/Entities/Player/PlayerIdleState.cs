@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -12,11 +13,16 @@ public class PlayerIdleState: BaseState
         base.Enter();
     }
 
+    public override void Awake()
+    {
+        base.Awake();
+    }
+
     public override void Update()
     {
         Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
         if(inputVector!=Vector2.zero){ // If Player doesn't press any movement keys
-            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).gunState);
+            stateMachine.ChangeState(((PlayerStateMachine)stateMachine).movingState);
         }
     }
 

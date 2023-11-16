@@ -18,6 +18,7 @@ public class GameInput : MonoBehaviour
     private PlayerInputActions playerInputActions;
     public event EventHandler OnPauseAction;
     public event EventHandler OnBindingRebind;
+    public event EventHandler OnEquipAction;
     public static GameInput Instance {get;private set;}
 
     private void Awake(){
@@ -32,12 +33,20 @@ public class GameInput : MonoBehaviour
             playerInputActions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PLAYER_PREFS_BINDINGS));
         }
         playerInputActions.Enable();
+        playerInputActions.Player.Equip.performed += Equip_performed;
+
 
         //DontDestroyOnLoad(this.gameObject);
     }
 
+    private void Equip_performed(InputAction.CallbackContext context)
+    {
+        OnEquipAction?.Invoke(this,EventArgs.Empty);
+    }
+
     //Make to sure to remove all listeners
     private void OnDestroy(){
+        playerInputActions.Player.Equip.performed -=Equip_performed;
         playerInputActions.Dispose();
     }
 

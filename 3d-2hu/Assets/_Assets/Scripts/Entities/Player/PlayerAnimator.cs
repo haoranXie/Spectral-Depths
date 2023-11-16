@@ -14,13 +14,14 @@ public class PlayerAnimator : MonoBehaviour
 
 
         animator = GetComponent<Animator>();
-    }
 
+
+    }
     private void PlayerStateMachine_OnStateChanged(object sender, PlayerStateMachine.OnStateChangedEventArgs e)
     {
         if(e.state==playerStateMachine.idleState){
             animator.SetBool(IS_WALKING,false);
-        } else if(e.state==playerStateMachine.gunState||e.state==playerStateMachine.movingState){
+        } else if(e.state==playerStateMachine.movingState){
             animator.SetBool(IS_WALKING,true);
         }
     }

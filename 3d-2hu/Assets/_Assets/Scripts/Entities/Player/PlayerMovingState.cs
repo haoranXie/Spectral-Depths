@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,8 @@ public class PlayerMovingState : BaseState
     public override void Enter()
     {
         base.Enter();
-    }
 
+    }
     public override void Update()
     {
         base.Update();

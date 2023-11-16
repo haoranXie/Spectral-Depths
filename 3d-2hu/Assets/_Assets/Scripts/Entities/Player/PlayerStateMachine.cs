@@ -10,8 +10,7 @@ public class PlayerStateMachine : StateMachine
     public PlayerIdleState idleState;
     [HideInInspector]
     public PlayerMovingState movingState;
-    [HideInInspector]
-    public PlayerGunState gunState;
+
     [HideInInspector]
     public PlayerFpsState playerFpsState;
     public Transform player;
@@ -28,7 +27,6 @@ public class PlayerStateMachine : StateMachine
     private void Awake(){
         idleState = new PlayerIdleState(this);
         movingState = new PlayerMovingState(this);
-        gunState = new PlayerGunState(this);
         playerFpsState = new PlayerFpsState(this);
     }
     protected override BaseState GetInitialState()
