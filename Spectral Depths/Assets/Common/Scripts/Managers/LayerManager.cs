@@ -13,6 +13,9 @@ namespace SpectralDepths.TopDown
 		private static int ObstaclesLayer = 8;
 		private static int GroundLayer = 9;
 		private static int PlayerLayer = 10;
+		private static int PlayerSelectionLayer = 23;
+		private static int EnemySelectionLayer = 24;
+
 		private static int EnemiesLayer = 13;
 		private static int HoleLayer = 15;
 		private static int MovingPlatformLayer = 16;
@@ -27,5 +30,7 @@ namespace SpectralDepths.TopDown
 		public static int MovingPlatformLayerMask = 1 << MovingPlatformLayer;
 		public static int FallingPlatformLayerMask = 1 << FallingPlatformLayer;
 		public static int ProjectileLayerMask = 1 << ProjectileLayer;
+		public static int PlayerSelectionLayerMask = 1 << PlayerSelectionLayer;
+		public static int EnemySelectionLayerMask = 1 << EnemySelectionLayer;
 	}
 }

@@ -18,11 +18,20 @@ namespace SpectralDepths.TopDown
 		/// a gameobject used to show the destination
 		[Tooltip("a gameobject used to show the destination")]
 		public GameObject Destination;
+		/// the layers to consider as ground (where character can walk on)
+		[Tooltip("the layers to consider as ground (where the character can walk on)")]
+		public LayerMask GroundLayerMasks = LayerManager.GroundLayerMask;
+		/// Non-formation broken movement, use only for testing
+		[Tooltip("Non-formation broken movement, use only for testing")]
+		public bool NoRTS = false;
+		public float stoppingDistance = 2f; // Distance to stop from the destination
+		public float spacing = 3f; // Spacing between characters
 
-		protected CharacterPathfinder3D _characterPathfinder3D;
-		protected Plane _playerPlane;
+		protected CharacterPathfinder3DWithVector _characterPathfinder3D;
+		protected CharacterSelectable _characterSelectable;
 		protected bool _destinationSet = false;
 		protected Camera _mainCamera;
+		//Used to determine whether the character can be selected if Selecetable is on
 
 		/// <summary>
 		/// On awake we create a plane to catch our ray
@@ -30,8 +39,10 @@ namespace SpectralDepths.TopDown
 		protected virtual void Awake()
 		{
 			_mainCamera = Camera.main;
-			_characterPathfinder3D = this.gameObject.GetComponent<CharacterPathfinder3D>();
-			_playerPlane = new Plane(Vector3.up, Vector3.zero);
+			_characterPathfinder3D = this.gameObject.GetComponent<CharacterPathfinder3DWithVector>();
+			if(NoRTS){
+				_characterSelectable = this.gameObject.GetComponent<CharacterSelectable>();
+			}
 		}
 
 		/// <summary>
@@ -39,7 +50,13 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Update()
 		{
-			DetectMouse();
+			if(NoRTS) //If the selectable setting is turned on
+			{
+				if(_characterSelectable.selected) //If the character is selected
+				{
+					DetectMouse();
+				}
+			} 
 		}
 
 		/// <summary>
@@ -47,19 +64,27 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void DetectMouse()
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButtonDown(1))
 			{
 				Ray ray = _mainCamera.ScreenPointToRay(InputManager.Instance.MousePosition);
 				Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
-				float distance;
-				if (_playerPlane.Raycast(ray, out distance))
+
+				//float distance;
+				RaycastHit distance;
+				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
 				{
-					Vector3 target = ray.GetPoint(distance);
+					//Vector3 target = ray.GetPoint(distance);
+
+					Vector3 target = distance.point;
 					Destination.transform.position = target;
 					_destinationSet = true;
-					_characterPathfinder3D.SetNewDestination(Destination.transform);
+					_characterPathfinder3D.SetNewDestination(Destination.transform.position);
 				}
 			}
+		}
+		public void UpdatePosition(Vector3 newPos){
+			_destinationSet = true;
+			_characterPathfinder3D.SetNewDestination(newPos);
 		}
 	}
 }

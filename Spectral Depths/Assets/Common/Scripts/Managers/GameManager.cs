@@ -42,6 +42,7 @@ namespace SpectralDepths.TopDown
 		CharacterSwitch,
 		Repaint,
 		TogglePause,
+		SelectionChanged,
 		LoadNextScene
 	}
 

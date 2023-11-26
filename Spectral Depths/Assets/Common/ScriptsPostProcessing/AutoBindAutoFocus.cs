@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
@@ -10,11 +10,11 @@ namespace SpectralDepths.TopDown
 	public class AutoBindAutoFocus : TopDownMonoBehaviour, MMEventListener<MMCameraEvent>
 	{
 		/// the AutoFocus component on the camera
-		public MMAutoFocus AutoFocus { get; set; }
+		public MMAutoFocus_URP AutoFocus { get; set; }
 
 		protected virtual void Start()
 		{
-			AutoFocus = FindObjectOfType<MMAutoFocus>();
+			AutoFocus = FindObjectOfType<MMAutoFocus_URP>();
 		}
         
 		public virtual void OnMMEvent(MMCameraEvent cameraEvent)
@@ -34,7 +34,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (AutoFocus == null)
 			{
-				AutoFocus = FindObjectOfType<MMAutoFocus>();
+				AutoFocus = FindObjectOfType<MMAutoFocus_URP>();
 			}
 			if (AutoFocus != null)
 			{
