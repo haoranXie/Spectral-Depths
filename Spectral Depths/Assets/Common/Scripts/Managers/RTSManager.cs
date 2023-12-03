@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CodeMonkey;
-using CodeMonkey.Utils;
 using UnityEngine.UI;
 using MoreMountains.Tools;
 using UnityEngine.AI;
 using System.Runtime.Remoting.Messaging;
+using System.Diagnostics.Tracing;
+using UnityEngine.Rendering;
 
 namespace SpectralDepths.TopDown
 
@@ -16,10 +16,12 @@ namespace SpectralDepths.TopDown
     /// </summary>
     [AddComponentMenu("Spectral Depths/Managers/RTS Manager")]
 
-    public class GameRTSController : MonoBehaviour
+    public class GameRTSController : MonoBehaviour, MMEventListener<TopDownEngineEvent>
     {
-        [MMInformation("The RTSManager is responsible for allowing the player to select units for RTSmode, formations, and RTS-related visual indicators",MMInformationAttribute.InformationType.Info,false)]
-
+        [MMInformation("The RTSManager is responsible for allowing the player to select units for canInput, formations, and RTS-related visual indicators",MMInformationAttribute.InformationType.Info,false)]
+        [Header("RTS Mode")]
+		[Tooltip("Turn on or off the player being able to RTS")]
+		public bool RTSMode;
 		[Header("Character Selection Settings")]
 		[Tooltip("How far the player has to hold down the mouse before it counts as multi select")]
 		public int PlayerMultiSelectThreshold = 40;
@@ -36,6 +38,7 @@ namespace SpectralDepths.TopDown
         public GameObject MovementIndicator;
 		[Tooltip("A-Left Click Attack-Movement Indicator")]
         public GameObject AttackMovementIndicator;
+
         //Holdes all the selected Game Objects
         public Dictionary<int,GameObject> SelectedTable = new Dictionary<int, GameObject>();
         //Position for where player clicks mouse
@@ -43,7 +46,7 @@ namespace SpectralDepths.TopDown
         //Position for where player lets go of mouse
         private Vector3 p2;
         //Whether or not player can select and control characters
-        private bool rtsMode;
+        private bool canInput;
         //Used for single selection
         private RaycastHit hit;
         private MeshCollider selectionBox;
@@ -60,15 +63,18 @@ namespace SpectralDepths.TopDown
         private void Start()
         {
             dragSelect=false;
-            rtsMode=true;
+            canInput=true;
         }
 
         private void Update(){
-            if(rtsMode){
-                Selecting();
-                DetectMovement();
-            }
+            if(RTSMode){ //Player is RTSing
+                if(canInput) //Player can input (on/off depending on pausing)
+                {
+                    Selecting();
+                    DetectMovement();
+                }
 
+            }
         }
 
         /// <summary>
@@ -146,7 +152,9 @@ namespace SpectralDepths.TopDown
             }
         }
 
-
+        /// <summary>
+        /// Moves every selected character to right clicked point of mouse
+        /// </summary>
 		protected virtual void DetectMovement()
 		{
 			if (Input.GetMouseButtonDown(1))
@@ -389,5 +397,43 @@ namespace SpectralDepths.TopDown
             return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
         }
 
+        /// <summary>
+        /// Prevents player from making RTS inputs depending on pauses
+        /// </summary>
+        /// <param name="engineEvent"></param>
+        public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+        {
+            switch (engineEvent.EventType)
+            {
+                case TopDownEngineEventTypes.Pause:
+                    if(RTSMode)
+                    {
+                        canInput=false;
+                    }
+                    break;
+                case TopDownEngineEventTypes.UnPause:
+                    if(RTSMode)
+                    {
+                        canInput=true;
+                    }
+                    break;
+            }
+                    
+        }
+		/// <summary>
+		/// OnDisable, we start listening to events.
+		/// </summary>
+		protected virtual void OnEnable()
+		{
+			this.MMEventStartListening<TopDownEngineEvent> ();
+		}
+
+		/// <summary>
+		/// OnDisable, we stop listening to events.
+		/// </summary>
+		protected virtual void OnDisable()
+		{
+			this.MMEventStopListening<TopDownEngineEvent> ();
+        }
     }
 }

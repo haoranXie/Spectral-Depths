@@ -4,6 +4,7 @@ using MoreMountains.Tools;
 using System.Collections.Generic;
 using MoreMountains.InventoryEngine;
 using MoreMountains.Feedbacks;
+using UnityEngine.Events;
 
 namespace SpectralDepths.TopDown
 {
@@ -170,7 +171,30 @@ namespace SpectralDepths.TopDown
 		/// if this is true, the game will automatically pause when opening an inventory
 		[Tooltip("if this is true, the game will automatically pause when opening an inventory")]
 		public bool PauseGameWhenInventoryOpens = true;
-		/// true if the game is currently paused
+		/// if this is true, the game will pause when player clicks pause button
+		[Tooltip("if this is true, the game will pause when player clicks pause button")]
+		public bool QuickPause = true;
+		/// true if the game is currently paused	
+		/// whether or not to mute the sfx track when the game pauses, and to unmute it when it unpauses 
+		[Tooltip("whether or not to mute the sfx track when the game pauses, and to unmute it when it unpauses")]
+		public bool MuteSfxTrackSounds = true;
+		/// whether or not to mute the UI track when the game pauses, and to unmute it when it unpauses 
+		[Tooltip("whether or not to mute the UI track when the game pauses, and to unmute it when it unpauses")]
+		public bool MuteUITrackSounds = false;
+		/// whether or not to mute the music track when the game pauses, and to unmute it when it unpauses 
+		[Tooltip("whether or not to mute the music track when the game pauses, and to unmute it when it unpauses")]
+		public bool MuteMusicTrackSounds = false;
+		/// whether or not to mute the master track when the game pauses, and to unmute it when it unpauses 
+		[Tooltip("whether or not to mute the master track when the game pauses, and to unmute it when it unpauses")]
+		public bool MuteMasterTrackSounds = false;
+
+		[Header("Hooks")] 
+		/// a UnityEvent that will trigger when the game pauses 
+		[Tooltip("a UnityEvent that will trigger when the game pauses")]
+		public UnityEvent OnPause;
+		/// a UnityEvent that will trigger when the game unpauses
+		[Tooltip("a UnityEvent that will trigger when the game unpauses")]
+		public UnityEvent OnUnpause;	
 		public bool Paused { get; set; } 
 		// true if we've stored a map position at least once
 		public bool StoredLevelMapPosition{ get; set; }
@@ -190,14 +214,17 @@ namespace SpectralDepths.TopDown
 		protected InventoryInputManager _inventoryInputManager;
 		protected int _initialMaximumLives;
 		protected int _initialCurrentLives;
+		protected InputManager _inputManager;
+
 
 		/// <summary>
-		/// On Awake we initialize our list of points of entry
+		/// On Awake we initialize our list of points of entry and get InputManager
 		/// </summary>
 		protected override void Awake()
 		{
 			base.Awake ();
 			PointsOfEntry = new List<PointsOfEntryStorage> ();
+			_inputManager = FindObjectOfType(typeof(InputManager)) as InputManager;
 		}
 
 		/// <summary>
@@ -208,6 +235,16 @@ namespace SpectralDepths.TopDown
 			Application.targetFrameRate = TargetFrameRate;
 			_initialCurrentLives = CurrentLives;
 			_initialMaximumLives = MaximumLives;
+		}
+		/// <summary>
+		/// Update to detect input for pausing
+		/// </summary>
+		protected virtual void Update()
+		{
+			if(QuickPause)
+			{
+				InputPause();
+			}
 		}
 					
 		/// <summary>
@@ -329,6 +366,7 @@ namespace SpectralDepths.TopDown
 					UnPause(pauseMethod);	
 				}
 			}		
+			MuteSound();
 			LevelManager.Instance.ToggleCharacterPause();
 		}
         
@@ -349,7 +387,43 @@ namespace SpectralDepths.TopDown
 			{
 				_inventoryOpen = false;
 			}
+			UnMuteSound();
 			LevelManager.Instance.ToggleCharacterPause();
+		}
+		/// <summary>
+		/// Pauses game when player presses pause button
+		/// </summary>
+		public virtual void InputPause()
+		{
+			if (_inputManager.PauseButton.State.CurrentState == MMInput.ButtonStates.ButtonDown )
+			{
+				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TogglePause, null);
+			}
+		}
+
+		/// <summary>
+		/// Mutes Sound based on parameters
+		/// </summary>
+		public virtual void MuteSound()
+		{
+			OnPause?.Invoke();
+
+			if (MuteSfxTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx); }
+			if (MuteUITrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.UI); }
+			if (MuteMusicTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Music); }
+			if (MuteMasterTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Master); }		
+		}
+		/// <summary>
+		/// Unmutes Sound based on parameters
+		/// </summary>
+		public virtual void UnMuteSound()
+		{
+			OnUnpause?.Invoke();
+
+			if (MuteSfxTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx); }
+			if (MuteUITrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.UI); }
+			if (MuteMusicTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Music); }
+			if (MuteMasterTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Master); }
 		}
         
 		/// <summary>

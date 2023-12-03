@@ -1,4 +1,4 @@
-﻿using MoreMountains.Feedbacks;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown

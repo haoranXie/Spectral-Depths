@@ -88,6 +88,10 @@ namespace SpectralDepths.TopDown
 		public MMInput.IMButton ReloadButton { get; protected set; }
 		/// the pause button
 		public MMInput.IMButton PauseButton { get; protected set; }
+		/// the rotate camera right button
+		public MMInput.IMButton RotateCameraLeftButton { get; protected set; }
+		/// the rotate camera right button
+		public MMInput.IMButton RotateCameraRightButton { get; protected set; }
 		/// the time control button
 		public MMInput.IMButton TimeControlButton { get; protected set; }
 		/// the button used to switch character (either via model or prefab switch)
@@ -213,6 +217,8 @@ namespace SpectralDepths.TopDown
 			ButtonList.Add(PauseButton = new MMInput.IMButton(PlayerID, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
 			ButtonList.Add(TimeControlButton = new MMInput.IMButton(PlayerID, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
 			ButtonList.Add(SwitchCharacterButton = new MMInput.IMButton(PlayerID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
+			ButtonList.Add(RotateCameraLeftButton = new MMInput.IMButton(PlayerID, "RotateCameraLeft", RotateCameraLeftButtonDown, RotateCameraLeftButtonPressed, RotateCameraLeftButtonUp));
+			ButtonList.Add(RotateCameraRightButton = new MMInput.IMButton(PlayerID, "RotateCameraRight", RotateCameraRightButtonDown, RotateCameraRightButtonPressed, RotateCameraRightButtonUp));
 		}
 
 		/// <summary>
@@ -524,6 +530,13 @@ namespace SpectralDepths.TopDown
 				button.State.ChangeState(newState);
 			}
 		}
+		public virtual void RotateCameraLeftButtonDown()		{ RotateCameraLeftButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
+		public virtual void RotateCameraLeftButtonPressed()		{ RotateCameraLeftButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
+		public virtual void RotateCameraLeftButtonUp()			{ RotateCameraLeftButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		
+		public virtual void RotateCameraRightButtonDown()		{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
+		public virtual void RotateCameraRightButtonPressed()	{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
+		public virtual void RotateCameraRightButtonUp()			{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
 
 		public virtual void JumpButtonDown()		{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
 		public virtual void JumpButtonPressed()		{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }

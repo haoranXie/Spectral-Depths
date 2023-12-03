@@ -1,4 +1,4 @@
-﻿using MoreMountains.Feedbacks;
+using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
 using System;
 using System.Collections;

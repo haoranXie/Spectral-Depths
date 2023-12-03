@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MoreMountains.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
