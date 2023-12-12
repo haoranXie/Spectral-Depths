@@ -499,6 +499,7 @@ namespace SpectralDepths.TopDown
 			CurrentWeapon.InitializeComboWeapons();
 			CurrentWeapon.InitializeAnimatorParameters();
 			InitializeAnimatorParameters();
+
 		}
 
 		/// <summary>
@@ -616,6 +617,16 @@ namespace SpectralDepths.TopDown
 			}
 		}
 
+		public virtual void ChangeToAIVersionOfWeapon()
+		{
+			ChangeWeapon(CurrentWeapon.AIWeaponVersion, CurrentWeapon.AIWeaponVersion.WeaponName, false);
+		}
+
+		public virtual void ChangeToPlayerVersionOfWeapon()
+		{
+			ChangeWeapon(CurrentWeapon.PlayerWeaponVersion, CurrentWeapon.PlayerWeaponVersion.WeaponName, false);
+		}
+
 		/// <summary>
 		/// Adds required animator parameters to the animator parameters list if they exist
 		/// </summary>
@@ -646,6 +657,8 @@ namespace SpectralDepths.TopDown
 			}
 		}
 
+		
+
 		protected override void OnHit()
 		{
 			base.OnHit();
@@ -670,5 +683,6 @@ namespace SpectralDepths.TopDown
 			base.OnRespawn();
 			Setup();
 		}
-	}
+
+    }
 }

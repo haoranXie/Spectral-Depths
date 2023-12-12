@@ -1210,7 +1210,7 @@ InputManager:
     descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: p
+    positiveButton: z
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -2139,6 +2139,22 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: e
+    altNegativeButton: 
+    altPositiveButton: joystick 1 button 0
+    gravity: 1000
+    dead: 0.001
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Player1_CommandAttackMove
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: x
     altNegativeButton: 
     altPositiveButton: joystick 1 button 0
     gravity: 1000

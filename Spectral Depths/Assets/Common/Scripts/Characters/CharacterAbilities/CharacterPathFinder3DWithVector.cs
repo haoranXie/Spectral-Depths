@@ -121,7 +121,6 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-
 			PerformRefresh();
 			DrawDebugPath();
 			DetermineNextWaypoint();

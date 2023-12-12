@@ -224,6 +224,7 @@ namespace SpectralDepths.TopDown
 			}
 			CacheAbilities();
 		}
+
 		
 		/// <summary>
 		/// Grabs abilities and caches them for further use
@@ -441,6 +442,29 @@ namespace SpectralDepths.TopDown
 		{
 			LinkedInputManager = inputManager;
 			UpdateInputManagersInAbilities();
+		}
+
+		public virtual void SetCharacterType(CharacterTypes characterType)
+		{
+			CharacterType = characterType;
+			if(characterType==CharacterTypes.Player)
+			{
+				PlayerID="Player1";
+			}
+			SetInputManager();
+		}
+
+		public virtual void SetAIBrain(AIBrain aiBrain)
+		{
+			//if (CharacterBrain == null)
+			//{
+				CharacterBrain = aiBrain;
+			//}
+
+			if (CharacterBrain != null)
+			{
+				CharacterBrain.Owner = this.gameObject;
+			}
 		}
 
 		/// <summary>

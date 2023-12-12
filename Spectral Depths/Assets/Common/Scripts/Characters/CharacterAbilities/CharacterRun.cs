@@ -200,5 +200,11 @@ namespace SpectralDepths.TopDown
 		{
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _runningAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Running),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
+
+		protected override void OnDisable()
+		{
+			base.OnDisable();
+			RunStop();
+		}
 	}
 }

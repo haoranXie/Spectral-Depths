@@ -98,6 +98,8 @@ namespace SpectralDepths.TopDown
 		public MMInput.IMButton SwitchCharacterButton { get; protected set; }
 		/// the switch weapon button
 		public MMInput.IMButton SwitchWeaponButton { get; protected set; }
+		/// the attackmove button
+		public MMInput.IMButton CommandAttackMoveButton { get; protected set; }
 		/// the shoot axis, used as a button (non analogic)
 		public MMInput.ButtonStates ShootAxis { get; protected set; }
 		/// the shoot axis, used as a button (non analogic)
@@ -219,6 +221,8 @@ namespace SpectralDepths.TopDown
 			ButtonList.Add(SwitchCharacterButton = new MMInput.IMButton(PlayerID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
 			ButtonList.Add(RotateCameraLeftButton = new MMInput.IMButton(PlayerID, "RotateCameraLeft", RotateCameraLeftButtonDown, RotateCameraLeftButtonPressed, RotateCameraLeftButtonUp));
 			ButtonList.Add(RotateCameraRightButton = new MMInput.IMButton(PlayerID, "RotateCameraRight", RotateCameraRightButtonDown, RotateCameraRightButtonPressed, RotateCameraRightButtonUp));
+			ButtonList.Add(CommandAttackMoveButton = new MMInput.IMButton(PlayerID, "CommandAttackMove", CommandAttackMoveButtonDown, CommandAttackMoveButtonPressed, CommandAttackMoveButtonUp));
+
 		}
 
 		/// <summary>
@@ -537,6 +541,9 @@ namespace SpectralDepths.TopDown
 		public virtual void RotateCameraRightButtonDown()		{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
 		public virtual void RotateCameraRightButtonPressed()	{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
 		public virtual void RotateCameraRightButtonUp()			{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void CommandAttackMoveButtonDown()		{ CommandAttackMoveButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
+		public virtual void CommandAttackMoveButtonPressed()	{ CommandAttackMoveButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
+		public virtual void CommandAttackMoveButtonUp()			{ CommandAttackMoveButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
 
 		public virtual void JumpButtonDown()		{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
 		public virtual void JumpButtonPressed()		{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }

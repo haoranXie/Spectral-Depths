@@ -5318,6 +5318,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponName: 
   WeaponCurrentlyActive: 1
+  PlayerWeaponVersion: {fileID: 114020998038657194, guid: 5588c9cf267f73a4e92b9d89d19c9b05,
+    type: 3}
+  AIWeaponVersion: {fileID: 114020998038657194}
   InputAuthorized: 1
   TriggerMode: 1
   DelayBeforeUse: 0

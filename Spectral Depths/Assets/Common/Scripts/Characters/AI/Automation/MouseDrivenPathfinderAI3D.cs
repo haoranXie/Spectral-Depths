@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 	/// It will allow you to click anywhere on screen, which will determine a new target and the character will pathfind its way to it
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/AI/Automation/MouseDrivenPathfinderAI3D")]
-	public class MouseDrivenPathfinderAI3D : TopDownMonoBehaviour 
+	public class MouseDrivenPathfinderAI3D : CharacterAbility
 	{
 		[Header("Testing")]
 		/// the camera we'll use to determine the destination from
@@ -36,8 +36,9 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// On awake we create a plane to catch our ray
 		/// </summary>
-		protected virtual void Awake()
+		protected override void PreInitialization()
 		{
+			base.PreInitialization();
 			_mainCamera = Camera.main;
 			_characterPathfinder3D = this.gameObject.GetComponent<CharacterPathfinder3DWithVector>();
 			if(NoRTS){
@@ -48,7 +49,7 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// On Update we look for a mouse click
 		/// </summary>
-		protected virtual void Update()
+		public override void ProcessAbility()
 		{
 			if(NoRTS) //If the selectable setting is turned on
 			{

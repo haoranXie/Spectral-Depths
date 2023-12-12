@@ -44,6 +44,8 @@ namespace SpectralDepths.TopDown
 		Repaint,
 		TogglePause,
 		SelectionChanged,
+		RTSOff,
+		RTSOn,
 		LoadNextScene
 	}
 

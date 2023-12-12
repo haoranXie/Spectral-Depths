@@ -4,7 +4,7 @@ using MoreMountains.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown{
-    public class CharacterSelectable : CharacterAbility, MMEventListener<SelectionEvent>
+    public class CharacterSelectable : CharacterAbility, MMEventListener<RTSEvent>
     {
         /// <summary>
         /// Add this ability to a Character to have it be selectable by player 
@@ -19,17 +19,31 @@ namespace SpectralDepths.TopDown{
 
         
         public bool selected;
+        public bool OnlySelected; //True if character is only one selected 
         protected override void Initialization()
         {
             base.Initialization();
             SelectedVisual.gameObject.SetActive(false);
         }
 
-        public virtual void OnMMEvent(SelectionEvent selectionEvent){
-            if(selectionEvent.SelectedTable.ContainsKey(_character.gameObject.GetInstanceID())){
-                Selected();
-            } else{
-                DeSelected();
+        public virtual void OnMMEvent(RTSEvent rtsEvent){
+            switch(rtsEvent.EventType)
+            {
+                case RTSEventTypes.PlayerSelected:
+                    if(rtsEvent.SelectedTable.ContainsKey(_character.gameObject.GetInstanceID())){
+                        Selected();
+                        if(rtsEvent.SelectedTable.Count==1)
+                        {
+                            OnlySelected=true;
+                        }
+                        else
+                        {
+                            OnlySelected=false;
+                        }
+                    } else{
+                        DeSelected();
+                    }
+                    break;
             }
         }
 
@@ -40,17 +54,20 @@ namespace SpectralDepths.TopDown{
 
         private void DeSelected(){
             selected=false;
+            OnlySelected=false;
             SelectedVisual.gameObject.SetActive(false);
         }
 
         protected override void OnEnable(){
             base.OnEnable();
-            this.MMEventStartListening<SelectionEvent>();
+            this.MMEventStartListening<RTSEvent>();
         }
 
         protected override void OnDisable(){
             base.OnDisable();
-            this.MMEventStopListening<SelectionEvent>();
+            DeSelected();
+            this.MMEventStopListening<RTSEvent>();
+            RTSEvent.Trigger(RTSEventTypes.SelectionDisabled,_character,null);
         }
 
     }

@@ -26,6 +26,13 @@ namespace SpectralDepths.TopDown
 		[MMReadOnly]
 		[Tooltip("whether or not the weapon is currently active")]
 		public bool WeaponCurrentlyActive = true;
+		[MMInspectorGroup("Variants", true, 7)]
+		/// reference to Player Used Variant of weapon
+		[Tooltip("reference to Player Used Variant of weapon")]
+		public Weapon PlayerWeaponVersion;
+		[Tooltip("reference to AI Used Variant of weapon")]
+		public Weapon AIWeaponVersion;
+		
 
 		[MMInspectorGroup("Use", true, 10)]
 		/// if this is true, this weapon will be able to read input (usually via the CharacterHandleWeapon ability), otherwise player input will be disabled

@@ -11,6 +11,7 @@ namespace SpectralDepths.TopDown
 	{
 		/// the AutoFocus component on the camera
 		public MMAutoFocus_URP AutoFocus { get; set; }
+		private Character _targetCharacter;
 
 		protected virtual void Start()
 		{
@@ -21,6 +22,9 @@ namespace SpectralDepths.TopDown
 		{
 			switch (cameraEvent.EventType)
 			{
+				case MMCameraEventTypes.SetTargetCharacter:
+					_targetCharacter =cameraEvent.TargetCharacter;
+					break;
 				case MMCameraEventTypes.StartFollowing:
 					AutoBindAutoFocusToCamera();
 					break;
@@ -37,9 +41,14 @@ namespace SpectralDepths.TopDown
 				AutoFocus = FindObjectOfType<MMAutoFocus_URP>();
 			}
 			if (AutoFocus != null)
-			{
+			{	
 				AutoFocus.FocusTargets = new Transform[1];
-				AutoFocus.FocusTargets[0] = LevelManager.Instance.Players[0].transform; 
+				if(_targetCharacter!=null)
+				{
+					AutoFocus.FocusTargets[0] = _targetCharacter.transform;
+					return;
+				}
+				//AutoFocus.FocusTargets[0] = LevelManager.Instance.Players[0].transform; 
 			}
 		}
 

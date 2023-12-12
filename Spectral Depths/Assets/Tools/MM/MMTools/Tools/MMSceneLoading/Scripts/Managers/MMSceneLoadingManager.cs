@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using MoreMountains.Tools;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using TMPro;
 
 namespace MoreMountains.Tools
 {	
@@ -44,7 +45,7 @@ namespace MoreMountains.Tools
 
 		[Header("GameObjects")]
 		/// the text object where you want the loading message to be displayed
-		public Text LoadingText;
+		public TextMeshProUGUI LoadingText;
 		/// the canvas group containing the progress bar
 		public CanvasGroup LoadingProgressBar;
 		/// the canvas group containing the animation

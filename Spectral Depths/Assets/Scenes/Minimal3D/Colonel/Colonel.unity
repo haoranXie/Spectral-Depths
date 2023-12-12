@@ -3397,6 +3397,17 @@ MonoBehaviour:
   GameOverScene: 
   Points: 0
   PauseGameWhenInventoryOpens: 1
+  QuickPause: 1
+  MuteSfxTrackSounds: 1
+  MuteUITrackSounds: 0
+  MuteMusicTrackSounds: 0
+  MuteMasterTrackSounds: 0
+  OnPause:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnpause:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &598334959
 Transform:
   m_ObjectHideFlags: 0
@@ -19997,7 +20008,39 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 175532758}
+    - targetCorrespondingSourceObject: {fileID: 1401813651863105675, guid: 791e0862de6c79941973ed781c9decb4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2747105370842960947}
   m_SourcePrefab: {fileID: 100100000, guid: 791e0862de6c79941973ed781c9decb4, type: 3}
+--- !u!1 &2747105370842960946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1401813651863105675, guid: 791e0862de6c79941973ed781c9decb4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2747105370842960945}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2747105370842960947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2747105370842960946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761732346e8f9874eb37ff066b9b83ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityStartSfx: {fileID: 0}
+  AbilityInProgressSfx: {fileID: 0}
+  AbilityStopSfx: {fileID: 0}
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
+  AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  BlockingWeaponStates: 
+  AdditionalAbilityNodes: []
 --- !u!114 &2951571812863691008
 MonoBehaviour:
   m_ObjectHideFlags: 0

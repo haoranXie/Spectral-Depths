@@ -457,7 +457,6 @@ namespace SpectralDepths.TopDown
 			{
 				_movementVector = Vector3.zero;
 			}
-            
 			_controller.SetMovement (_movementVector);
 		} 
 
@@ -532,6 +531,10 @@ namespace SpectralDepths.TopDown
 			}
 		}
 
+		public Vector3 GetMovementVector()
+		{
+			return _movementVector;
+		}
 		/// <summary>
 		/// Resets this character's speed
 		/// </summary>
@@ -554,6 +557,7 @@ namespace SpectralDepths.TopDown
 			base.OnDeath();
 			DisableWalkParticles();
 		}
+
 
 		/// <summary>
 		/// Disables all walk particle systems that may be playing

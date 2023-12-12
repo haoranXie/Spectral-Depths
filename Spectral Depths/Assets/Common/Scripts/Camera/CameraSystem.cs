@@ -9,11 +9,16 @@ namespace SpectralDepths.TopDown{
     /// <summary>
     /// Used for RTS camera movement
     /// </summary>
-    public class CameraSystem : MonoBehaviour
+    public class CameraSystem : MMSingleton<CameraSystem>
     {
-        [Header("Assigned Camera")]
-		[Tooltip("Cinemachine Virtual Camera")]
-		public CinemachineVirtualCamera cinemachineVirtualCamera;
+		[Tooltip("Enable/Disable Use of this camera")]
+        public bool UseRTSCamera = true;
+
+        [Header("Cameras")]
+		[Tooltip("Camera for RTS seciton")]
+		public CinemachineVirtualCamera RTSCamera;
+		[Tooltip("Camera for following player topdown action")]
+		public CinemachineVirtualCamera PlayerCamera;
         [Header("Camera Movement Settings")]
 		/// movespeed of camera
 		[Tooltip("horizontal movespeed of camera")]
@@ -55,7 +60,6 @@ namespace SpectralDepths.TopDown{
         public bool UseKeyboardHorizontal = true;
 
 
-
 		private InputManager _linkedInputManager;
         private float _horizontalInput;
         private float _verticalInput;
@@ -66,28 +70,47 @@ namespace SpectralDepths.TopDown{
         private bool _dragPanMoveActive;
         private float _targetFieldOfView;
         private Vector3 _followOffset;
-        private void Awake(){
+        protected override void Awake(){
+            base.Awake();
             SetInputManager();
-            _targetFieldOfView = cinemachineVirtualCamera.m_Lens.FieldOfView;
-            _followOffset = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+            _targetFieldOfView = RTSCamera.m_Lens.FieldOfView;
+            _followOffset = RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
         }
 
         private void Update()
         {
-            HandleInput();
-            MoveCamera();
+            if(UseRTSCamera)
+            {
+                HandleInput();
+                MoveCamera();
+            }
+        }
+
+        public void SwapToRTSCamera(Transform initialPosition)
+        {
+            transform.position=initialPosition.position;
+            PlayerCamera.Priority=0;
+            RTSCamera.Priority=1;
+        }
+
+        public void SwapToPlayerCamera(Character playerToFollow)
+        {
+			MMCameraEvent.Trigger(MMCameraEventTypes.SetTargetCharacter, playerToFollow);
+			MMCameraEvent.Trigger(MMCameraEventTypes.StartFollowing);
+            RTSCamera.Priority=0;
+            PlayerCamera.Priority=1;
         }
 
 
 		protected virtual void HandleInput()
 		{
             if(UseKeyboardHorizontal){InputHorizontalMoveCamera();}
-            if(UseEdgeScrolling){InputEdgeScrollCamera();}
             if(UseDragPanning){InputDragCamera();}
             if(UseZoomingFOV){InputCameraZoomFOV();}
             if(UseZoomingTransform){InputCameraZoomMoveForward();}
             if(UseZoomingTransformY){InputCameraZoomLowerY();}
             if(UseRotating){InputRotateCamera();}
+            if(UseEdgeScrolling){InputEdgeScrollCamera();}
         }
 
         private void MoveCamera()
@@ -95,7 +118,9 @@ namespace SpectralDepths.TopDown{
             _moveDir = transform.forward * _inputDir.z + transform.right * _inputDir.x;
             _moveDir = _moveDir.normalized;
             //Moves the camera in Input Direction mutliplied by MoveSpeed
-            transform.position += _moveDir * MoveSpeed * Time.deltaTime;
+            Vector3 targetPosition = transform.position + _moveDir * MoveSpeed * Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, targetPosition, 0.9f); // You can adjust the interpolation factor (0.1f) for smoother or quicker movement
+
             //Turns the camera based on Rotate Input Direction
             transform.eulerAngles += new Vector3 (0,_rotateDir*RotateSpeed*Time.deltaTime,0);
         }
@@ -190,7 +215,7 @@ namespace SpectralDepths.TopDown{
 
             _targetFieldOfView = Mathf.Clamp(_targetFieldOfView,FieldOfViewMin,FieldOfViewMax);
             
-            cinemachineVirtualCamera.m_Lens.FieldOfView = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView,_targetFieldOfView,Time.deltaTime*ZoomSpeed);
+            RTSCamera.m_Lens.FieldOfView = Mathf.Lerp(RTSCamera.m_Lens.FieldOfView,_targetFieldOfView,Time.deltaTime*ZoomSpeed);
         }
 
         private void InputCameraZoomMoveForward()
@@ -211,9 +236,9 @@ namespace SpectralDepths.TopDown{
             {
                 _followOffset = zoomDir * FollowOffsetMax;
             }
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
-            Vector3.Lerp(cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, _followOffset, Time.deltaTime*ZoomSpeed);
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = _followOffset;
+            RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
+            Vector3.Lerp(RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, _followOffset, Time.deltaTime*ZoomSpeed);
+            RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = _followOffset;
         }
 
         private void InputCameraZoomLowerY()
@@ -226,9 +251,9 @@ namespace SpectralDepths.TopDown{
                 _followOffset.y+=zoomAmount;
             }
             _followOffset.y = Mathf.Clamp(_followOffset.y, FollowOffsetMinY,FollowOffsetMaxY);
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
-            Vector3.Lerp(cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, _followOffset, Time.deltaTime*ZoomSpeed);
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = _followOffset;
+            RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
+            Vector3.Lerp(RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset, _followOffset, Time.deltaTime*ZoomSpeed);
+            RTSCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = _followOffset;
         }
 
         public virtual void SetInputManager()

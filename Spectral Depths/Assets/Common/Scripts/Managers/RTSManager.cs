@@ -7,6 +7,8 @@ using UnityEngine.AI;
 using System.Runtime.Remoting.Messaging;
 using System.Diagnostics.Tracing;
 using UnityEngine.Rendering;
+using UnityEngine.Pool;
+using System.Runtime.CompilerServices;
 
 namespace SpectralDepths.TopDown
 
@@ -16,7 +18,7 @@ namespace SpectralDepths.TopDown
     /// </summary>
     [AddComponentMenu("Spectral Depths/Managers/RTS Manager")]
 
-    public class GameRTSController : MonoBehaviour, MMEventListener<TopDownEngineEvent>
+    public class GameRTSController : MonoBehaviour, MMEventListener<TopDownEngineEvent>, MMEventListener<RTSEvent>
     {
         [MMInformation("The RTSManager is responsible for allowing the player to select units for canInput, formations, and RTS-related visual indicators",MMInformationAttribute.InformationType.Info,false)]
         [Header("RTS Mode")]
@@ -38,9 +40,29 @@ namespace SpectralDepths.TopDown
         public GameObject MovementIndicator;
 		[Tooltip("A-Left Click Attack-Movement Indicator")]
         public GameObject AttackMovementIndicator;
+		[Tooltip("Default Mouse")]
+        [SerializeField] private Texture2D _defualtCursor;
+		[Tooltip("A-Left Click Attack-Movement Mouse Indicator")]
+        [SerializeField] private Texture2D _defualtAttackCursor;
+		[Header("RTS Audio Cues")]
+		[Tooltip("Character Switch Sound")]
+        [SerializeField] private AudioSource _charSwitchSound;
+		[Tooltip("Command Sound")]
+        [SerializeField] private AudioSource _commandSound;
+
+
 
         //Holdes all the selected Game Objects
         public Dictionary<int,GameObject> SelectedTable = new Dictionary<int, GameObject>();
+
+        //All possible commands
+        public enum Commands
+        {
+            Default,
+            ForceAttack,
+            ForceHold,
+            ForcePatrol
+        }
         //Position for where player clicks mouse
         private Vector3 p1;
         //Position for where player lets go of mouse
@@ -58,23 +80,39 @@ namespace SpectralDepths.TopDown
         private Vector3[] vecs;
         private Vector3 target;
 
+        private Commands _curretCommand = Commands.Default;
+
         private bool dragSelect;
 
         private void Start()
         {
             dragSelect=false;
             canInput=true;
+            Cursor.SetCursor(_defualtCursor, new Vector2(10,10), CursorMode.Auto);
         }
 
         private void Update(){
             if(RTSMode){ //Player is RTSing
                 if(canInput) //Player can input (on/off depending on pausing)
                 {
-                    Selecting();
-                    DetectMovement();
+                    HandleInput();
+                    IssueCommands();
                 }
-
             }
+        }
+
+        private void HandleInput()
+        {
+			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			{
+                Cursor.SetCursor(_defualtAttackCursor, new Vector2(10,10), CursorMode.Auto);
+                _curretCommand = Commands.ForceAttack;
+            }
+			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			{     
+                Cursor.SetCursor(_defualtCursor, new Vector2(10,10), CursorMode.Auto);
+                _curretCommand = Commands.Default;
+			}
         }
 
         /// <summary>
@@ -130,7 +168,6 @@ namespace SpectralDepths.TopDown
                         {
                             verts[i] = new Vector3(hit.point.x,0,hit.point.z);
                             vecs[i] = ray.origin - hit.point;
-                            Debug.DrawLine(Camera.main.ScreenToWorldPoint(corner),hit.point,Color.red,1.0f);
                         }
                         i++;
                     }
@@ -153,6 +190,27 @@ namespace SpectralDepths.TopDown
         }
 
         /// <summary>
+        /// Uses an enum statemachine to issue various commands
+        /// </summary>
+        protected virtual void IssueCommands()
+        {
+            switch(_curretCommand)
+            {
+                case Commands.Default:
+                    Selecting();
+                    DetectMovement();
+                    break;
+                case Commands.ForceAttack:
+                    ForceAttack();
+                    DetectMovement();
+                    break;
+                case Commands.ForcePatrol:
+                    break;
+                case Commands.ForceHold:
+                    break;          
+            }
+        }
+        /// <summary>
         /// Moves every selected character to right clicked point of mouse
         /// </summary>
 		protected virtual void DetectMovement()
@@ -160,13 +218,32 @@ namespace SpectralDepths.TopDown
 			if (Input.GetMouseButtonDown(1))
 			{
 				Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.MousePosition);
-				Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
-
 				//float distance;
 				RaycastHit distance;
 				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
 				{
 					target=distance.point;
+                    Instantiate(MovementIndicator,distance.point,Quaternion.identity);
+                    RTSEvent.Trigger(RTSEventTypes.CommandForceMove,null,SelectedTable);
+                    SetPositionsCircle();
+				}
+			}
+		}
+        /// <summary>
+        /// Force Attack
+        /// </summary>
+		protected virtual void ForceAttack()
+		{
+			if (Input.GetMouseButtonDown(0))
+			{
+				Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.MousePosition);
+				//float distance;
+				RaycastHit distance;
+				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
+				{
+					target=distance.point;
+                    Instantiate(AttackMovementIndicator,distance.point,Quaternion.identity);
+                    RTSEvent.Trigger(RTSEventTypes.CommandForceAttack,null,SelectedTable);
                     SetPositionsCircle();
 				}
 			}
@@ -183,7 +260,7 @@ namespace SpectralDepths.TopDown
 
             foreach(KeyValuePair<int,GameObject> character in SelectedTable)
             {
-                character.Value.GetComponent<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
+                character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
                 targetPositionIndex = (targetPositionIndex + 1) % targetPositionList.Count;
             }  
         }
@@ -231,36 +308,35 @@ namespace SpectralDepths.TopDown
             return Quaternion.Euler(0,0,angle) * vec;
         }
         /// <summary>
-        /// Adds newly selected object to dictionary and fires SelectionEvent
+        /// Adds newly selected object to dictionary and fires RTSEvent
         /// </summary>
         /// <param name="gameObject"></param>
-        
         public void AddSelected(GameObject gameObject){
-            int  id = gameObject.GetInstanceID();
+            int  id = FindCharacterComponentInParent(gameObject).GetInstanceID();
             if(!(SelectedTable.ContainsKey(id))){
                 SelectedTable.Add(id,gameObject);
             }
-            SelectionEvent.Trigger(SelectedTable);
+            RTSEvent.Trigger(RTSEventTypes.PlayerSelected, null, SelectedTable);
         }
 
         /// <summary>
-        /// Removes a specific object from dictionary using it's ID and fires SelectionEvent
+        /// Removes a specific object from dictionary using it's ID and fires RTSEvent
         /// </summary>
         /// <param name="gameObject"></param>
 
         public void Deselect(int id){
             SelectedTable.Remove(id);
-            SelectionEvent.Trigger(SelectedTable);
+            RTSEvent.Trigger(RTSEventTypes.PlayerSelected, null, SelectedTable);
 
         }
         /// <summary>
-        /// Removes all objects from selection dictionary and fires SelectionEvent
+        /// Removes all objects from selection dictionary and fires RTSEvent
         /// </summary>
         /// <param name="gameObject"></param>
 
         public void DeselectAll(){
             SelectedTable.Clear();
-            SelectionEvent.Trigger(SelectedTable);
+            RTSEvent.Trigger(RTSEventTypes.PlayerSelected,null, SelectedTable);
         }
         /// <summary>
         /// Draws rectangle on screen when mutliselecting
@@ -329,9 +405,12 @@ namespace SpectralDepths.TopDown
 
         private GameObject FindCharacterComponentInParent(GameObject childObject)
         {
+            if(childObject.GetComponent<Character>()!=null)
+            {
+                return childObject;
+            }
             // Traverse the hierarchy upwards
             Transform parentTransform = childObject.transform.parent;
-            
             // Check if there is a parent and if it has a Character component
             while (parentTransform != null)
             {
@@ -417,15 +496,40 @@ namespace SpectralDepths.TopDown
                         canInput=true;
                     }
                     break;
+                case TopDownEngineEventTypes.RTSOn:
+                    RTSMode=true;
+                    break;
+                case TopDownEngineEventTypes.RTSOff:
+                    RTSMode=false;
+                    break;
             }
                     
         }
+
+        public virtual void OnMMEvent(RTSEvent rtsEvent)
+        {
+            switch(rtsEvent.EventType)
+            {
+                case RTSEventTypes.SelectionDisabled:
+                    Deselect(rtsEvent.OriginCharacter.gameObject.GetInstanceID());
+                    break;
+                case RTSEventTypes.SwitchToRTS:
+                    //_charSwitchSound.Play();
+                    break;
+                case RTSEventTypes.SwitchToPlayer:
+                    //_charSwitchSound.Play();
+                    break;
+            }
+        }
+
 		/// <summary>
 		/// OnDisable, we start listening to events.
 		/// </summary>
 		protected virtual void OnEnable()
 		{
 			this.MMEventStartListening<TopDownEngineEvent> ();
+			this.MMEventStartListening<RTSEvent> ();
+
 		}
 
 		/// <summary>
@@ -434,6 +538,7 @@ namespace SpectralDepths.TopDown
 		protected virtual void OnDisable()
 		{
 			this.MMEventStopListening<TopDownEngineEvent> ();
+			this.MMEventStopListening<RTSEvent> ();
         }
     }
 }
