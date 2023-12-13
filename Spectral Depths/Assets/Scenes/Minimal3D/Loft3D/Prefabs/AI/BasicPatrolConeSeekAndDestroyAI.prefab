@@ -1824,7 +1824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 794539ff210c56d4d8fe1b215440a6c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableDistance: 45
+  EnableDistance: 60
   DisableDistance: 90
   DisabledByManager: 0
   DebugProximityManager: {fileID: 0}

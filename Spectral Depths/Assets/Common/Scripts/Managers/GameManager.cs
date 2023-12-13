@@ -216,7 +216,6 @@ namespace SpectralDepths.TopDown
 		protected InventoryInputManager _inventoryInputManager;
 		protected int _initialMaximumLives;
 		protected int _initialCurrentLives;
-		protected InputManager _inputManager;
 
 
 		/// <summary>
@@ -226,7 +225,6 @@ namespace SpectralDepths.TopDown
 		{
 			base.Awake ();
 			PointsOfEntry = new List<PointsOfEntryStorage> ();
-			_inputManager = FindObjectOfType(typeof(InputManager)) as InputManager;
 		}
 
 		/// <summary>
@@ -397,7 +395,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public virtual void InputPause()
 		{
-			if (_inputManager.PauseButton.State.CurrentState == MMInput.ButtonStates.ButtonDown )
+			if (InputManager.Instance.PauseButton.State.CurrentState == MMInput.ButtonStates.ButtonDown )
 			{
 				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TogglePause, null);
 			}

@@ -5446,7 +5446,7 @@ MonoBehaviour:
   CameraTargetOffset: 0.3
   CameraTargetMaxDistance: 5
   CameraTargetSpeed: 5
-  Unrestricted3DAim: 0
+  Unrestricted3DAim: 1
   ReticleMovesWithSlopes: 0
   ReticleObstacleMask:
     serializedVersion: 2

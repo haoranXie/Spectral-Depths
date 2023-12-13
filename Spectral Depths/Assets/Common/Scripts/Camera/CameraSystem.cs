@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Codice.Client.Common.GameUI;
 using UnityEngine;
 using MoreMountains.Tools;
 using Cinemachine;
@@ -44,6 +43,9 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("Min Offset.y Scroll")]
         public float FollowOffsetMinY = 10f;   
         [Header("Camera Systems")]
+		[Tooltip("Restricted Camera Collider")]
+        public Collider MovementBounds;
+
 		[Tooltip("Enable/Disable Edge Scrolling")]
         public bool UseEdgeScrolling = true;
 		[Tooltip("Enable/Disable Drag Panning")]
@@ -118,11 +120,17 @@ namespace SpectralDepths.TopDown{
             _moveDir = transform.forward * _inputDir.z + transform.right * _inputDir.x;
             _moveDir = _moveDir.normalized;
             //Moves the camera in Input Direction mutliplied by MoveSpeed
-            Vector3 targetPosition = transform.position + _moveDir * MoveSpeed * Time.deltaTime;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, 0.9f); // You can adjust the interpolation factor (0.1f) for smoother or quicker movement
-
-            //Turns the camera based on Rotate Input Direction
             transform.eulerAngles += new Vector3 (0,_rotateDir*RotateSpeed*Time.deltaTime,0);
+            Vector3 targetPosition = transform.position + _moveDir * MoveSpeed * Time.deltaTime;
+            if(MovementBounds!=null)
+            {
+                if(!MovementBounds.bounds.Contains(targetPosition))
+                {
+                    return;
+                }
+            }
+            transform.position = Vector3.Lerp(transform.position, targetPosition, 0.9f); // You can adjust the interpolation factor (0.1f) for smoother or quicker movement
+            //Turns the camera based on Rotate Input Direction
         }
 
         /// <summary>
