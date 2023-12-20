@@ -288,17 +288,17 @@ MonoBehaviour:
   AIWeaponVersion: {fileID: 114020998038657194, guid: 36ee03d65a1261e44947e84f71301a25,
     type: 3}
   InputAuthorized: 1
-  TriggerMode: 1
+  TriggerMode: 0
   DelayBeforeUse: 0
   DelayBeforeUseReleaseInterruption: 1
-  TimeBetweenUses: 0.1
+  TimeBetweenUses: 0.4
   TimeBetweenUsesReleaseInterruption: 1
   UseBurstMode: 0
   BurstLength: 3
   BurstTimeBetweenShots: 0.1
-  MagazineBased: 0
-  MagazineSize: 30
-  AutoReload: 0
+  MagazineBased: 1
+  MagazineSize: 10
+  AutoReload: 1
   NoInputReload: 0
   ReloadTime: 2
   AmmoConsumedPerShot: 1
@@ -314,8 +314,8 @@ MonoBehaviour:
   WeaponShouldFlip: 1
   LeftHandHandle: {fileID: 4509201433976862}
   RightHandHandle: {fileID: 4938342036475394}
-  ModifyMovementWhileAttacking: 0
-  MovementMultiplier: 0
+  ModifyMovementWhileAttacking: 1
+  MovementMultiplier: 0.6
   PreventAllMovementWhileInUse: 0
   PreventAllAimWhileInUse: 0
   RecoilForce: 0
@@ -347,6 +347,7 @@ MonoBehaviour:
   InitializeOnStart: 1
   Interruptable: 0
   Flipped: 0
+  _reloading: 0
   ProjectileSpawnOffset: {x: 0, y: 0.16, z: 0.57}
   DefaultProjectileDirection: {x: 0, y: 0, z: 1}
   ProjectilesPerShot: 1

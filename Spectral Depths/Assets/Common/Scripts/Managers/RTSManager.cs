@@ -88,7 +88,7 @@ namespace SpectralDepths.TopDown
         {
             dragSelect=false;
             canInput=true;
-            Cursor.SetCursor(_defualtCursor, new Vector2(10,10), CursorMode.Auto);
+            Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
         }
 
         private void Update(){
@@ -101,20 +101,41 @@ namespace SpectralDepths.TopDown
             }
         }
 
+        private void SwitchToDefaultCommand()
+        {
+            Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
+            _curretCommand = Commands.Default;
+            p1 = Input.mousePosition;
+        }
+
+        private bool _commandAttackButtonIsPressed = false;
         private void HandleInput()
         {
-			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && !_commandAttackButtonIsPressed)
 			{
-                Cursor.SetCursor(_defualtAttackCursor, new Vector2(10,10), CursorMode.Auto);
-                _curretCommand = Commands.ForceAttack;
+                switch(_curretCommand)
+                {
+                    case(Commands.Default):
+                        if(!dragSelect)
+                        {
+                            Cursor.SetCursor(_defualtAttackCursor, new Vector2(6,6), CursorMode.Auto);
+                            _curretCommand = Commands.ForceAttack;
+                            _commandAttackButtonIsPressed = true; 
+                        }
+                        break;
+                    case(Commands.ForceAttack):
+                        Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
+                        _curretCommand = Commands.Default;
+                        _commandAttackButtonIsPressed = true;  
+                        break;  
+                }
             }
 			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
 			{     
-                Cursor.SetCursor(_defualtCursor, new Vector2(10,10), CursorMode.Auto);
-                _curretCommand = Commands.Default;
+                _commandAttackButtonIsPressed = false;
 			}
         }
-
+        bool selectingButtonDown = false;
         /// <summary>
         /// Allows the player to select characters
         /// </summary>
@@ -122,14 +143,15 @@ namespace SpectralDepths.TopDown
             if(Input.GetMouseButtonDown(0))
             {
                 p1 = Input.mousePosition;
+                selectingButtonDown=true;
             }
-            if(Input.GetMouseButton(0))
+            if(Input.GetMouseButton(0)&&selectingButtonDown)
             {
                 if((p1-Input.mousePosition).magnitude>PlayerMultiSelectThreshold){
                     dragSelect=true;
                 }
             }
-            if(Input.GetMouseButtonUp(0))
+            if(Input.GetMouseButtonUp(0)&&selectingButtonDown)
             {
                 if(dragSelect==false){ //single Select
                     Ray ray = Camera.main.ScreenPointToRay(p1);
@@ -166,7 +188,7 @@ namespace SpectralDepths.TopDown
                         Ray ray = Camera.main.ScreenPointToRay(corner);
                         if(Physics.Raycast(ray,out hit,50000.0f,GroundLayerMasks))
                         {
-                            verts[i] = new Vector3(hit.point.x,0,hit.point.z);
+                            verts[i] = new Vector3(hit.point.x,hit.point.y,hit.point.z);
                             vecs[i] = ray.origin - hit.point;
                         }
                         i++;
@@ -185,6 +207,7 @@ namespace SpectralDepths.TopDown
                     }
                     Destroy(selectionBox, 0.02f);
                 } // end multi select
+                selectingButtonDown=false;
                 dragSelect=false;
             }
         }
@@ -202,7 +225,6 @@ namespace SpectralDepths.TopDown
                     break;
                 case Commands.ForceAttack:
                     ForceAttack();
-                    DetectMovement();
                     break;
                 case Commands.ForcePatrol:
                     break;
@@ -246,6 +268,7 @@ namespace SpectralDepths.TopDown
                     RTSEvent.Trigger(RTSEventTypes.CommandForceAttack,null,SelectedTable);
                     SetPositionsCircle();
 				}
+                SwitchToDefaultCommand();
 			}
 		}
         /// <summary>

@@ -149,7 +149,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Shoot()
 		{
-			if (_numberOfShoots < 1)
+			if (_numberOfShoots < 1 && !TargetHandleWeaponAbility.CurrentWeapon._reloading)
 			{
 				_targetWeapon = TargetHandleWeaponAbility.CurrentWeapon;
 				TargetHandleWeaponAbility.ShootStart();

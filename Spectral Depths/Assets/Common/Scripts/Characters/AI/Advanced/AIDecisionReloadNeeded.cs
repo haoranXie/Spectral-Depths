@@ -37,8 +37,7 @@ namespace SpectralDepths.TopDown
 			{
 				return false;
 			}
-
-			return _characterHandleWeapon.CurrentWeapon.WeaponState.CurrentState == Weapon.WeaponStates.WeaponReloadNeeded;
+			return (_characterHandleWeapon.CurrentWeapon.WeaponState.CurrentState == Weapon.WeaponStates.WeaponReloadNeeded);
 		}
 	}
 }

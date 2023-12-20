@@ -5325,13 +5325,13 @@ MonoBehaviour:
   TriggerMode: 1
   DelayBeforeUse: 0
   DelayBeforeUseReleaseInterruption: 1
-  TimeBetweenUses: 0.5
+  TimeBetweenUses: 1.5
   TimeBetweenUsesReleaseInterruption: 1
   UseBurstMode: 0
   BurstLength: 3
   BurstTimeBetweenShots: 0.1
   MagazineBased: 0
-  MagazineSize: 30
+  MagazineSize: 1
   AutoReload: 0
   NoInputReload: 0
   ReloadTime: 2
@@ -5349,7 +5349,7 @@ MonoBehaviour:
   LeftHandHandle: {fileID: 4840653277081866}
   RightHandHandle: {fileID: 4938342036475394}
   ModifyMovementWhileAttacking: 1
-  MovementMultiplier: 0.8
+  MovementMultiplier: 0.6
   PreventAllMovementWhileInUse: 0
   PreventAllAimWhileInUse: 0
   RecoilForce: 0
@@ -5381,6 +5381,7 @@ MonoBehaviour:
   InitializeOnStart: 1
   Interruptable: 0
   Flipped: 0
+  _reloading: 0
   ProjectileSpawnOffset: {x: 0, y: 0.16, z: 0.57}
   DefaultProjectileDirection: {x: 0, y: 0, z: 1}
   ProjectilesPerShot: 1
@@ -26849,7 +26850,7 @@ MonoBehaviour:
           ButtonText: Debug Play Sound
         TestStopButton:
           ButtonText: Debug Stop Sound
-        PlayMethod: 2
+        PlayMethod: 0
         PoolSize: 10
         StopSoundOnFeedbackStop: 1
         MinVolume: 1

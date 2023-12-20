@@ -11,6 +11,12 @@ namespace SpectralDepths.TopDown
 	[AddComponentMenu("Spectral Depths/Character/AI/Decisions/AIDecisionNotMoving")]
 	public class AIDecisionNotMoving : AIDecision
 	{        
+		private CharacterMovement _characterMovement;
+		public override void Initialization()
+		{
+			base.Initialization();
+			_characterMovement = _brain.Owner.GetComponent<CharacterMovement>();
+		}
 		/// <summary>
 		/// On Decide we check whether the force move command
 		/// </summary>
@@ -26,7 +32,7 @@ namespace SpectralDepths.TopDown
 		/// <returns></returns>
 		protected virtual bool CheckIfMoving()
 		{
-			if (_brain.Owner.GetComponent<CharacterMovement>().GetMovementVector().magnitude<=0.9)
+			if (_characterMovement.GetMovementVector().magnitude<=0.9)
 			{				
 				return true;
 			}

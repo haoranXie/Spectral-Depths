@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Tools;
 using MoreMountains.Feedbacks;
+using System;
 
 namespace SpectralDepths.TopDown
 {
@@ -255,13 +256,14 @@ namespace SpectralDepths.TopDown
 			get => _movementMultiplierStorage;
 			set => _movementMultiplierStorage = value;
 		}
+		
 		protected Animator _ownerAnimator;
 		protected WeaponPreventShooting _weaponPreventShooting;
 		protected float _delayBeforeUseCounter = 0f;
 		protected float _delayBetweenUsesCounter = 0f;
 		protected float _reloadingCounter = 0f;
 		protected bool _triggerReleased = false;
-		protected bool _reloading = false;
+		public bool _reloading = false;
 		protected ComboWeapon _comboWeapon;
 		protected TopDownController _controller;
 		protected CharacterMovement _characterMovement;
@@ -461,9 +463,7 @@ namespace SpectralDepths.TopDown
 		protected virtual void ProcessWeaponState()
 		{
 			if (WeaponState == null) { return; }
-			
 			UpdateAnimator();
-
 			switch (WeaponState.CurrentState)
 			{
 				case WeaponStates.WeaponIdle:
@@ -635,6 +635,7 @@ namespace SpectralDepths.TopDown
 			{
 				CurrentAmmoLoaded = MagazineSize;
 			}
+			
 		}
 
 		/// <summary>

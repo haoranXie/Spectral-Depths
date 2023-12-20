@@ -29,7 +29,7 @@ namespace SpectralDepths.TopDown
 		protected virtual bool CheckIfForceMoved()
 		{
 			if (_commandMoved)
-			{				
+			{
 				_commandMoved=false;
 				return true;
 			}
@@ -50,6 +50,18 @@ namespace SpectralDepths.TopDown
 					break;
 			}
 		}
+
+		public override void OnEnterState()
+		{
+			base.OnEnterState();
+			_commandMoved=false;
+		}
+		public override void OnExitState()
+		{
+			base.OnEnterState();
+			_commandMoved=false;
+		}
+
 		public void OnEnable()
 		{
 			this.MMEventStartListening<RTSEvent>();

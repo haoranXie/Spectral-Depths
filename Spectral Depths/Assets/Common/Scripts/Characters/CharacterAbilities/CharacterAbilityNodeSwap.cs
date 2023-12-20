@@ -26,6 +26,8 @@ namespace SpectralDepths.TopDown
 		public bool NeedSelected = true;
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
+		[Tooltip("Whether player should change to RTS mode on Death")]
+		public bool DeathSwitch = false;
 		protected override void Initialization()
 		{
 			base.Initialization();
@@ -88,35 +90,55 @@ namespace SpectralDepths.TopDown
 					//Do Nothing
 				break;
 				case ControlTypes.Player: //Switching to a player controls
-					_character.SetCharacterType(Character.CharacterTypes.Player);
-					TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
-					RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
-					for(int i = 0; i<_handleWeaponList.Count;i++)
-					{
-						_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
-					}
-					_characterMovement.SetMovement(Vector3.zero);
-					if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
-					CameraSystem.Instance.SwapToPlayerCamera(_character);
+					SwitchToPlayer();
 				break;
 				case ControlTypes.AI: //Switching to mouse driven ai controls
-					_character.SetCharacterType(Character.CharacterTypes.AI);
-					TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
-					RTSEvent.Trigger(RTSEventTypes.SwitchToRTS,_character,null);
-					for(int i = 0; i<_handleWeaponList.Count;i++)
-					{
-						_handleWeaponList[i].ChangeToAIVersionOfWeapon();
-					}
-					_characterMovement.SetMovement(Vector3.zero);
-					if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
-					CameraSystem.Instance.SwapToRTSCamera(this.transform);
+					SwitchToAI();
 				break;
 			}
+		}
+
+		private void SwitchToPlayer()
+		{
+			_character.SetCharacterType(Character.CharacterTypes.Player);
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
+			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
+			for(int i = 0; i<_handleWeaponList.Count;i++)
+			{
+				_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
+			}
+			_characterMovement.SetMovement(Vector3.zero);
+			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
+			CameraSystem.Instance.SwapToPlayerCamera(_character);
+		}
+
+		private void SwitchToAI()
+		{
+			_character.SetCharacterType(Character.CharacterTypes.AI);
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
+			RTSEvent.Trigger(RTSEventTypes.SwitchToRTS,_character,null);
+			for(int i = 0; i<_handleWeaponList.Count;i++)
+			{
+				_handleWeaponList[i].ChangeToAIVersionOfWeapon();
+			}
+			_characterMovement.SetMovement(Vector3.zero);
+			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
+			CameraSystem.Instance.SwapToRTSCamera(this.transform);
 		}
 		public virtual void SwapBrain()
 		{
 			_character.SetAIBrain(Brain);
 		}
 
+		protected override void OnDeath()
+		{
+			base.OnDeath();
+			if(DeathSwitch)
+			{
+				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
+				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
+				CameraSystem.Instance.SwapToRTSCamera(this.transform);
+			}
+		}
 	}
 }

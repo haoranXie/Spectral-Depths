@@ -50,6 +50,16 @@ namespace SpectralDepths.TopDown
 					break;
 			}
 		}
+		public override void OnEnterState()
+		{
+			base.OnEnterState();
+			_commandAttackMoved=false;
+		}
+		public override void OnExitState()
+		{
+			base.OnEnterState();
+			_commandAttackMoved=false;
+		}
 		public void OnEnable()
 		{
 			this.MMEventStartListening<RTSEvent>();
