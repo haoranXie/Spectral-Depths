@@ -107,11 +107,11 @@ namespace SpectralDepths.TopDown
 			yield return new WaitForSeconds (FadeOutDuration);
 			if (LoadingSceneName == "")
 			{
-				MMSceneLoadingManager.LoadScene (NextLevel);	
+				MMAdditiveSceneLoadingManager.LoadScene (NextLevel);	
 			}
 			else
 			{
-				MMSceneLoadingManager.LoadScene (NextLevel, LoadingSceneName);
+				MMAdditiveSceneLoadingManager.LoadScene (NextLevel, LoadingSceneName);
 			}
 			
 		}

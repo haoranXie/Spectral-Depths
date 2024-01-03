@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Minimal3D/MinimalRTS3D.unity
     guid: cf1765d7f98243b4185a616df4e45868
+  - enabled: 1
+    path: Assets/Scenes/City/CityMap/CityMap.unity
+    guid: 5f1d6c597bcdb584f9ce13166aa34e83
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: be9e408e4c37d3a46bbdfbaf7c2a25e5,
       type: 2}

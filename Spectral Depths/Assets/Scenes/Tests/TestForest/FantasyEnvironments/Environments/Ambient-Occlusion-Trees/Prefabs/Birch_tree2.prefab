@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 33990256434022284}
   - component: {fileID: 23320235798237312}
   - component: {fileID: 136367590879483440}
-  m_Layer: 0
+  - component: {fileID: -270570309659356227}
+  m_Layer: 8
   m_Name: Birch_tree2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,3 +109,19 @@ CapsuleCollider:
   m_Height: 13.553929
   m_Direction: 1
   m_Center: {x: 0.01, y: 5.69, z: 0.02}
+--- !u!208 &-270570309659356227
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216688828669844}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.64, y: 6.776965, z: 0.64}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.01, y: 5.69, z: 0.02}
+  m_TimeToStationary: 0.5

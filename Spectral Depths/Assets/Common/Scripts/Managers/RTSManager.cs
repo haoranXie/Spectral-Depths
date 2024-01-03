@@ -24,6 +24,10 @@ namespace SpectralDepths.TopDown
         [Header("RTS Mode")]
 		[Tooltip("Turn on or off the player being able to RTS")]
 		public bool RTSMode;
+		[Tooltip("Turn on or off the player being able to RTS")]
+		public bool OverworldMode;
+		[Tooltip("Turn on or off special commands")]
+		public bool CommandMode = true;
 		[Header("Character Selection Settings")]
 		[Tooltip("How far the player has to hold down the mouse before it counts as multi select")]
 		public int PlayerMultiSelectThreshold = 40;
@@ -61,7 +65,8 @@ namespace SpectralDepths.TopDown
             Default,
             ForceAttack,
             ForceHold,
-            ForcePatrol
+            ForcePatrol,
+            ForceTakeCover
         }
         //Position for where player clicks mouse
         private Vector3 p1;
@@ -222,7 +227,7 @@ namespace SpectralDepths.TopDown
                 case Commands.Default:
                     Selecting();
                     DetectMovement();
-                    break;
+                    break;                   
                 case Commands.ForceAttack:
                     ForceAttack();
                     break;
@@ -230,8 +235,19 @@ namespace SpectralDepths.TopDown
                     break;
                 case Commands.ForceHold:
                     break;          
+                case Commands.ForceTakeCover:
+                    ForceTakeCover();
+                    break;
+                
             }
         }
+
+
+        protected virtual void ForceTakeCover()
+        {
+
+        }
+
         /// <summary>
         /// Moves every selected character to right clicked point of mouse
         /// </summary>
