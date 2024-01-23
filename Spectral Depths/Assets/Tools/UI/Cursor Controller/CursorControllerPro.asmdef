@@ -1,0 +1,15 @@
+{
+    "name": "CursorControllerPro",
+    "references": [
+        "GUID:b42d3f2b4b2024b0fb4b93601f0faf4c"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

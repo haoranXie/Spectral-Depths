@@ -21,6 +21,7 @@ MonoBehaviour:
     type: 2}
   UIAudioMixerGroup: {fileID: -3783893103257190392, guid: 7e984f512e89b60468e829489e8883e3,
     type: 2}
+  MixerValuesMultiplier: 20
   Settings:
     OverrideMixerSettings: 1
     MasterVolumeParameter: MasterVolume
