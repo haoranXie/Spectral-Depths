@@ -3,31 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-//System to control the dialogue on the screen
-public class DialogueSystem : MonoBehaviour
+namespace DIALOGUE
 {
-    //Allows us to access it from inspector despite it being private
-    public DialogueContainer dialogueContainer = new DialogueContainer();
-
-    public static DialogueSystem instance;
-
-    private void Awake()
+    //System to control the dialogue on the screen
+    public class DialogueSystem : MonoBehaviour
     {
-        if(instance == null)
-            instance = this;
-        else
-            DestroyImmediate(gameObject);
-    }
+        //Allows us to access it from inspector despite it being private
+        public DialogueContainer dialogueContainer = new DialogueContainer();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        public static DialogueSystem instance;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            if (instance == null)
+                instance = this;
+            else
+                DestroyImmediate(gameObject);
+        }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 }

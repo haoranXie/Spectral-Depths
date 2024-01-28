@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DIALOGUE;
 
 namespace TESTING
 {
-    public class Testing_Architect : MonoBehaviour
+    public class TestingArchitect : MonoBehaviour
     {
         DialogueSystem ds;
         TextArchitect architect;

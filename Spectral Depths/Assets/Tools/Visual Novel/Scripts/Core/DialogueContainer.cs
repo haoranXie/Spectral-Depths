@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[System.Serializable]
-
-//Manages all dialogue box elements to change how they look
-public class DialogueContainer
+namespace DIALOGUE
 {
-    //Dialogue and Name text connected to root so disabling this will hide dialogue
-    public GameObject root;
+    [System.Serializable]
 
-    //Displays what character is talking
-    public TextMeshProUGUI nameText;
-    
-    //Displays the correct dialogue
-    public TextMeshProUGUI dialogueText;
+    //Manages all dialogue box elements to change how they look
+    public class DialogueContainer
+    {
+        //Dialogue and Name text connected to root so disabling this will hide dialogue
+        public GameObject root;
+
+        //Displays what character is talking
+        public TextMeshProUGUI nameText;
+
+        //Displays the correct dialogue
+        public TextMeshProUGUI dialogueText;
+    }
 }
