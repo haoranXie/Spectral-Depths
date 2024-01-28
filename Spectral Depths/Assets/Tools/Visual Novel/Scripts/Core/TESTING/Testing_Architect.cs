@@ -33,14 +33,7 @@ namespace TESTING
             {
                 if(architect.isBuilding)
                 {
-                    if (!architect.hurryUp)
-                    {
-                        architect.hurryUp = true;
-                    }
-                    else
-                    {
-                        architect.ForceComplete();
-                    }
+                    architect.ForceComplete(); //Changed this, this used to have hurry up, but now it's just force complete
                 }
                 else
                 {

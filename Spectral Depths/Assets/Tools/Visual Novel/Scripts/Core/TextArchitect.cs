@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.TextCore.Text;
 
 //Builds and reveals text on screen
 public class TextArchitect
@@ -23,19 +24,23 @@ public class TextArchitect
     //Full string of text that should be built
     public string fullTargetText => preText + targetText;
 
-    //Controls how text is displayed
-    public enum BuildMethod{instant, typewriter, fade}
+    //Controls what method to build text
+    public enum BuildMethod{instant, typewriter}
+    //Basically sets typewriter as default BuildMethod
     public BuildMethod buildMethod = BuildMethod.typewriter;
     
     //Text color changer
+    //textColor variable gets color of tmpro text and sets value as color for tmpro text
     public Color textColor {get{return tmpro.color;} set {tmpro.color = value;}}
 
     //Text speed changer
+    //speed variable gets speed of text and the value you assign it is speedMultiplier
     public float speed{get{return baseSpeed * speedMultiplier;} set {speedMultiplier = value;}}
     private const float baseSpeed = 1;
     private float speedMultiplier = 1;
     
-    //How speed changes when click on screen
+    //How text speed changes when click on screen
+    //charactersPerCycle variable gives you a character multiplier depending on speed as another way to change speed
     public int charactersPerCycle{get{return speed <= 2f ? characterMultiplier : speed <= 2.5f ? characterMultiplier * 2: characterMultiplier * 3;}}
     private int characterMultiplier = 1;
 
@@ -43,7 +48,7 @@ public class TextArchitect
 
     //Core
 
-    //Constructors: Run automatically when you make a new TextArchitect object(text), it initializes the object by assigning the value of the parameter to a variable of the text architect class
+    //Contructor: When TextArchitect is called, it takes in text stored in variable tmpro_ui and stores it into a variable
     public TextArchitect(TextMeshProUGUI tmpro_ui)
     {
         this.tmpro_ui = tmpro_ui;
@@ -53,7 +58,7 @@ public class TextArchitect
         this.tmpro_world = tmpro_world;
     }
 
-    //Building an entirely new string(text)
+    //Method Build, builds text
     public Coroutine Build(string text)
     {
         preText = "";
@@ -93,6 +98,7 @@ public class TextArchitect
     }
 
     //Building the text based off of method type(instant, typewritter)
+    //When Method "Build" is called it will run this and find out through Prepare(); what the current buildMethod is and calls the buildMethod functions to prepare the text, and if typewriter, gives additional stes to build the text
     IEnumerator Building()
     {
         Prepare();
@@ -101,9 +107,6 @@ public class TextArchitect
         {
             case BuildMethod.typewriter:
                 yield return Build_Typewriter();
-                break;
-            case BuildMethod.fade:
-                yield return Build_Fade();
                 break;
         }
         OnComplete();
@@ -122,8 +125,6 @@ public class TextArchitect
             case BuildMethod.typewriter:
                 tmpro.maxVisibleCharacters = tmpro.textInfo.characterCount;
                 break;
-            case BuildMethod.fade:
-                break;
         }
 
         Stop();
@@ -140,9 +141,6 @@ public class TextArchitect
                 break;
             case BuildMethod.typewriter:
                 Prepare_Typewriter();
-                break;
-            case BuildMethod.fade:
-                Prepare_Fade();
                 break;
         }
     }
@@ -171,11 +169,7 @@ public class TextArchitect
         tmpro.ForceMeshUpdate();
     }
 
-    private void Prepare_Fade()
-    {
-
-    }
-
+    //Builds the text typewriter mode
     private IEnumerator Build_Typewriter()
     {
         while(tmpro.maxVisibleCharacters < tmpro.textInfo.characterCount)
@@ -184,10 +178,5 @@ public class TextArchitect
 
             yield return new WaitForSeconds(0.015f / speed);
         }
-    }
-
-    private IEnumerator Build_Fade()
-    {
-        yield return null;
     }
 }
