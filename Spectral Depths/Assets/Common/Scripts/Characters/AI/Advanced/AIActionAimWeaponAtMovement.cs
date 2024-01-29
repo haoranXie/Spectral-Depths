@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,7 +81,7 @@ namespace SpectralDepths.TopDown
 		{
 			if ((_characterHandleWeapon != null) && (_characterHandleWeapon.CurrentWeapon != null))
 			{
-				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 			}            
 		}
 

@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +33,7 @@ namespace SpectralDepths.TopDown
 				return false;
 			}
 
-			_character = _brain.Target.gameObject.MMGetComponentNoAlloc<Character>();
+			_character = _brain.Target.gameObject.PLGetComponentNoAlloc<Character>();
 			if (_character != null)
 			{
 				if (_character.ConditionState.CurrentState == CharacterStates.CharacterConditions.Dead)

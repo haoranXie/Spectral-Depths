@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {	
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
 		public virtual void LoadNextScene()
 		{
 			StoreCharacterSelection ();
-			MMSceneLoadingManager.LoadScene(DestinationSceneName);
+			PLSceneLoadingManager.LoadScene(DestinationSceneName);
 		}
 	}
 }

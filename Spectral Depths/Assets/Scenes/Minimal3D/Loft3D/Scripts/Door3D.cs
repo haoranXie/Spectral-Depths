@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -67,7 +67,7 @@ namespace SpectralDepths.TopDown
 		{
 			_currentDirection.x = Door.transform.right.x;
 			_currentDirection.y = Door.transform.right.z;
-			float Angle = MMMaths.AngleBetween(_initialDirection, _currentDirection);
+			float Angle = PLMaths.AngleBetween(_initialDirection, _currentDirection);
 
 			if ((Angle > MinAngle) && (Angle < MaxAngle) && (!Door.isKinematic))
 			{

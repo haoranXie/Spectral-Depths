@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 #if UNITY_EDITOR
 using UnityEditor.Animations;
 #endif
@@ -34,7 +34,7 @@ namespace SpectralDepths.TopDown
 		/// if this is true, this component will remove itself after adding the character parameters
 		[Tooltip("if this is true, this component will remove itself after adding the character parameters")]
 		public bool AutoRemoveAfterInitialization = true;
-		[MMInspectorButton("AddAnimationParameters")]
+		[PLInspectorButton("AddAnimationParameters")]
 		public bool AddAnimationParametersButton;
 
 		protected TopDownCharacterAnimationParameter[] ParametersArray = new TopDownCharacterAnimationParameter[]

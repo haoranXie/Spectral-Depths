@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
-	/// This Action will make the Character patrol along the defined path (see the MMPath inspector for that) until it hits a wall or a hole while following a path.
+	/// This Action will make the Character patrol along the defined path (see the PLPath inspector for that) until it hits a wall or a hole while following a path.
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/AI/Actions/AIActionMovePatrol3D")]
-	//[RequireComponent(typeof(MMPath))]
+	//[RequireComponent(typeof(PLPath))]
 	//[RequireComponent(typeof(Character))]
 	//[RequireComponent(typeof(CharacterMovement))]
 	public class AIActionMovePatrol3D : AIAction
@@ -31,9 +31,9 @@ namespace SpectralDepths.TopDown
 		public Vector3 LastReachedPatrolPoint { get; set; }
 
 		[Header("Debug")]
-		/// the index of the current MMPath element this agent is patrolling towards
-		[Tooltip("the index of the current MMPath element this agent is patrolling towards")]
-		[MMReadOnly]
+		/// the index of the current PLPath element this agent is patrolling towards
+		[Tooltip("the index of the current PLPath element this agent is patrolling towards")]
+		[PLReadOnly]
 		public int CurrentPathIndex = 0;
 
 		// private stuff
@@ -47,7 +47,7 @@ namespace SpectralDepths.TopDown
 		protected Vector3 _initialScale;
 		protected float _distanceToTarget;
 		protected Vector3 _initialPosition;
-		protected MMPath _mmPath;
+		protected PLPath _mmPath;
 		protected Collider _collider;
 		protected float _lastObstacleDetectionTimestamp = 0f;        
 		protected int _indexLastFrame = -1;
@@ -70,7 +70,7 @@ namespace SpectralDepths.TopDown
 			_character = this.gameObject.GetComponentInParent<Character>();
 			_characterMovement = _character?.FindAbility<CharacterMovement>();
 			_health = _character.CharacterHealth;
-			_mmPath = this.gameObject.GetComponentInParent<MMPath>();
+			_mmPath = this.gameObject.GetComponentInParent<PLPath>();
 			// initialize the start position
 			_startPosition = transform.position;
 			_initialPosition = this.transform.position;
@@ -82,7 +82,7 @@ namespace SpectralDepths.TopDown
 			_lastPatrolPointReachedAt = Time.time;
 		}
 
-		public void ResetPatrol(Vector3 targetPos) // MMPath changed
+		public void ResetPatrol(Vector3 targetPos) // PLPath changed
 		{
 			CurrentPathIndex = 0;
 			_indexLastFrame = -1;
@@ -172,7 +172,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			Gizmos.color = MMColors.IndianRed;
+			Gizmos.color = PLColors.IndianRed;
 			Gizmos.DrawLine(this.transform.position, _mmPath.CurrentPoint());
 		}
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -15,7 +15,7 @@ namespace SpectralDepths.TopDown
 		public enum FallingPlatformStates { Idle, Shaking, Falling, ColliderOff }
 
 		/// the current state of the falling platform
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current state of the falling platform")]
 		public FallingPlatformStates State;
 
@@ -112,9 +112,9 @@ namespace SpectralDepths.TopDown
 		{				
 			if (_animator!=null)
 			{
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, "Idle", (State == FallingPlatformStates.Idle));
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, "Shaking", (State == FallingPlatformStates.Shaking));
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, "Falling", (State == FallingPlatformStates.Falling));
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, "Idle", (State == FallingPlatformStates.Idle));
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, "Shaking", (State == FallingPlatformStates.Shaking));
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, "Falling", (State == FallingPlatformStates.Falling));
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="controller">The TopDown controller that collides with the platform.</param>		
 		public virtual void OnTriggerStay2D(Collider2D collider)
 		{
-			TopDownController2D controller = collider.gameObject.MMGetComponentNoAlloc<TopDownController2D>();
+			TopDownController2D controller = collider.gameObject.PLGetComponentNoAlloc<TopDownController2D>();
 			if (controller == null)
 			{
 				return;

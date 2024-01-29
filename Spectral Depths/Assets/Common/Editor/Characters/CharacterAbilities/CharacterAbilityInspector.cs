@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
 			AbilityStartFeedbacks = this.serializedObject.FindProperty("AbilityStartFeedbacks");
 			AbilityStopFeedbacks = this.serializedObject.FindProperty("AbilityStopFeedbacks");
 
-			MMHiddenPropertiesAttribute[] attributes = (MMHiddenPropertiesAttribute[])target.GetType().GetCustomAttributes(typeof(MMHiddenPropertiesAttribute), false);
+			PLHiddenPropertiesAttribute[] attributes = (PLHiddenPropertiesAttribute[])target.GetType().GetCustomAttributes(typeof(PLHiddenPropertiesAttribute), false);
 			if (attributes != null)
 			{
 				if (attributes.Length != 0)

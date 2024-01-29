@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -8,7 +8,7 @@ namespace SpectralDepths.TopDown
 	/// Add this ability to a Character and it'll be part of a pool of characters in a scene to swap from. 
 	/// You'll need a CharacterSwapManager in your scene for this to work.
 	/// </summary>
-	[MMHiddenProperties("AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Swap")]
 	public class CharacterSwap : CharacterAbility
 	{

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -27,7 +27,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected override void Pick(GameObject picker)
 		{
-			Character character = _collidingObject.gameObject.MMGetComponentNoAlloc<Character>();
+			Character character = _collidingObject.gameObject.PLGetComponentNoAlloc<Character>();
 
 			if (character == null)
 			{

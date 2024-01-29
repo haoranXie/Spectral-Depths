@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 using System.Linq;
 
 namespace SpectralDepths.TopDown
@@ -25,10 +25,10 @@ namespace SpectralDepths.TopDown
 
 		/// the feedbacks to play when the ability starts
 		[Tooltip("the feedbacks to play when the ability starts")]
-		public MMFeedbacks AbilityStartFeedbacks;
+		public PLFeedbacks AbilityStartFeedbacks;
 		/// the feedbacks to play when the ability stops
 		[Tooltip("the feedbacks to play when the ability stops")]
-		public MMFeedbacks AbilityStopFeedbacks;
+		public PLFeedbacks AbilityStopFeedbacks;
                 
 		[Header("Permission")]
 		/// if true, this ability can perform as usual, if not, it'll be ignored. You can use this to unlock abilities over time for example
@@ -112,8 +112,8 @@ namespace SpectralDepths.TopDown
 		protected Animator _animator = null;
 		protected CharacterStates _state;
 		protected SpriteRenderer _spriteRenderer;
-		protected MMStateMachine<CharacterStates.MovementStates> _movement;
-		protected MMStateMachine<CharacterStates.CharacterConditions> _condition;
+		protected PLStateMachine<CharacterStates.MovementStates> _movement;
+		protected PLStateMachine<CharacterStates.CharacterConditions> _condition;
 		protected AudioSource _abilityInProgressSfx;
 		protected bool _abilityInitialized = false;
 		protected float _verticalInput;
@@ -307,7 +307,7 @@ namespace SpectralDepths.TopDown
 			if (AbilityStartSfx!=null)
 			{
 				AudioSource tmp = new AudioSource();
-				MMSoundManagerSoundPlayEvent.Trigger(AbilityStartSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);	
+				PLSoundManagerSoundPlayEvent.Trigger(AbilityStartSfx, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position);	
 			}
 		}	
 
@@ -320,7 +320,7 @@ namespace SpectralDepths.TopDown
 			{	
 				if (_abilityInProgressSfx == null)
 				{
-					_abilityInProgressSfx = MMSoundManagerSoundPlayEvent.Trigger(AbilityInProgressSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position, true);
+					_abilityInProgressSfx = PLSoundManagerSoundPlayEvent.Trigger(AbilityInProgressSfx, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position, true);
 				}
 			}
 		}	
@@ -332,7 +332,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (_abilityInProgressSfx != null)
 			{
-				MMSoundManagerSoundControlEvent.Trigger(MMSoundManagerSoundControlEventTypes.Free, 0, _abilityInProgressSfx);
+				PLSoundManagerSoundControlEvent.Trigger(PLSoundManagerSoundControlEventTypes.Free, 0, _abilityInProgressSfx);
 				_abilityInProgressSfx = null;
 			}
 		}	
@@ -344,7 +344,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (AbilityStopSfx!=null) 
 			{	
-				MMSoundManagerSoundPlayEvent.Trigger(AbilityStopSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);
+				PLSoundManagerSoundPlayEvent.Trigger(AbilityStopSfx, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position);
 			}
 		}
 
@@ -389,7 +389,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			if (_animator.MMHasParameterOfType(parameterName, parameterType))
+			if (_animator.PLHasParameterOfType(parameterName, parameterType))
 			{
 				if (_character != null)
 				{

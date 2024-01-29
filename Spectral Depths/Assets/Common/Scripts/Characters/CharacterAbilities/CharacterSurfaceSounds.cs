@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,7 +14,7 @@ namespace SpectralDepths.TopDown
 	/// Important : Surfaces are evaluated from top to bottom. The first surface definition that matches the current detected
 	/// ground will be considered the current surface. So make sure your order them accordingly.
 	/// </summary>
-	[MMHiddenProperties("AbilityStopFeedbacks", "AbilityStartFeedbacks")]
+	[PLHiddenProperties("AbilityStopFeedbacks", "AbilityStartFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Surface Sounds")] 
 	public class CharacterSurfaceSounds : CharacterAbility
 	{	
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
 			public bool UseTag;
 			/// if using tags, the Tag that should be on this surface to identify it (on top of the layer)
 			[Tooltip("if using tags, the Tag that should be on this surface to identify it (on top of the layer)")]
-			[MMCondition("UseTag", true)]
+			[PLCondition("UseTag", true)]
 			public string Tag;
 			/// the sound to use for walking when on this surface
 			[Tooltip("the sound to use for walking when on this surface")]
@@ -72,21 +72,21 @@ namespace SpectralDepths.TopDown
 		public SurfaceDetectionModes SurfaceDetectionMode = SurfaceDetectionModes.Raycast;
 		/// the length of the raycast to cast to detect surfaces
 		[Tooltip("the length of the raycast to cast to detect surfaces")]
-		[MMEnumCondition("SurfaceDetectionMode", (int)SurfaceDetectionModes.Raycast)]
+		[PLEnumCondition("SurfaceDetectionMode", (int)SurfaceDetectionModes.Raycast)]
 		public float RaycastLength = 2f;
 		/// the direction of the raycast to cast to detect surfaces
 		[Tooltip("the direction of the raycast to cast to detect surfaces")] 
-		[MMEnumCondition("SurfaceDetectionMode", (int)SurfaceDetectionModes.Raycast)]
+		[PLEnumCondition("SurfaceDetectionMode", (int)SurfaceDetectionModes.Raycast)]
 		public Vector3 RaycastDirection = Vector3.down;
 		/// the frequency (in seconds) at which to cast the raycast to detect surfaces, usually you'll want to space them a bit to save on performance
 		[Tooltip("the frequency (in seconds) at which to cast the raycast to detect surfaces, usually you'll want to space them a bit to save on performance")]
-		[MMEnumCondition("SurfaceDetectionMode", (int)SurfaceDetectionModes.Raycast)]
+		[PLEnumCondition("SurfaceDetectionMode", (int)SurfaceDetectionModes.Raycast)]
 		public float RaycastFrequency = 1f;
 		
 		[Header("Debug")]
 		/// The current index of the surface we're on in the Surfaces list
 		[Tooltip("The current index of the surface we're on in the Surfaces list")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public int CurrentSurfaceIndex = -1;
 		
 		protected RaycastHit _raycastDownHit;
@@ -161,7 +161,7 @@ namespace SpectralDepths.TopDown
 			}
 			foreach (CharacterSurfaceSoundsItems item in Surfaces)
 			{
-				if (item.Layers.MMContains(_raycastDownHit.collider.gameObject.layer) && TagsMatch(item.UseTag, item.Tag, _raycastDownHit.collider.gameObject.tag))
+				if (item.Layers.PLContains(_raycastDownHit.collider.gameObject.layer) && TagsMatch(item.UseTag, item.Tag, _raycastDownHit.collider.gameObject.tag))
 				{
 					CurrentSurfaceIndex = Surfaces.IndexOf(item);
 					return;
@@ -181,7 +181,7 @@ namespace SpectralDepths.TopDown
 			}
 			foreach (CharacterSurfaceSoundsItems item in Surfaces)
 			{
-				if (item.Layers.MMContains(_testSurface2D.gameObject.layer) && TagsMatch(item.UseTag, item.Tag, _testSurface2D.gameObject.tag))
+				if (item.Layers.PLContains(_testSurface2D.gameObject.layer) && TagsMatch(item.UseTag, item.Tag, _testSurface2D.gameObject.tag))
 				{
 					CurrentSurfaceIndex = Surfaces.IndexOf(item);
 					return;

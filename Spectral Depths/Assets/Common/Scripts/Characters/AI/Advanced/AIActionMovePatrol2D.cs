@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
-	/// This Action will make the Character patrol along the defined path (see the MMPath inspector for that) until it hits a wall or a hole while following a path.
+	/// This Action will make the Character patrol along the defined path (see the PLPath inspector for that) until it hits a wall or a hole while following a path.
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/AI/Actions/AIActionMovePatrol2D")]
-	//[RequireComponent(typeof(MMPath))]
+	//[RequireComponent(typeof(PLPath))]
 	//[RequireComponent(typeof(Character))]
 	//[RequireComponent(typeof(CharacterOrientation2D))]
 	//[RequireComponent(typeof(CharacterMovement))]
@@ -37,7 +37,7 @@ namespace SpectralDepths.TopDown
 		protected Vector2 _direction;
 		protected Vector2 _startPosition;
 		protected Vector3 _initialScale;
-		protected MMPath _mmPath;
+		protected PLPath _mmPath;
 		protected float _lastObstacleDetectionTimestamp = 0f;
 		protected float _lastPatrolPointReachedAt = 0f;
 
@@ -64,7 +64,7 @@ namespace SpectralDepths.TopDown
 			_orientation2D = _character?.FindAbility<CharacterOrientation2D>();
 			_characterMovement = _character?.FindAbility<CharacterMovement>();
 			_health = _character?.CharacterHealth;
-			_mmPath = this.gameObject.GetComponentInParent<MMPath>();
+			_mmPath = this.gameObject.GetComponentInParent<PLPath>();
 			// initialize the start position
 			_startPosition = transform.position;
 			// initialize the direction
@@ -152,7 +152,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			Gizmos.color = MMColors.IndianRed;
+			Gizmos.color = PLColors.IndianRed;
 			Gizmos.DrawLine(this.transform.position, _mmPath.CurrentPoint());
 		}
 
@@ -181,7 +181,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			RaycastHit2D raycast = MMDebug.RayCast(_controller.ColliderCenter, _direction, 1f, ObstaclesLayerMask, MMColors.Gold, true);
+			RaycastHit2D raycast = PLDebug.RayCast(_controller.ColliderCenter, _direction, 1f, ObstaclesLayerMask, PLColors.Gold, true);
 
 			// if the agent is colliding with something, make it turn around
 			if (raycast)

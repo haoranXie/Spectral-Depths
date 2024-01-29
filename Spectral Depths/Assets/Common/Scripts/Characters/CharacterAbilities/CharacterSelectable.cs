@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown{
-    public class CharacterSelectable : CharacterAbility, MMEventListener<RTSEvent>
+    public class CharacterSelectable : CharacterAbility, PLEventListener<RTSEvent>
     {
         /// <summary>
         /// Add this ability to a Character to have it be selectable by player 
@@ -60,13 +60,13 @@ namespace SpectralDepths.TopDown{
 
         protected override void OnEnable(){
             base.OnEnable();
-            this.MMEventStartListening<RTSEvent>();
+            this.PLEventStartListening<RTSEvent>();
         }
 
         protected override void OnDisable(){
             base.OnDisable();
             DeSelected();
-            this.MMEventStopListening<RTSEvent>();
+            this.PLEventStopListening<RTSEvent>();
             RTSEvent.Trigger(RTSEventTypes.SelectionDisabled,_character,null);
         }
 

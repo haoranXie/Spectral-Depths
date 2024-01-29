@@ -1,5 +1,5 @@
 using System;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -26,19 +26,19 @@ namespace SpectralDepths.TopDown
 		public bool ForceCharacterCondition = false;
 		/// when in forced character condition mode, the condition to which to swap
 		[Tooltip("when in forced character condition mode, the condition to which to swap")]
-		[MMCondition("ForceCharacterCondition", true)]
+		[PLCondition("ForceCharacterCondition", true)]
 		public CharacterStates.CharacterConditions ForcedCondition;
 		/// when in forced character condition mode, whether or not to disable gravity
 		[Tooltip("when in forced character condition mode, whether or not to disable gravity")]
-		[MMCondition("ForceCharacterCondition", true)]
+		[PLCondition("ForceCharacterCondition", true)]
 		public bool DisableGravity = false;
 		/// when in forced character condition mode, whether or not to reset controller forces
 		[Tooltip("when in forced character condition mode, whether or not to reset controller forces")]
-		[MMCondition("ForceCharacterCondition", true)]
+		[PLCondition("ForceCharacterCondition", true)]
 		public bool ResetControllerForces = false;
 		/// when in forced character condition mode, the duration of the effect, after which condition will be reverted 
 		[Tooltip("when in forced character condition mode, the duration of the effect, after which condition will be reverted")]
-		[MMCondition("ForceCharacterCondition", true)]
+		[PLCondition("ForceCharacterCondition", true)]
 		public float ForcedConditionDuration = 3f;
 		
 		/// whether or not to apply a movement multiplier to the damaged character
@@ -46,11 +46,11 @@ namespace SpectralDepths.TopDown
 		public bool ApplyMovementMultiplier = false;
 		/// the movement multiplier to apply when ApplyMovementMultiplier is true 
 		[Tooltip("the movement multiplier to apply when ApplyMovementMultiplier is true")]
-		[MMCondition("ApplyMovementMultiplier", true)]
+		[PLCondition("ApplyMovementMultiplier", true)]
 		public float MovementMultiplier = 0.5f;
 		/// the duration of the movement multiplier, if ApplyMovementMultiplier is true
 		[Tooltip("the duration of the movement multiplier, if ApplyMovementMultiplier is true")]
-		[MMCondition("ApplyMovementMultiplier", true)]
+		[PLCondition("ApplyMovementMultiplier", true)]
 		public float MovementMultiplierDuration = 2f;
 		
 		

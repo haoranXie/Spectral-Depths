@@ -1,6 +1,6 @@
 using System;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -55,15 +55,15 @@ namespace SpectralDepths.TopDown
 		public float CameraTargetDistance = 0.5f;
 		/// the maximum distance from the weapon owner at which the camera target can be
 		[Tooltip("the maximum distance from the weapon owner at which the camera target can be")]
-		[MMCondition("MoveCameraTarget", true)]
+		[PLCondition("MoveCameraTarget", true)]
 		public float CameraTargetMaxDistance = 10f;
 		/// the speed at which to move the camera target
 		[Tooltip("the speed at which to move the camera target")]
-		[MMCondition("MoveCameraTarget", true)]
+		[PLCondition("MoveCameraTarget", true)]
 		public float CameraTargetSpeed = 5f;
 		/// if this is true, the camera target will move back to the character if no target is found
 		[Tooltip("if this is true, the camera target will move back to the character if no target is found")]
-		[MMCondition("MoveCameraTarget", true)]
+		[PLCondition("MoveCameraTarget", true)]
 		public bool MoveCameraToCharacterIfNoTarget = false;
 
 		[Header("Aim Marker")]
@@ -77,18 +77,18 @@ namespace SpectralDepths.TopDown
 		[Header("Feedback")]
 		/// A feedback to play when a target is found and we didn't have one already
 		[Tooltip("A feedback to play when a target is found and we didn't have one already")]
-		public MMFeedbacks FirstTargetFoundFeedback;
+		public PLFeedbacks FirstTargetFoundFeedback;
 		/// a feedback to play when we already had a target and just found a new one
 		[Tooltip("a feedback to play when we already had a target and just found a new one")]
-		public MMFeedbacks NewTargetFoundFeedback;
+		public PLFeedbacks NewTargetFoundFeedback;
 		/// a feedback to play when no more targets are found, and we just lost our last target
 		[Tooltip("a feedback to play when no more targets are found, and we just lost our last target")]
-		public MMFeedbacks NoMoreTargetsFeedback;
+		public PLFeedbacks NoMoreTargetsFeedback;
 
 		[Header("Debug")]
 		/// the current target of the auto aim module
 		[Tooltip("the current target of the auto aim module")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public Transform Target;
 		/// whether or not to draw a debug sphere around the weapon to show its aim radius
 		[Tooltip("whether or not to draw a debug sphere around the weapon to show its aim radius")]

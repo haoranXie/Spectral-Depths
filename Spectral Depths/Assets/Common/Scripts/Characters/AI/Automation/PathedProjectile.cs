@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	[AddComponentMenu("Spectral Depths/Character/AI/Automation/PathedProjectile")]
 	public class PathedProjectile : TopDownMonoBehaviour
 	{
-		[MMInformation("A GameObject with this component will move towards its target and get destroyed when it reaches it. Here you can define what object to instantiate on impact. Use the Initialize method to set its destination and speed.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("A GameObject with this component will move towards its target and get destroyed when it reaches it. Here you can define what object to instantiate on impact. Use the Initialize method to set its destination and speed.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// The effect to instantiate when the object gets destroyed
 		[Tooltip("The effect to instantiate when the object gets destroyed")]
 		public GameObject DestroyEffect;

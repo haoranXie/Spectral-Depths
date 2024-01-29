@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -19,16 +19,16 @@ namespace SpectralDepths.TopDown
 		
 		/// If activating or disabling by label, the exact label of the target resistance
 		[Tooltip("If activating or disabling by label, the exact label of the target resistance")]
-		[MMEnumCondition("Mode", (int)Modes.ActivateByLabel, (int)Modes.DisableByLabel)]
+		[PLEnumCondition("Mode", (int)Modes.ActivateByLabel, (int)Modes.DisableByLabel)]
 		public string TargetLabel = "SomeResistance";
 		
 		/// in create mode, the name of the new game object to create to host the new resistance
 		[Tooltip("in create mode, the name of the new game object to create to host the new resistance")]
-		[MMEnumCondition("Mode", (int)Modes.Create)]
+		[PLEnumCondition("Mode", (int)Modes.Create)]
 		public string NewResistanceNodeName = "NewResistance";
 		/// in create mode, a DamageResistance to copy and give to the new node. Usually you'll want to create a new DamageResistance component on your picker, and drag it in this slot
 		[Tooltip("in create mode, a DamageResistance to copy and give to the new node. Usually you'll want to create a new DamageResistance component on your picker, and drag it in this slot")]
-		[MMEnumCondition("Mode", (int)Modes.Create)]
+		[PLEnumCondition("Mode", (int)Modes.Create)]
 		public DamageResistance DamageResistanceToGive;
 		
 		/// if this is true, only player characters can pick this up
@@ -41,13 +41,13 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider">Other.</param>
 		protected override void Pick(GameObject picker)
 		{
-			Character character = picker.gameObject.MMGetComponentNoAlloc<Character>();
+			Character character = picker.gameObject.PLGetComponentNoAlloc<Character>();
 			if (OnlyForPlayerCharacter && (character != null) && (_character.CharacterType != Character.CharacterTypes.Player))
 			{
 				return;
 			}
 
-			Health characterHealth = picker.gameObject.MMGetComponentNoAlloc<Health>();
+			Health characterHealth = picker.gameObject.PLGetComponentNoAlloc<Health>();
 			// else, we give health to the player
 			if (characterHealth == null)
 			{
@@ -72,7 +72,7 @@ namespace SpectralDepths.TopDown
 					GameObject newResistance = new GameObject();
 					newResistance.transform.SetParent(processor.transform);
 					newResistance.name = NewResistanceNodeName;
-					DamageResistance newResistanceComponent = MMHelpers.CopyComponent<DamageResistance>(DamageResistanceToGive, newResistance);
+					DamageResistance newResistanceComponent = PLHelpers.CopyComponent<DamageResistance>(DamageResistanceToGive, newResistance);
 					processor.DamageResistanceList.Add(newResistanceComponent);
 					break;
 			}

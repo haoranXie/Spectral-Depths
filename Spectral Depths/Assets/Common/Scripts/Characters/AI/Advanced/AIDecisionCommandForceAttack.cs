@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 	/// This decision will return true if force move command is issued and this object is selected
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/AI/Decisions/AIDecisionCommmandForceAttack")]
-	public class AIDecisionCommmandForceAttack : AIDecision, MMEventListener<RTSEvent>
+	public class AIDecisionCommmandForceAttack : AIDecision, PLEventListener<RTSEvent>
 	{        
 		/// <summary>
 		/// On Decide we check whether the force move command
@@ -62,11 +62,11 @@ namespace SpectralDepths.TopDown
 		}
 		public void OnEnable()
 		{
-			this.MMEventStartListening<RTSEvent>();
+			this.PLEventStartListening<RTSEvent>();
 		}
 		public void OnDisable()
 		{
-			this.MMEventStopListening<RTSEvent>();
+			this.PLEventStopListening<RTSEvent>();
 		}
 	}
 }

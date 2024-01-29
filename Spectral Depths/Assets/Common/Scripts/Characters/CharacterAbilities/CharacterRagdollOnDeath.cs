@@ -1,20 +1,20 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
-	/// Add this to a character and it'll trigger its MMRagdoller to ragdoll on death
+	/// Add this to a character and it'll trigger its PLRagdoller to ragdoll on death
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Ragdoll on Death")]
 	public class CharacterRagdollOnDeath : TopDownMonoBehaviour
 	{
 		[Header("Binding")]
-		/// The MMRagdoller for this character
-		[Tooltip("the MMRagdoller for this character")]
-		public MMRagdoller Ragdoller;
+		/// The PLRagdoller for this character
+		[Tooltip("the PLRagdoller for this character")]
+		public PLRagdoller Ragdoller;
 		/// A list of optional objects to disable on death
 		[Tooltip("A list of optional objects to disable on death")]
 		public List<GameObject> ObjectsToDisableOnDeath;
@@ -29,11 +29,11 @@ namespace SpectralDepths.TopDown
 
 		[Header("Test")]
 		/// A test button to trigger the ragdoll from the inspector
-		[MMInspectorButton("Ragdoll")]
+		[PLInspectorButton("Ragdoll")]
 		[Tooltip("A test button to trigger the ragdoll from the inspector")]
 		public bool RagdollButton;
 		/// A test button to reset the ragdoll from the inspector
-		[MMInspectorButton("ResetRagdoll")]
+		[PLInspectorButton("ResetRagdoll")]
 		[Tooltip("A test button to reset the ragdoll from the inspector")]
 		public bool ResetRagdollButton;
         

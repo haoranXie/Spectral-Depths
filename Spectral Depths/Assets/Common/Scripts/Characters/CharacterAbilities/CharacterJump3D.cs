@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -39,17 +39,17 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)")]
 		public int NumberOfJumps = 1;
 		/// the number of jumps left to the character
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the number of jumps left to the character")]
 		public int NumberOfJumpsLeft = 0;
 
 		[Header("Feedbacks")]
 		/// the feedback to play when the jump starts
 		[Tooltip("the feedback to play when the jump starts")]
-		public MMFeedbacks JumpStartFeedback;
+		public PLFeedbacks JumpStartFeedback;
 		/// the feedback to play when the jump stops
 		[Tooltip("the feedback to play when the jump stops")]
-		public MMFeedbacks JumpStopFeedback;
+		public PLFeedbacks JumpStopFeedback;
 
 		protected bool _doubleJumping;
 		protected Vector3 _jumpForce;
@@ -95,11 +95,11 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			if (_inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.JumpButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				JumpStart();
 			}
-			if (_inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (_inputManager.JumpButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 			{               
 				_buttonReleased = true;                               
 			}
@@ -195,7 +195,7 @@ namespace SpectralDepths.TopDown
 			NumberOfJumpsLeft = NumberOfJumpsLeft - 1;
 
 			_movement.ChangeState(CharacterStates.MovementStates.Jumping);	
-			MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.Jump);
+			PLCharacterEvent.Trigger(_character, PLCharacterEventTypes.Jump);
 			JumpStartFeedback?.PlayFeedbacks(this.transform.position);
 			_jumpOrigin = this.transform.position;
 			_jumpStopped = false;
@@ -317,9 +317,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _jumpingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Jumping),_character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _doubleJumpingAnimationParameter, _doubleJumping,_character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool (_animator, _hitTheGroundAnimationParameter, _controller.JustGotGrounded, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _jumpingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Jumping),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _doubleJumpingAnimationParameter, _doubleJumping,_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool (_animator, _hitTheGroundAnimationParameter, _controller.JustGotGrounded, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

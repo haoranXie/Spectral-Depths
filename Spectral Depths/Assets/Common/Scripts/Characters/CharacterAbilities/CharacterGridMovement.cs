@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {	
@@ -28,15 +28,15 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the acceleration of the character")]
 		public float Acceleration = 5;
 		/// the current speed at which the character is going
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current speed at which the character is going")]
 		public float CurrentSpeed;
 		/// a multiplier to apply to the maximum speed
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("a multiplier to apply to the maximum speed")]
 		public float MaximumSpeedMultiplier = 1f;
 		/// a multiplier to apply to the acceleration, letting you modify it safely from outside
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("a multiplier to apply to the acceleration, letting you modify it safely from outside")]
 		public float AccelerationMultiplier = 1f;
 
@@ -71,36 +71,36 @@ namespace SpectralDepths.TopDown
 		/// the position the object will be at when it reaches its next perfect tile
 		public Vector3Int TargetGridPosition { get; protected set; }
 		/// this is true everytime a character is at the exact position of a tile
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("this is true everytime a character is at the exact position of a tile")]
 		public bool PerfectTile;
 		/// the coordinates of the cell this character currently occupies
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the coordinates of the cell this character currently occupies")]
 		public Vector3Int CurrentCellCoordinates;
 		/// whether this character is in 2D or 3D. This gets automatically computed at start
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether this character is in 2D or 3D. This gets automatically computed at start")]
 		public DimensionModes DimensionMode = DimensionModes.TwoD;
 
 		[Header("Test")]
-		[MMInspectorButton("Left")]
+		[PLInspectorButton("Left")]
 		public bool LeftButton;
-		[MMInspectorButton("Right")]
+		[PLInspectorButton("Right")]
 		public bool RightButton;
-		[MMInspectorButton("Up")]
+		[PLInspectorButton("Up")]
 		public bool UpButton;
-		[MMInspectorButton("Down")]
+		[PLInspectorButton("Down")]
 		public bool DownButton;
-		[MMInspectorButton("StopMovement")]
+		[PLInspectorButton("StopMovement")]
 		public bool StopButton;
-		[MMInspectorButton("LeftOneCell")]
+		[PLInspectorButton("LeftOneCell")]
 		public bool LeftOneCellButton;
-		[MMInspectorButton("RightOneCell")]
+		[PLInspectorButton("RightOneCell")]
 		public bool RightOneCellButton;
-		[MMInspectorButton("UpOneCell")]
+		[PLInspectorButton("UpOneCell")]
 		public bool UpOneCellButton;
-		[MMInspectorButton("DownOneCell")]
+		[PLInspectorButton("DownOneCell")]
 		public bool DownOneCellButton;
 
 		protected GridDirections _inputDirection;
@@ -215,7 +215,7 @@ namespace SpectralDepths.TopDown
 		{
 			base.Initialization ();
 			DimensionMode = DimensionModes.ThreeD;
-			if (_controller.gameObject.MMGetComponentNoAlloc<TopDownController2D>() != null)
+			if (_controller.gameObject.PLGetComponentNoAlloc<TopDownController2D>() != null)
 			{
 				DimensionMode = DimensionModes.TwoD;
 				_controller.FreeMovement = false;
@@ -461,7 +461,7 @@ namespace SpectralDepths.TopDown
 			Vector3 newPosition = Vector3.MoveTowards(transform.position, _endWorldPosition, Time.deltaTime * CurrentSpeed);
 
 			_lastCurrentDirection = _endWorldPosition - this.transform.position;
-			_lastCurrentDirection = _lastCurrentDirection.MMRound();
+			_lastCurrentDirection = _lastCurrentDirection.PLRound();
 			if (_lastCurrentDirection != Vector3.zero)
 			{
 				_controller.CurrentDirection = _lastCurrentDirection;
@@ -642,9 +642,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, CurrentSpeed, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _walkingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Walking),_character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Idle),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, CurrentSpeed, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _walkingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Walking),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Idle),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

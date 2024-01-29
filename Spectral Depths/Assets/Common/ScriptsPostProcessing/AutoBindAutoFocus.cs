@@ -1,34 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
-using MoreMountains.FeedbacksForThirdParty;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.FeedbacksForThirdParty;
 
 namespace SpectralDepths.TopDown
 {
-	public class AutoBindAutoFocus : TopDownMonoBehaviour, MMEventListener<MMCameraEvent>
+	public class AutoBindAutoFocus : TopDownMonoBehaviour, PLEventListener<PLCameraEvent>
 	{
 		/// the AutoFocus component on the camera
-		public MMAutoFocus_URP AutoFocus { get; set; }
+		public PLAutoFocus_URP AutoFocus { get; set; }
 		private Character _targetCharacter;
 
 		protected virtual void Start()
 		{
-			AutoFocus = FindObjectOfType<MMAutoFocus_URP>();
+			AutoFocus = FindObjectOfType<PLAutoFocus_URP>();
 		}
         
-		public virtual void OnMMEvent(MMCameraEvent cameraEvent)
+		public virtual void OnMMEvent(PLCameraEvent cameraEvent)
 		{
 			switch (cameraEvent.EventType)
 			{
-				case MMCameraEventTypes.SetTargetCharacter:
+				case PLCameraEventTypes.SetTargetCharacter:
 					_targetCharacter =cameraEvent.TargetCharacter;
 					break;
-				case MMCameraEventTypes.StartFollowing:
+				case PLCameraEventTypes.StartFollowing:
 					AutoBindAutoFocusToCamera();
 					break;
-				case MMCameraEventTypes.RefreshAutoFocus:
+				case PLCameraEventTypes.RefreshAutoFocus:
 					AutoBindAutoFocusToCamera();
 					break;
 			}
@@ -38,7 +38,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (AutoFocus == null)
 			{
-				AutoFocus = FindObjectOfType<MMAutoFocus_URP>();
+				AutoFocus = FindObjectOfType<PLAutoFocus_URP>();
 			}
 			if (AutoFocus != null)
 			{	
@@ -54,12 +54,12 @@ namespace SpectralDepths.TopDown
 
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMCameraEvent>();
+			this.PLEventStartListening<PLCameraEvent>();
 		}
 
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMCameraEvent>();
+			this.PLEventStopListening<PLCameraEvent>();
 		}
 	}
 }

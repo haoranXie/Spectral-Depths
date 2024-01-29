@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -58,7 +58,7 @@ namespace SpectralDepths.TopDown
 		public override void UpdateAnimator()
 		{
 			base.UpdateAnimator();
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _damageDashingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Dashing), _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _damageDashingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Dashing), _character._animatorParameters, _character.RunAnimatorSanityChecks);
 			_dashStartedThisFrame = false;
 		}
 	}

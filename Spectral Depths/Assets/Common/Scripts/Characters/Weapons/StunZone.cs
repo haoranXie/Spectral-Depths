@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 		public StunModes StunMode = StunModes.ForDuration;
 		/// if in ForDuration mode, the duration of the stun in seconds
 		[Tooltip("if in ForDuration mode, the duration of the stun in seconds")]
-		[MMEnumCondition("StunMode", (int)StunModes.ForDuration)]
+		[PLEnumCondition("StunMode", (int)StunModes.ForDuration)]
 		public float StunDuration = 2f;
 		/// whether or not to disable the zone after the stun has happened
 		[Tooltip("whether or not to disable the zone after the stun has happened")]
@@ -37,7 +37,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider"></param>
 		protected virtual void Colliding(GameObject collider)
 		{
-			if (!MMLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
+			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
 			{
 
 				return;

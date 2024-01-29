@@ -1,6 +1,6 @@
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 using Random = UnityEngine.Random;
 
 namespace SpectralDepths.TopDown
@@ -34,30 +34,30 @@ namespace SpectralDepths.TopDown
 		public CyclingModes CyclingMode = CyclingModes.Forever;
 		/// the number of cycles this object can go through before it stops (only used if CyclingMode is Limited)
 		[Tooltip("the number of cycles this object can go through before it stops (only used if CyclingMode is Limited)")]
-		[MMEnumCondition("CyclingMode", (int)CyclingModes.Limited)]
+		[PLEnumCondition("CyclingMode", (int)CyclingModes.Limited)]
 		public int CyclesAmount = 1;
 
 
 		[Header("Timing")]
 
 		/// the initial offset to apply to the object's first state change (in seconds)
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		[Tooltip("the initial offset to apply to the object's first state change (in seconds)")]
 		public Vector2 InitialOffset = new Vector2(0f, 0f);
 		/// the min and max duration of the visible state (in seconds)
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		[Tooltip("the min and max duration of the visible state (in seconds)")]
 		public Vector2 VisibleDuration = new Vector2(1f, 1f);
 		/// the min and max duration of the hidden state (in seconds)
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		[Tooltip("the min and max duration of the hidden state (in seconds)")]
 		public Vector2 HiddenDuration = new Vector2(1f, 1f);
 		/// the min and max duration of the visible to hidden state (in seconds)
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		[Tooltip("the min and max duration of the visible to hidden state (in seconds)")]
 		public Vector2 VisibleToHiddenDuration = new Vector2(1f, 1f);
 		/// the min and max duration of the hidden to visible state (in seconds)
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		[Tooltip("the min and max duration of the hidden to visible state (in seconds)")]
 		public Vector2 HiddenToVisibleDuration = new Vector2(1f, 1f);
                 
@@ -65,16 +65,16 @@ namespace SpectralDepths.TopDown
 
 		/// the feedback to trigger when reaching the visible state
 		[Tooltip("the feedback to trigger when reaching the visible state")]
-		public MMFeedbacks VisibleFeedback;
+		public PLFeedbacks VisibleFeedback;
 		/// the feedback to trigger when reaching the visible to hidden state
 		[Tooltip("the feedback to trigger when reaching the visible to hidden state")]
-		public MMFeedbacks VisibleToHiddenFeedback;
+		public PLFeedbacks VisibleToHiddenFeedback;
 		/// the feedback to trigger when reaching the hidden state
 		[Tooltip("the feedback to trigger when reaching the hidden state")]
-		public MMFeedbacks HiddenFeedback;
+		public PLFeedbacks HiddenFeedback;
 		/// the feedback to trigger when reaching the hidden to visible state
 		[Tooltip("the feedback to trigger when reaching the hidden to visible state")]
-		public MMFeedbacks HiddenToVisibleFeedback;
+		public PLFeedbacks HiddenToVisibleFeedback;
 
 		[Header("Bindings")]
 		/// the animator to update
@@ -108,18 +108,18 @@ namespace SpectralDepths.TopDown
 		[Header("Debug")]
 
 		/// the current state this object is in
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current state this object is in")]
 		public AppearDisappearStates _currentState;
 		/// the state this object will be in next
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the state this object will be in next")]
 		public AppearDisappearStates _nextState;
 		/// the last time this object changed state
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the last time this object changed state")]
 		public float _lastStateChangedAt = 0f;
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the last time this object changed state")]
 		public int _cyclesLeft;
 
@@ -131,7 +131,7 @@ namespace SpectralDepths.TopDown
 		protected float _hiddenToVisibleDuration;
 
 		protected float _nextChangeIn;
-		protected MMFeedbacks _nextFeedback;
+		protected PLFeedbacks _nextFeedback;
 
 		protected Collider _collider;
 		protected Collider2D _collider2D;

@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +36,7 @@ namespace SpectralDepths.TopDown
 		/// <returns></returns>
 		protected virtual bool EvaluateOdds()
 		{
-			int dice = MMMaths.RollADice(TotalChance);
+			int dice = PLMaths.RollADice(TotalChance);
 			bool result = (dice <= Odds);
 			return result;
 		}

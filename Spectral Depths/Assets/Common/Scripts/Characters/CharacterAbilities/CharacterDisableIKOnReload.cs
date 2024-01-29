@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpectralDepths.TopDown;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -59,7 +59,7 @@ namespace SpectralDepths.TopDown
 					model.AimWeaponModelAtTarget = false;
 				}
 			}
-			yield return MMCoroutine.WaitFor(_reloadDuration);
+			yield return PLCoroutine.WaitFor(_reloadDuration);
 			if (DetachLeftHand) { BoundWeaponIK.AttachLeftHand = true; }
 			if (DetachRightHand) { BoundWeaponIK.AttachRightHand = true; }
 			if (DisableAimWeaponModelAtTargetDuringReload)

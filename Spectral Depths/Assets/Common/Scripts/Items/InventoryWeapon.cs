@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.InventoryEngine;
 
 namespace SpectralDepths.TopDown
 {	
-	[CreateAssetMenu(fileName = "InventoryWeapon", menuName = "MoreMountains/TopDownEngine/InventoryWeapon", order = 2)]
+	[CreateAssetMenu(fileName = "InventoryWeapon", menuName = "SpectralDepths/TopDownEngine/InventoryWeapon", order = 2)]
 	[Serializable]
 	/// <summary>
 	/// Weapon item in the Spectral Depths
@@ -17,7 +17,7 @@ namespace SpectralDepths.TopDown
 		public enum AutoEquipModes { NoAutoEquip, AutoEquip, AutoEquipIfEmptyHanded }
         
 		[Header("Weapon")]
-		[MMInformation("Here you need to bind the weapon you want to equip when picking that item.",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Here you need to bind the weapon you want to equip when picking that item.",PLInformationAttribute.InformationType.Info,false)]
 		/// the weapon to equip
 		[Tooltip("the weapon to equip")]
 		public Weapon EquippableWeapon;

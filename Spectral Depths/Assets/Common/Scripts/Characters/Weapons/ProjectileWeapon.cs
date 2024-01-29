@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 using Random = UnityEngine.Random;
 
 namespace SpectralDepths.TopDown
@@ -12,9 +12,9 @@ namespace SpectralDepths.TopDown
 	/// A weapon class aimed specifically at allowing the creation of various projectile weapons, from shotgun to machine gun, via plasma gun or rocket launcher
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Weapons/Projectile Weapon")]
-	public class ProjectileWeapon : Weapon, MMEventListener<TopDownEngineEvent>
+	public class ProjectileWeapon : Weapon, PLEventListener<TopDownEngineEvent>
 	{
-		[MMInspectorGroup("Projectiles", true, 22)]
+		[PLInspectorGroup("Projectiles", true, 22)]
 		/// the offset position at which the projectile will spawn
 		[Tooltip("the offset position at which the projectile will spawn")]
 		public Vector3 ProjectileSpawnOffset = Vector3.zero;
@@ -46,16 +46,16 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether or not the spread should be random (if not it'll be equally distributed)")]
 		public bool RandomSpread = true;
 		/// the projectile's spawn position
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the projectile's spawn position")]
 		public Vector3 SpawnPosition = Vector3.zero;
 
 		/// the object pooler used to spawn projectiles, if left empty, this component will try to find one on its game object
 		[Tooltip("the object pooler used to spawn projectiles, if left empty, this component will try to find one on its game object")]
-		public MMObjectPooler ObjectPooler;
+		public PLObjectPooler ObjectPooler;
         
 		[Header("Spawn Feedbacks")]
-		public List<MMFeedbacks> SpawnFeedbacks = new List<MMFeedbacks>();
+		public List<PLFeedbacks> SpawnFeedbacks = new List<PLFeedbacks>();
 
 		protected Vector3 _flippedProjectileSpawnOffset;
 		protected Vector3 _randomSpreadDirection;
@@ -63,7 +63,7 @@ namespace SpectralDepths.TopDown
 		protected Transform _projectileSpawnTransform;
 		protected int _spawnArrayIndex = 0;
 
-		[MMInspectorButton("TestShoot")]
+		[PLInspectorButton("TestShoot")]
 		/// a button to test the shoot method
 		public bool TestShootButton;
         
@@ -94,7 +94,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (ObjectPooler == null)
 				{
-					ObjectPooler = GetComponent<MMObjectPooler>();	
+					ObjectPooler = GetComponent<PLObjectPooler>();	
 				}
 				if (ObjectPooler == null)
 				{
@@ -136,7 +136,7 @@ namespace SpectralDepths.TopDown
 
 			// mandatory checks
 			if (nextGameObject == null) { return null; }
-			if (nextGameObject.GetComponent<MMPoolableObject>() == null)
+			if (nextGameObject.GetComponent<PLPoolableObject>() == null)
 			{
 				throw new Exception(gameObject.name + " is trying to spawn objects that don't have a PoolableObject component.");
 			}
@@ -172,9 +172,9 @@ namespace SpectralDepths.TopDown
 				{
 					if (totalProjectiles > 1)
 					{
-						_randomSpreadDirection.x = MMMaths.Remap(projectileIndex, 0, totalProjectiles - 1, -Spread.x, Spread.x);
-						_randomSpreadDirection.y = MMMaths.Remap(projectileIndex, 0, totalProjectiles - 1, -Spread.y, Spread.y);
-						_randomSpreadDirection.z = MMMaths.Remap(projectileIndex, 0, totalProjectiles - 1, -Spread.z, Spread.z);
+						_randomSpreadDirection.x = PLMaths.Remap(projectileIndex, 0, totalProjectiles - 1, -Spread.x, Spread.x);
+						_randomSpreadDirection.y = PLMaths.Remap(projectileIndex, 0, totalProjectiles - 1, -Spread.y, Spread.y);
+						_randomSpreadDirection.z = PLMaths.Remap(projectileIndex, 0, totalProjectiles - 1, -Spread.z, Spread.z);
 					}
 					else
 					{
@@ -216,9 +216,9 @@ namespace SpectralDepths.TopDown
 
 			if (triggerObjectActivation)
 			{
-				if (nextGameObject.GetComponent<MMPoolableObject>() != null)
+				if (nextGameObject.GetComponent<PLPoolableObject>() != null)
 				{
-					nextGameObject.GetComponent<MMPoolableObject>().TriggerOnSpawnComplete();
+					nextGameObject.GetComponent<PLPoolableObject>().TriggerOnSpawnComplete();
 				}
 			}
 			return (nextGameObject);
@@ -317,7 +317,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -325,7 +325,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

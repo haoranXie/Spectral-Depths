@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {	
@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 	/// Projectile class to be used along with projectile weapons
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Weapons/Projectile")]
-	public class Projectile : MMPoolableObject  
+	public class Projectile : PLPoolableObject  
 	{
 		public enum MovementVectors { Forward, Right, Up}
 		
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 		public bool FaceMovement = false;
 		/// if FaceMovement is true, the projectile's vector specified below will be aligned to the movement vector, usually you'll want to go with Forward in 3D, Right in 2D
 		[Tooltip("if FaceMovement is true, the projectile's vector specified below will be aligned to the movement vector, usually you'll want to go with Forward in 3D, Right in 2D")]
-		[MMCondition("FaceMovement", true)]
+		[PLCondition("FaceMovement", true)]
 		public MovementVectors MovementVector = MovementVectors.Forward;
 
 		/// the speed of the object (relative to the level's speed)
@@ -45,7 +45,7 @@ namespace SpectralDepths.TopDown
 		public bool ProjectileIsFacingRight = true;
 
 		[Header("Spawn")]
-		[MMInformation("Here you can define an initial delay (in seconds) during which this object won't take or cause damage. This delay starts when the object gets enabled. You can also define whether the projectiles should damage their owner (think rockets and the likes) or not",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Here you can define an initial delay (in seconds) during which this object won't take or cause damage. This delay starts when the object gets enabled. You can also define whether the projectiles should damage their owner (think rockets and the likes) or not",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// the initial delay during which the projectile can't be destroyed
 		[Tooltip("the initial delay during which the projectile can't be destroyed")]
 		public float InitialInvulnerabilityDuration=0f;
@@ -269,7 +269,7 @@ namespace SpectralDepths.TopDown
 		public virtual void SetOwner(GameObject newOwner)
 		{
 			_owner = newOwner;
-			DamageOnTouch damageOnTouch = this.gameObject.MMGetComponentNoAlloc<DamageOnTouch>();
+			DamageOnTouch damageOnTouch = this.gameObject.PLGetComponentNoAlloc<DamageOnTouch>();
 			if (damageOnTouch != null)
 			{
 				damageOnTouch.Owner = newOwner;

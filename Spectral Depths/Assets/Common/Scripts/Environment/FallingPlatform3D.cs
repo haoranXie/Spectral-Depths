@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -15,7 +15,7 @@ namespace SpectralDepths.TopDown
 		public enum FallingPlatformStates { Idle, Shaking, Falling }
 
 		/// the platform's current state
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the platform's current state")]
 		public FallingPlatformStates State;
 
@@ -118,7 +118,7 @@ namespace SpectralDepths.TopDown
 		{				
 			if (_animator!=null)
 			{
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, "Shaking", (State == FallingPlatformStates.Shaking));	
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, "Shaking", (State == FallingPlatformStates.Shaking));	
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="controller">The TopDown controller that collides with the platform.</param>		
 		public virtual void OnTriggerStay(Collider collider)
 		{
-			TopDownController controller = collider.gameObject.MMGetComponentNoAlloc<TopDownController>();
+			TopDownController controller = collider.gameObject.PLGetComponentNoAlloc<TopDownController>();
 			if (controller==null)
 			{
 				return;

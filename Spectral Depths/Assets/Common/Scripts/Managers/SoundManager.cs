@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
 using System.Collections.Generic;
 using UnityEngine.Audio;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -21,8 +21,8 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// This persistent singleton handles sound playing
 	/// </summary>
-	[System.Obsolete("This SoundManager is now obsolete, and has been replaced by the bigger, better, faster MMSoundManager. It will be removed definitely in an upcoming update. You should remove this one from this scene, and add a MMSoundManager in its place.")]
-	public class SoundManager : MMPersistentSingleton<SoundManager>, MMEventListener<TopDownEngineEvent>, MMEventListener<MMGameEvent>
+	[System.Obsolete("This SoundManager is now obsolete, and has been replaced by the bigger, better, faster PLSoundManager. It will be removed definitely in an upcoming update. You should remove this one from this scene, and add a PLSoundManager in its place.")]
+	public class SoundManager : PLPersistentSingleton<SoundManager>, PLEventListener<TopDownEngineEvent>, PLEventListener<PLGameEvent>
 	{
 		[Header("Settings")]
 
@@ -267,7 +267,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void SaveSoundSettings()
 		{
-			MMSaveLoadManager.Save(Settings, _saveFileName, _saveFolderName);
+			PLSaveLoadManager.Save(Settings, _saveFileName, _saveFolderName);
 		}
 
 		/// <summary>
@@ -275,7 +275,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void LoadSoundSettings()
 		{
-			SoundSettings settings = (SoundSettings)MMSaveLoadManager.Load(typeof(SoundSettings), _saveFileName, _saveFolderName);
+			SoundSettings settings = (SoundSettings)PLSaveLoadManager.Load(typeof(SoundSettings), _saveFileName, _saveFolderName);
 			if (settings != null)
 			{
 				Settings = settings;
@@ -287,7 +287,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void ResetSoundSettings()
 		{
-			MMSaveLoadManager.DeleteSave(_saveFileName, _saveFolderName);
+			PLSaveLoadManager.DeleteSave(_saveFileName, _saveFolderName);
 		}
 
 		/// <summary>
@@ -420,7 +420,7 @@ namespace SpectralDepths.TopDown
 		/// Watches for game events to mute sfx if needed
 		/// </summary>
 		/// <param name="gameEvent"></param>
-		public virtual void OnMMEvent(MMGameEvent gameEvent)
+		public virtual void OnMMEvent(PLGameEvent gameEvent)
 		{
 			if (MuteSfxOnPause)
 			{
@@ -440,9 +440,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			MMSfxEvent.Register(OnMMSfxEvent);
-			this.MMEventStartListening<TopDownEngineEvent>();
-			this.MMEventStartListening<MMGameEvent>();
+			PLSfxEvent.Register(OnMMSfxEvent);
+			this.PLEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<PLGameEvent>();
 			LoadSoundSettings();
 			_loopingSounds = new List<AudioSource>();
 		}
@@ -454,9 +454,9 @@ namespace SpectralDepths.TopDown
 		{
 			if (_enabled)
 			{
-				MMSfxEvent.Unregister(OnMMSfxEvent);
-				this.MMEventStopListening<TopDownEngineEvent>();
-				this.MMEventStopListening<MMGameEvent>();
+				PLSfxEvent.Unregister(OnMMSfxEvent);
+				this.PLEventStopListening<TopDownEngineEvent>();
+				this.PLEventStopListening<PLGameEvent>();
 			}
 		}
 	}

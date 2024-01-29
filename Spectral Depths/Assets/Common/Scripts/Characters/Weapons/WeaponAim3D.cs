@@ -1,5 +1,5 @@
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
 #endif
@@ -21,15 +21,15 @@ namespace SpectralDepths.TopDown
 	    
 		[Header("Reticle and slopes")]
 		/// whether or not the reticle should move vertically to stay above slopes
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("whether or not the reticle should move vertically to stay above slopes")]
 		public bool ReticleMovesWithSlopes = false;
 		/// the layers the reticle should consider as obstacles to move on
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("the layers the reticle should consider as obstacles")]
 		public LayerMask ReticleObstacleMask = LayerManager.ObstaclesLayerMask;
 		/// the maximum slope elevation for the reticle
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("the maximum slope elevation for the reticle")]
 		public float MaximumSlopeElevation = 50f;
 		/// if this is true, the aim system will try to compensate when aim direction is null (for example when you haven't set any primary input yet)
@@ -310,7 +310,7 @@ namespace SpectralDepths.TopDown
 						CurrentAngleAbsolute = Mathf.Atan2(_weaponAimCurrentAim.y, _weaponAimCurrentAim.x) * Mathf.Rad2Deg;
 						if (RotationMode == RotationModes.Strict4Directions || RotationMode == RotationModes.Strict8Directions)
 						{
-							CurrentAngle = MMMaths.RoundToClosest (CurrentAngle, _possibleAngleValues);
+							CurrentAngle = PLMaths.RoundToClosest (CurrentAngle, _possibleAngleValues);
 						}
 						CurrentAngle += _additionalAngle;
 						CurrentAngle = Mathf.Clamp (CurrentAngle, MinimumAngle, MaximumAngle);	
@@ -336,7 +336,7 @@ namespace SpectralDepths.TopDown
 					CurrentAngleAbsolute = Mathf.Atan2(_weaponAimCurrentAim.y, _weaponAimCurrentAim.x) * Mathf.Rad2Deg;
 					if (RotationMode == RotationModes.Strict4Directions || RotationMode == RotationModes.Strict8Directions)
 					{
-						CurrentAngle = MMMaths.RoundToClosest (CurrentAngle, _possibleAngleValues);
+						CurrentAngle = PLMaths.RoundToClosest (CurrentAngle, _possibleAngleValues);
 					}
 
 					// we add our additional angle
@@ -426,9 +426,9 @@ namespace SpectralDepths.TopDown
 				_reticle = (GameObject)Instantiate(Reticle);
 				_reticle.transform.SetParent(GUIManager.Instance.MainCanvas.transform);
 				_reticle.transform.localScale = Vector3.one;
-				if (_reticle.gameObject.MMGetComponentNoAlloc<MMUIFollowMouse>() != null)
+				if (_reticle.gameObject.PLGetComponentNoAlloc<PLUIFollowMouse>() != null)
 				{
-					_reticle.gameObject.MMGetComponentNoAlloc<MMUIFollowMouse>().TargetCanvas = GUIManager.Instance.MainCanvas;
+					_reticle.gameObject.PLGetComponentNoAlloc<PLUIFollowMouse>().TargetCanvas = GUIManager.Instance.MainCanvas;
 				}
 			}
 		}
@@ -460,7 +460,7 @@ namespace SpectralDepths.TopDown
 				// if we're in follow mouse mode and the current control scheme is mouse, we move the reticle to the mouse's position
 				if (ReticleAtMousePosition && AimControl == AimControls.Mouse)
 				{
-					_reticle.transform.position = MMMaths.Lerp(_reticle.transform.position, _reticlePosition, 0.3f, Time.deltaTime);
+					_reticle.transform.position = PLMaths.Lerp(_reticle.transform.position, _reticlePosition, 0.3f, Time.deltaTime);
 				}
 			}
 			_reticlePosition = _reticle.transform.position;
@@ -468,7 +468,7 @@ namespace SpectralDepths.TopDown
 			if (ReticleMovesWithSlopes)
 			{
 				// we cast a ray from above
-				RaycastHit groundCheck = MMDebug.Raycast3D(_reticlePosition + Vector3.up * MaximumSlopeElevation / 2f, Vector3.down, MaximumSlopeElevation, ReticleObstacleMask, Color.cyan, true);
+				RaycastHit groundCheck = PLDebug.Raycast3D(_reticlePosition + Vector3.up * MaximumSlopeElevation / 2f, Vector3.down, MaximumSlopeElevation, ReticleObstacleMask, Color.cyan, true);
 				if (groundCheck.collider != null)
 				{
 					_reticlePosition.y = groundCheck.point.y + ReticleHeight;

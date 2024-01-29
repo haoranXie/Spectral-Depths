@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -54,7 +54,7 @@ namespace SpectralDepths.TopDown
 					return;
 				}
 			}
-			if (InputManager.Instance.SwitchCharacterButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (InputManager.Instance.SwitchCharacterButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				SwapAbilityNodes();
 				SwapControlType();

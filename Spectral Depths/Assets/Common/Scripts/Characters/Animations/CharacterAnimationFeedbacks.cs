@@ -1,4 +1,4 @@
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -10,11 +10,11 @@ namespace SpectralDepths.TopDown
 	{
 		/// a feedback that will play every time a foot touches the ground while walking
 		[Tooltip("a feedback that will play every time a foot touches the ground while walking")]
-		public MMFeedbacks WalkFeedbacks;
+		public PLFeedbacks WalkFeedbacks;
 
 		/// a feedback that will play every time a foot touches the ground while running
 		[Tooltip("a feedback that will play every time a foot touches the ground while running")]
-		public MMFeedbacks RunFeedbacks;
+		public PLFeedbacks RunFeedbacks;
 
 		/// <summary>
 		/// Plays the walk feedback if there's one, when a foot touches the ground (triggered via animation events)

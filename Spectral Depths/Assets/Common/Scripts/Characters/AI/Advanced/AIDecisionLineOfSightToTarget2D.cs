@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,7 +53,7 @@ namespace SpectralDepths.TopDown
 			_raycastOrigin = _collider.bounds.center + LineOfSightOffset / 2;
 			_directionToTarget = (Vector2)_brain.Target.transform.position - _raycastOrigin;
             
-			RaycastHit2D hit = MMDebug.RayCast(_raycastOrigin, _directionToTarget.normalized, _directionToTarget.magnitude, ObstacleLayerMask, Color.yellow, true);
+			RaycastHit2D hit = PLDebug.RayCast(_raycastOrigin, _directionToTarget.normalized, _directionToTarget.magnitude, ObstacleLayerMask, Color.yellow, true);
 			if (hit.collider == null)
 			{
 				return true;

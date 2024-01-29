@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 namespace SpectralDepths.TopDown
 {	
@@ -35,10 +35,10 @@ namespace SpectralDepths.TopDown
         
 		[Header("Tests")]
 		/// a test button to stun this character
-		[MMInspectorButton("Stun")]
+		[PLInspectorButton("Stun")]
 		public bool StunButton;
 		/// a test button to exit stun on this character
-		[MMInspectorButton("ExitStun")]
+		[PLInspectorButton("ExitStun")]
 		public bool ExitStunButton;
         
 		protected const string _stunnedAnimationParameterName = "Stunned";
@@ -97,7 +97,7 @@ namespace SpectralDepths.TopDown
 		protected virtual IEnumerator StunCoroutine(float duration)
 		{
 			Stun();
-			yield return MMCoroutine.WaitFor(duration);
+			yield return PLCoroutine.WaitFor(duration);
 			ExitStun();
 		}
 
@@ -146,7 +146,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _stunnedAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _stunnedAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

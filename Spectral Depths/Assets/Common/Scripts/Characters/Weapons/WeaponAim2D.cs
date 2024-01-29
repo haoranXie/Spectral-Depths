@@ -1,5 +1,5 @@
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
 #endif
@@ -29,10 +29,10 @@ namespace SpectralDepths.TopDown
 			}
 			base.Initialization();
             
-			if (_weapon.Owner?.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterOrientation2D>() != null)
+			if (_weapon.Owner?.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterOrientation2D>() != null)
 			{
 				_hasOrientation2D = true;
-				switch (_weapon.Owner?.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterOrientation2D>().CurrentFacingDirection)
+				switch (_weapon.Owner?.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterOrientation2D>().CurrentFacingDirection)
 				{
 					case Character.FacingDirections.East:
 						_lastNonNullMovement = Vector2.right;
@@ -426,7 +426,7 @@ namespace SpectralDepths.TopDown
 					CurrentAngleAbsolute = Mathf.Atan2(_currentAimAbsolute.y, _currentAimAbsolute.x) * Mathf.Rad2Deg;
 					if (RotationMode == RotationModes.Strict4Directions || RotationMode == RotationModes.Strict8Directions)
 					{
-						CurrentAngle = MMMaths.RoundToClosest(CurrentAngle, _possibleAngleValues);
+						CurrentAngle = PLMaths.RoundToClosest(CurrentAngle, _possibleAngleValues);
 					}
 					if (RotationMode == RotationModes.Strict2Directions)
 					{
@@ -465,7 +465,7 @@ namespace SpectralDepths.TopDown
 				CurrentAngle = 0f;
 				RotateWeapon(_initialRotation);
 			}
-			MMDebug.DebugDrawArrow(this.transform.position, _currentAimAbsolute.normalized, Color.green);
+			PLDebug.DebugDrawArrow(this.transform.position, _currentAimAbsolute.normalized, Color.green);
 		}
         
 		/// <summary>
@@ -501,9 +501,9 @@ namespace SpectralDepths.TopDown
 				_reticle = (GameObject)Instantiate(Reticle);
 				_reticle.transform.SetParent(GUIManager.Instance.MainCanvas.transform);
 				_reticle.transform.localScale = Vector3.one;
-				if (_reticle.gameObject.MMGetComponentNoAlloc<MMUIFollowMouse>() != null)
+				if (_reticle.gameObject.PLGetComponentNoAlloc<PLUIFollowMouse>() != null)
 				{
-					_reticle.gameObject.MMGetComponentNoAlloc<MMUIFollowMouse>().TargetCanvas = GUIManager.Instance.MainCanvas;
+					_reticle.gameObject.PLGetComponentNoAlloc<PLUIFollowMouse>().TargetCanvas = GUIManager.Instance.MainCanvas;
 				}
 			}
 		}

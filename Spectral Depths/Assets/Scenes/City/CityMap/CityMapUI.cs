@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.EventSystems;
 
 namespace SpectralDepths.TopDown
 {
-    public class CityMapUI : MMSingleton<CityMapUI> 
+    public class CityMapUI : PLSingleton<CityMapUI> 
     {
             /// the main canvas
         [Tooltip("the main canvas")]

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -33,22 +33,22 @@ namespace SpectralDepths.TopDown
 
 		/// a read only display of the current duration before explosion
 		[Tooltip("a read only display of the current duration before explosion")]
-		[MMReadOnly] 
+		[PLReadOnly] 
 		public float TimeLeftBeforeTrigger;
         
 		[Header("Feedbacks")]
 		/// the feedback to play when the warning phase starts
 		[Tooltip("the feedback to play when the warning phase starts")]
-		public MMFeedbacks OnWarningStartsFeedbacks;
+		public PLFeedbacks OnWarningStartsFeedbacks;
 		/// a feedback to play when the warning phase stops
 		[Tooltip("a feedback to play when the warning phase stops")] 
-		public MMFeedbacks OnWarningStopsFeedbacks;
+		public PLFeedbacks OnWarningStopsFeedbacks;
 		/// a feedback to play when the warning phase is reset
 		[Tooltip("a feedback to play when the warning phase is reset")] 
-		public MMFeedbacks OnWarningResetFeedbacks;
+		public PLFeedbacks OnWarningResetFeedbacks;
 		/// a feedback to play when the mine triggers
 		[Tooltip("a feedback to play when the mine triggers")]
-		public MMFeedbacks OnMineTriggerFeedbacks;
+		public PLFeedbacks OnMineTriggerFeedbacks;
         
 		protected bool _inside = false;
         
@@ -78,7 +78,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider"></param>
 		protected virtual void Colliding(GameObject collider)
 		{
-			if (!MMLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
+			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
 			{
 				return;
 			}
@@ -94,7 +94,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider"></param>
 		protected virtual void Exiting(GameObject collider)
 		{
-			if (!MMLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
+			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
 			{
 				return;
 			}

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -49,7 +49,7 @@ namespace SpectralDepths.TopDown
 				
 			if (DoNotUseLevelManager)
 			{
-				MMAdditiveSceneLoadingManager.LoadScene(newSceneName);    
+				PLAdditiveSceneLoadingManager.LoadScene(newSceneName);    
 			}
 			else
 			{

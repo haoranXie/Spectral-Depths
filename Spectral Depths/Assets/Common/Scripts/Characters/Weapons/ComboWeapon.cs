@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -26,15 +26,15 @@ namespace SpectralDepths.TopDown
 
 		[Header("Debug")]
 		/// the list of weapons, set automatically by the class
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the list of weapons, set automatically by the class")]
 		public Weapon[] Weapons;
 		/// the reference to the weapon's Owner
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the reference to the weapon's Owner")]
 		public CharacterHandleWeapon OwnerCharacterHandleWeapon;
 		/// the time spent since the last weapon stopped
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the time spent since the last weapon stopped")]
 		public float TimeSinceLastWeaponStopped;
 

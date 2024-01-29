@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.Events;
 
 namespace SpectralDepths.TopDown
@@ -8,7 +8,7 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// Add this component to a character and it'll be able to activate/desactivate the pause
 	/// </summary>
-	[MMHiddenProperties("AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Pause")]
 	public class CharacterPause : CharacterAbility
 	{
@@ -43,7 +43,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected override void HandleInput()
 		{
-			if (_inputManager.PauseButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && !GameManager.Instance.QuickPause)
+			if (_inputManager.PauseButton.State.CurrentState == PLInput.ButtonStates.ButtonDown && !GameManager.Instance.QuickPause)
 			{
 				TriggerPause();
 			}
@@ -82,10 +82,10 @@ namespace SpectralDepths.TopDown
 			if(!GameManager.Instance.QuickPause)
 			{
 
-				if (MuteSfxTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx); }
-				if (MuteUITrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.UI); }
-				if (MuteMusicTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Music); }
-				if (MuteMasterTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Master); }
+				if (MuteSfxTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Sfx); }
+				if (MuteUITrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.UI); }
+				if (MuteMusicTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Music); }
+				if (MuteMasterTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Master); }
 			}
 			*/
 		}
@@ -106,10 +106,10 @@ namespace SpectralDepths.TopDown
 			{
 				OnUnpause?.Invoke();
 
-				if (MuteSfxTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx); }
-				if (MuteUITrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.UI); }
-				if (MuteMusicTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Music); }
-				if (MuteMasterTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Master); }
+				if (MuteSfxTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Sfx); }
+				if (MuteUITrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.UI); }
+				if (MuteMusicTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Music); }
+				if (MuteMasterTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Master); }
 			}
 			*/
 

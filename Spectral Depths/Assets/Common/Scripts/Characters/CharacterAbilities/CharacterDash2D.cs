@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
-using MoreMountains.InventoryEngine;
-using MoreMountains.Feedbacks;
+using SpectralDepths.InventoryEngine;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -47,7 +47,7 @@ namespace SpectralDepths.TopDown
 
 		/// this ability's cooldown
 		[Tooltip("this ability's cooldown")]
-		public MMCooldown Cooldown;
+		public PLCooldown Cooldown;
         
         
 		[Header("Damage")] 
@@ -58,7 +58,7 @@ namespace SpectralDepths.TopDown
 		[Header("Feedback")]
 		/// the feedbacks to play when dashing
 		[Tooltip("the feedbacks to play when dashing")]
-		public MMFeedbacks DashFeedback;
+		public PLFeedbacks DashFeedback;
 
 		protected bool _dashing;
 		protected float _dashTimer;
@@ -106,7 +106,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			if (_inputManager.DashButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.DashButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				DashStart();
 			}
@@ -244,9 +244,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _dashingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Dashing),_character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _dashingDirectionXAnimationParameter, _dashAnimParameterDirection.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _dashingDirectionYAnimationParameter, _dashAnimParameterDirection.y, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _dashingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Dashing),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _dashingDirectionXAnimationParameter, _dashAnimParameterDirection.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _dashingDirectionYAnimationParameter, _dashAnimParameterDirection.y, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

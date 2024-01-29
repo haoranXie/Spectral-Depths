@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -25,7 +25,7 @@ namespace SpectralDepths.TopDown
 		{
 			e.AffectedHealth = affectedHealth;
 			e.NewHealth = newHealth;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 	
@@ -34,28 +34,28 @@ namespace SpectralDepths.TopDown
 	/// and what happens when it dies.
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Core/Health")] 
-	public class Health : MMMonoBehaviour
+	public class Health : PLMonoBehaviour
 	{
-		[MMInspectorGroup("Bindings", true, 3)]
+		[PLInspectorGroup("Bindings", true, 3)]
 
 		/// the model to disable (if set so)
 		[Tooltip("the model to disable (if set so)")]
 		public GameObject Model;
 		
-		[MMInspectorGroup("Status", true, 29)]
+		[PLInspectorGroup("Status", true, 29)]
 
 		/// the current health of the character
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current health of the character")]
 		public float CurrentHealth ;
 		/// If this is true, this object can't take damage at this time
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("If this is true, this object can't take damage at this time")]
 		public bool Invulnerable = false;	
 
-		[MMInspectorGroup("Health", true, 5)]
+		[PLInspectorGroup("Health", true, 5)]
 
-		[MMInformation("Add this component to an object and it'll have health, will be able to get damaged and potentially die.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Add this component to an object and it'll have health, will be able to get damaged and potentially die.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// the initial amount of health of the object
 		[Tooltip("the initial amount of health of the object")]
 		public float InitialHealth = 10;
@@ -66,23 +66,23 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is true, health values will be reset everytime this character is enabled (usually at the start of a scene)")]
 		public bool ResetHealthOnEnable = true;
 
-		[MMInspectorGroup("Damage", true, 6)]
+		[PLInspectorGroup("Damage", true, 6)]
 
-		[MMInformation("Here you can specify an effect and a sound FX to instantiate when the object gets damaged, and also how long the object should flicker when hit (only works for sprites).", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Here you can specify an effect and a sound FX to instantiate when the object gets damaged, and also how long the object should flicker when hit (only works for sprites).", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// whether or not this Health object can be damaged 
 		[Tooltip("whether or not this Health object can be damaged")]
 		public bool ImmuneToDamage = false;
 		/// the feedback to play when getting damage
 		[Tooltip("the feedback to play when getting damage")]
-		public MMFeedbacks DamageMMFeedbacks;
-		/// if this is true, the damage value will be passed to the MMFeedbacks as its Intensity parameter, letting you trigger more intense feedbacks as damage increases
-		[Tooltip("if this is true, the damage value will be passed to the MMFeedbacks as its Intensity parameter, letting you trigger more intense feedbacks as damage increases")]
+		public PLFeedbacks DamageMMFeedbacks;
+		/// if this is true, the damage value will be passed to the PLFeedbacks as its Intensity parameter, letting you trigger more intense feedbacks as damage increases
+		[Tooltip("if this is true, the damage value will be passed to the PLFeedbacks as its Intensity parameter, letting you trigger more intense feedbacks as damage increases")]
 		public bool FeedbackIsProportionalToDamage = false;
 		/// if you set this to true, other objects damaging this one won't take any self damage
 		[Tooltip("if you set this to true, other objects damaging this one won't take any self damage")]
 		public bool PreventTakeSelfDamage = false;
 		
-		[MMInspectorGroup("Knockback", true, 63)]
+		[PLInspectorGroup("Knockback", true, 63)]
 		
 		/// whether or not this object is immune to damage knockback
 		[Tooltip("whether or not this object is immune to damage knockback")]
@@ -94,9 +94,9 @@ namespace SpectralDepths.TopDown
 		[Tooltip("a multiplier applied to the incoming knockback forces. 0 will cancel all knockback, 0.5 will cut it in half, 1 will have no effect, 2 will double the knockback force, etc")]
 		public float KnockbackForceMultiplier = 1f;
 
-		[MMInspectorGroup("Death", true, 53)]
+		[PLInspectorGroup("Death", true, 53)]
 
-		[MMInformation("Here you can set an effect to instantiate when the object dies, a force to apply to it (topdown controller required), how many points to add to the game score, and where the character should respawn (for non-player characters only).", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Here you can set an effect to instantiate when the object dies, a force to apply to it (topdown controller required), how many points to add to the game score, and where the character should respawn (for non-player characters only).", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// whether or not this object should get destroyed on death
 		[Tooltip("whether or not this object should get destroyed on death")]
 		public bool DestroyOnDeath = true;
@@ -129,23 +129,23 @@ namespace SpectralDepths.TopDown
 		public bool ChangeLayersRecursivelyOnDeath = false;
 		/// the layer we should move this character to on death
 		[Tooltip("the layer we should move this character to on death")]
-		public MMLayer LayerOnDeath;
+		public PLLayer LayerOnDeath;
 		/// the feedback to play when dying
 		[Tooltip("the feedback to play when dying")]
-		public MMFeedbacks DeathMMFeedbacks;
+		public PLFeedbacks DeathMMFeedbacks;
 
 		/// if this is true, color will be reset on revive
 		[Tooltip("if this is true, color will be reset on revive")]
 		public bool ResetColorOnRevive = true;
 		/// the name of the property on your renderer's shader that defines its color 
 		[Tooltip("the name of the property on your renderer's shader that defines its color")]
-		[MMCondition("ResetColorOnRevive", true)]
+		[PLCondition("ResetColorOnRevive", true)]
 		public string ColorMaterialPropertyName = "_Color";
 		/// if this is true, this component will use material property blocks instead of working on an instance of the material.
 		[Tooltip("if this is true, this component will use material property blocks instead of working on an instance of the material.")] 
 		public bool UseMaterialPropertyBlocks = false;
         
-		[MMInspectorGroup("Shared Health and Damage Resistance", true, 12)]
+		[PLInspectorGroup("Shared Health and Damage Resistance", true, 12)]
 		/// another Health component (usually on another character) towards which all health will be redirected
 		[Tooltip("another Health component (usually on another character) towards which all health will be redirected")]
 		public Health MasterHealth;
@@ -153,7 +153,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("a DamageResistanceProcessor this Health will use to process damage when it's received")]
 		public DamageResistanceProcessor TargetDamageResistanceProcessor;
 
-		[MMInspectorGroup("Animator", true, 14)]
+		[PLInspectorGroup("Animator", true, 14)]
 		/// the target animator to pass a Death animation parameter to. The Health component will try to auto bind this if left empty
 		[Tooltip("the target animator to pass a Death animation parameter to. The Health component will try to auto bind this if left empty")]
 		public Animator TargetAnimator;
@@ -183,7 +183,7 @@ namespace SpectralDepths.TopDown
 		protected CharacterMovement _characterMovement;
 		protected TopDownController _controller;
 		
-		protected MMHealthBar _healthBar;
+		protected PLHealthBar _healthBar;
 		protected Collider2D _collider2D;
 		protected Collider _collider3D;
 		protected CharacterController _characterController;
@@ -282,7 +282,7 @@ namespace SpectralDepths.TopDown
 			_initialLayer = gameObject.layer;
 
 			_autoRespawn = this.gameObject.GetComponentInParent<AutoRespawn>();
-			_healthBar = this.gameObject.GetComponentInParent<MMHealthBar>();
+			_healthBar = this.gameObject.GetComponentInParent<PLHealthBar>();
 			_controller = this.gameObject.GetComponentInParent<TopDownController>();
 			_characterController = this.gameObject.GetComponentInParent<CharacterController>();
 			_collider2D = this.gameObject.GetComponentInParent<Collider2D>();
@@ -460,7 +460,7 @@ namespace SpectralDepths.TopDown
 			}
             
 			// we trigger a damage taken event
-			MMDamageTakenEvent.Trigger(this, instigator, CurrentHealth, damage, previousHealth);
+			PLDamageTakenEvent.Trigger(this, instigator, CurrentHealth, damage, previousHealth);
 
 			// we update our animator
 			if (TargetAnimator != null)
@@ -600,7 +600,7 @@ namespace SpectralDepths.TopDown
 			for (int i = 0; i < amountOfRepeats; i++)
 			{
 				Damage(damage, instigator, flickerDuration, invincibilityDuration, damageDirection, typedDamages);
-				yield return MMCoroutine.WaitFor(durationBetweenRepeats);
+				yield return PLCoroutine.WaitFor(durationBetweenRepeats);
 			}
 		}
 
@@ -823,7 +823,7 @@ namespace SpectralDepths.TopDown
 			}
             
 			OnDeath?.Invoke();
-			MMLifeCycleEvent.Trigger(this, MMLifeCycleEventTypes.Death);
+			PLLifeCycleEvent.Trigger(this, PLLifeCycleEventTypes.Death);
 
 			if (DisableControllerOnDeath && (_controller != null))
 			{
@@ -928,7 +928,7 @@ namespace SpectralDepths.TopDown
 			Initialization();
 			InitializeCurrentHealth();
 			OnRevive?.Invoke();
-			MMLifeCycleEvent.Trigger(this, MMLifeCycleEventTypes.Revive);
+			PLLifeCycleEvent.Trigger(this, PLLifeCycleEventTypes.Revive);
 		}
 
 		/// <summary>

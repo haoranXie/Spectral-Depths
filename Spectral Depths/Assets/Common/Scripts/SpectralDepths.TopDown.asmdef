@@ -25,17 +25,17 @@
         {
             "name": "com.unity.inputsystem",
             "expression": "1.0.0",
-            "define": "MM_INPUTSYSTEM"
+            "define": "PL_INPUTSYSTEM"
         },
         {
             "name": "com.unity.cinemachine",
             "expression": "1.0.0",
-            "define": "MM_CINEMACHINE"
+            "define": "PL_CINEMACHINE"
         },
         {
             "name": "com.unity.postprocessing",
             "expression": "1.0.0",
-            "define": "MM_POSTPROCESSING"
+            "define": "PL_POSTPROCESSING"
         }
     ],
     "noEngineReferences": false

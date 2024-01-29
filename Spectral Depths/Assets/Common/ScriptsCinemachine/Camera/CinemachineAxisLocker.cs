@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-#if MM_CINEMACHINE
+using SpectralDepths.Tools;
+#if PL_CINEMACHINE
 using Cinemachine;
 
 namespace SpectralDepths.TopDown
@@ -29,15 +29,15 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the selected method to lock axis on ")]
 		public Methods Method = Methods.InitialPosition;
 		/// the position to lock axis based on
-		[MMEnumCondition("Method", (int)Methods.ForcedPosition)]
+		[PLEnumCondition("Method", (int)Methods.ForcedPosition)]
 		[Tooltip("the position to lock axis based on")]
 		public Vector3 ForcedPosition;
 		/// the collider to lock axis on
-		[MMEnumCondition("Method", (int)Methods.ColliderBoundsCenter)]
+		[PLEnumCondition("Method", (int)Methods.ColliderBoundsCenter)]
 		[Tooltip("the collider to lock axis on")]
 		public Collider TargetCollider;
 		/// the 2D collider to lock axis on
-		[MMEnumCondition("Method", (int)Methods.Collider2DBoundsCenter)]
+		[PLEnumCondition("Method", (int)Methods.Collider2DBoundsCenter)]
 		[Tooltip("the 2D collider to lock axis on")]
 		public Collider2D TargetCollider2D;
 

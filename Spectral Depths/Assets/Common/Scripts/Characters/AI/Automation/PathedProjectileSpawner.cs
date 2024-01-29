@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	[AddComponentMenu("Spectral Depths/Character/AI/Automation/PathedProjectileSpawner")]
 	public class PathedProjectileSpawner : TopDownMonoBehaviour 
 	{
-		[MMInformation("A GameObject with this component will spawn projectiles at the specified fire rate.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("A GameObject with this component will spawn projectiles at the specified fire rate.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// the pathed projectile's destination
 		[Tooltip("the pathed projectile's destination")]
 		public Transform Destination;

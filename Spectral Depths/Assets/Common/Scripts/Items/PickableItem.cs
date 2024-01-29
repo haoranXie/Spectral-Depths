@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.InventoryEngine;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -28,7 +28,7 @@ namespace SpectralDepths.TopDown
 		{
 			e.Picker = picker;
 			e.PickedItem = pickedItem;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 
@@ -40,7 +40,7 @@ namespace SpectralDepths.TopDown
 		[Header("Pickable Item")]
 		/// A feedback to play when the object gets picked
 		[Tooltip("a feedback to play when the object gets picked")]
-		public MMFeedbacks PickedMMFeedbacks;
+		public PLFeedbacks PickedMMFeedbacks;
 		/// if this is true, the picker's collider will be disabled on pick
 		[Tooltip("if this is true, the picker's collider will be disabled on pick")]
 		public bool DisableColliderOnPick = false;
@@ -48,7 +48,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is set to true, the object will be disabled when picked")]
 		public bool DisableObjectOnPick = true;
 		/// the duration (in seconds) after which to disable the object, instant if 0
-		[MMCondition("DisableObjectOnPick", true)]
+		[PLCondition("DisableObjectOnPick", true)]
 		[Tooltip("the duration (in seconds) after which to disable the object, instant if 0")]
 		public float DisableDelay = 0f;
 		/// if this is set to true, the object will be disabled when picked
@@ -59,14 +59,14 @@ namespace SpectralDepths.TopDown
 		public bool DisableTargetObjectOnPick = false;
 		/// the object to disable on pick if DisableTargetObjectOnPick is true 
 		[Tooltip("the object to disable on pick if DisableTargetObjectOnPick is true")]
-		[MMCondition("DisableTargetObjectOnPick", true)]
+		[PLCondition("DisableTargetObjectOnPick", true)]
 		public GameObject TargetObjectToDisable;
 		/// the time in seconds before disabling the target if DisableTargetObjectOnPick is true 
 		[Tooltip("the time in seconds before disabling the target if DisableTargetObjectOnPick is true")]
-		[MMCondition("DisableTargetObjectOnPick", true)]
+		[PLCondition("DisableTargetObjectOnPick", true)]
 		public float TargetObjectDisableDelay = 1f;
 		/// the visual representation of this picker
-		[MMCondition("DisableModelOnPick", true)]
+		[PLCondition("DisableModelOnPick", true)]
 		[Tooltip("the visual representation of this picker")]
 		public GameObject Model;
 
@@ -170,7 +170,7 @@ namespace SpectralDepths.TopDown
 
 		protected virtual IEnumerator DisableTargetObjectCoroutine()
 		{
-			yield return MMCoroutine.WaitFor(TargetObjectDisableDelay);
+			yield return PLCoroutine.WaitFor(TargetObjectDisableDelay);
 			TargetObjectToDisable.SetActive(false);
 		}
 

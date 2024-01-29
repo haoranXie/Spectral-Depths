@@ -2,14 +2,14 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
 
 namespace SpectralDepths.TopDown
 {	
 	[RequireComponent(typeof(Weapon))]
 	[AddComponentMenu("Spectral Depths/Weapons/Weapon Ammo")]
-	public class WeaponAmmo : TopDownMonoBehaviour, MMEventListener<MMStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates>>, MMEventListener<MMInventoryEvent>, MMEventListener<MMGameEvent>
+	public class WeaponAmmo : TopDownMonoBehaviour, PLEventListener<PLStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates>>, PLEventListener<PLInventoryEvent>, PLEventListener<PLGameEvent>
 	{
 		[Header("Ammo")]
 		
@@ -31,7 +31,7 @@ namespace SpectralDepths.TopDown
 		public bool ShouldEmptyOnSave = true;
 
 		/// the current amount of ammo available in the inventory
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current amount of ammo available in the inventory")]
 		public int CurrentAmmoAvailable;
 		/// the inventory where ammo for this weapon is stored
@@ -231,7 +231,7 @@ namespace SpectralDepths.TopDown
 		/// When getting weapon events, we either consume ammo or refill it
 		/// </summary>
 		/// <param name="weaponEvent"></param>
-		public virtual void OnMMEvent(MMStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates> weaponEvent)
+		public virtual void OnMMEvent(PLStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates> weaponEvent)
 		{
 			// if this event doesn't concern us, we do nothing and exit
 			if (weaponEvent.Target != this.gameObject)
@@ -255,11 +255,11 @@ namespace SpectralDepths.TopDown
 		/// Grabs inventory events and refreshes ammo if needed
 		/// </summary>
 		/// <param name="inventoryEvent"></param>
-		public virtual void OnMMEvent(MMInventoryEvent inventoryEvent)
+		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
 		{
 			switch (inventoryEvent.InventoryEventType)
 			{
-				case MMInventoryEventType.Pick:
+				case PLInventoryEventType.Pick:
 					if (inventoryEvent.EventItem.ItemClass == ItemClasses.Ammo)
 					{
 						StartCoroutine(DelayedRefreshCurrentAmmoAvailable());
@@ -278,7 +278,7 @@ namespace SpectralDepths.TopDown
 		/// Grabs inventory events and refreshes ammo if needed
 		/// </summary>
 		/// <param name="inventoryEvent"></param>
-		public virtual void OnMMEvent(MMGameEvent gameEvent)
+		public virtual void OnMMEvent(PLGameEvent gameEvent)
 		{
 			switch (gameEvent.EventName)
 			{
@@ -298,23 +298,23 @@ namespace SpectralDepths.TopDown
 		}
 
 		/// <summary>
-		/// On enable, we start listening for MMGameEvents. You may want to extend that to listen to other types of events.
+		/// On enable, we start listening for PLGameEvents. You may want to extend that to listen to other types of events.
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates>>();
-			this.MMEventStartListening<MMInventoryEvent> ();
-			this.MMEventStartListening<MMGameEvent>();
+			this.PLEventStartListening<PLStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates>>();
+			this.PLEventStartListening<PLInventoryEvent> ();
+			this.PLEventStartListening<PLGameEvent>();
 		}
 
 		/// <summary>
-		/// On disable, we stop listening for MMGameEvents. You may want to extend that to stop listening to other types of events.
+		/// On disable, we stop listening for PLGameEvents. You may want to extend that to stop listening to other types of events.
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates>>();
-			this.MMEventStopListening<MMInventoryEvent> ();
-			this.MMEventStartListening<MMGameEvent>();
+			this.PLEventStopListening<PLStateChangeEvent<SpectralDepths.TopDown.Weapon.WeaponStates>>();
+			this.PLEventStopListening<PLInventoryEvent> ();
+			this.PLEventStartListening<PLGameEvent>();
 		}
 	}
 }

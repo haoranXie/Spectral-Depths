@@ -1,32 +1,32 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
 {
-	public enum MMCameraEventTypes { SetTargetCharacter, SetConfiner, StartFollowing, StopFollowing, RefreshPosition, ResetPriorities, RefreshAutoFocus }
+	public enum PLCameraEventTypes { SetTargetCharacter, SetConfiner, StartFollowing, StopFollowing, RefreshPosition, ResetPriorities, RefreshAutoFocus }
 
-	public struct MMCameraEvent
+	public struct PLCameraEvent
 	{
-		public MMCameraEventTypes EventType;
+		public PLCameraEventTypes EventType;
 		public Character TargetCharacter;
 		public Collider Bounds;
 
-		public MMCameraEvent(MMCameraEventTypes eventType, Character targetCharacter = null, Collider bounds = null)
+		public PLCameraEvent(PLCameraEventTypes eventType, Character targetCharacter = null, Collider bounds = null)
 		{
 			EventType = eventType;
 			TargetCharacter = targetCharacter;
 			Bounds = bounds;
 		}
 
-		static MMCameraEvent e;
-		public static void Trigger(MMCameraEventTypes eventType, Character targetCharacter = null, Collider bounds = null)
+		static PLCameraEvent e;
+		public static void Trigger(PLCameraEventTypes eventType, Character targetCharacter = null, Collider bounds = null)
 		{
 			e.EventType = eventType;
 			e.Bounds = bounds;
 			e.TargetCharacter = targetCharacter;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 }

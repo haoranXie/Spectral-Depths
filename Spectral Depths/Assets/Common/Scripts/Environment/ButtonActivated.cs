@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 using System.Collections.Generic;
 using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
@@ -20,7 +20,7 @@ namespace SpectralDepths.TopDown
 		public enum InputTypes { Default, Button, Key }
 
 		[Header("Requirements")]
-		[MMInformation("Here you can specify what is needed for something to interact with this zone. Does it require the ButtonActivation character ability? Can it only be interacted with by the Player? ", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Here you can specify what is needed for something to interact with this zone. Does it require the ButtonActivation character ability? Can it only be interacted with by the Player? ", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// if this is true, objects with a ButtonActivator class will be able to interact with this zone
 		[Tooltip("if this is true, objects with a ButtonActivator class will be able to interact with this zone")]
 		public ButtonActivatedRequirements ButtonActivatedRequirement = ButtonActivatedRequirements.Either;
@@ -33,7 +33,7 @@ namespace SpectralDepths.TopDown
         
 		[Header("Activation Conditions")]
 
-		[MMInformation("Here you can specific how that zone is interacted with. You can have it auto activate, activate only when grounded, or prevent its activation altogether.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Here you can specific how that zone is interacted with. You can have it auto activate, activate only when grounded, or prevent its activation altogether.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// if this is false, the zone won't be activable 
 		[Tooltip("if this is false, the zone won't be activable ")]
 		public bool Activable = true;
@@ -41,11 +41,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if true, the zone will activate whether the button is pressed or not")]
 		public bool AutoActivation = false;
 		/// the delay, in seconds, during which the character has to be within the zone to activate it
-		[MMCondition("AutoActivation", true)]
+		[PLCondition("AutoActivation", true)]
 		[Tooltip("the delay, in seconds, during which the character has to be within the zone to activate it")]
 		public float AutoActivationDelay = 0f;
 		/// if this is true, exiting the zone will reset the auto activation delay
-		[MMCondition("AutoActivation", true)]
+		[PLCondition("AutoActivation", true)]
 		[Tooltip("if this is true, exiting the zone will reset the auto activation delay")]
 		public bool AutoActivationDelayResetsOnExit = true;
 		/// if this is set to false, the zone won't be activable while not grounded
@@ -63,7 +63,7 @@ namespace SpectralDepths.TopDown
 
 		[Header("Number of Activations")]
 
-		[MMInformation("You can decide to have that zone be interactable forever, or just a limited number of times, and can specify a delay between uses (in seconds).",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("You can decide to have that zone be interactable forever, or just a limited number of times, and can specify a delay between uses (in seconds).",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// if this is set to false, your number of activations will be MaxNumberOfActivations
 		[Tooltip("if this is set to false, your number of activations will be MaxNumberOfActivations")]
 		public bool UnlimitedActivations = true;
@@ -92,11 +92,11 @@ namespace SpectralDepths.TopDown
 					interactions: "Press(behavior=2)"));
 		#else
 			/// the selected button string used to activate this zone
-			[MMEnumCondition("InputType", (int)InputTypes.Button)]
+			[PLEnumCondition("InputType", (int)InputTypes.Button)]
 			[Tooltip("the selected button string used to activate this zone")]
 			public string InputButton = "Interact";
 			/// the key used to activate this zone
-			[MMEnumCondition("InputType", (int)InputTypes.Key)]
+			[PLEnumCondition("InputType", (int)InputTypes.Key)]
 			[Tooltip("the key used to activate this zone")]
 			public KeyCode InputKey = KeyCode.Space;
 		#endif
@@ -109,60 +109,60 @@ namespace SpectralDepths.TopDown
 
 		[Header("Visual Prompt")]
 
-		[MMInformation("You can have this zone show a visual prompt to indicate to the player that it's interactable.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("You can have this zone show a visual prompt to indicate to the player that it's interactable.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// if this is true, a prompt will be shown if setup properly
 		[Tooltip("if this is true, a prompt will be shown if setup properly")]
 		public bool UseVisualPrompt = true;
 		/// the gameobject to instantiate to present the prompt
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("the gameobject to instantiate to present the prompt")]
 		public ButtonPrompt ButtonPromptPrefab;
 		/// the text to display in the button prompt
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("the text to display in the button prompt")]
 		public string ButtonPromptText = "A";
 		/// the text to display in the button prompt
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("the text to display in the button prompt")]
-		public Color ButtonPromptColor = MMColors.LawnGreen;
+		public Color ButtonPromptColor = PLColors.LawnGreen;
 		/// the color for the prompt's text
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("the color for the prompt's text")]
-		public Color ButtonPromptTextColor = MMColors.White;
+		public Color ButtonPromptTextColor = PLColors.White;
 		/// If true, the "buttonA" prompt will always be shown, whether the player is in the zone or not.
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("If true, the 'buttonA' prompt will always be shown, whether the player is in the zone or not.")]
 		public bool AlwaysShowPrompt = true;
 		/// If true, the "buttonA" prompt will be shown when a player is colliding with the zone
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("If true, the 'buttonA' prompt will be shown when a player is colliding with the zone")]
 		public bool ShowPromptWhenColliding = true;
 		/// If true, the prompt will hide after use
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("If true, the prompt will hide after use")]
 		public bool HidePromptAfterUse = false;
 		/// the position of the actual buttonA prompt relative to the object's center
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("the position of the actual buttonA prompt relative to the object's center")]
 		public Vector3 PromptRelativePosition = Vector3.zero;
 		/// the rotation of the actual buttonA prompt 
-		[MMCondition("UseVisualPrompt", true)]
+		[PLCondition("UseVisualPrompt", true)]
 		[Tooltip("the rotation of the actual buttonA prompt ")]
 		public Vector3 PromptRotation = Vector3.zero;
 
 		[Header("Feedbacks")]
 		/// a feedback to play when the zone gets activated
 		[Tooltip("a feedback to play when the zone gets activated")]
-		public MMFeedbacks ActivationFeedback;
+		public PLFeedbacks ActivationFeedback;
 		/// a feedback to play when the zone tries to get activated but can't
 		[Tooltip("a feedback to play when the zone tries to get activated but can't")]
-		public MMFeedbacks DeniedFeedback;
+		public PLFeedbacks DeniedFeedback;
 		/// a feedback to play when the zone gets entered	
 		[Tooltip("a feedback to play when the zone gets entered	")]
-		public MMFeedbacks EnterFeedback;
+		public PLFeedbacks EnterFeedback;
 		/// a feedback to play when the zone gets exited	
 		[Tooltip("a feedback to play when the zone gets exited	")]
-		public MMFeedbacks ExitFeedback;
+		public PLFeedbacks ExitFeedback;
 
 		[Header("Actions")]
 		/// a UnityEvent to trigger when this zone gets activated
@@ -256,7 +256,7 @@ namespace SpectralDepths.TopDown
 			{
 				AutoActivationInProgress = true;
 				AutoActivationStartedAt = Time.time;
-				yield return MMCoroutine.WaitFor(AutoActivationDelay);
+				yield return PLCoroutine.WaitFor(AutoActivationDelay);
 				AutoActivationInProgress = false;
 				TriggerButtonAction();
 				yield break;
@@ -373,7 +373,7 @@ namespace SpectralDepths.TopDown
 			{
 				_buttonPrompt = (ButtonPrompt)Instantiate(ButtonPromptPrefab);
 				_buttonPrompt.Initialization();
-				_buttonPromptAnimator = _buttonPrompt.gameObject.MMGetComponentNoAlloc<Animator>();
+				_buttonPromptAnimator = _buttonPrompt.gameObject.PLGetComponentNoAlloc<Animator>();
 			}
 			
 			if (_collider != null)
@@ -495,7 +495,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (collider != null)
 				{
-					TopDownController controller = collider.gameObject.MMGetComponentNoAlloc<TopDownController>();
+					TopDownController controller = collider.gameObject.PLGetComponentNoAlloc<TopDownController>();
 					if (controller != null)
 					{
 						if (!controller.Grounded)
@@ -517,7 +517,7 @@ namespace SpectralDepths.TopDown
 
 			if (ShouldUpdateState)
 			{
-				_characterButtonActivation = collider.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
+				_characterButtonActivation = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
 				if (_characterButtonActivation != null)
 				{
 					_characterButtonActivation.InButtonActivatedZone = true;
@@ -563,7 +563,7 @@ namespace SpectralDepths.TopDown
 
 			if (ShouldUpdateState)
 			{
-				_characterButtonActivation = collider.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
+				_characterButtonActivation = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
 				if (_characterButtonActivation != null)
 				{
 					_characterButtonActivation.InButtonActivatedZone=false;
@@ -647,12 +647,12 @@ namespace SpectralDepths.TopDown
 		/// <param name="characterButtonActivation">Character button activation.</param>
 		protected virtual bool CheckConditions(GameObject collider)
 		{
-			if (!MMLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
+			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
 			{
 				return false;
 			}
 			
-			Character character = collider.gameObject.MMGetComponentNoAlloc<Character>();
+			Character character = collider.gameObject.PLGetComponentNoAlloc<Character>();
 
 			switch (ButtonActivatedRequirement)
 			{
@@ -664,14 +664,14 @@ namespace SpectralDepths.TopDown
 					break;
 
 				case ButtonActivatedRequirements.ButtonActivator:
-					if (collider.gameObject.MMGetComponentNoAlloc<ButtonActivator>() == null)
+					if (collider.gameObject.PLGetComponentNoAlloc<ButtonActivator>() == null)
 					{
 						return false;
 					}
 					break;
 
 				case ButtonActivatedRequirements.Either:
-					if ((character == null) && (collider.gameObject.MMGetComponentNoAlloc<ButtonActivator>() == null))
+					if ((character == null) && (collider.gameObject.PLGetComponentNoAlloc<ButtonActivator>() == null))
 					{
 						return false;
 					}
@@ -692,7 +692,7 @@ namespace SpectralDepths.TopDown
 
 			if (RequiresButtonActivationAbility)
 			{
-				CharacterButtonActivation characterButtonActivation = collider.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
+				CharacterButtonActivation characterButtonActivation = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
 				// we check that the object colliding with the water is actually a TopDown controller and a character
 				if (characterButtonActivation==null)
 				{

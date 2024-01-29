@@ -1,5 +1,5 @@
 using System;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +20,7 @@ namespace SpectralDepths.TopDown
 		public float DisableDistance = 45f;
 
 		/// whether or not this object was disabled by the ProximityManager
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not this object was disabled by the ProximityManager")]
 		public bool DisabledByManager;
 
@@ -29,7 +29,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("a debug manager to add this object to, only used for debug")]
 		public ProximityManager DebugProximityManager;
 		/// a debug button to add this object to the debug manager
-		[MMInspectorButton("DebugAddObject")]
+		[PLInspectorButton("DebugAddObject")]
 		public bool AddButton;
 
 		public ProximityManager Manager { get; set; }

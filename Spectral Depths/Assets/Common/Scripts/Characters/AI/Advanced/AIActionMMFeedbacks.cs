@@ -1,20 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDownSpectralDepths.TopDown
 {
 	/// <summary>
-	/// This action is used to play a MMFeedbacks
+	/// This action is used to play a PLFeedbacks
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/AI/Actions/AIActionMMFeedbacks")]
 	public class AIActionMMFeedbacks : AIAction
 	{
-		/// The MMFeedbacks to play when this action gets performed by the AIBrain
-		[Tooltip("The MMFeedbacks to play when this action gets performed by the AIBrain")]
-		public MMFeedbacks TargetFeedbacks;
+		/// The PLFeedbacks to play when this action gets performed by the AIBrain
+		[Tooltip("The PLFeedbacks to play when this action gets performed by the AIBrain")]
+		public PLFeedbacks TargetFeedbacks;
 		/// If this is false, the feedback will be played every PerformAction (by default every frame while in this state), otherwise it'll only play once, when entering the state
 		[Tooltip("If this is false, the feedback will be played every PerformAction (by default every frame while in this state), otherwise it'll only play once, when entering the state")]
 		public bool OnlyPlayWhenEnteringState = true;
@@ -25,7 +25,7 @@ namespace SpectralDepths.TopDownSpectralDepths.TopDown
 		protected bool _played = false;
 
 		/// <summary>
-		/// On PerformAction we play our MMFeedbacks
+		/// On PerformAction we play our PLFeedbacks
 		/// </summary>
 		public override void PerformAction()
 		{
@@ -33,7 +33,7 @@ namespace SpectralDepths.TopDownSpectralDepths.TopDown
 		}
 
 		/// <summary>
-		/// Plays the target MMFeedbacks
+		/// Plays the target PLFeedbacks
 		/// </summary>
 		protected virtual void PlayFeedbacks()
 		{

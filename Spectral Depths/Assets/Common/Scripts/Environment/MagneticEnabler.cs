@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,14 +33,14 @@ namespace SpectralDepths.TopDown
 		public bool OverrideFollowPositionSpeed = false;
 		/// the value with which to override the speed
 		[Tooltip("the speed with which to override the speed")]
-		[MMCondition("OverrideFollowPositionSpeed", true)]
+		[PLCondition("OverrideFollowPositionSpeed", true)]
 		public float FollowPositionSpeed = 5f;
 		/// if this is true, the acceleration will be overridden with the one specified here
 		[Tooltip("if this is true, the acceleration will be overridden with the one specified here")]
 		public bool OverrideFollowAcceleration = false;
 		/// the value with which to override the acceleration
 		[Tooltip("the speed with which to override the acceleration")]
-		[MMCondition("OverrideFollowAcceleration", true)]
+		[PLCondition("OverrideFollowAcceleration", true)]
 		public float FollowAcceleration = 0.75f;
 
 		protected Collider2D _collider2D;
@@ -90,12 +90,12 @@ namespace SpectralDepths.TopDown
 		/// <param name="colliding"></param>
 		protected virtual void OnTriggerEnterInternal(GameObject colliding)
 		{
-			if (!TargetLayerMask.MMContains(colliding.layer))
+			if (!TargetLayerMask.PLContains(colliding.layer))
 			{
 				return;
 			}
 
-			_magnetic = colliding.MMGetComponentNoAlloc<Magnetic>();
+			_magnetic = colliding.PLGetComponentNoAlloc<Magnetic>();
 			if (_magnetic == null)
 			{
 				return;

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-#if MM_CINEMACHINE
+using SpectralDepths.Tools;
+#if PL_CINEMACHINE
 using Cinemachine;
 #endif
 using UnityEngine.Events;
@@ -16,7 +16,7 @@ namespace SpectralDepths.TopDown
 	/// Note that the confiner is different from the collider that defines the room.
 	/// You can see an example of rooms in action in the KoalaRooms demo scene.
 	/// </summary>
-	public class Room : TopDownMonoBehaviour, MMEventListener<TopDownEngineEvent>
+	public class Room : TopDownMonoBehaviour, PLEventListener<TopDownEngineEvent>
 	{
 		public enum Modes { TwoD, ThreeD }
 
@@ -71,7 +71,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether this room is intended to work in 2D or 3D mode")]
 		public Modes Mode = Modes.TwoD;
 
-		#if MM_CINEMACHINE
+		#if PL_CINEMACHINE
 		[Header("Camera")]
 		/// the virtual camera associated to this room
 		[Tooltip("the virtual camera associated to this room")]
@@ -90,7 +90,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether or not this Room should look at the level's start position and declare itself the current room on start or not")]
 		public bool AutoDetectFirstRoomOnStart = true;
 		/// the depth of the room (used to resize the z value of the confiner
-		[MMEnumCondition("Mode", (int)Modes.TwoD)]
+		[PLEnumCondition("Mode", (int)Modes.TwoD)]
 		[Tooltip("the depth of the room (used to resize the z value of the confiner")]
 		public float RoomDepth = 100f;
 
@@ -129,7 +129,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Awake()
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			if (VirtualCamera != null)
 			{
 				VirtualCamera.Priority = 0;	
@@ -167,7 +167,7 @@ namespace SpectralDepths.TopDown
 		/// <returns></returns>
 		protected virtual IEnumerator ResizeConfiner()
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			if ((VirtualCamera == null) || (Confiner == null) || !ResizeConfinerAutomatically)
 			{
 				yield break;
@@ -219,7 +219,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void HandleLevelStartDetection()
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			if (!_initialized)
 			{
 				Initialization();
@@ -231,13 +231,13 @@ namespace SpectralDepths.TopDown
 				{
 					if (RoomBounds.Contains(LevelManager.Instance.Players[0].transform.position))
 					{
-						MMCameraEvent.Trigger(MMCameraEventTypes.ResetPriorities);
-						MMCinemachineBrainEvent.Trigger(MMCinemachineBrainEventTypes.ChangeBlendDuration, 0f);
+						PLCameraEvent.Trigger(PLCameraEventTypes.ResetPriorities);
+						PLCinemachineBrainEvent.Trigger(PLCinemachineBrainEventTypes.ChangeBlendDuration, 0f);
 
-						MMSpriteMaskEvent.Trigger(MMSpriteMaskEvent.MMSpriteMaskEventTypes.MoveToNewPosition,
+						PLSpriteMaskEvent.Trigger(PLSpriteMaskEvent.PLSpriteMaskEventTypes.MoveToNewPosition,
 							RoomColliderCenter,
 							RoomColliderSize,
-							0f, MMTween.MMTweenCurve.LinearTween);
+							0f, PLTween.PLTweenCurve.LinearTween);
 
 						PlayerEntersRoom();
 						if (VirtualCamera != null)
@@ -311,7 +311,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -319,7 +319,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

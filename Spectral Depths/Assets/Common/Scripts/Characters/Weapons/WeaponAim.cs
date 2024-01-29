@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.UI;
 
 namespace SpectralDepths.TopDown
 {
 	[RequireComponent(typeof(Weapon))]
-	public abstract class WeaponAim : TopDownMonoBehaviour, MMEventListener<TopDownEngineEvent>
+	public abstract class WeaponAim : TopDownMonoBehaviour, PLEventListener<TopDownEngineEvent>
 	{
 		/// the list of possible control modes
 		public enum AimControls { Off, PrimaryMovement, SecondaryMovement, Mouse, Script, SecondaryThenPrimaryMovement, PrimaryThenSecondaryMovement, CharacterRotateCameraDirection }
@@ -17,7 +17,7 @@ namespace SpectralDepths.TopDown
 		public enum ReticleTypes { None, Scene, UI }
 
 		[Header("Control Mode")]
-		[MMInformation("Add this component to a Weapon and you'll be able to aim (rotate) it. It supports three different control modes : mouse (the weapon aims towards the pointer), primary movement (you'll aim towards the current input direction), or secondary movement (aims towards a second input axis, think twin stick shooters).", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Add this component to a Weapon and you'll be able to aim (rotate) it. It supports three different control modes : mouse (the weapon aims towards the pointer), primary movement (you'll aim towards the current input direction), or secondary movement (aims towards a second input axis, think twin stick shooters).", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// the aim control mode
 		[Tooltip("the selected aim control mode")]
 		public AimControls AimControl = AimControls.SecondaryMovement;
@@ -26,7 +26,7 @@ namespace SpectralDepths.TopDown
 		public bool AimControlActive = true;
 
 		[Header("Weapon Rotation")]
-		[MMInformation("Here you can define whether the rotation is free, strict in 4 directions (top, bottom, left, right), or 8 directions (same + diagonals). You can also define a rotation speed, and a min and max angle. For example, if you don't want your character to be able to aim in its back, set min angle to -90 and max angle to 90.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Here you can define whether the rotation is free, strict in 4 directions (top, bottom, left, right), or 8 directions (same + diagonals). You can also define a rotation speed, and a min and max angle. For example, if you don't want your character to be able to aim in its back, set min angle to -90 and max angle to 90.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// the rotation mode
 		[Tooltip("the rotation mode")]
 		public RotationModes RotationMode = RotationModes.Free;
@@ -46,40 +46,40 @@ namespace SpectralDepths.TopDown
 		public float MinimumMagnitude = 0.2f;
 
 		[Header("Reticle")]
-		[MMInformation("You can also display a reticle on screen to check where you're aiming at. Leave it blank if you don't want to use one. If you set the reticle distance to 0, it'll follow the cursor, otherwise it'll be on a circle centered on the weapon. You can also ask it to follow the mouse, even replace the mouse pointer. You can also decide if the pointer should rotate to reflect aim angle or remain stable.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("You can also display a reticle on screen to check where you're aiming at. Leave it blank if you don't want to use one. If you set the reticle distance to 0, it'll follow the cursor, otherwise it'll be on a circle centered on the weapon. You can also ask it to follow the mouse, even replace the mouse pointer. You can also decide if the pointer should rotate to reflect aim angle or remain stable.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		/// Defines whether the reticle is placed in the scene or in the UI
 		[Tooltip("Defines whether the reticle is placed in the scene or in the UI")]
 		public ReticleTypes ReticleType = ReticleTypes.None;
 		/// the gameobject to display as the aim's reticle/crosshair. Leave it blank if you don't want a reticle
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("the gameobject to display as the aim's reticle/crosshair. Leave it blank if you don't want a reticle")]
 		public GameObject Reticle;
 		/// the distance at which the reticle will be from the weapon
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("the distance at which the reticle will be from the weapon")]
 		public float ReticleDistance;
 		/// the height at which the reticle should position itself above the ground, when in Scene mode
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("the height at which the reticle should position itself above the ground, when in Scene mode")]
 		public float ReticleHeight;
 		/// if set to true, the reticle will be placed at the mouse's position (like a pointer)
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("if set to true, the reticle will be placed at the mouse's position (like a pointer)")]
 		public bool ReticleAtMousePosition;
 		/// if set to true, the reticle will rotate on itself to reflect the weapon's rotation. If not it'll remain stable.
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene)]
 		[Tooltip("if set to true, the reticle will rotate on itself to reflect the weapon's rotation. If not it'll remain stable.")]
 		public bool RotateReticle = false;
 		/// if set to true, the reticle will replace the mouse pointer
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("if set to true, the reticle will replace the mouse pointer")]
 		public bool ReplaceMousePointer = true;
 		/// the radius around the weapon rotation centre where the mouse will be ignored, to avoid glitches
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("the radius around the weapon rotation centre where the mouse will be ignored, to avoid glitches")]
 		public float MouseDeadZoneRadius = 0.5f;
 		/// if set to false, the reticle won't be added and displayed
-		[MMEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
+		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
 		[Tooltip("if set to false, the reticle won't be added and displayed")]
 		public bool DisplayReticle = true;
 
@@ -92,11 +92,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the offset to apply to the camera target along the transform / reticle line")]
 		public float CameraTargetOffset = 0.3f;
 		/// the maximum distance at which to move the camera target
-		[MMCondition("MoveCameraTargetTowardsReticle", true)]
+		[PLCondition("MoveCameraTargetTowardsReticle", true)]
 		[Tooltip("the maximum distance at which to move the camera target from the weapon")]
 		public float CameraTargetMaxDistance = 10f;
 		/// the speed at which the camera target should be moved
-		[MMCondition("MoveCameraTargetTowardsReticle", true)]
+		[PLCondition("MoveCameraTargetTowardsReticle", true)]
 		[Tooltip("the speed at which the camera target should be moved")]
 		public float CameraTargetSpeed = 5f;
 
@@ -417,7 +417,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -425,7 +425,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

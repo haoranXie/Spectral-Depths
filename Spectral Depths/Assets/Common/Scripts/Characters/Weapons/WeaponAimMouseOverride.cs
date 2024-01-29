@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
@@ -17,10 +17,10 @@ namespace SpectralDepths.TopDown
 	public class WeaponAimMouseOverride : MonoBehaviour
 	{
 		[Header("Behavior")]
-		[MMInformation("Add this component to a WeaponAim, and it'll automatically handle switching its weapon aim control mode to mouse if mouse becomes active. " +
+		[PLInformation("Add this component to a WeaponAim, and it'll automatically handle switching its weapon aim control mode to mouse if mouse becomes active. " +
 		               "If you then touch any of the gamepad axis again, it'll switch back aim control to it. " +
 		               "The WeaponAim control mode needs to be initially set to a gamepad control mode", 
-						MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+						SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		
 		/// if this is true, mouse position will be evaluated, and if it differs from the one last frame, we'll switch to mouse control mode
 		[Tooltip("if this is true, mouse position will be evaluated, and if it differs from the one last frame, we'll switch to mouse control mode")]

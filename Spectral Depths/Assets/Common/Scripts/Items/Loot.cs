@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,25 +21,25 @@ namespace  SpectralDepths.TopDown
 		/// the selected loot mode :
 		/// - unique : a simple object
 		/// - loot table : a LootTable specific to this Loot object
-		/// - loot definition : a LootTable scriptable object (created by right click > Create > MoreMountains > Spectral Depths > Loot Definition
+		/// - loot definition : a LootTable scriptable object (created by right click > Create > SpectralDepths > Spectral Depths > Loot Definition
 		/// This loot definition can then be reused in other Loot objects.
-		[Tooltip("the selected loot mode : - unique : a simple object  - loot table : a LootTable specific to this Loot object - loot definition : a LootTable scriptable object (created by right click > Create > MoreMountains > Spectral Depths > Loot Definition. This loot definition can then be reused in other Loot objects.")]
+		[Tooltip("the selected loot mode : - unique : a simple object  - loot table : a LootTable specific to this Loot object - loot definition : a LootTable scriptable object (created by right click > Create > SpectralDepths > Spectral Depths > Loot Definition. This loot definition can then be reused in other Loot objects.")]
 		public LootModes LootMode = LootModes.Unique;
 
 		/// the object to loot, when in LootMode
 		[Tooltip("the object to loot, when in LootMode")]
-		[MMEnumCondition("LootMode", (int) LootModes.Unique)]
+		[PLEnumCondition("LootMode", (int) LootModes.Unique)]
 		public GameObject GameObjectToLoot;
         
 		/// a loot table defining what objects to spawn
 		[Tooltip("a loot table defining what objects to spawn")]
-		[MMEnumCondition("LootMode", (int) LootModes.LootTable)]
-		public MMLootTableGameObject LootTable;
+		[PLEnumCondition("LootMode", (int) LootModes.LootTable)]
+		public PLLootTableGameObject LootTable;
         
 		/// a loot table scriptable object defining what objects to spawn
 		[Tooltip("a loot table scriptable object defining what objects to spawn")]
-		[MMEnumCondition("LootMode", (int) LootModes.LootTableScriptableObject)]
-		public MMLootTableGameObjectSO LootTableSO;
+		[PLEnumCondition("LootMode", (int) LootModes.LootTableScriptableObject)]
+		public PLLootTableGameObjectSO LootTableSO;
 
 		[Header("Conditions")] 
 		/// if this is true, loot will happen when this object dies
@@ -55,11 +55,11 @@ namespace  SpectralDepths.TopDown
 		public bool PoolLoot = false;
 		/// determines the size of the pool for each object in the loot table
 		[Tooltip("determines the size of the pool for each object in the loot table")]
-		[MMCondition("PoolLoot", true)]
+		[PLCondition("PoolLoot", true)]
 		public int PoolSize = 20;
 		/// a unique name for this pool, has to be common between all Loot objects sharing the same loot table if you want to mutualize their pools
 		[Tooltip("a unique name for this pool, has to be common between all Loot objects sharing the same loot table if you want to mutualize their pools")]
-		[MMCondition("PoolLoot", true)]
+		[PLCondition("PoolLoot", true)]
 		public string MutualizedPoolName = "";
         
 		[Header("Spawn")] 
@@ -71,21 +71,21 @@ namespace  SpectralDepths.TopDown
 		public float Delay = 0f; 
 		/// the minimum and maximum quantity of objects to spawn 
 		[Tooltip("the minimum and maximum quantity of objects to spawn")]
-		[MMVector("Min","Max")]
+		[PLVector("Min","Max")]
 		public Vector2 Quantity = Vector2.one;
 		/// the position, rotation and scale objects should spawn at
 		[Tooltip("the position, rotation and scale objects should spawn at")]
-		public MMSpawnAroundProperties SpawnProperties;
+		public PLSpawnAroundProperties SpawnProperties;
 		/// if this is true, loot will be limited to MaximumQuantity, any new loot attempt beyond that will have no outcome. If this is false, loot is unlimited and can happen forever.
 		[Tooltip("if this is true, loot will be limited to MaximumQuantity, any new loot attempt beyond that will have no outcome. If this is false, loot is unlimited and can happen forever.")]
 		public bool LimitedLootQuantity = true;
 		/// The maximum quantity of objects that can be looted from this Loot object
 		[Tooltip("The maximum quantity of objects that can be looted from this object")]
-		[MMCondition("LimitedLootQuantity", true)]
+		[PLCondition("LimitedLootQuantity", true)]
 		public int MaximumQuantity = 100;
 		/// The remaining quantity of objects that can be looted from this Loot object, displayed for debug purposes 
 		[Tooltip("The remaining quantity of objects that can be looted from this Loot object, displayed for debug purposes")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public int RemainingQuantity = 100;
 
 		[Header("Collisions")] 
@@ -96,25 +96,25 @@ namespace  SpectralDepths.TopDown
 		public enum DimensionModes { TwoD, ThreeD}
 		/// whether collision detection should happen in 2D or 3D
 		[Tooltip("whether collision detection should happen in 2D or 3D")]
-		[MMCondition("AvoidObstacles", true)]
+		[PLCondition("AvoidObstacles", true)]
 		public DimensionModes DimensionMode = DimensionModes.TwoD;
 		/// the layer mask containing layers the spawned objects shouldn't collide with 
 		[Tooltip("the layer mask containing layers the spawned objects shouldn't collide with")]
-		[MMCondition("AvoidObstacles", true)]
+		[PLCondition("AvoidObstacles", true)]
 		public LayerMask AvoidObstaclesLayerMask = LayerManager.ObstaclesLayerMask;
 		/// the radius around the object within which no obstacle should be found
 		[Tooltip("the radius around the object within which no obstacle should be found")]
-		[MMCondition("AvoidObstacles", true)]
+		[PLCondition("AvoidObstacles", true)]
 		public float AvoidRadius = 0.25f;
 		/// the amount of times the script should try finding another position for the loot if the last one was within an obstacle. More attempts : better results, higher cost
 		[Tooltip("the amount of times the script should try finding another position for the loot if the last one was within an obstacle. More attempts : better results, higher cost")]
-		[MMCondition("AvoidObstacles", true)]
+		[PLCondition("AvoidObstacles", true)]
 		public int MaxAvoidAttempts = 5;
         
 		[Header("Feedback")] 
-		/// A MMFeedbacks to play when spawning loot. Only one feedback will play. If you want one per item, it's best to place it on the item itself, and have it play when the object gets instantiated. 
-		[Tooltip("A MMFeedbacks to play when spawning loot. Only one feedback will play. If you want one per item, it's best to place it on the item itself, and have it play when the object gets instantiated.")]
-		public MMFeedbacks LootFeedback;
+		/// A PLFeedbacks to play when spawning loot. Only one feedback will play. If you want one per item, it's best to place it on the item itself, and have it play when the object gets instantiated. 
+		[Tooltip("A PLFeedbacks to play when spawning loot. Only one feedback will play. If you want one per item, it's best to place it on the item itself, and have it play when the object gets instantiated.")]
+		public PLFeedbacks LootFeedback;
 
 		[Header("Debug")] 
 		/// if this is true, gizmos will be drawn to show the shape within which loot will spawn
@@ -125,17 +125,17 @@ namespace  SpectralDepths.TopDown
 		public int GizmosQuantity = 1000;
 		/// the color the gizmos should be drawn with
 		[Tooltip("the color the gizmos should be drawn with")]
-		public Color GizmosColor = MMColors.LightGray;
+		public Color GizmosColor = PLColors.LightGray;
 		/// the size at which to draw the gizmos
 		[Tooltip("the size at which to draw the gizmos")]
 		public float GimosSize = 1f;
 		/// a debug button used to trigger a loot
 		[Tooltip("a debug button used to trigger a loot")]
-		[MMInspectorButton("SpawnLootDebug")] 
+		[PLInspectorButton("SpawnLootDebug")] 
 		public bool SpawnLootButton;
         
-		public static List<MMSimpleObjectPooler> SimplePoolers = new List<MMSimpleObjectPooler>();
-		public static List<MMMultipleObjectPooler> MultiplePoolers = new List<MMMultipleObjectPooler>();
+		public static List<PLSimpleObjectPooler> SimplePoolers = new List<PLSimpleObjectPooler>();
+		public static List<PLMultipleObjectPooler> MultiplePoolers = new List<PLMultipleObjectPooler>();
 
 		protected Health _health;
 		protected GameObject _objectToSpawn;
@@ -143,8 +143,8 @@ namespace  SpectralDepths.TopDown
 		protected Vector3 _raycastOrigin;
 		protected RaycastHit2D _raycastHit2D;
 		protected Collider[] _overlapBox;
-		protected MMSimpleObjectPooler _simplePooler;
-		protected MMMultipleObjectPooler _multipleObjectPooler;
+		protected PLSimpleObjectPooler _simplePooler;
+		protected PLMultipleObjectPooler _multipleObjectPooler;
         
 		/// <summary>
 		/// On Awake we grab the health component if there's one, and initialize our loot table
@@ -205,9 +205,9 @@ namespace  SpectralDepths.TopDown
 			}
 		}
 
-		protected virtual MMSimpleObjectPooler FindSimplePooler()
+		protected virtual PLSimpleObjectPooler FindSimplePooler()
 		{
-			foreach (MMSimpleObjectPooler simplePooler in SimplePoolers)
+			foreach (PLSimpleObjectPooler simplePooler in SimplePoolers)
 			{
 				if (simplePooler.GameObjectToPool == GameObjectToLoot)
 				{
@@ -215,8 +215,8 @@ namespace  SpectralDepths.TopDown
 				}
 			}
 			// if we haven't found one, we create one
-			GameObject newObject = new GameObject("[MMSimpleObjectPooler] "+GameObjectToLoot.name);
-			MMSimpleObjectPooler pooler = newObject.AddComponent<MMSimpleObjectPooler>();
+			GameObject newObject = new GameObject("[PLSimpleObjectPooler] "+GameObjectToLoot.name);
+			PLSimpleObjectPooler pooler = newObject.AddComponent<PLSimpleObjectPooler>();
 			pooler.GameObjectToPool = GameObjectToLoot;
 			pooler.PoolSize = PoolSize;
 			pooler.NestUnderThis = true;
@@ -226,9 +226,9 @@ namespace  SpectralDepths.TopDown
 			return pooler;
 		}
         
-		protected virtual MMMultipleObjectPooler FindMultiplePooler()
+		protected virtual PLMultipleObjectPooler FindMultiplePooler()
 		{
-			foreach (MMMultipleObjectPooler multiplePooler in MultiplePoolers)
+			foreach (PLMultipleObjectPooler multiplePooler in MultiplePoolers)
 			{
 				if ((multiplePooler != null) && (multiplePooler.MutualizedPoolName == MutualizedPoolName)) 
 				{
@@ -236,17 +236,17 @@ namespace  SpectralDepths.TopDown
 				}
 			}
 			// if we haven't found one, we create one
-			GameObject newObject = new GameObject("[MMMultipleObjectPooler] "+MutualizedPoolName);
-			MMMultipleObjectPooler pooler = newObject.AddComponent<MMMultipleObjectPooler>();
+			GameObject newObject = new GameObject("[PLMultipleObjectPooler] "+MutualizedPoolName);
+			PLMultipleObjectPooler pooler = newObject.AddComponent<PLMultipleObjectPooler>();
 			pooler.MutualizeWaitingPools = true;
 			pooler.MutualizedPoolName = MutualizedPoolName;
 			pooler.NestUnderThis = true;
-			pooler.Pool = new List<MMMultipleObjectPoolerObject>();
+			pooler.Pool = new List<PLMultipleObjectPoolerObject>();
 			if (LootMode == LootModes.LootTable)
 			{
-				foreach (MMLootGameObject loot in LootTable.ObjectsToLoot)
+				foreach (PLLootGameObject loot in LootTable.ObjectsToLoot)
 				{
-					MMMultipleObjectPoolerObject objectToPool = new MMMultipleObjectPoolerObject();
+					PLMultipleObjectPoolerObject objectToPool = new PLMultipleObjectPoolerObject();
 					objectToPool.PoolSize = PoolSize * (int)loot.Weight;
 					objectToPool.GameObjectToPool = loot.Loot;
 					pooler.Pool.Add(objectToPool);
@@ -254,9 +254,9 @@ namespace  SpectralDepths.TopDown
 			}
 			else if (LootMode == LootModes.LootTableScriptableObject)
 			{
-				foreach (MMLootGameObject loot in LootTableSO.LootTable.ObjectsToLoot)
+				foreach (PLLootGameObject loot in LootTableSO.LootTable.ObjectsToLoot)
 				{
-					MMMultipleObjectPoolerObject objectToPool = new MMMultipleObjectPoolerObject
+					PLMultipleObjectPoolerObject objectToPool = new PLMultipleObjectPoolerObject
 					{
 						PoolSize = PoolSize * (int)loot.Weight,
 						GameObjectToPool = loot.Loot
@@ -302,7 +302,7 @@ namespace  SpectralDepths.TopDown
 		/// <returns></returns>
 		protected virtual IEnumerator SpawnLootCo()
 		{
-			yield return MMCoroutine.WaitFor(Delay);
+			yield return PLCoroutine.WaitFor(Delay);
 			int randomQuantity = Random.Range((int)Quantity.x, (int)Quantity.y + 1);
 			for (int i = 0; i < randomQuantity; i++)
 			{
@@ -356,7 +356,7 @@ namespace  SpectralDepths.TopDown
 				int amountOfAttempts = 0;
 				while (!placementOK && (amountOfAttempts < MaxAvoidAttempts))
 				{
-					MMSpawnAround.ApplySpawnAroundProperties(_spawnedObject, SpawnProperties, this.transform.position);
+					PLSpawnAround.ApplySpawnAroundProperties(_spawnedObject, SpawnProperties, this.transform.position);
                     
 					if (DimensionMode == DimensionModes.TwoD)
 					{
@@ -389,7 +389,7 @@ namespace  SpectralDepths.TopDown
 			}
 			else
 			{
-				MMSpawnAround.ApplySpawnAroundProperties(_spawnedObject, SpawnProperties, this.transform.position);    
+				PLSpawnAround.ApplySpawnAroundProperties(_spawnedObject, SpawnProperties, this.transform.position);    
 			}
 			if (_spawnedObject != null)
 			{
@@ -488,7 +488,7 @@ namespace  SpectralDepths.TopDown
 		{
 			if (DrawGizmos)
 			{
-				MMSpawnAround.DrawGizmos(SpawnProperties, this.transform.position, GizmosQuantity, GimosSize, GizmosColor);    
+				PLSpawnAround.DrawGizmos(SpawnProperties, this.transform.position, GizmosQuantity, GimosSize, GizmosColor);    
 			}
 		}
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.Animations;
 
 namespace SpectralDepths.TopDown
@@ -119,7 +119,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (_weaponAim == null)
 				{
-					_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+					_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 				}
 
 				if (_weaponAim != null)
@@ -170,8 +170,8 @@ namespace SpectralDepths.TopDown
 			base.OnEnterState();
 			_numberOfShoots = 0;
 			_shooting = true;
-			_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
-			_projectileWeapon = TargetHandleWeaponAbility.CurrentWeapon.gameObject.MMGetComponentNoAlloc<ProjectileWeapon>();
+			_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
+			_projectileWeapon = TargetHandleWeaponAbility.CurrentWeapon.gameObject.PLGetComponentNoAlloc<ProjectileWeapon>();
 		}
 
 		/// <summary>

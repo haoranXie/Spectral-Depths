@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 	/// A manager required in your scenes that use CharacterGridMovement.
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/GridManager")]
-	public class GridManager : MMSingleton<GridManager>
+	public class GridManager : PLSingleton<GridManager>
 	{
 		/// the possible types of debug modes
 		public enum DebugDrawModes { TwoD, ThreeD }
@@ -29,19 +29,19 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether or not to draw the debug grid")]
 		public bool DrawDebugGrid = true;
 		/// the mode in which to draw the debug grid
-		[MMCondition("DrawDebugGrid", true)]
+		[PLCondition("DrawDebugGrid", true)]
 		[Tooltip("the mode in which to draw the debug grid")]
 		public DebugDrawModes DebugDrawMode = DebugDrawModes.TwoD;
 		/// the size (in squares of the debug grid)
-		[MMCondition("DrawDebugGrid", true)]
+		[PLCondition("DrawDebugGrid", true)]
 		[Tooltip("the size (in squares of the debug grid)")]
 		public int DebugGridSize = 30;
 		/// the color to use to draw the debug grid lines
-		[MMCondition("DrawDebugGrid", true)]
+		[PLCondition("DrawDebugGrid", true)]
 		[Tooltip("the color to use to draw the debug grid lines")]
 		public Color CellBorderColor = new Color(60f, 221f, 255f, 1f);
 		/// the color to use to draw the debug grid cells backgrounds
-		[MMCondition("DrawDebugGrid", true)]
+		[PLCondition("DrawDebugGrid", true)]
 		[Tooltip("the color to use to draw the debug grid cells backgrounds")]
 		public Color InnerColor = new Color(60f, 221f, 255f, 0.3f);
 		/// a list of all cells currently occupied
@@ -177,9 +177,9 @@ namespace SpectralDepths.TopDown
 		public virtual Vector3 ComputeGridPosition(Vector3 targetPosition)
 		{
 			_newGridPosition = (targetPosition - GridOrigin.position) / GridUnitSize;
-			_newGridPosition.x = MMMaths.RoundToNearestHalf(_newGridPosition.x);
-			_newGridPosition.y = MMMaths.RoundToNearestHalf(_newGridPosition.y);
-			_newGridPosition.z = MMMaths.RoundToNearestHalf(_newGridPosition.z);
+			_newGridPosition.x = PLMaths.RoundToNearestHalf(_newGridPosition.x);
+			_newGridPosition.y = PLMaths.RoundToNearestHalf(_newGridPosition.y);
+			_newGridPosition.z = PLMaths.RoundToNearestHalf(_newGridPosition.z);
             
 			return _newGridPosition;
 		}

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -42,7 +42,7 @@ namespace SpectralDepths.TopDown
 		public int AutoRespawnAmount = 3;
 		/// the remaining amounts of respawns (readonly, controlled by the class at runtime)
 		[Tooltip("the remaining amounts of respawns (readonly, controlled by the class at runtime)")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public int AutoRespawnRemainingAmount = 3;
 		/// the effect to instantiate when the player respawns
 		[Tooltip("the effect to instantiate when the player respawns")]
@@ -224,7 +224,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (RespawnSfx != null)
 			{
-				MMSoundManagerSoundPlayEvent.Trigger(RespawnSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);
+				PLSoundManagerSoundPlayEvent.Trigger(RespawnSfx, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position);
 			}
 		}
 	}

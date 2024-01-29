@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.EventSystems;
 
 namespace SpectralDepths.TopDown
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	/// Handles all GUI effects and changes
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/GUIManager")]
-	public class GUIManager : MMSingleton<GUIManager> 
+	public class GUIManager : PLSingleton<GUIManager> 
 	{
 		/// the main canvas
 		[Tooltip("the main canvas")]
@@ -20,10 +20,10 @@ namespace SpectralDepths.TopDown
 		public GameObject HUD;
 		/// the health bars to update
 		[Tooltip("the health bars to update")]
-		public MMProgressBar[] HealthBars;
+		public PLProgressBar[] HealthBars;
 		/// the dash bars to update
 		[Tooltip("the dash bars to update")]
-		public MMRadialProgressBar[] DashBars;
+		public PLRadialProgressBar[] DashBars;
 		/// the panels and bars used to display current weapon ammo
 		[Tooltip("the panels and bars used to display current weapon ammo")]
 		public AmmoDisplay[] AmmoDisplays;
@@ -210,7 +210,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			foreach (MMRadialProgressBar jetpackBar in DashBars)
+			foreach (PLRadialProgressBar jetpackBar in DashBars)
 			{
 				if (jetpackBar != null)
 				{ 
@@ -269,7 +269,7 @@ namespace SpectralDepths.TopDown
 			if (HealthBars == null) { return; }
 			if (HealthBars.Length <= 0)	{ return; }
 
-			foreach (MMProgressBar healthBar in HealthBars)
+			foreach (PLProgressBar healthBar in HealthBars)
 			{
 				if (healthBar == null) { continue; }
 				if (healthBar.PlayerID == playerID)
@@ -294,7 +294,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			foreach (MMRadialProgressBar dashbar in DashBars)
+			foreach (PLRadialProgressBar dashbar in DashBars)
 			{
 				if (dashbar == null) { return; }
 				if (dashbar.PlayerID == playerID)

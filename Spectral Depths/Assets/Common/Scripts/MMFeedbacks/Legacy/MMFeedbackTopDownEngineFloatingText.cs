@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// This feedback lets you trigger the appearance of a floating text, that will reflect the damage done to the target Health component.
-	/// This requires that a MMFloatingTextSpawner be correctly setup in the scene, otherwise nothing will happen.
-	/// To do so, create a new empty object, add a MMFloatingTextSpawner to it. Drag (at least) one MMFloatingText prefab into its PooledSimpleMMFloatingText slot.
-	/// You'll find such prefabs already made in the MMTools/Tools/MMFloatingText/Prefabs folder, but feel free to create your own.
+	/// This requires that a PLFloatingTextSpawner be correctly setup in the scene, otherwise nothing will happen.
+	/// To do so, create a new empty object, add a PLFloatingTextSpawner to it. Drag (at least) one PLFloatingText prefab into its PooledSimpleMMFloatingText slot.
+	/// You'll find such prefabs already made in the PLTools/Tools/PLFloatingText/Prefabs folder, but feel free to create your own.
 	/// </summary>
 	[AddComponentMenu("")]
 	[FeedbackPath("UI/Spectral Depths Floating Text")]
 	[FeedbackHelp("This feedback lets you trigger the appearance of a floating text, that will reflect the damage done to the target Health component." +
-	              "This requires that a MMFloatingTextSpawner be correctly setup in the scene, otherwise nothing will happen." +
-	              "To do so, create a new empty object, add a MMFloatingTextSpawner to it. Drag (at least) one MMFloatingText prefab into its PooledSimpleMMFloatingText slot." +
-	              "You'll find such prefabs already made in the MMTools/Tools/MMFloatingText/Prefabs folder, but feel free to create your own.")]
-	public class MMFeedbackTopDownEngineFloatingText : MMFeedbackFloatingText
+	              "This requires that a PLFloatingTextSpawner be correctly setup in the scene, otherwise nothing will happen." +
+	              "To do so, create a new empty object, add a PLFloatingTextSpawner to it. Drag (at least) one PLFloatingText prefab into its PooledSimpleMMFloatingText slot." +
+	              "You'll find such prefabs already made in the PLTools/Tools/PLFloatingText/Prefabs folder, but feel free to create your own.")]
+	public class PLFeedbackTopDownEngineFloatingText : PLFeedbackFloatingText
 	{
 		[Header("Spectral Depths Settings")]
 
@@ -60,7 +60,7 @@ namespace SpectralDepths.TopDown
 				Value = TargetHealth.LastDamage.ToString(Formatting);
 
 				_playPosition = (PositionMode == PositionModes.FeedbackPosition) ? this.transform.position : TargetTransform.position;
-				MMFloatingTextSpawnEvent.Trigger(ChannelData(Channel), _playPosition, Value, Direction, Intensity, ForceLifetime, Lifetime, ForceColor, AnimateColorGradient);
+				PLFloatingTextSpawnEvent.Trigger(ChannelData(Channel), _playPosition, Value, Direction, Intensity, ForceLifetime, Lifetime, ForceColor, AnimateColorGradient);
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 	/// Add this ability to a character and it'll rotate or flip to face the direction of movement or the weapon's, or both, or none
 	/// Only add this ability to a 2D character
 	/// </summary>
-	[MMHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Rotation 2D")]
 	public class CharacterRotation2D : CharacterAbility
 	{
@@ -28,7 +28,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether the character is being applied a forced rotation")]
 		public bool ForcedRotation = false;
 		/// the forced rotation applied by an external script
-		[MMCondition("ForcedRotation", true)]
+		[PLCondition("ForcedRotation", true)]
 		[Tooltip("the forced rotation applied by an external script")]
 		public Vector3 ForcedRotationDirection;
 
@@ -50,11 +50,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
 		public float AbsoluteThresholdMovement = 0.5f;
 		/// the direction of the model
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction of the model")]
 		public Vector3 ModelDirection;
 		/// the direction of the model in angle values
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction of the model in angle values")]
 		public Vector3 ModelAngles;
 
@@ -201,7 +201,7 @@ namespace SpectralDepths.TopDown
 
 			_shouldRotateTowardsWeapon = true;
 			_rotationDirection = _characterHandleWeapon.WeaponAimComponent.CurrentAim.normalized;
-			MMDebug.DebugDrawArrow(this.transform.position, _rotationDirection, Color.red);
+			PLDebug.DebugDrawArrow(this.transform.position, _rotationDirection, Color.red);
             
 			float angle = Mathf.Atan2(_rotationDirection.y, _rotationDirection.x) * Mathf.Rad2Deg;
 
@@ -342,10 +342,10 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedAnimationParameter, _relativeSpeed.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedAnimationParameter, _relativeSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedAnimationParameter, _relativeSpeed.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedAnimationParameter, _relativeSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

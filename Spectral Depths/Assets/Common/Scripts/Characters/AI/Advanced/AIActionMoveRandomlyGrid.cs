@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -113,7 +113,7 @@ namespace SpectralDepths.TopDown
 				_temp3DVector = _direction;
 				_temp3DVector.z = _direction.y;
 				_temp3DVector.y = 0;
-				_hit = MMDebug.Raycast3D(_collider.bounds.center, _temp3DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
+				_hit = PLDebug.Raycast3D(_collider.bounds.center, _temp3DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
 				if (_topDownController.CollidingWithCardinalObstacle)
 				{
 					PickNewDirection();
@@ -122,7 +122,7 @@ namespace SpectralDepths.TopDown
 			else
 			{
 				_temp2DVector = _direction;
-				_hit2D = MMDebug.RayCast(_collider2D.bounds.center, _temp2DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
+				_hit2D = PLDebug.RayCast(_collider2D.bounds.center, _temp2DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
 				if (_topDownController.CollidingWithCardinalObstacle)
 				{
 					PickNewDirection();
@@ -144,7 +144,7 @@ namespace SpectralDepths.TopDown
 					while (retries < 10)
 					{
 						retries++;
-						int random = MMMaths.RollADice(4) - 1;
+						int random = PLMaths.RollADice(4) - 1;
 						_temp3DVector = _raycastDirections3D[random];
                         
 						if (Avoid180)
@@ -159,7 +159,7 @@ namespace SpectralDepths.TopDown
 							}
 						}
 
-						_hit = MMDebug.Raycast3D(_collider.bounds.center, _temp3DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
+						_hit = PLDebug.Raycast3D(_collider.bounds.center, _temp3DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
 						if (_hit.collider == null)
 						{
 							_direction = _temp3DVector;
@@ -174,7 +174,7 @@ namespace SpectralDepths.TopDown
 					while (retries < 10)
 					{
 						retries++;
-						int random = MMMaths.RollADice(4) - 1;
+						int random = PLMaths.RollADice(4) - 1;
 						_temp2DVector = _raycastDirections2D[random];
 
 						if (Avoid180)
@@ -189,7 +189,7 @@ namespace SpectralDepths.TopDown
 							}
 						}
 
-						_hit2D = MMDebug.RayCast(_collider2D.bounds.center, _temp2DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
+						_hit2D = PLDebug.RayCast(_collider2D.bounds.center, _temp2DVector, ObstaclesDetectionDistance, ObstacleLayerMask, Color.gray);
 						if (_hit2D.collider == null)
 						{
 							_direction = _temp2DVector;

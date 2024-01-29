@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// Add this ability to a character, and it'll be able to rotate to face the movement's direction or the weapon's rotation
 	/// </summary>
-	[MMHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Orientation 3D")]
 	public class CharacterOrientation3D : CharacterAbility
 	{
@@ -32,27 +32,27 @@ namespace SpectralDepths.TopDown
 		[Tooltip("If this is true, we'll rotate our model towards the direction")]
 		public bool ShouldRotateToFaceMovementDirection = true;
 		/// the current rotation mode
-		[MMCondition("ShouldRotateToFaceMovementDirection", true)]
+		[PLCondition("ShouldRotateToFaceMovementDirection", true)]
 		[Tooltip("the current rotation mode")]
 		public RotationSpeeds MovementRotationSpeed = RotationSpeeds.Instant;
 		/// the object we want to rotate towards direction. If left empty, we'll use the Character's model
-		[MMCondition("ShouldRotateToFaceMovementDirection", true)]
+		[PLCondition("ShouldRotateToFaceMovementDirection", true)]
 		[Tooltip("the object we want to rotate towards direction. If left empty, we'll use the Character's model")]
 		public GameObject MovementRotatingModel;
 		/// the speed at which to rotate towards direction (smooth and absolute only)
-		[MMCondition("ShouldRotateToFaceMovementDirection", true)]
+		[PLCondition("ShouldRotateToFaceMovementDirection", true)]
 		[Tooltip("the speed at which to rotate towards direction (smooth and absolute only)")]
 		public float RotateToFaceMovementDirectionSpeed = 10f;
 		/// the threshold after which we start rotating (absolute mode only)
-		[MMCondition("ShouldRotateToFaceMovementDirection", true)]
+		[PLCondition("ShouldRotateToFaceMovementDirection", true)]
 		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
 		public float AbsoluteThresholdMovement = 0.5f;
 		/// the direction of the model
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction of the model")]
 		public Vector3 ModelDirection;
 		/// the direction of the model in angle values
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction of the model in angle values")]
 		public Vector3 ModelAngles;
 
@@ -62,23 +62,23 @@ namespace SpectralDepths.TopDown
 		[Tooltip("If this is true, we'll rotate our model towards the weapon's direction")]
 		public bool ShouldRotateToFaceWeaponDirection = true;
 		/// the current rotation mode
-		[MMCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
 		[Tooltip("the current rotation mode")]
 		public RotationSpeeds WeaponRotationSpeed = RotationSpeeds.Instant;
 		/// the object we want to rotate towards direction. If left empty, we'll use the Character's model
-		[MMCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
 		[Tooltip("the object we want to rotate towards direction. If left empty, we'll use the Character's model")]
 		public GameObject WeaponRotatingModel;
 		/// the speed at which to rotate towards direction (smooth and absolute only)
-		[MMCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
 		[Tooltip("the speed at which to rotate towards direction (smooth and absolute only)")]
 		public float RotateToFaceWeaponDirectionSpeed = 10f;
 		/// the threshold after which we start rotating (absolute mode only)
-		[MMCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
 		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
 		public float AbsoluteThresholdWeapon = 0.5f;
 		/// the threshold after which we start rotating (absolute mode only)
-		[MMCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
 		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
 		public bool LockVerticalRotation = true;
 
@@ -97,7 +97,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether the character is being applied a forced rotation")]
 		public bool ForcedRotation = false;
 		/// the forced rotation applied by an external script
-		[MMCondition("ForcedRotation", true)]
+		[PLCondition("ForcedRotation", true)]
 		[Tooltip("the forced rotation applied by an external script")]
 		public Vector3 ForcedRotationDirection;
 
@@ -286,7 +286,7 @@ namespace SpectralDepths.TopDown
 
 			_weaponRotationDirection = _rotationDirection;
 
-			MMDebug.DebugDrawArrow(this.transform.position, _rotationDirection, Color.red);
+			PLDebug.DebugDrawArrow(this.transform.position, _rotationDirection, Color.red);
 
 			// if the rotation mode is instant, we simply rotate to face our direction
 			if (WeaponRotationSpeed == RotationSpeeds.Instant)
@@ -374,9 +374,9 @@ namespace SpectralDepths.TopDown
             
 			_relativeMaximum = _character.transform.TransformVector(Vector3.one);
 			
-			_remappedSpeed.x = MMMaths.Remap(_relativeSpeed.x, 0f, maxSpeed, 0f, _relativeMaximum.x);
-			_remappedSpeed.y = MMMaths.Remap(_relativeSpeed.y, 0f, maxSpeed, 0f, _relativeMaximum.y);
-			_remappedSpeed.z = MMMaths.Remap(_relativeSpeed.z, 0f, maxSpeed, 0f, _relativeMaximum.z);
+			_remappedSpeed.x = PLMaths.Remap(_relativeSpeed.x, 0f, maxSpeed, 0f, _relativeMaximum.x);
+			_remappedSpeed.y = PLMaths.Remap(_relativeSpeed.y, 0f, maxSpeed, 0f, _relativeMaximum.y);
+			_remappedSpeed.z = PLMaths.Remap(_relativeSpeed.z, 0f, maxSpeed, 0f, _relativeMaximum.z);
 			
 			// relative speed normalized
 			_relativeSpeedNormalized = _relativeSpeed.normalized;
@@ -456,16 +456,16 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _rotationSpeeddAnimationParameter, _rotationSpeed, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedAnimationParameter, _relativeSpeed.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedAnimationParameter, _relativeSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _remappedForwardSpeedAnimationParameter, _remappedSpeed.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _remappedLateralSpeedAnimationParameter, _remappedSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _remappedSpeedNormalizedAnimationParameter, _remappedSpeed.magnitude, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _yRotationOffsetAnimationParameter, _yRotationOffset, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _yRotationOffsetSmoothedAnimationParameter, _yRotationOffsetSmoothed, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _rotationSpeeddAnimationParameter, _rotationSpeed, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedAnimationParameter, _relativeSpeed.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedAnimationParameter, _relativeSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _remappedForwardSpeedAnimationParameter, _remappedSpeed.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _remappedLateralSpeedAnimationParameter, _remappedSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeForwardSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.z, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _relativeLateralSpeedNormalizedAnimationParameter, _relativeSpeedNormalized.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _remappedSpeedNormalizedAnimationParameter, _remappedSpeed.magnitude, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _yRotationOffsetAnimationParameter, _yRotationOffset, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _yRotationOffsetSmoothedAnimationParameter, _yRotationOffsetSmoothed, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

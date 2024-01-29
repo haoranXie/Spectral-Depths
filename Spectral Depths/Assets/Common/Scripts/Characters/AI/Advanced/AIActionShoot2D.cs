@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
 		public bool AimAtTarget = false;
 		/// whether or not to only perform aim when in this state
 		[Tooltip("whether or not to only perform aim when in this state")]
-		[MMCondition("AimAtTarget")]
+		[PLCondition("AimAtTarget")]
 		public bool OnlyAimWhenInState = false;
 
 		protected CharacterOrientation2D _orientation2D;
@@ -150,7 +150,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (_weaponAim == null)
 				{
-					_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+					_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 				}
 
 				if (_weaponAim != null)
@@ -190,8 +190,8 @@ namespace SpectralDepths.TopDown
 			_shooting = true;
 			if (TargetHandleWeaponAbility.CurrentWeapon != null)
 			{
-				_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
-				_projectileWeapon = TargetHandleWeaponAbility.CurrentWeapon.gameObject.MMGetComponentNoAlloc<ProjectileWeapon>();	
+				_weaponAim = TargetHandleWeaponAbility.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
+				_projectileWeapon = TargetHandleWeaponAbility.CurrentWeapon.gameObject.PLGetComponentNoAlloc<ProjectileWeapon>();	
 			}
 		}
 

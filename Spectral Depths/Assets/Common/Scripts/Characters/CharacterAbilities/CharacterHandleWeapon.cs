@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -30,7 +30,7 @@ namespace SpectralDepths.TopDown
 		[Header("Feedbacks")]
 		/// a feedback that gets triggered at the character level everytime the weapon is used
 		[Tooltip("a feedback that gets triggered at the character level everytime the weapon is used")]
-		public MMFeedbacks WeaponUseFeedback;
+		public PLFeedbacks WeaponUseFeedback;
 
 		[Header("Binding")]
 		/// the position the weapon will be attached to. If left blank, will be this.transform.
@@ -64,7 +64,7 @@ namespace SpectralDepths.TopDown
 		public bool ForceWeaponAimControl = false;
 		/// if ForceWeaponAimControl is true, the AimControls mode to apply to all weapons equipped by this character
 		[Tooltip("if ForceWeaponAimControl is true, the AimControls mode to apply to all weapons equipped by this character")]
-		[MMCondition("ForceWeaponAimControl", true)]
+		[PLCondition("ForceWeaponAimControl", true)]
 		public WeaponAim.AimControls ForcedWeaponAimControl = WeaponAim.AimControls.PrimaryMovement;
 		/// if this is true, the character will continuously fire its weapon
 		[Tooltip("if this is true, the character will continuously fire its weapon")]
@@ -75,22 +75,22 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether or not attack input should be buffered, letting you prepare an attack while another is being performed, making it easier to chain them")]
 		public bool BufferInput;
 		/// if this is true, every new input will prolong the buffer
-		[MMCondition("BufferInput", true)]
+		[PLCondition("BufferInput", true)]
 		[Tooltip("if this is true, every new input will prolong the buffer")]
 		public bool NewInputExtendsBuffer;
 		/// the maximum duration for the buffer, in seconds
-		[MMCondition("BufferInput", true)]
+		[PLCondition("BufferInput", true)]
 		[Tooltip("the maximum duration for the buffer, in seconds")]
 		public float MaximumBufferDuration = 0.25f;
 		/// if this is true, and if this character is using GridMovement, then input will only be triggered when on a perfect tile
-		[MMCondition("BufferInput", true)]
+		[PLCondition("BufferInput", true)]
 		[Tooltip("if this is true, and if this character is using GridMovement, then input will only be triggered when on a perfect tile")]
 		public bool RequiresPerfectTile = false;
         
 		[Header("Debug")]
 
 		/// the weapon currently equipped by the Character
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the weapon currently equipped by the Character")]
 		public Weapon CurrentWeapon;
 
@@ -243,33 +243,33 @@ namespace SpectralDepths.TopDown
 				ShootStart();
 			}
 			
-			if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == MMInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == MMInput.ButtonStates.ButtonDown)))
+			if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonDown)))
 			{
 				ShootStart();
 			}
 
 			bool buttonPressed =
-				(_inputManager.ShootButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed) ||
-				(_inputManager.ShootAxis == MMInput.ButtonStates.ButtonPressed); 
+				(_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonPressed) ||
+				(_inputManager.ShootAxis == PLInput.ButtonStates.ButtonPressed); 
                 
 			if (inputAuthorized && ContinuousPress && (CurrentWeapon.TriggerMode == Weapon.TriggerModes.Auto) && buttonPressed)
 			{
 				ShootStart();
 			}
             
-			if (_inputManager.ReloadButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.ReloadButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				Reload();
 			}
 
-			if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == MMInput.ButtonStates.ButtonUp) || (_inputManager.ShootAxis == MMInput.ButtonStates.ButtonUp)))
+			if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonUp) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonUp)))
 			{
 				ShootStop();
 				CurrentWeapon.WeaponInputReleased();
 			}
 
 			if ((CurrentWeapon.WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBetweenUses)
-			    && ((_inputManager.ShootAxis == MMInput.ButtonStates.Off) && (_inputManager.ShootButton.State.CurrentState == MMInput.ButtonStates.Off))
+			    && ((_inputManager.ShootAxis == PLInput.ButtonStates.Off) && (_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.Off))
 			    && !(UseSecondaryAxisThresholdToShoot && (_inputManager.SecondaryMovement.magnitude > _inputManager.Threshold.magnitude)))
 			{
 				CurrentWeapon.WeaponInputStop();
@@ -442,7 +442,7 @@ namespace SpectralDepths.TopDown
 						{
 							if (parameter.name == CurrentWeapon.EquippedAnimationParameter)
 							{
-								MMAnimatorExtensions.UpdateAnimatorBool(_animator, CurrentWeapon.EquippedAnimationParameter, false);
+								PLAnimatorExtensions.UpdateAnimatorBool(_animator, CurrentWeapon.EquippedAnimationParameter, false);
 							}
 						}
 					}
@@ -484,7 +484,7 @@ namespace SpectralDepths.TopDown
 			CurrentWeapon.SetOwner(_character, this);
 			CurrentWeapon.WeaponID = weaponID;
 			CurrentWeapon.FlipWeapon();
-			_weaponAim = CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+			_weaponAim = CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 
 			HandleWeaponAim();
 
@@ -526,7 +526,7 @@ namespace SpectralDepths.TopDown
 			{
 				_weaponIK.SetHandles(CurrentWeapon.LeftHandHandle, CurrentWeapon.RightHandHandle);
 			}
-			_projectileWeapon = CurrentWeapon.gameObject.MMFGetComponentNoAlloc<ProjectileWeapon>();
+			_projectileWeapon = CurrentWeapon.gameObject.PLFGetComponentNoAlloc<ProjectileWeapon>();
 			if (_projectileWeapon != null)
 			{
 				_projectileWeapon.SetProjectileSpawnTransform(ProjectileSpawn);
@@ -645,15 +645,15 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _weaponEquippedAnimationParameter, (CurrentWeapon != null), _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _weaponEquippedAnimationParameter, (CurrentWeapon != null), _character._animatorParameters, _character.RunAnimatorSanityChecks);
 			if (CurrentWeapon == null)
 			{
-				MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _weaponEquippedIDAnimationParameter, -1, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorInteger(_animator, _weaponEquippedIDAnimationParameter, -1, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 				return;
 			}
 			else
 			{
-				MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _weaponEquippedIDAnimationParameter, CurrentWeapon.WeaponAnimationID, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorInteger(_animator, _weaponEquippedIDAnimationParameter, CurrentWeapon.WeaponAnimationID, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 			}
 		}
 

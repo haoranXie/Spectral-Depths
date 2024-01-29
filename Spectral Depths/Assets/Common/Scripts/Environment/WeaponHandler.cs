@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -17,9 +17,9 @@ namespace SpectralDepths.TopDown
         public Weapon TargetWeapon;
 
         [Header("Debug")] 
-        [MMInspectorButton("StartShooting")]
+        [PLInspectorButton("StartShooting")]
         public bool StartShootingButton;
-        [MMInspectorButton("StopShooting")]
+        [PLInspectorButton("StopShooting")]
         public bool StopShootingButton;
 
         /// <summary>

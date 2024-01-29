@@ -1,22 +1,22 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// Add this component to a character and it'll make your character fall down holes in 2D
 	/// </summary>
-	[MMHiddenProperties("AbilityStartFeedbacks")]
+	[PLHiddenProperties("AbilityStartFeedbacks")]
 	//[RequireComponent(typeof(TopDownController2D))]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Fall Down Holes 2D")]
 	public class CharacterFallDownHoles2D : CharacterAbility
 	{
 		/// the feedback to play when falling
 		[Tooltip("the feedback to play when falling")]
-		public MMFeedbacks FallingFeedback;
+		public PLFeedbacks FallingFeedback;
 
 		protected Collider2D _holesTest;
 		protected const string _fallingDownHoleAnimationParameterName = "FallingDownHole";
@@ -73,7 +73,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _fallingDownHoleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.FallingDownHole), _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _fallingDownHoleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.FallingDownHole), _character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

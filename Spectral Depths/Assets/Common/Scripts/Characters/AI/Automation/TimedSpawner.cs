@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
 
 namespace SpectralDepths.TopDown
@@ -13,7 +13,7 @@ namespace SpectralDepths.TopDown
 	public class TimedSpawner : TopDownMonoBehaviour 
 	{
 		/// the object pooler associated to this spawner
-		public MMObjectPooler ObjectPooler { get; set; }
+		public PLObjectPooler ObjectPooler { get; set; }
 		
 		[Header("Spawn")]
 		/// whether or not this spawner can spawn
@@ -27,7 +27,7 @@ namespace SpectralDepths.TopDown
 		public float MaxFrequency = 1f;
 
 		[Header("Debug")]
-		[MMInspectorButton("ToggleSpawn")]
+		[PLInspectorButton("ToggleSpawn")]
 		/// a test button to spawn an object
 		public bool CanSpawnButton;
 
@@ -47,13 +47,13 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Initialization()
 		{
-			if (GetComponent<MMMultipleObjectPooler>() != null)
+			if (GetComponent<PLMultipleObjectPooler>() != null)
 			{
-				ObjectPooler = GetComponent<MMMultipleObjectPooler>();
+				ObjectPooler = GetComponent<PLMultipleObjectPooler>();
 			}
-			if (GetComponent<MMSimpleObjectPooler>() != null)
+			if (GetComponent<PLSimpleObjectPooler>() != null)
 			{
-				ObjectPooler = GetComponent<MMSimpleObjectPooler>();
+				ObjectPooler = GetComponent<PLSimpleObjectPooler>();
 			}
 			if (ObjectPooler == null)
 			{
@@ -84,17 +84,17 @@ namespace SpectralDepths.TopDown
 
 			// mandatory checks
 			if (nextGameObject==null) { return; }
-			if (nextGameObject.GetComponent<MMPoolableObject>()==null)
+			if (nextGameObject.GetComponent<PLPoolableObject>()==null)
 			{
 				throw new Exception(gameObject.name+" is trying to spawn objects that don't have a PoolableObject component.");		
 			}	
 
 			// we activate the object
 			nextGameObject.gameObject.SetActive(true);
-			nextGameObject.gameObject.MMGetComponentNoAlloc<MMPoolableObject>().TriggerOnSpawnComplete();
+			nextGameObject.gameObject.PLGetComponentNoAlloc<PLPoolableObject>().TriggerOnSpawnComplete();
 
 			// we check if our object has an Health component, and if yes, we revive our character
-			Health objectHealth = nextGameObject.gameObject.MMGetComponentNoAlloc<Health> ();
+			Health objectHealth = nextGameObject.gameObject.PLGetComponentNoAlloc<Health> ();
 			if (objectHealth != null) 
 			{
 				objectHealth.Revive ();

@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {	
@@ -31,9 +31,9 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the selected teleportation mode ")]
 		public TeleportationModes TeleportationMode = TeleportationModes.Instant;
 		/// the curve to apply to the teleportation tween 
-		[MMEnumCondition("TeleportationMode", (int)TeleportationModes.Tween)]
+		[PLEnumCondition("TeleportationMode", (int)TeleportationModes.Tween)]
 		[Tooltip("the curve to apply to the teleportation tween")]
-		public MMTween.MMTweenCurve TweenCurve = MMTween.MMTweenCurve.EaseInCubic;
+		public PLTween.PLTweenCurve TweenCurve = PLTween.PLTweenCurve.EaseInCubic;
 		/// whether or not to maintain the x value of the teleported object on exit
 		[Tooltip("whether or not to maintain the x value of the teleported object on exit")]
 		public bool MaintainXEntryPositionOnExit = false;
@@ -66,37 +66,37 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the target room")]
 		public Room TargetRoom;
         
-		[Header("MMFader Transition")]
+		[Header("PLFader Transition")]
 
 		/// if this is true, a fade to black will occur when teleporting
 		[Tooltip("if this is true, a fade to black will occur when teleporting")]
 		public bool TriggerFade = false;
 		/// the ID of the fader to target
-		[MMCondition("TriggerFade", true)]
+		[PLCondition("TriggerFade", true)]
 		[Tooltip("the ID of the fader to target")]
 		public int FaderID = 0;
 		/// the curve to use to fade to black
 		[Tooltip("the curve to use to fade to black")]
-		public MMTweenType FadeTween = new MMTweenType(MMTween.MMTweenCurve.EaseInCubic);
+		public PLTweenType FadeTween = new PLTweenType(PLTween.PLTweenCurve.EaseInCubic);
 		/// if this is true, fade events will ignore timescale
 		[Tooltip("if this is true, fade events will ignore timescale")]
 		public bool FadeIgnoresTimescale = false;
 
 		[Header("Mask")]
 
-		/// whether or not we should ask to move a MMSpriteMask on activation
-		[Tooltip("whether or not we should ask to move a MMSpriteMask on activation")]
+		/// whether or not we should ask to move a PLSpriteMask on activation
+		[Tooltip("whether or not we should ask to move a PLSpriteMask on activation")]
 		public bool MoveMask = true;
 		/// the curve to move the mask along to
-		[MMCondition("MoveMask", true)]
+		[PLCondition("MoveMask", true)]
 		[Tooltip("the curve to move the mask along to")]
-		public MMTween.MMTweenCurve MoveMaskCurve = MMTween.MMTweenCurve.EaseInCubic;
+		public PLTween.PLTweenCurve MoveMaskCurve = PLTween.PLTweenCurve.EaseInCubic;
 		/// the method to move the mask
-		[MMCondition("MoveMask", true)]
+		[PLCondition("MoveMask", true)]
 		[Tooltip("the method used to move the mask")]
-		public MMSpriteMaskEvent.MMSpriteMaskEventTypes MoveMaskMethod = MMSpriteMaskEvent.MMSpriteMaskEventTypes.ExpandAndMoveToNewPosition;
+		public PLSpriteMaskEvent.PLSpriteMaskEventTypes MoveMaskMethod = PLSpriteMaskEvent.PLSpriteMaskEventTypes.ExpandAndMoveToNewPosition;
 		/// the duration of the mask movement (usually the same as the DelayBetweenFades
-		[MMCondition("MoveMask", true)]
+		[PLCondition("MoveMask", true)]
 		[Tooltip("the duration of the mask movement (usually the same as the DelayBetweenFades")]
 		public float MoveMaskDuration = 0.2f;
 
@@ -263,12 +263,12 @@ namespace SpectralDepths.TopDown
 		{
 			if (CameraMode == CameraModes.TeleportCamera)
 			{
-				MMCameraEvent.Trigger(MMCameraEventTypes.StopFollowing);
+				PLCameraEvent.Trigger(PLCameraEventTypes.StopFollowing);
 			}
 
 			if (FreezeTime)
 			{
-				MMTimeScaleEvent.Trigger(MMTimeScaleMethods.For, 0f, 0f, false, 0f, true);
+				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, 0f, 0f, false, 0f, true);
 			}
 
 			if (FreezeCharacter && (_player != null))
@@ -285,7 +285,7 @@ namespace SpectralDepths.TopDown
 		{            
 			if (TriggerFade)
 			{
-				MMFadeInEvent.Trigger(FadeOutDuration, FadeTween, FaderID, FadeIgnoresTimescale, LevelManager.Instance.Players[0].transform.position);
+				PLFadeInEvent.Trigger(FadeOutDuration, FadeTween, FaderID, FadeIgnoresTimescale, LevelManager.Instance.Players[0].transform.position);
 			}
 		}
 
@@ -294,7 +294,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void AfterFadeOut(GameObject collider)
 		{   
-			#if MM_CINEMACHINE         
+			#if PL_CINEMACHINE         
 			TeleportCollider(collider);
 
 			if (AddToDestinationIgnoreList)
@@ -304,8 +304,8 @@ namespace SpectralDepths.TopDown
             
 			if (CameraMode == CameraModes.CinemachinePriority)
 			{
-				MMCameraEvent.Trigger(MMCameraEventTypes.ResetPriorities);
-				MMCinemachineBrainEvent.Trigger(MMCinemachineBrainEventTypes.ChangeBlendDuration, DelayBetweenFades);
+				PLCameraEvent.Trigger(PLCameraEventTypes.ResetPriorities);
+				PLCinemachineBrainEvent.Trigger(PLCinemachineBrainEventTypes.ChangeBlendDuration, DelayBetweenFades);
 			}
 
 			if (CurrentRoom != null)
@@ -320,7 +320,7 @@ namespace SpectralDepths.TopDown
 				{
 					TargetRoom.VirtualCamera.Priority = 10;	
 				}
-				MMSpriteMaskEvent.Trigger(MoveMaskMethod, (Vector2)TargetRoom.RoomColliderCenter, TargetRoom.RoomColliderSize, MoveMaskDuration, MoveMaskCurve);
+				PLSpriteMaskEvent.Trigger(MoveMaskMethod, (Vector2)TargetRoom.RoomColliderCenter, TargetRoom.RoomColliderSize, MoveMaskDuration, MoveMaskCurve);
 			}
 			#endif
 		}
@@ -370,7 +370,7 @@ namespace SpectralDepths.TopDown
 			while (LocalTime - startedAt < DelayBetweenFades)
 			{
 				float elapsedTime = LocalTime - startedAt;
-				collider.transform.position = MMTween.Tween(elapsedTime, 0f, DelayBetweenFades, origin, destination, TweenCurve);
+				collider.transform.position = PLTween.Tween(elapsedTime, 0f, DelayBetweenFades, origin, destination, TweenCurve);
 				yield return null;
 			}
 			_ignoreList.Remove(collider.transform);
@@ -381,11 +381,11 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void AfterDelayBetweenFades(GameObject collider)
 		{
-			MMCameraEvent.Trigger(MMCameraEventTypes.StartFollowing);
+			PLCameraEvent.Trigger(PLCameraEventTypes.StartFollowing);
 
 			if (TriggerFade)
 			{
-				MMFadeOutEvent.Trigger(FadeInDuration, FadeTween, FaderID, FadeIgnoresTimescale, LevelManager.Instance.Players[0].transform.position);
+				PLFadeOutEvent.Trigger(FadeInDuration, FadeTween, FaderID, FadeIgnoresTimescale, LevelManager.Instance.Players[0].transform.position);
 			}
 		}
 
@@ -415,7 +415,7 @@ namespace SpectralDepths.TopDown
 
 			if (FreezeTime)
 			{
-				MMTimeScaleEvent.Trigger(MMTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);
+				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);
 			}
 		}
 
@@ -452,16 +452,16 @@ namespace SpectralDepths.TopDown
 			if (Destination != null)
 			{
 				// draws an arrow from this teleporter to its destination
-				MMDebug.DrawGizmoArrow(this.transform.position, (Destination.transform.position + Destination.ExitOffset) - this.transform.position, Color.cyan, 1f, 25f);
+				PLDebug.DrawGizmoArrow(this.transform.position, (Destination.transform.position + Destination.ExitOffset) - this.transform.position, Color.cyan, 1f, 25f);
 				// draws a point at the exit position 
-				MMDebug.DebugDrawCross(this.transform.position + ExitOffset, 0.5f, Color.yellow);
-				MMDebug.DrawPoint(this.transform.position + ExitOffset, Color.yellow, 0.5f);
+				PLDebug.DebugDrawCross(this.transform.position + ExitOffset, 0.5f, Color.yellow);
+				PLDebug.DrawPoint(this.transform.position + ExitOffset, Color.yellow, 0.5f);
 			}
 
 			if (TargetRoom != null)
 			{
 				// draws an arrow to the destination room
-				MMDebug.DrawGizmoArrow(this.transform.position, TargetRoom.transform.position - this.transform.position, MMColors.Pink, 1f, 25f);
+				PLDebug.DrawGizmoArrow(this.transform.position, TargetRoom.transform.position - this.transform.position, PLColors.Pink, 1f, 25f);
 			}
 		}
 	}
