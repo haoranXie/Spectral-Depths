@@ -12,6 +12,10 @@ namespace DIALOGUE
         public string dialogue;
         public string commands;
 
+        public bool hasSpeaker => speaker != string.Empty; //Checks if have speaker
+        public bool hasDialogue => dialogue != string.Empty; //Checks if have dialogue
+        public bool hasCommands => commands != string.Empty; //Checks if have commands
+
         public DialogueLine(string speaker, string dialogue, string commands)
         {
             this.speaker = speaker;
