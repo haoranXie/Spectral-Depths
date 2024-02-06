@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-//Logic controller for a DialogueContainer's speaker name field. Control visibility and other logic independently
-public class NameContainer : MonoBehaviour
+namespace DIALOGUE
 {
-    [SerializeField] private GameObject root;
-    [SerializeField] private TextMeshProUGUI nameText;
-
-    public void show(string nameToShow = "")
+    [System.Serializable]
+    //Logic controller for a DialogueContainer's speaker name field. Control visibility and other logic independently
+    public class NameContainer
     {
-        root.SetActive(true);
+        [SerializeField] private GameObject root;
+        [SerializeField] private TextMeshProUGUI nameText;
 
-        if (nameToShow != string.Empty)
-            nameText.text = nameToShow;
-    }
+        public void Show(string nameToShow = "")
+        {
+            root.SetActive(true);
 
-    public void hide()
-    {
-        root.SetActive(false);
+            //Shows name if there is name
+            if (nameToShow != string.Empty)
+                nameText.text = nameToShow;
+        }
+
+        public void Hide()
+        {
+            root.SetActive(false);
+        }
     }
 }

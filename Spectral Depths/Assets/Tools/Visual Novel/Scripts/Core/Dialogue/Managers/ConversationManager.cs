@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace DIALOGUE
 {
@@ -12,6 +13,20 @@ namespace DIALOGUE
 
         public bool isRunning => process != null; //helps check if it's already running so only one conversation runs at a time
 
+        private TextArchitect architect = null;
+        private bool userPrompt = false;
+
+        public ConversationManager(TextArchitect architect)
+        {
+            this.architect = architect;
+            dialogueSystem.onUserPrompt_Next += OnUserPrompt_Next; //When onUserPrompt_Next event runs, it will trigger the method OnUserPrompt_Next;
+        }
+
+        //Switches userPrompt to true so that in Line_RunDialogue it will cause the text to complete
+        private void OnUserPrompt_Next()
+        {
+            userPrompt = true;
+        }
         public void StartConversation(List<string> conversation)
         {
             StopConversation(); //Stops conversation if there is already one going on
@@ -52,12 +67,49 @@ namespace DIALOGUE
 
         IEnumerator Line_RunDialogue(DialogueLine line)
         {
-            yield return null;
+            //Show or hide the speaker name if there is one present
+            if (line.hasSpeaker)
+                dialogueSystem.ShowSpeakerName(line.speaker);
+            else
+                dialogueSystem.HideSpeakerName();
+
+            //Build dialogue
+            yield return BuildDialogue(line.dialogue);
+
+            //Wait for user input
+            yield return WaitForUserInput();
         }
 
         IEnumerator Line_RunCommands(DialogueLine line)
         {
+            Debug.Log(line.commands);
             yield return null;
+        }
+
+        //Builds dialogue and uses clicks from user to instantly complete build
+        IEnumerator BuildDialogue(string dialogue)
+        {
+            architect.Build(dialogue);
+
+            while (architect.isBuilding)
+            {
+                if (userPrompt)
+                {
+                    architect.ForceComplete();
+
+                    userPrompt = false;
+                }
+
+                yield return null;
+            }
+        }
+
+        IEnumerator WaitForUserInput()
+        {
+            while (!userPrompt)
+                yield return null;
+
+            userPrompt = false;
         }
     }
 }

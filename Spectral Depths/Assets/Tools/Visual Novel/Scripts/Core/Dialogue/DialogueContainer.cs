@@ -14,7 +14,7 @@ namespace DIALOGUE
         public GameObject root;
 
         //Displays what character is talking
-        public TextMeshProUGUI nameText;
+        public NameContainer nameContainer;
 
         //Displays the correct dialogue
         public TextMeshProUGUI dialogueText;
