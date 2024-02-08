@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using  MoreMountains.Tools;
+using  SpectralDepths.Tools;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// This component, added on an empty object in your level will handle the generation of a unique and randomized tilemap
 	/// </summary>
-	public class TilemapLevelGenerator : MMTilemapGenerator
+	public class TilemapLevelGenerator : PLTilemapGenerator
 	{
 		[FormerlySerializedAs("GenerateOnStart")]
 		[Header("Spectral Depths Settings")]
@@ -27,7 +27,7 @@ namespace SpectralDepths.TopDown
 		public Tilemap ObstaclesTilemap; 
 		/// the tilemap containing the walls' shadows
 		[Tooltip("the tilemap containing the walls' shadows")]
-		public MMTilemapShadow WallsShadowTilemap;
+		public PLTilemapShadow WallsShadowTilemap;
 		/// the level manager
 		[Tooltip("the level manager")]
 		public LevelManager TargetLevelManager;
@@ -88,7 +88,7 @@ namespace SpectralDepths.TopDown
 			int width = UnityEngine.Random.Range(GridWidth.x, GridWidth.y);
 			int height = UnityEngine.Random.Range(GridHeight.x, GridHeight.y);
             
-			Vector3 spawnPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
+			Vector3 spawnPosition = PLTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
 			InitialSpawn.transform.position = spawnPosition;
 
 			Vector3 exitPosition = spawnPosition;
@@ -96,7 +96,7 @@ namespace SpectralDepths.TopDown
             
 			while ((Vector3.Distance(exitPosition, spawnPosition) < MinDistanceFromSpawnToExit) && (iterationsCount < _maxIterationsCount))
 			{
-				exitPosition = MMTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
+				exitPosition = PLTilemap.GetRandomPosition(ObstaclesTilemap, TargetGrid, width, height, false, width * height * 2);
 				Exit.transform.position = exitPosition;
 				iterationsCount++;
 			}

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {

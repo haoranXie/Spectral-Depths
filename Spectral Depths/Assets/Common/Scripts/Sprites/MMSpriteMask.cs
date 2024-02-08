@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace MoreMountains.Tools
+namespace SpectralDepths.Tools
 {
 	/// <summary>
 	/// An event type used to set a new size for the mask from any class
 	/// </summary>
-	public struct MMSpriteMaskEvent
+	public struct PLSpriteMaskEvent
 	{
-		public enum MMSpriteMaskEventTypes { MoveToNewPosition, ExpandAndMoveToNewPosition, DoubleMask }
+		public enum PLSpriteMaskEventTypes { MoveToNewPosition, ExpandAndMoveToNewPosition, DoubleMask }
 
-		public MMSpriteMaskEventTypes EventType;
+		public PLSpriteMaskEventTypes EventType;
 		public Vector2 NewPosition;
 		public Vector2 NewSize;
 		public float Duration;
-		public MMTween.MMTweenCurve Curve;
+		public PLTween.PLTweenCurve Curve;
 
-		public MMSpriteMaskEvent(MMSpriteMaskEventTypes eventType, Vector2 newPosition, Vector2 newSize, float duration, MMTween.MMTweenCurve curve)
+		public PLSpriteMaskEvent(PLSpriteMaskEventTypes eventType, Vector2 newPosition, Vector2 newSize, float duration, PLTween.PLTweenCurve curve)
 		{
 			EventType = eventType;
 			NewPosition = newPosition;
@@ -27,15 +27,15 @@ namespace MoreMountains.Tools
 			Curve = curve;
 		}
 
-		static MMSpriteMaskEvent e;
-		public static void Trigger(MMSpriteMaskEventTypes eventType, Vector2 newPosition, Vector2 newSize, float duration, MMTween.MMTweenCurve curve)
+		static PLSpriteMaskEvent e;
+		public static void Trigger(PLSpriteMaskEventTypes eventType, Vector2 newPosition, Vector2 newSize, float duration, PLTween.PLTweenCurve curve)
 		{
 			e.EventType = eventType;
 			e.NewPosition = newPosition;
 			e.NewSize = newSize;
 			e.Duration = duration;
 			e.Curve = curve;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace MoreMountains.Tools
 	/// This class will automatically look for sprite renderers, particle systems, tilemaps in the scene, and change their SpriteMaskInteraction settings according to the one set in the inspector
 	/// Use the NoMask tag on objects you don't want automatically setup
 	/// </summary>
-	public class MMSpriteMask : MonoBehaviour, MMEventListener<MMSpriteMaskEvent>
+	public class PLSpriteMask : MonoBehaviour, PLEventListener<PLSpriteMaskEvent>
 	{
 		/// the possible timescales this mask can operate on
 		public enum Timescales { Scaled, Unscaled }
@@ -145,7 +145,7 @@ namespace MoreMountains.Tools
 		/// <param name="newSize"></param>
 		/// <param name="duration"></param>
 		/// <param name="curve"></param>
-		public virtual void MoveMaskTo(Vector2 newPosition, Vector2 newSize, float duration, MMTween.MMTweenCurve curve)
+		public virtual void MoveMaskTo(Vector2 newPosition, Vector2 newSize, float duration, PLTween.PLTweenCurve curve)
 		{
 			StartCoroutine(MoveMaskToCoroutine(newPosition, newSize, duration, curve));            
 		}
@@ -158,7 +158,7 @@ namespace MoreMountains.Tools
 		/// <param name="newSize"></param>
 		/// <param name="duration"></param>
 		/// <param name="curve"></param>
-		public virtual void ExpandAndMoveMaskTo(Vector2 newPosition, Vector2 newSize, float duration, MMTween.MMTweenCurve curve)
+		public virtual void ExpandAndMoveMaskTo(Vector2 newPosition, Vector2 newSize, float duration, PLTween.PLTweenCurve curve)
 		{
 			StartCoroutine(ExpandAndMoveMaskToCoroutine(newPosition, newSize, duration, curve));
 		}
@@ -178,7 +178,7 @@ namespace MoreMountains.Tools
 		/// <param name="duration"></param>
 		/// <param name="curve"></param>
 		/// <returns></returns>
-		protected virtual IEnumerator MoveMaskToCoroutine(Vector2 newPosition, Vector2 newSize, float duration, MMTween.MMTweenCurve curve)
+		protected virtual IEnumerator MoveMaskToCoroutine(Vector2 newPosition, Vector2 newSize, float duration, PLTween.PLTweenCurve curve)
 		{
 			if (duration > 0)
 			{
@@ -192,8 +192,8 @@ namespace MoreMountains.Tools
 				{
 					float currentTime = MaskTime - startedAt;
 
-					_newPosition = MMTween.Tween(currentTime, 0f, duration, _initialPosition, _targetPosition, curve);
-					_newScale = MMTween.Tween(currentTime, 0f, duration, _initialScale, _targetScale, curve);
+					_newPosition = PLTween.Tween(currentTime, 0f, duration, _initialPosition, _targetPosition, curve);
+					_newScale = PLTween.Tween(currentTime, 0f, duration, _initialScale, _targetScale, curve);
 
 					this.transform.position = _newPosition;
 					this.transform.localScale = _newScale;
@@ -214,7 +214,7 @@ namespace MoreMountains.Tools
 		/// <param name="duration"></param>
 		/// <param name="curve"></param>
 		/// <returns></returns>
-		protected virtual IEnumerator ExpandAndMoveMaskToCoroutine(Vector2 newPosition, Vector2 newSize, float duration, MMTween.MMTweenCurve curve)
+		protected virtual IEnumerator ExpandAndMoveMaskToCoroutine(Vector2 newPosition, Vector2 newSize, float duration, PLTween.PLTweenCurve curve)
 		{
 			if (duration > 0)
 			{
@@ -239,8 +239,8 @@ namespace MoreMountains.Tools
 				{
 					float currentTime = MaskTime - startedAt;
 
-					_newPosition = MMTween.Tween(currentTime, 0f, (duration / 2f), _initialPosition, _targetPosition, curve);
-					_newScale = MMTween.Tween(currentTime, 0f, (duration / 2f), _initialScale, _targetScale, curve);
+					_newPosition = PLTween.Tween(currentTime, 0f, (duration / 2f), _initialPosition, _targetPosition, curve);
+					_newScale = PLTween.Tween(currentTime, 0f, (duration / 2f), _initialScale, _targetScale, curve);
 
 					this.transform.position = _newPosition;
 					this.transform.localScale = _newScale;
@@ -259,8 +259,8 @@ namespace MoreMountains.Tools
 				{
 					float currentTime = MaskTime - startedAt;
 
-					_newPosition = MMTween.Tween(currentTime, 0f, (duration / 2f), _initialPosition, _targetPosition, curve);
-					_newScale = MMTween.Tween(currentTime, 0f, (duration / 2f), _initialScale, _targetScale, curve);
+					_newPosition = PLTween.Tween(currentTime, 0f, (duration / 2f), _initialPosition, _targetPosition, curve);
+					_newScale = PLTween.Tween(currentTime, 0f, (duration / 2f), _initialScale, _targetScale, curve);
 
 					this.transform.position = _newPosition;
 					this.transform.localScale = _newScale;
@@ -297,7 +297,7 @@ namespace MoreMountains.Tools
 		/// Catches sprite mask events
 		/// </summary>
 		/// <param name="spriteMaskEvent"></param>
-		public virtual void OnMMEvent(MMSpriteMaskEvent spriteMaskEvent)
+		public virtual void OnMMEvent(PLSpriteMaskEvent spriteMaskEvent)
 		{
 			if (!CatchEvents)
 			{
@@ -306,10 +306,10 @@ namespace MoreMountains.Tools
 
 			switch(spriteMaskEvent.EventType)
 			{
-				case MMSpriteMaskEvent.MMSpriteMaskEventTypes.MoveToNewPosition:
+				case PLSpriteMaskEvent.PLSpriteMaskEventTypes.MoveToNewPosition:
 					MoveMaskTo(spriteMaskEvent.NewPosition, spriteMaskEvent.NewSize, spriteMaskEvent.Duration, spriteMaskEvent.Curve);
 					break;
-				case MMSpriteMaskEvent.MMSpriteMaskEventTypes.ExpandAndMoveToNewPosition:
+				case PLSpriteMaskEvent.PLSpriteMaskEventTypes.ExpandAndMoveToNewPosition:
 					ExpandAndMoveMaskTo(spriteMaskEvent.NewPosition, spriteMaskEvent.NewSize, spriteMaskEvent.Duration, spriteMaskEvent.Curve);
 					break;
 			}
@@ -320,7 +320,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMSpriteMaskEvent>();
+			this.PLEventStartListening<PLSpriteMaskEvent>();
 		}
 
 		/// <summary>
@@ -328,7 +328,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMSpriteMaskEvent>();
+			this.PLEventStopListening<PLSpriteMaskEvent>();
 		}
 	}
 }

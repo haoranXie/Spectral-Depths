@@ -6,7 +6,7 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// A scriptable object you can create assets from, to identify damage types
 	/// </summary>
-	[CreateAssetMenu(menuName = "MoreMountains/TopDownEngine/DamageType", fileName = "DamageType")]
+	[CreateAssetMenu(menuName = "SpectralDepths/TopDownEngine/DamageType", fileName = "DamageType")]
 	public class DamageType : ScriptableObject
 	{
 	}    

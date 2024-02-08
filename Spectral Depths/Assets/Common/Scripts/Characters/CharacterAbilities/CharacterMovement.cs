@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -244,7 +244,7 @@ namespace SpectralDepths.TopDown
 				yield break;
 			}
 			SetContextSpeedMultiplier(movementMultiplier);
-			yield return MMCoroutine.WaitFor(duration);
+			yield return PLCoroutine.WaitFor(duration);
 			ResetContextSpeedMultiplier();
 		}
 
@@ -526,7 +526,7 @@ namespace SpectralDepths.TopDown
 				}
 				foreach (AudioClip clip in TouchTheGroundSfx)
 				{
-					MMSoundManagerSoundPlayEvent.Trigger(clip, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);
+					PLSoundManagerSoundPlayEvent.Trigger(clip, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position);
 				}
 			}
 		}
@@ -603,9 +603,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, Mathf.Abs(_controller.CurrentMovement.magnitude),_character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _walkingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Walking),_character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Idle),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, Mathf.Abs(_controller.CurrentMovement.magnitude),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _walkingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Walking),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Idle),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

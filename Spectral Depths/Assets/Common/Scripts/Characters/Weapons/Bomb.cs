@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -45,7 +45,7 @@ namespace SpectralDepths.TopDown
 
 		protected float _timeSinceStart;
 		protected Renderer _renderer;
-		protected MMPoolableObject _poolableObject;
+		protected PLPoolableObject _poolableObject;
 		protected bool _flickering;
 		protected bool _damageAreaActive;
 		protected Color _initialColor;
@@ -74,7 +74,7 @@ namespace SpectralDepths.TopDown
 			DisableDamageArea ();
 
 			_propertyBlock = new MaterialPropertyBlock();
-			_renderer = gameObject.MMGetComponentNoAlloc<Renderer> ();
+			_renderer = gameObject.PLGetComponentNoAlloc<Renderer> ();
 			if (_renderer != null)
 			{
 				if (_renderer.sharedMaterial.HasProperty(MaterialPropertyName))
@@ -83,7 +83,7 @@ namespace SpectralDepths.TopDown
 				}
 			}
 
-			_poolableObject = gameObject.MMGetComponentNoAlloc<MMPoolableObject> ();
+			_poolableObject = gameObject.PLGetComponentNoAlloc<PLPoolableObject> ();
 			if (_poolableObject != null)
 			{
 				_poolableObject.LifeTime = 0;
@@ -108,7 +108,7 @@ namespace SpectralDepths.TopDown
 					// We make the bomb's sprite flicker
 					if (_renderer != null)
 					{
-						StartCoroutine(MMImage.Flicker(_renderer,_initialColor,_flickerColor,0.05f,(TimeBeforeExplosion - TimeBeforeFlicker)));	
+						StartCoroutine(PLImage.Flicker(_renderer,_initialColor,_flickerColor,0.05f,(TimeBeforeExplosion - TimeBeforeFlicker)));	
 					}
 				}
 			}
@@ -169,7 +169,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (ExplosionSfx!=null)
 			{
-				MMSoundManagerSoundPlayEvent.Trigger(ExplosionSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);
+				PLSoundManagerSoundPlayEvent.Trigger(ExplosionSfx, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position);
 			}
 		}
 

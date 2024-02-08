@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {	
@@ -39,7 +39,7 @@ namespace SpectralDepths.TopDown
 			}
 			else
 			{
-				MMSceneLoadingManager.LoadScene(LevelName);
+				PLSceneLoadingManager.LoadScene(LevelName);
 			}
 		}
 	}

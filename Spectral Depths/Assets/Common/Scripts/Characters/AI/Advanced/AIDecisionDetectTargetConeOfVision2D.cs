@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
-	/// This Decision will return true if its MMConeOfVision has detected at least one target, and will set it as the Brain's target
+	/// This Decision will return true if its PLConeOfVision has detected at least one target, and will set it as the Brain's target
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/AI/Decisions/AIDecisionDetectTargetConeOfVision2D")]
 	public class AIDecisionDetectTargetConeOfVision2D : AIDecision
@@ -18,17 +18,17 @@ namespace SpectralDepths.TopDown
 		[Header("Bindings")]
 		/// the cone of vision 2D to rotate
 		[Tooltip("the cone of vision 2D to rotate")]
-		public MMConeOfVision2D TargetConeOfVision2D;
+		public PLConeOfVision2D TargetConeOfVision2D;
 
 		/// <summary>
-		/// On Init we grab our MMConeOfVision
+		/// On Init we grab our PLConeOfVision
 		/// </summary>
 		public override void Initialization()
 		{
 			base.Initialization();
 			if (TargetConeOfVision2D == null)
 			{
-				TargetConeOfVision2D = this.gameObject.GetComponent<MMConeOfVision2D>(); 
+				TargetConeOfVision2D = this.gameObject.GetComponent<PLConeOfVision2D>(); 
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace SpectralDepths.TopDown
 		}
 
 		/// <summary>
-		/// If the MMConeOfVision has at least one target, it becomes our new brain target and this decision is true, otherwise it's false.
+		/// If the PLConeOfVision has at least one target, it becomes our new brain target and this decision is true, otherwise it's false.
 		/// </summary>
 		/// <returns></returns>
 		protected virtual bool DetectTarget()

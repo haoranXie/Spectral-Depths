@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown

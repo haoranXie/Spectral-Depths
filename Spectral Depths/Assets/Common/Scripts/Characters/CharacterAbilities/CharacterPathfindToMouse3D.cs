@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -24,7 +24,7 @@ namespace SpectralDepths.TopDown
 		[Header("OnClick")] 
 		/// a feedback to play at the position of the click
 		[Tooltip("a feedback to play at the position of the click")]
-		public MMFeedbacks OnClickFeedbacks;
+		public PLFeedbacks OnClickFeedbacks;
 
 		/// if this is true, a click or tap on a UI element will block the click and won't cause the character to move
 		[Tooltip("if this is true, a click or tap on a UI element will block the click and won't cause the character to move")]
@@ -78,7 +78,7 @@ namespace SpectralDepths.TopDown
 
 			if (UIShouldBlockInput)
 			{
-				testUI = MMGUI.PointOrTouchBlockedByUI();
+				testUI = PLGUI.PointOrTouchBlockedByUI();
 			}
             
 			if (Input.GetMouseButtonDown(MouseButtonIndex) && !testUI)

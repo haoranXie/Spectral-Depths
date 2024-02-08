@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.InventoryEngine;
 
 namespace SpectralDepths.TopDown
 {	
-	[CreateAssetMenu(fileName = "InventoryEngineKey", menuName = "MoreMountains/TopDownEngine/InventoryEngineKey", order = 1)]
+	[CreateAssetMenu(fileName = "InventoryEngineKey", menuName = "SpectralDepths/TopDownEngine/InventoryEngineKey", order = 1)]
 	[Serializable]
 	/// <summary>
 	/// Pickable key item

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 
 namespace SpectralDepths.TopDown
@@ -14,11 +14,11 @@ namespace SpectralDepths.TopDown
 	/// Spawns the player, handles checkpoints and respawn
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/Level Manager")]
-	public class LevelManager : MMSingleton<LevelManager>, MMEventListener<TopDownEngineEvent>
+	public class LevelManager : PLSingleton<LevelManager>, PLEventListener<TopDownEngineEvent>
 	{	
 		/// the prefab you want for your player
 		[Header("Instantiate Characters")]
-		[MMInformation("The LevelManager is responsible for handling spawn/respawn, checkpoints management and level bounds. Here you can define one or more playable characters for your level..",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("The LevelManager is responsible for handling spawn/respawn, checkpoints management and level bounds. Here you can define one or more playable characters for your level..",PLInformationAttribute.InformationType.Info,false)]
 		/// should the player IDs be auto attributed (usually yes)
 		[Tooltip("should the player IDs be auto attributed (usually yes)")]
 		public bool AutoAttributePlayerIDs = true;
@@ -27,7 +27,7 @@ namespace SpectralDepths.TopDown
 		public Character[] PlayerPrefabs ;
 
 		[Header("Characters already in the scene")]
-		[MMInformation("It's recommended to have the LevelManager instantiate your characters, but if instead you'd prefer to have them already present in the scene, just bind them in the list below.", MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("It's recommended to have the LevelManager instantiate your characters, but if instead you'd prefer to have them already present in the scene, just bind them in the list below.", PLInformationAttribute.InformationType.Info, false)]
 		/// a list of Characters already present in the scene before runtime. If this list is filled, PlayerPrefabs will be ignored
 		[Tooltip("a list of Characters already present in the scene before runtime. If this list is filled, PlayerPrefabs will be ignored")]
 		public List<Character> SceneCharacters;
@@ -47,7 +47,7 @@ namespace SpectralDepths.TopDown
         				
 		[Space(10)]
 		[Header("Intro and Outro durations")]
-		[MMInformation("Here you can specify the length of the fade in and fade out at the start and end of your level. You can also determine the delay before a respawn.",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Here you can specify the length of the fade in and fade out at the start and end of your level. You can also determine the delay before a respawn.",PLInformationAttribute.InformationType.Info,false)]
 		/// duration of the initial fade in (in seconds)
 		[Tooltip("the duration of the initial fade in (in seconds)")]
 		public float IntroFadeDuration=1f;
@@ -61,7 +61,7 @@ namespace SpectralDepths.TopDown
 		public int FaderID = 0;
 		/// the curve to use for in and out fades
 		[Tooltip("the curve to use for in and out fades")]
-		public MMTweenType FadeCurve = new MMTweenType(MMTween.MMTweenCurve.EaseInOutCubic);
+		public PLTweenType FadeCurve = new PLTweenType(PLTween.PLTweenCurve.EaseInOutCubic);
 		/// duration between a death of the main character and its respawn
 		[Tooltip("the duration between a death of the main character and its respawn")]
 		public float RespawnDelay = 2f;
@@ -79,15 +79,15 @@ namespace SpectralDepths.TopDown
 		[Header("Scene Loading")]
 		/// the method to use to load the destination level
 		[Tooltip("the method to use to load the destination level")]
-		public MMLoadScene.LoadingSceneModes LoadingSceneMode = MMLoadScene.LoadingSceneModes.MMSceneLoadingManager;
-		/// the name of the MMSceneLoadingManager scene you want to use
-		[Tooltip("the name of the MMSceneLoadingManager scene you want to use")]
-		[MMEnumCondition("LoadingSceneMode", (int) MMLoadScene.LoadingSceneModes.MMSceneLoadingManager)]
+		public PLLoadScene.LoadingSceneModes LoadingSceneMode = PLLoadScene.LoadingSceneModes.PLSceneLoadingManager;
+		/// the name of the PLSceneLoadingManager scene you want to use
+		[Tooltip("the name of the PLSceneLoadingManager scene you want to use")]
+		[PLEnumCondition("LoadingSceneMode", (int) PLLoadScene.LoadingSceneModes.PLSceneLoadingManager)]
 		public string LoadingSceneName = "LoadingScreen";
 		/// the settings to use when loading the scene in additive mode
 		[Tooltip("the settings to use when loading the scene in additive mode")]
-		[MMEnumCondition("LoadingSceneMode", (int)MMLoadScene.LoadingSceneModes.MMAdditiveSceneLoadingManager)]
-		public MMAdditiveSceneLoadingManagerSettings AdditiveLoadingSettings; 
+		[PLEnumCondition("LoadingSceneMode", (int)PLLoadScene.LoadingSceneModes.PLAdditiveSceneLoadingManager)]
+		public PLAdditiveSceneLoadingManagerSettings AdditiveLoadingSettings; 
 		
 		[Header("Feedbacks")] 
 		/// if this is true, an event will be triggered on player instantiation to set the range target of all feedbacks to it
@@ -132,7 +132,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (SpawnDelay > 0f)
 			{
-				yield return MMCoroutine.WaitFor(SpawnDelay);    
+				yield return PLCoroutine.WaitFor(SpawnDelay);    
 			}
 
 			BoundsCollider = _collider;
@@ -140,7 +140,7 @@ namespace SpectralDepths.TopDown
 
 			if (UseLevelBounds)
 			{
-				MMCameraEvent.Trigger(MMCameraEventTypes.SetConfiner, null, BoundsCollider);
+				PLCameraEvent.Trigger(PLCameraEventTypes.SetConfiner, null, BoundsCollider);
 			}            
             
 			if (Players == null || Players.Count == 0) { yield break; }
@@ -162,20 +162,20 @@ namespace SpectralDepths.TopDown
 			CheckpointAssignment();
 
 			// we trigger a fade
-			MMFadeOutEvent.Trigger(IntroFadeDuration, FadeCurve, FaderID);
+			PLFadeOutEvent.Trigger(IntroFadeDuration, FadeCurve, FaderID);
 
 			// we trigger a level start event
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.LevelStart, null);
-			MMGameEvent.Trigger("Load");
+			PLGameEvent.Trigger("Load");
 
 			if (SetPlayerAsFeedbackRangeCenter)
 			{
-				MMSetFeedbackRangeCenterEvent.Trigger(Players[0].transform);
+				PLSetFeedbackRangeCenterEvent.Trigger(Players[0].transform);
 			}
 
-			MMCameraEvent.Trigger(MMCameraEventTypes.SetTargetCharacter, Players[0]);
-			MMCameraEvent.Trigger(MMCameraEventTypes.StartFollowing);
-			MMGameEvent.Trigger("CameraBound");
+			PLCameraEvent.Trigger(PLCameraEventTypes.SetTargetCharacter, Players[0]);
+			PLCameraEvent.Trigger(PLCameraEventTypes.StartFollowing);
+			PLGameEvent.Trigger("CameraBound");
 		}
 
 		/// <summary>
@@ -324,7 +324,7 @@ namespace SpectralDepths.TopDown
 		public virtual void TriggerEndLevelEvents()
 		{
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.LevelEnd, null);
-			MMGameEvent.Trigger("Save");
+			PLGameEvent.Trigger("Save");
 		}
 
 		/// <summary>
@@ -342,7 +342,7 @@ namespace SpectralDepths.TopDown
 				}	    		
 			}
 
-			MMFadeInEvent.Trigger(OutroFadeDuration, FadeCurve, FaderID);
+			PLFadeInEvent.Trigger(OutroFadeDuration, FadeCurve, FaderID);
             
 			if (Time.timeScale > 0.0f)
 			{ 
@@ -356,14 +356,14 @@ namespace SpectralDepths.TopDown
 
 			switch (LoadingSceneMode)
 			{
-				case MMLoadScene.LoadingSceneModes.UnityNative:
+				case PLLoadScene.LoadingSceneModes.UnityNative:
 					SceneManager.LoadScene(destinationScene);			        
 					break;
-				case MMLoadScene.LoadingSceneModes.MMSceneLoadingManager:
-					MMSceneLoadingManager.LoadScene(destinationScene, LoadingSceneName);
+				case PLLoadScene.LoadingSceneModes.PLSceneLoadingManager:
+					PLSceneLoadingManager.LoadScene(destinationScene, LoadingSceneName);
 					break;
-				case MMLoadScene.LoadingSceneModes.MMAdditiveSceneLoadingManager:
-					MMAdditiveSceneLoadingManager.LoadScene(levelName, AdditiveLoadingSettings);
+				case PLLoadScene.LoadingSceneModes.PLAdditiveSceneLoadingManager:
+					PLAdditiveSceneLoadingManager.LoadScene(levelName, AdditiveLoadingSettings);
 					break;
 			}
 		}
@@ -423,20 +423,20 @@ namespace SpectralDepths.TopDown
 					TopDownEngineEvent.Trigger(TopDownEngineEventTypes.GameOver, null);
 					if ((GameManager.Instance.GameOverScene != null) && (GameManager.Instance.GameOverScene != ""))
 					{
-						MMSceneLoadingManager.LoadScene(GameManager.Instance.GameOverScene);
+						PLSceneLoadingManager.LoadScene(GameManager.Instance.GameOverScene);
 					}
 				}
 			}
 
-			MMCameraEvent.Trigger(MMCameraEventTypes.StopFollowing);
+			PLCameraEvent.Trigger(PLCameraEventTypes.StopFollowing);
 
-			MMFadeInEvent.Trigger(OutroFadeDuration, FadeCurve, FaderID, true, Players[0].transform.position);
+			PLFadeInEvent.Trigger(OutroFadeDuration, FadeCurve, FaderID, true, Players[0].transform.position);
 			yield return new WaitForSeconds(OutroFadeDuration);
 
 			yield return new WaitForSeconds(RespawnDelay);
 			GUIManager.Instance.SetPauseScreen(false);
 			GUIManager.Instance.SetDeathScreen(false);
-			MMFadeOutEvent.Trigger(OutroFadeDuration, FadeCurve, FaderID, true, Players[0].transform.position);
+			PLFadeOutEvent.Trigger(OutroFadeDuration, FadeCurve, FaderID, true, Players[0].transform.position);
 
 			if (CurrentCheckpoint == null)
 			{
@@ -459,7 +459,7 @@ namespace SpectralDepths.TopDown
 
 			_started = DateTime.UtcNow;
 			
-			MMCameraEvent.Trigger(MMCameraEventTypes.StartFollowing);
+			PLCameraEvent.Trigger(PLCameraEventTypes.StartFollowing);
 
 			// we send a new points event for the GameManager to catch (and other classes that may listen to it too)
 			TopDownEnginePointEvent.Trigger(PointsMethods.Set, 0);
@@ -559,7 +559,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -567,7 +567,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

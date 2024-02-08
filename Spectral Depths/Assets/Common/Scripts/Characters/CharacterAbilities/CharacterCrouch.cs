@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -15,7 +15,7 @@ namespace SpectralDepths.TopDown
 		public override string HelpBoxText() { return "This component handles crouch and crawl behaviours. Here you can determine the crouch speed, and whether or not the collider should resize when crouched (to crawl into tunnels for example). If it should, please setup its new size here."; }
 
 		/// if this is true, the character is in ForcedCrouch mode. A CrouchZone or an AI script can do that.
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("if this is true, the character is in ForcedCrouch mode. A CrouchZone or an AI script can do that.")]
 		public bool ForcedCrouch = false;
 
@@ -36,7 +36,7 @@ namespace SpectralDepths.TopDown
 		public bool ResizeColliderWhenCrouched = false;
 		/// if this is true, the collider will be vertically translated on resize, this can avoid your controller getting teleported into the ground if its center isn't at its y:0
 		[Tooltip("if this is true, the collider will be vertically translated on resize, this can avoid your controller getting teleported into the ground if its center isn't at its y:0")]
-		[MMCondition("ResizeColliderWhenCrouched", true)]
+		[PLCondition("ResizeColliderWhenCrouched", true)]
 		public bool TranslateColliderOnCrouch = false;
 		/// the size to apply to the collider when crouched (if ResizeColliderWhenCrouched is true, otherwise this will be ignored)
 		[Tooltip("the size to apply to the collider when crouched (if ResizeColliderWhenCrouched is true, otherwise this will be ignored)")]
@@ -59,7 +59,7 @@ namespace SpectralDepths.TopDown
 		public float OffsetSpeed = 5f;
 
 		/// whether or not the character is in a tunnel right now and can't get up
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not the character is in a tunnel right now and can't get up")]
 		public bool InATunnel;
 
@@ -125,7 +125,7 @@ namespace SpectralDepths.TopDown
 			base.HandleInput ();
 
 			// Crouch Detection : if the player is pressing "down" and if the character is grounded and the crouch action is enabled
-			if (_inputManager.CrouchButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)		
+			if (_inputManager.CrouchButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)		
 			{
 				Crouch();
 			}
@@ -269,8 +269,8 @@ namespace SpectralDepths.TopDown
 				if ( (!_controller.Grounded) 
 				     || ((_movement.CurrentState != CharacterStates.MovementStates.Crouching) 
 				         && (_movement.CurrentState != CharacterStates.MovementStates.Crawling)
-				         && (_inputManager.CrouchButton.State.CurrentState == MMInput.ButtonStates.Off) && (!ForcedCrouch))
-				     || ((_inputManager.CrouchButton.State.CurrentState == MMInput.ButtonStates.Off) && (!ForcedCrouch)))
+				         && (_inputManager.CrouchButton.State.CurrentState == PLInput.ButtonStates.Off) && (!ForcedCrouch))
+				     || ((_inputManager.CrouchButton.State.CurrentState == PLInput.ButtonStates.Off) && (!ForcedCrouch)))
 				{
 					// we cast a raycast above to see if we have room enough to go back to normal size
 					InATunnel = !_controller.CanGoBackToOriginalSize();
@@ -327,8 +327,8 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _crouchingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Crouching), _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator,_crawlingAnimationParameter,(_movement.CurrentState == CharacterStates.MovementStates.Crawling), _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _crouchingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Crouching), _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator,_crawlingAnimationParameter,(_movement.CurrentState == CharacterStates.MovementStates.Crawling), _character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

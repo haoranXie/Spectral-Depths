@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 		public float TimeScale = 0.5f;
 		/// the duration for which to keep the timescale changed
 		[Tooltip("the duration for which to keep the timescale changed")]
-		[MMEnumCondition("Mode", (int)Modes.OneTime)]
+		[PLEnumCondition("Mode", (int)Modes.OneTime)]
 		public float OneTimeDuration = 1f;
 		/// whether or not the timescale should get lerped
 		[Tooltip("whether or not the timescale should get lerped")]
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
 		public float LerpSpeed = 5f;
 		/// the cooldown for this ability
 		[Tooltip("the cooldown for this ability")]
-		public MMCooldown Cooldown;
+		public PLCooldown Cooldown;
 
 		protected bool _timeControlled = false;
 
@@ -46,11 +46,11 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			if (_inputManager.TimeControlButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.TimeControlButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				TimeControlStart();
 			}
-			if (_inputManager.TimeControlButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (_inputManager.TimeControlButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 			{
 				TimeControlStop();
 			}
@@ -75,13 +75,13 @@ namespace SpectralDepths.TopDown
 				PlayAbilityStartFeedbacks();
 				if (Mode == Modes.Continuous)
 				{
-					MMTimeScaleEvent.Trigger(MMTimeScaleMethods.For, TimeScale, Cooldown.ConsumptionDuration, LerpTimeScale, LerpSpeed, true);
+					PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, Cooldown.ConsumptionDuration, LerpTimeScale, LerpSpeed, true);
 					Cooldown.Start();
 					_timeControlled = true;    
 				}
 				else
 				{
-					MMTimeScaleEvent.Trigger(MMTimeScaleMethods.For, TimeScale, OneTimeDuration, LerpTimeScale, LerpSpeed, false);
+					PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, OneTimeDuration, LerpTimeScale, LerpSpeed, false);
 					Cooldown.Start();
 				}
 			}            
@@ -103,19 +103,19 @@ namespace SpectralDepths.TopDown
 			base.ProcessAbility();
 			Cooldown.Update();
 
-			if ((Cooldown.CooldownState != MMCooldown.CooldownStates.Consuming) && _timeControlled)
+			if ((Cooldown.CooldownState != PLCooldown.CooldownStates.Consuming) && _timeControlled)
 			{
 				if (Mode == Modes.Continuous)
 				{
 					_timeControlled = false;
-					MMTimeScaleEvent.Trigger(MMTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);    
+					PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);    
 				}
 			}
 		}
 
-		protected virtual void OnCooldownStateChange(MMCooldown.CooldownStates newState)
+		protected virtual void OnCooldownStateChange(PLCooldown.CooldownStates newState)
 		{
-			if (newState == MMCooldown.CooldownStates.Stopped)
+			if (newState == PLCooldown.CooldownStates.Stopped)
 			{
 				StopStartFeedbacks();
 				PlayAbilityStopFeedbacks();

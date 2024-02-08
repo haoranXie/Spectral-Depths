@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
 using System.Collections.Generic;
 using UnityEngine.Audio;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -13,12 +13,12 @@ namespace SpectralDepths.TopDown
 	{
 		public virtual void On()
 		{
-			MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx);
+			PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Sfx);
 		}
 
 		public virtual void Off()
 		{
-			MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx);
+			PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Sfx);
 		}
 	}
 }

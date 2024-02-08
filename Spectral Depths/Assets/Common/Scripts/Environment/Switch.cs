@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -45,21 +45,21 @@ namespace SpectralDepths.TopDown
 
 		/// a feedback to play when the switch is toggled on
 		[Tooltip("a feedback to play when the switch is toggled on")]
-		public MMFeedbacks SwitchOnFeedback;
+		public PLFeedbacks SwitchOnFeedback;
 		/// a feedback to play when the switch is turned off
 		[Tooltip("a feedback to play when the switch is turned off")]
-		public MMFeedbacks SwitchOffFeedback;
+		public PLFeedbacks SwitchOffFeedback;
 		/// a feedback to play when the switch changes state
 		[Tooltip("a feedback to play when the switch changes state")]
-		public MMFeedbacks ToggleFeedback;
+		public PLFeedbacks ToggleFeedback;
 
-		[MMInspectorButton("TurnSwitchOn")]
+		[PLInspectorButton("TurnSwitchOn")]
 		/// a test button to turn the switch on
 		public bool SwitchOnButton;
-		[MMInspectorButton("TurnSwitchOff")]
+		[PLInspectorButton("TurnSwitchOff")]
 		/// a test button to turn the switch off
 		public bool SwitchOffButton;
-		[MMInspectorButton("ToggleSwitch")]
+		[PLInspectorButton("ToggleSwitch")]
 		/// a test button to change the switch's state
 		public bool ToggleSwitchButton;
 

@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 using System;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Feedbacks;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
@@ -13,7 +13,7 @@ namespace SpectralDepths.TopDown
 	/// Add this component to an object and it will cause damage to objects that collide with it. 
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Damage/DamageOnTouch")]
-	public class DamageOnTouch : MMMonoBehaviour
+	public class DamageOnTouch : PLMonoBehaviour
 	{
 		[Flags]
 		public enum TriggerAndCollisionMask
@@ -58,15 +58,15 @@ namespace SpectralDepths.TopDown
 		                                                                  | TriggerAndCollisionMask.OnTriggerEnter2D
 		                                                                  | TriggerAndCollisionMask.OnTriggerStay2D;
 
-		[MMInspectorGroup("Targets", true, 3)]
-		[MMInformation(
+		[PLInspectorGroup("Targets", true, 3)]
+		[PLInformation(
 			"This component will make your object cause damage to objects that collide with it. Here you can define what layers will be affected by the damage (for a standard enemy, choose Player), how much damage to give, and how much force should be applied to the object that gets the damage on hit. You can also specify how long the post-hit invincibility should last (in seconds).",
-			MMInformationAttribute.InformationType.Info, false)]
+			PLInformationAttribute.InformationType.Info, false)]
 		/// the layers that will be damaged by this object
 		[Tooltip("the layers that will be damaged by this object")]
 		public LayerMask TargetLayerMask;
 		/// the owner of the DamageOnTouch zone
-		[MMReadOnly] [Tooltip("the owner of the DamageOnTouch zone")]
+		[PLReadOnly] [Tooltip("the owner of the DamageOnTouch zone")]
 		public GameObject Owner;
 
 		/// Defines on what triggers the damage should be applied, by default on enter and stay (both 2D and 3D) but this field will let you exclude triggers if needed
@@ -74,7 +74,7 @@ namespace SpectralDepths.TopDown
 			"Defines on what triggers the damage should be applied, by default on enter and stay (both 2D and 3D) but this field will let you exclude triggers if needed")]
 		public TriggerAndCollisionMask TriggerFilter = AllowedTriggerCallbacks;
 
-		[MMInspectorGroup("Damage Caused", true, 8)]
+		[PLInspectorGroup("Damage Caused", true, 8)]
 		/// The min amount of health to remove from the player's health
 		[FormerlySerializedAs("DamageCaused")]
 		[Tooltip("The min amount of health to remove from the player's health")]
@@ -111,26 +111,26 @@ namespace SpectralDepths.TopDown
 		public bool RepeatDamageOverTime = false;
 		/// if in damage over time mode, how many times should damage be repeated?
 		[Tooltip("if in damage over time mode, how many times should damage be repeated?")] 
-		[MMCondition("RepeatDamageOverTime", true)]
+		[PLCondition("RepeatDamageOverTime", true)]
 		public int AmountOfRepeats = 3;
 		/// if in damage over time mode, the duration, in seconds, between two damages
 		[Tooltip("if in damage over time mode, the duration, in seconds, between two damages")]
-		[MMCondition("RepeatDamageOverTime", true)]
+		[PLCondition("RepeatDamageOverTime", true)]
 		public float DurationBetweenRepeats = 1f;
 		/// if in damage over time mode, whether or not it can be interrupted (by calling the Health:InterruptDamageOverTime method
 		[Tooltip("if in damage over time mode, whether or not it can be interrupted (by calling the Health:InterruptDamageOverTime method")] 
-		[MMCondition("RepeatDamageOverTime", true)]
+		[PLCondition("RepeatDamageOverTime", true)]
 		public bool DamageOverTimeInterruptible = true;
 		/// if in damage over time mode, the type of the repeated damage 
 		[Tooltip("if in damage over time mode, the type of the repeated damage")] 
-		[MMCondition("RepeatDamageOverTime", true)]
+		[PLCondition("RepeatDamageOverTime", true)]
 		public DamageType RepeatedDamageType;
 		
-		[MMInspectorGroup("Damage Taken", true, 69)]
-		[MMInformation("After having applied the damage to whatever it collided with, you can have this object hurt itself. " +
+		[PLInspectorGroup("Damage Taken", true, 69)]
+		[PLInformation("After having applied the damage to whatever it collided with, you can have this object hurt itself. " +
 		               "A bullet will explode after hitting a wall for example. Here you can define how much damage it'll take every time it hits something, " +
 		               "or only when hitting something that's damageable, or non damageable. Note that this object will need a Health component too for this to be useful.",
-			MMInformationAttribute.InformationType.Info, false)]
+			PLInformationAttribute.InformationType.Info, false)]
 		/// The amount of damage taken every time, whether what we collide with is damageable or not
 		[Tooltip("The amount of damage taken every time, whether what we collide with is damageable or not")]
 		public float DamageTakenEveryTime = 0;
@@ -150,16 +150,16 @@ namespace SpectralDepths.TopDown
 		[Tooltip("The duration of the invincibility frames after the hit (in seconds)")]
 		public float DamageTakenInvincibilityDuration = 0.5f;
 
-		[MMInspectorGroup("Feedbacks", true, 18)]
+		[PLInspectorGroup("Feedbacks", true, 18)]
 		/// the feedback to play when hitting a Damageable
 		[Tooltip("the feedback to play when hitting a Damageable")]
-		public MMFeedbacks HitDamageableFeedback;
+		public PLFeedbacks HitDamageableFeedback;
 		/// the feedback to play when hitting a non Damageable
 		[Tooltip("the feedback to play when hitting a non Damageable")]
-		public MMFeedbacks HitNonDamageableFeedback;
+		public PLFeedbacks HitNonDamageableFeedback;
 		/// the feedback to play when hitting anything
 		[Tooltip("the feedback to play when hitting anything")]
-		public MMFeedbacks HitAnythingFeedback;
+		public PLFeedbacks HitAnythingFeedback;
 
 		/// an event to trigger when hitting a Damageable
 		public UnityEvent<Health> HitDamageableEvent;
@@ -353,11 +353,11 @@ namespace SpectralDepths.TopDown
 			{
 				if (_boxCollider2D.enabled)
 				{
-					MMDebug.DrawGizmoCube(transform, _gizmoOffset, _boxCollider2D.size, false);
+					PLDebug.DrawGizmoCube(transform, _gizmoOffset, _boxCollider2D.size, false);
 				}
 				else
 				{
-					MMDebug.DrawGizmoCube(transform, _gizmoOffset, _boxCollider2D.size, true);
+					PLDebug.DrawGizmoCube(transform, _gizmoOffset, _boxCollider2D.size, true);
 				}
 			}
 
@@ -378,12 +378,12 @@ namespace SpectralDepths.TopDown
 			if (_boxCollider != null)
 			{
 				if (_boxCollider.enabled)
-					MMDebug.DrawGizmoCube(transform,
+					PLDebug.DrawGizmoCube(transform,
 						_gizmoOffset,
 						_boxCollider.size,
 						false);
 				else
-					MMDebug.DrawGizmoCube(transform,
+					PLDebug.DrawGizmoCube(transform,
 						_gizmoOffset,
 						_boxCollider.size,
 						true);
@@ -578,7 +578,7 @@ namespace SpectralDepths.TopDown
 
 			// cache reset 
 			_colliderTopDownController = null;
-			_colliderHealth = collider.gameObject.MMGetComponentNoAlloc<Health>();
+			_colliderHealth = collider.gameObject.PLGetComponentNoAlloc<Health>();
 			
 			// if what we're colliding with is damageable
 			if (_colliderHealth != null)
@@ -613,7 +613,7 @@ namespace SpectralDepths.TopDown
 			if (_ignoredGameObjects.Contains(collider)) { return false; }
 
 			// if what we're colliding with isn't part of the target layers, we do nothing and exit
-			if (!MMLayers.LayerInLayerMask(collider.layer, TargetLayerMask)) { return false; }
+			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask)) { return false; }
 
 			// if we're on our first frame, we don't apply damage
 			if (Time.time == 0f) { return false; }
@@ -632,7 +632,7 @@ namespace SpectralDepths.TopDown
 			if (health.CanTakeDamageThisFrame())
 			{
 				// if what we're colliding with is a TopDownController, we apply a knockback force
-				_colliderTopDownController = health.gameObject.MMGetComponentNoAlloc<TopDownController>();
+				_colliderTopDownController = health.gameObject.PLGetComponentNoAlloc<TopDownController>();
 
 				HitDamageableFeedback?.PlayFeedbacks(this.transform.position);
 				HitDamageableEvent?.Invoke(_colliderHealth);

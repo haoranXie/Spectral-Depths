@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 using UnityEngine.Serialization;
 
 namespace SpectralDepths.TopDown
@@ -16,40 +16,40 @@ namespace SpectralDepths.TopDown
 		public enum MeleeDamageAreaShapes { Rectangle, Circle, Box, Sphere }
 		public enum MeleeDamageAreaModes { Generated, Existing }
 
-		[MMInspectorGroup("Damage Area", true, 22)]
+		[PLInspectorGroup("Damage Area", true, 22)]
 		/// the possible modes to handle the damage area. In Generated, the MeleeWeapon will create it, in Existing, you can bind an existing damage area - usually nested under the weapon
 		[Tooltip("the possible modes to handle the damage area. In Generated, the MeleeWeapon will create it, in Existing, you can bind an existing damage area - usually nested under the weapon")]
 		public MeleeDamageAreaModes MeleeDamageAreaMode = MeleeDamageAreaModes.Generated;
 		/// the shape of the damage area (rectangle or circle)
 		[Tooltip("the shape of the damage area (rectangle or circle)")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
 		public MeleeDamageAreaShapes DamageAreaShape = MeleeDamageAreaShapes.Rectangle;
 		/// the offset to apply to the damage area (from the weapon's attachment position
 		[Tooltip("the offset to apply to the damage area (from the weapon's attachment position")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
 		public Vector3 AreaOffset = new Vector3(1, 0);
 		/// the size of the damage area
 		[Tooltip("the size of the damage area")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
 		public Vector3 AreaSize = new Vector3(1, 1);
 		/// the trigger filters this melee weapon should apply damage on (by default, it'll apply damage on everything, but you can change this to only apply when targets enter the area, for example)
 		[Tooltip("the trigger filters this melee weapon should apply damage on (by default, it'll apply damage on everything, but you can change this to only apply when targets enter the area, for example)")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
 		public DamageOnTouch.TriggerAndCollisionMask TriggerFilter = DamageOnTouch.AllowedTriggerCallbacks;
 		/// the feedback to play when hitting a Damageable
 		[Tooltip("the feedback to play when hitting a Damageable")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
-		public MMFeedbacks HitDamageableFeedback;
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
+		public PLFeedbacks HitDamageableFeedback;
 		/// the feedback to play when hitting a non Damageable
 		[Tooltip("the feedback to play when hitting a non Damageable")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
-		public MMFeedbacks HitNonDamageableFeedback;
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Generated)]
+		public PLFeedbacks HitNonDamageableFeedback;
 		/// an existing damage area to activate/handle as the weapon is used
 		[Tooltip("an existing damage area to activate/handle as the weapon is used")]
-		[MMEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Existing)]
+		[PLEnumCondition("MeleeDamageAreaMode", (int)MeleeDamageAreaModes.Existing)]
 		public DamageOnTouch ExistingDamageArea;
 
-		[MMInspectorGroup("Damage Area Timing", true, 23)]
+		[PLInspectorGroup("Damage Area Timing", true, 23)]
         
 		/// the initial delay to apply before triggering the damage area
 		[Tooltip("the initial delay to apply before triggering the damage area")]
@@ -58,7 +58,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the duration during which the damage area is active")]
 		public float ActiveDuration = 1f;
 
-		[MMInspectorGroup("Damage Caused", true, 24)]
+		[PLInspectorGroup("Damage Caused", true, 24)]
 
 		/// the layers that will be damaged by this object
 		[Tooltip("the layers that will be damaged by this object")]
@@ -187,7 +187,7 @@ namespace SpectralDepths.TopDown
 				Rigidbody rigidBody = _damageArea.AddComponent<Rigidbody>();
 				rigidBody.isKinematic = true;
 
-				rigidBody.gameObject.AddComponent<MMRagdollerIgnore>();
+				rigidBody.gameObject.AddComponent<PLRagdollerIgnore>();
 			}
 
 			_damageOnTouch = _damageArea.AddComponent<DamageOnTouch>();
@@ -297,7 +297,7 @@ namespace SpectralDepths.TopDown
 
 			if (DamageAreaShape == MeleeDamageAreaShapes.Rectangle)
 			{
-				MMDebug.DrawGizmoRectangle(this.transform.position + AreaOffset, AreaSize, Color.red);
+				PLDebug.DrawGizmoRectangle(this.transform.position + AreaOffset, AreaSize, Color.red);
 			}
 
 			if (DamageAreaShape == MeleeDamageAreaShapes.Sphere)

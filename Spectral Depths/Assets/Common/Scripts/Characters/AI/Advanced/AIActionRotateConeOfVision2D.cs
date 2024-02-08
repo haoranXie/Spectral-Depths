@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -17,7 +17,7 @@ namespace SpectralDepths.TopDown
 		[Header("Bindings")]
 		/// the cone of vision 2D to rotate
 		[Tooltip("the cone of vision 2D to rotate")]
-		public MMConeOfVision2D TargetConeOfVision2D;
+		public PLConeOfVision2D TargetConeOfVision2D;
         
 		[Header("Aim")] 
 		/// whether to aim at the AI's movement direction or the weapon aim direction
@@ -30,7 +30,7 @@ namespace SpectralDepths.TopDown
 		public bool Interpolate = false;
 		/// the rate at which to interpolate the rotation
 		[Tooltip("the rate at which to interpolate the rotation")]
-		[MMCondition("Interpolate", true)] 
+		[PLCondition("Interpolate", true)] 
 		public float InterpolateRate = 5f;
         
 		protected CharacterHandleWeapon _characterHandleWeapon;
@@ -51,7 +51,7 @@ namespace SpectralDepths.TopDown
 			_controller = this.gameObject.GetComponentInParent<TopDownController>();
 			if (TargetConeOfVision2D == null)
 			{
-				TargetConeOfVision2D = this.gameObject.GetComponent<MMConeOfVision2D>();	
+				TargetConeOfVision2D = this.gameObject.GetComponent<PLConeOfVision2D>();	
 			}
 		}
 
@@ -96,14 +96,14 @@ namespace SpectralDepths.TopDown
 		{
 			if (Interpolate)
 			{
-				_newAim = MMMaths.Lerp(_newAim, direction, InterpolateRate, Time.deltaTime);
+				_newAim = PLMaths.Lerp(_newAim, direction, InterpolateRate, Time.deltaTime);
 			}
 			else
 			{
 				_newAim = direction;
 			}
 
-			_angle = MMMaths.AngleBetween(this.transform.right, _newAim);
+			_angle = PLMaths.AngleBetween(this.transform.right, _newAim);
 			_eulerAngles.y = -_angle;
             
 			TargetConeOfVision2D.SetDirectionAndAngles(_newAim, _eulerAngles);
@@ -116,7 +116,7 @@ namespace SpectralDepths.TopDown
 		{
 			if ((_characterHandleWeapon != null) && (_characterHandleWeapon.CurrentWeapon != null))
 			{
-				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 			}            
 		}
         

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -28,47 +28,47 @@ namespace SpectralDepths.TopDown
 		public bool PerformCardinalObstacleRaycastDetection = false;
 
 		/// the current speed of the character
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current speed of the character")]
 		public Vector3 Speed;
 		/// the current velocity
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current velocity in units/second")]
 		public Vector3 Velocity;
 		/// the velocity of the character last frame
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the velocity of the character last frame")]
 		public Vector3 VelocityLastFrame;
 		/// the current acceleration
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current acceleration")]
 		public Vector3 Acceleration;
 		/// whether or not the character is grounded
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not the character is grounded")]
 		public bool Grounded;
 		/// whether or not the character got grounded this frame
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not the character got grounded this frame")]
 		public bool JustGotGrounded;
 		/// the current movement of the character
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current movement of the character")]
 		public Vector3 CurrentMovement;
 		/// the direction the character is going in
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction the character is going in")]
 		public Vector3 CurrentDirection;
 		/// the current friction
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current friction")]
 		public float Friction;
 		/// the current added force, to be added to the character's movement
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current added force, to be added to the character's movement")]
 		public Vector3 AddedForce;
 		/// whether or not the character is in free movement mode or not
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not the character is in free movement mode or not")]
 		public bool FreeMovement = true;
         

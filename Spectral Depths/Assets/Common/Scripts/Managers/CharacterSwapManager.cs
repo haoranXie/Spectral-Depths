@@ -1,5 +1,5 @@
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
@@ -13,7 +13,7 @@ namespace SpectralDepths.TopDown
 	/// You can see an example of such a setup in the MinimalCharacterSwap demo scene
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/CharacterSwapManager")]
-	public class CharacterSwapManager : MMSingleton<CharacterSwapManager>, MMEventListener<TopDownEngineEvent>
+	public class CharacterSwapManager : PLSingleton<CharacterSwapManager>, PLEventListener<TopDownEngineEvent>
 	{
 		[Header("Character Swap")]
 		#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
@@ -29,7 +29,7 @@ namespace SpectralDepths.TopDown
 		public string PlayerID = "Player1";
 
 		protected CharacterSwap[] _characterSwapArray;
-		protected MMCircularList<CharacterSwap> _characterSwapList;
+		protected PLCircularList<CharacterSwap> _characterSwapList;
 		protected TopDownEngineEvent _swapEvent = new TopDownEngineEvent(TopDownEngineEventTypes.CharacterSwap, null);
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace SpectralDepths.TopDown
 		public virtual void UpdateList()
 		{
 			_characterSwapArray = FindObjectsOfType<CharacterSwap>();
-			_characterSwapList = new MMCircularList<CharacterSwap>();
+			_characterSwapList = new PLCircularList<CharacterSwap>();
 
 			// stores the array into the list if the PlayerID matches
 			for (int i = 0; i < _characterSwapArray.Length; i++)
@@ -127,8 +127,8 @@ namespace SpectralDepths.TopDown
 			_characterSwapList[newIndex].SwapToThisCharacter();
 
 			LevelManager.Instance.Players[0] = _characterSwapList[newIndex].gameObject.GetComponentInParent<Character>();
-			MMEventManager.TriggerEvent(_swapEvent);
-			MMCameraEvent.Trigger(MMCameraEventTypes.StartFollowing);
+			PLEventManager.TriggerEvent(_swapEvent);
+			PLCameraEvent.Trigger(PLCameraEventTypes.StartFollowing);
 		}
 
 		/// <summary>
@@ -167,7 +167,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -175,7 +175,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

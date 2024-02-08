@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -8,14 +8,14 @@ namespace SpectralDepths.TopDown
 	/// A class to handle a platform that moves in 2D along a set of nodes
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Environment/Moving Platform 2D")]
-	public class MovingPlatform2D : MMPathMovement
+	public class MovingPlatform2D : PLPathMovement
 	{
 		[Header("Safe Distance")]
 		/// whether or not to use Safe Distance mode, to force the character to move onto the platform 
 		[Tooltip("whether or not to use Safe Distance mode, to force the character to move onto the platform ")]
 		public bool UseSafeDistance = false;
 		/// the distance to move the character at in safe distance mode
-		[MMCondition("UseSafeDistance", true)]
+		[PLCondition("UseSafeDistance", true)]
 		[Tooltip("the distance to move the character at in safe distance mode")]
 		public float ForcedSafeDistance = 1f;
 
@@ -24,7 +24,7 @@ namespace SpectralDepths.TopDown
         
 		protected virtual void AttachCharacterToMovingPlatform(Collider2D collider)
 		{
-			_topdDownController2D = collider.gameObject.MMGetComponentNoAlloc<TopDownController2D>();
+			_topdDownController2D = collider.gameObject.PLGetComponentNoAlloc<TopDownController2D>();
 			if (_topdDownController2D != null)
 			{
 				_topdDownController2D.SetMovingPlatform(this);
@@ -44,7 +44,7 @@ namespace SpectralDepths.TopDown
 
 		protected virtual void DetachCharacterFromPlatform(Collider2D collider)
 		{
-			_topdDownController2D = collider.gameObject.MMGetComponentNoAlloc<TopDownController2D>();
+			_topdDownController2D = collider.gameObject.PLGetComponentNoAlloc<TopDownController2D>();
 			if (_topdDownController2D != null)
 			{
 				_topdDownController2D.SetMovingPlatform(null);

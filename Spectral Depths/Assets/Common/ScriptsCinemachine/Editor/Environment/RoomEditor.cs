@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 			GUIStyle style = new GUIStyle();
 
 			// draws the path item number
-			style.normal.textColor = MMColors.Pink;
+			style.normal.textColor = PLColors.Pink;
 			Handles.Label(t.transform.position + (Vector3.up * 2f) + (Vector3.right * 2f), t.name, style);
 		}
 	}

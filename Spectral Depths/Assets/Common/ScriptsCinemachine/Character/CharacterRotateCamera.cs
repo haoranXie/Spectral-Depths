@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
-#if MM_CINEMACHINE
+#if PL_CINEMACHINE
 using Cinemachine;
 #endif
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -45,7 +45,7 @@ namespace SpectralDepths.TopDown
 
 		protected float _requestedCameraAngle = 0f;
 		protected Camera _mainCamera;
-		#if MM_CINEMACHINE
+		#if PL_CINEMACHINE
 		protected CinemachineBrain _brain;
 		protected CinemachineVirtualCamera _virtualCamera;
 		#endif
@@ -75,7 +75,7 @@ namespace SpectralDepths.TopDown
 		/// <returns></returns>
 		protected virtual IEnumerator DelayedInitialization()
 		{
-			yield return MMCoroutine.WaitForFrames(2);
+			yield return PLCoroutine.WaitForFrames(2);
 			GetCurrentCamera();
 		}
 
@@ -84,7 +84,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void GetCurrentCamera()
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			_brain = _mainCamera.GetComponent<CinemachineBrain>();
 			if (_brain != null)
 			{
@@ -133,9 +133,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void RotateCamera()
 		{
-			_targetRotationAngle = MMMaths.Lerp(_targetRotationAngle, _requestedCameraAngle, CameraInterpolationSpeed, Time.deltaTime);
+			_targetRotationAngle = PLMaths.Lerp(_targetRotationAngle, _requestedCameraAngle, CameraInterpolationSpeed, Time.deltaTime);
 
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			if (_virtualCamera != null)
 			{
 				_virtualCamera.transform.Rotate(RotationAxis, _targetRotationAngle, RotationSpace);

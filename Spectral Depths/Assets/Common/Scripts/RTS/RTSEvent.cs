@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -41,7 +41,7 @@ namespace SpectralDepths.TopDown
 			e.EventType = eventType;
             e.SelectedTable = selectedTable;
 			e.OriginCharacter=originCharacter;
-            MMEventManager.TriggerEvent(e);
+            PLEventManager.TriggerEvent(e);
 		}
 	}
 }

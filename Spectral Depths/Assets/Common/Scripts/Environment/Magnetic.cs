@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -34,11 +34,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether or not we need to interpolate the movement")]
 		public bool InterpolatePosition = true;
 		/// the speed at which to interpolate the follower's movement
-		[MMCondition("InterpolatePosition", true)]
+		[PLCondition("InterpolatePosition", true)]
 		[Tooltip("the speed at which to interpolate the follower's movement")]
 		public float FollowPositionSpeed = 5f;
 		/// the acceleration to apply to the object once it starts following
-		[MMCondition("InterpolatePosition", true)]
+		[PLCondition("InterpolatePosition", true)]
 		[Tooltip("the acceleration to apply to the object once it starts following")]
 		public float FollowAcceleration = 0.75f;
 
@@ -55,11 +55,11 @@ namespace SpectralDepths.TopDown
 		[Header("Debug")]
 		/// the target to follow, read only, for debug only
 		[Tooltip("the target to follow, read only, for debug only")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public Transform Target;
 		/// whether or not the object is currently following its target's position
 		[Tooltip("whether or not the object is currently following its target's position")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public bool FollowPosition = true;
 
 		protected Collider2D _collider2D;
@@ -149,7 +149,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			if (!TargetLayerMask.MMContains(colliding.layer))
+			if (!TargetLayerMask.PLContains(colliding.layer))
 			{
 				return;
 			}
@@ -169,7 +169,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			if (!TargetLayerMask.MMContains(colliding.layer))
+			if (!TargetLayerMask.PLContains(colliding.layer))
 			{
 				return;
 			}
@@ -245,7 +245,7 @@ namespace SpectralDepths.TopDown
 			float interpolatedDistance = trueDistance;
 			if (InterpolatePosition)
 			{
-				interpolatedDistance = MMMaths.Lerp(0f, trueDistance, _speed, Time.deltaTime);
+				interpolatedDistance = PLMaths.Lerp(0f, trueDistance, _speed, Time.deltaTime);
 				this.transform.Translate(_direction * interpolatedDistance, Space.World);
 			}
 			else

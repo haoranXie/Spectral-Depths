@@ -1,46 +1,46 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-#if MM_CINEMACHINE
+using SpectralDepths.Tools;
+#if PL_CINEMACHINE
 using Cinemachine;
 #endif
 
 namespace SpectralDepths.TopDown
 {
-	public enum MMCinemachineBrainEventTypes { ChangeBlendDuration }
+	public enum PLCinemachineBrainEventTypes { ChangeBlendDuration }
 
 	/// <summary>
 	/// An event used to interact with camera brains
 	/// </summary>
-	public struct MMCinemachineBrainEvent
+	public struct PLCinemachineBrainEvent
 	{
-		public MMCinemachineBrainEventTypes EventType;
+		public PLCinemachineBrainEventTypes EventType;
 		public float Duration;
 
-		public MMCinemachineBrainEvent(MMCinemachineBrainEventTypes eventType, float duration)
+		public PLCinemachineBrainEvent(PLCinemachineBrainEventTypes eventType, float duration)
 		{
 			EventType = eventType;
 			Duration = duration;
 		}
 
-		static MMCinemachineBrainEvent e;
-		public static void Trigger(MMCinemachineBrainEventTypes eventType, float duration)
+		static PLCinemachineBrainEvent e;
+		public static void Trigger(PLCinemachineBrainEventTypes eventType, float duration)
 		{
 			e.EventType = eventType;
 			e.Duration = duration;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 
 	/// <summary>
 	/// This class is designed to control CinemachineBrains, letting you control their default blend values via events from any class
 	/// </summary>
-	#if MM_CINEMACHINE
+	#if PL_CINEMACHINE
 	[RequireComponent(typeof(CinemachineBrain))]
 	#endif
-	public class CinemachineBrainController : TopDownMonoBehaviour, MMEventListener<MMCinemachineBrainEvent>
+	public class CinemachineBrainController : TopDownMonoBehaviour, PLEventListener<PLCinemachineBrainEvent>
 	{
-		#if MM_CINEMACHINE
+		#if PL_CINEMACHINE
 		protected CinemachineBrain _brain;
 		#endif
 
@@ -49,7 +49,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Awake()
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			_brain = this.gameObject.GetComponent<CinemachineBrain>();
 			#endif
 		}
@@ -60,7 +60,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="newDuration"></param>
 		public virtual void SetDefaultBlendDuration(float newDuration)
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			_brain.m_DefaultBlend.m_Time = newDuration;
 			#endif
 		}
@@ -69,11 +69,11 @@ namespace SpectralDepths.TopDown
 		/// When we get a brain event, we treat it
 		/// </summary>
 		/// <param name="cinemachineBrainEvent"></param>
-		public virtual void OnMMEvent(MMCinemachineBrainEvent cinemachineBrainEvent)
+		public virtual void OnMMEvent(PLCinemachineBrainEvent cinemachineBrainEvent)
 		{
 			switch (cinemachineBrainEvent.EventType)
 			{
-				case MMCinemachineBrainEventTypes.ChangeBlendDuration:
+				case PLCinemachineBrainEventTypes.ChangeBlendDuration:
 					SetDefaultBlendDuration(cinemachineBrainEvent.Duration);
 					break;
 			}
@@ -84,7 +84,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMCinemachineBrainEvent>();
+			this.PLEventStartListening<PLCinemachineBrainEvent>();
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMCinemachineBrainEvent>();
+			this.PLEventStopListening<PLCinemachineBrainEvent>();
 		}
 	}
 }

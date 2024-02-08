@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.Events;
 
 namespace SpectralDepths.TopDown
@@ -67,7 +67,7 @@ namespace SpectralDepths.TopDown
 
 			if (RequiresKey)
 			{
-				CharacterInventory characterInventory = _collidingObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterInventory> ();
+				CharacterInventory characterInventory = _collidingObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterInventory> ();
 				if (characterInventory == null)
 				{
 					PromptError();

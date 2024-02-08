@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace SpectralDepths.TopDown
 	/// Animator parameters : None
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Persistence")]
-	public class CharacterPersistence : CharacterAbility, MMEventListener<MMGameEvent>, MMEventListener<TopDownEngineEvent>
+	public class CharacterPersistence : CharacterAbility, PLEventListener<PLGameEvent>, PLEventListener<TopDownEngineEvent>
 	{
 		public bool Initialized { get; set; }
         
@@ -42,7 +42,7 @@ namespace SpectralDepths.TopDown
 		/// When we get a save request, we store our character in the game manager for future use
 		/// </summary>
 		/// <param name="gameEvent"></param>
-		public virtual void OnMMEvent(MMGameEvent gameEvent)
+		public virtual void OnMMEvent(PLGameEvent gameEvent)
 		{
 			if (gameEvent.EventName == "Save")
 			{
@@ -117,8 +117,8 @@ namespace SpectralDepths.TopDown
 		protected override void OnEnable()
 		{
 			base.OnEnable();
-			this.MMEventStartListening<MMGameEvent>();
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<PLGameEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -126,8 +126,8 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDestroy()
 		{
-			this.MMEventStopListening<MMGameEvent>();
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<PLGameEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

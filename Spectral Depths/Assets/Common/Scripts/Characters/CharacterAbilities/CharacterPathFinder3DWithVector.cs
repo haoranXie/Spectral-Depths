@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.AI;
 
 namespace SpectralDepths.TopDown
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// Add this class to a 3D character and it'll be able to navigate a navmesh (if there's one in the scene of course)
 	/// </summary>
-	[MMHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Pathfinder 3D With Vector")]
 	public class CharacterPathfinder3DWithVector : CharacterAbility
 	{
@@ -36,11 +36,11 @@ namespace SpectralDepths.TopDown
 		public PathRefreshModes PathRefreshMode = PathRefreshModes.None;
 		/// the speed under which the path should be recomputed, usually if the character blocks against an obstacle
 		[Tooltip("the speed under which the path should be recomputed, usually if the character blocks against an obstacle")]
-		[MMEnumCondition("PathRefreshMode", (int)PathRefreshModes.SpeedThresholdBased)]
+		[PLEnumCondition("PathRefreshMode", (int)PathRefreshModes.SpeedThresholdBased)]
 		public float RefreshSpeedThreshold = 1f;
 		/// the interval at which to refresh the path, in seconds
 		[Tooltip("the interval at which to refresh the path, in seconds")]
-		[MMEnumCondition("PathRefreshMode", (int)PathRefreshModes.TimeBased, (int)PathRefreshModes.SpeedThresholdBased)]
+		[PLEnumCondition("PathRefreshMode", (int)PathRefreshModes.TimeBased, (int)PathRefreshModes.SpeedThresholdBased)]
 		public float RefreshInterval = 2f;
 
 		[Header("Debug")]
@@ -49,23 +49,23 @@ namespace SpectralDepths.TopDown
 		public bool DebugDrawPath;
 
 		/// the current path
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current path")]
 		public NavMeshPath AgentPath;
 		/// a list of waypoints the character will go through
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("a list of waypoints the character will go through")]
 		public Vector3[] Waypoints;
 		/// the index of the next waypoint
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the index of the next waypoint")]
 		public int NextWaypointIndex;
 		/// the direction of the next waypoint
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction of the next waypoint")]
 		public Vector3 NextWaypointDirection;
 		/// the distance to the next waypoint
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the distance to the next waypoint")]
 		public float DistanceToNextWaypoint;
 

@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -127,14 +127,14 @@ namespace SpectralDepths.TopDown
 			{
 				if (DetectMethod == DetectMethods.Ray)
 				{
-					raycast = MMDebug.RayCast(_raycastOrigin, _transformLeft, DetectionDistance, TargetLayer, MMColors.Gold, true);
+					raycast = PLDebug.RayCast(_raycastOrigin, _transformLeft, DetectionDistance, TargetLayer, PLColors.Gold, true);
 				}
 				else
 				{
 					raycast = Physics2D.BoxCast(_raycastOrigin - Vector2.right * _boxcastSize.x / 2f, _boxcastSize, 0f, Vector2.left, DetectionDistance - _boxcastSize.x, TargetLayer);
-					MMDebug.RayCast(_raycastOrigin + _transformUp * RayWidth/2f, _transformLeft, DetectionDistance, TargetLayer, MMColors.Gold, true);
-					MMDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f, _transformLeft, DetectionDistance, TargetLayer, MMColors.Gold, true);
-					MMDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f + _transformLeft * DetectionDistance, _transformUp, RayWidth, TargetLayer, MMColors.Gold, true);
+					PLDebug.RayCast(_raycastOrigin + _transformUp * RayWidth/2f, _transformLeft, DetectionDistance, TargetLayer, PLColors.Gold, true);
+					PLDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f, _transformLeft, DetectionDistance, TargetLayer, PLColors.Gold, true);
+					PLDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f + _transformLeft * DetectionDistance, _transformUp, RayWidth, TargetLayer, PLColors.Gold, true);
 					_drawLeftGizmo = true;
 				}
                 
@@ -155,14 +155,14 @@ namespace SpectralDepths.TopDown
 			{
 				if (DetectMethod == DetectMethods.Ray)
 				{
-					raycast = MMDebug.RayCast(_raycastOrigin, _transformRight, DetectionDistance, TargetLayer, MMColors.DarkOrange, true);
+					raycast = PLDebug.RayCast(_raycastOrigin, _transformRight, DetectionDistance, TargetLayer, PLColors.DarkOrange, true);
 				}
 				else
 				{
 					raycast = Physics2D.BoxCast(_raycastOrigin + Vector2.right * _boxcastSize.x / 2f, _boxcastSize, 0f, Vector2.right, DetectionDistance - _boxcastSize.x, TargetLayer);
-					MMDebug.RayCast(_raycastOrigin + _transformUp * RayWidth / 2f, _transformRight, DetectionDistance, TargetLayer, MMColors.DarkOrange, true);
-					MMDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f, _transformRight, DetectionDistance, TargetLayer, MMColors.DarkOrange, true);
-					MMDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f + _transformRight * DetectionDistance, _transformUp, RayWidth, TargetLayer, MMColors.DarkOrange, true);
+					PLDebug.RayCast(_raycastOrigin + _transformUp * RayWidth / 2f, _transformRight, DetectionDistance, TargetLayer, PLColors.DarkOrange, true);
+					PLDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f, _transformRight, DetectionDistance, TargetLayer, PLColors.DarkOrange, true);
+					PLDebug.RayCast(_raycastOrigin - _transformUp * RayWidth / 2f + _transformRight * DetectionDistance, _transformUp, RayWidth, TargetLayer, PLColors.DarkOrange, true);
 					_drawLeftGizmo = true;
 				}
                 
@@ -179,7 +179,7 @@ namespace SpectralDepths.TopDown
 			{
 				// we make sure there isn't an obstacle in between
 				float distance = Vector2.Distance((Vector2)target.transform.position, _raycastOrigin);
-				RaycastHit2D raycastObstacle = MMDebug.RayCast(_raycastOrigin, ((Vector2)target.transform.position - _raycastOrigin).normalized, distance, ObstaclesLayer, Color.gray, true);
+				RaycastHit2D raycastObstacle = PLDebug.RayCast(_raycastOrigin, ((Vector2)target.transform.position - _raycastOrigin).normalized, distance, ObstaclesLayer, Color.gray, true);
                 
 				if (raycastObstacle && _distanceToTarget > raycastObstacle.distance)
 				{

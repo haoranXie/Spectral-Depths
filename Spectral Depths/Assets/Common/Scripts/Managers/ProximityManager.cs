@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +11,7 @@ namespace SpectralDepths.TopDown
     /// away from the action to save on performance.
     /// Note that there are many ways to do it, this one is simple and generic, there may be better choices for your specific use case.
     /// </summary>
-    public class ProximityManager : MMSingleton<ProximityManager>, MMEventListener<TopDownEngineEvent>
+    public class ProximityManager : PLSingleton<ProximityManager>, PLEventListener<TopDownEngineEvent>
     {
         [Header("Target")]
 
@@ -158,7 +158,7 @@ namespace SpectralDepths.TopDown
         /// </summary>
         protected virtual void OnEnable()
         {
-            this.MMEventStartListening<TopDownEngineEvent>();
+            this.PLEventStartListening<TopDownEngineEvent>();
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace SpectralDepths.TopDown
         /// </summary>
         protected virtual void OnDisable()
         {
-            this.MMEventStopListening<TopDownEngineEvent>();
+            this.PLEventStopListening<TopDownEngineEvent>();
         }
     }
 }

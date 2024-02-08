@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
@@ -62,19 +62,19 @@ namespace SpectralDepths.TopDown
 		public bool BindFeedbacks = true;
 		/// the feedback to play when the weapon starts being used
 		[Tooltip("the feedback to play when the weapon starts being used")]
-		public MMFeedbacks WeaponStartMMFeedback;
+		public PLFeedbacks WeaponStartMMFeedback;
 		/// the feedback to play while the weapon is in use
 		[Tooltip("the feedback to play while the weapon is in use")]
-		public MMFeedbacks WeaponUsedMMFeedback;
+		public PLFeedbacks WeaponUsedMMFeedback;
 		/// the feedback to play when the weapon stops being used
 		[Tooltip("the feedback to play when the weapon stops being used")]
-		public MMFeedbacks WeaponStopMMFeedback;
+		public PLFeedbacks WeaponStopMMFeedback;
 		/// the feedback to play when the weapon gets reloaded
 		[Tooltip("the feedback to play when the weapon gets reloaded")]
-		public MMFeedbacks WeaponReloadMMFeedback;
+		public PLFeedbacks WeaponReloadMMFeedback;
 		/// the feedback to play when the weapon gets reloaded
 		[Tooltip("the feedback to play when the weapon gets reloaded")]
-		public MMFeedbacks WeaponReloadNeededMMFeedback;
+		public PLFeedbacks WeaponReloadNeededMMFeedback;
 
 		public CharacterHandleWeapon Owner { get; set; }
 		
@@ -111,7 +111,7 @@ namespace SpectralDepths.TopDown
 				{
 					if (handleWeapon.CurrentWeapon != null)
 					{
-						_weaponAim = handleWeapon.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+						_weaponAim = handleWeapon.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 					}
 				}               
 			}

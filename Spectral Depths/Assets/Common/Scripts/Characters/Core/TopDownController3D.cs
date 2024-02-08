@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -20,7 +20,7 @@ namespace SpectralDepths.TopDown
 		public enum GroundedComputationModes { Simple, Advanced }
         
 		/// the current input sent to this character
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current input sent to this character")]
 		public Vector3 InputMoveDirection = Vector3.zero;
 
@@ -69,7 +69,7 @@ namespace SpectralDepths.TopDown
 		[Header("Steep Surfaces")]
 		/// the current surface normal vector
 		[Tooltip("the current surface normal vector")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public Vector3 GroundNormal = Vector3.zero;
 		/// whether or not the character should slide while standing on steep surfaces
 		[Tooltip("whether or not the character should slide while standing on steep surfaces")]
@@ -575,12 +575,12 @@ namespace SpectralDepths.TopDown
 		protected virtual void OnTriggerEnter(Collider other)
 		{
 			// on trigger enter, if we're colliding with a moving platform, we push ourselves in the opposite direction
-			if (other.gameObject.MMGetComponentNoAlloc<MovingPlatform3D>() != null)
+			if (other.gameObject.PLGetComponentNoAlloc<MovingPlatform3D>() != null)
 			{
 				if (this.transform.position.y < other.transform.position.y)
 				{
 					_onTriggerEnterPushbackDirection = (this.transform.position - other.transform.position).normalized;
-					this.Impact(_onTriggerEnterPushbackDirection.normalized, other.gameObject.MMGetComponentNoAlloc<MovingPlatform3D>().PushForce);
+					this.Impact(_onTriggerEnterPushbackDirection.normalized, other.gameObject.PLGetComponentNoAlloc<MovingPlatform3D>().PushForce);
 				}
 			}
 		}
@@ -666,7 +666,7 @@ namespace SpectralDepths.TopDown
 			// we cast two rays above our character to check for obstacles. If we didn't hit anything, we can go back to original size, otherwise we can't
 			_originalSizeRaycastOrigin = ColliderTop + transform.up * _smallValue;
 
-			_canGoBackHeadCheck = MMDebug.Raycast3D(_originalSizeRaycastOrigin, transform.up, headCheckDistance, ObstaclesLayerMask, Color.cyan, true);
+			_canGoBackHeadCheck = PLDebug.Raycast3D(_originalSizeRaycastOrigin, transform.up, headCheckDistance, ObstaclesLayerMask, Color.cyan, true);
 			if (_canGoBackHeadCheck.collider != null)
 			{
 				return false;
@@ -774,16 +774,16 @@ namespace SpectralDepths.TopDown
             
 			CollidingWithCardinalObstacle = false;
 			// right
-			_cardinalRaycast = MMDebug.Raycast3D(this.transform.position + offset, Vector3.right, distance, ObstaclesLayerMask, Color.yellow, true);
+			_cardinalRaycast = PLDebug.Raycast3D(this.transform.position + offset, Vector3.right, distance, ObstaclesLayerMask, Color.yellow, true);
 			if (_cardinalRaycast.collider != null) { DetectedObstacleRight = _cardinalRaycast.collider.gameObject; CollidingWithCardinalObstacle = true; } else { DetectedObstacleRight = null; }
 			// left
-			_cardinalRaycast = MMDebug.Raycast3D(this.transform.position + offset, Vector3.left, distance, ObstaclesLayerMask, Color.yellow, true);
+			_cardinalRaycast = PLDebug.Raycast3D(this.transform.position + offset, Vector3.left, distance, ObstaclesLayerMask, Color.yellow, true);
 			if (_cardinalRaycast.collider != null) { DetectedObstacleLeft = _cardinalRaycast.collider.gameObject; CollidingWithCardinalObstacle = true; } else { DetectedObstacleLeft = null; }
 			// up
-			_cardinalRaycast = MMDebug.Raycast3D(this.transform.position + offset, Vector3.forward, distance, ObstaclesLayerMask, Color.yellow, true);
+			_cardinalRaycast = PLDebug.Raycast3D(this.transform.position + offset, Vector3.forward, distance, ObstaclesLayerMask, Color.yellow, true);
 			if (_cardinalRaycast.collider != null) { DetectedObstacleUp = _cardinalRaycast.collider.gameObject; CollidingWithCardinalObstacle = true; } else { DetectedObstacleUp = null; }
 			// down
-			_cardinalRaycast = MMDebug.Raycast3D(this.transform.position + offset, Vector3.back, distance, ObstaclesLayerMask, Color.yellow, true);
+			_cardinalRaycast = PLDebug.Raycast3D(this.transform.position + offset, Vector3.back, distance, ObstaclesLayerMask, Color.yellow, true);
 			if (_cardinalRaycast.collider != null) { DetectedObstacleDown = _cardinalRaycast.collider.gameObject; CollidingWithCardinalObstacle = true; } else { DetectedObstacleDown = null; }
 		}
 

@@ -1,6 +1,6 @@
 using UnityEngine;
-using MoreMountains.Tools;
-#if MM_CINEMACHINE
+using SpectralDepths.Tools;
+#if PL_CINEMACHINE
 using Cinemachine;
 #endif
 
@@ -9,9 +9,9 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// Automatically grabs a Cinemachine camera group and assigns LevelManager's players on load and makes a Cinemachine Virtual Camera follow that target
 	/// </summary>
-	public class MultiplayerCameraGroupTarget : TopDownMonoBehaviour, MMEventListener<MMGameEvent>, MMEventListener<TopDownEngineEvent>
+	public class MultiplayerCameraGroupTarget : TopDownMonoBehaviour, PLEventListener<PLGameEvent>, PLEventListener<TopDownEngineEvent>
 	{
-		#if MM_CINEMACHINE
+		#if PL_CINEMACHINE
 		[Header("Multiplayer Camera Group Target")]
 		/// the virtual camera that will follow the group target
 		[Tooltip("the virtual camera that will follow the group target")]
@@ -25,7 +25,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Awake()
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			_targetGroup = this.gameObject.GetComponent<CinemachineTargetGroup>();
 			#endif
 		}
@@ -34,9 +34,9 @@ namespace SpectralDepths.TopDown
 		/// On load, we bind the characters to the target group and have the virtual cam follow that target group
 		/// </summary>
 		/// <param name="gameEvent"></param>
-		public virtual void OnMMEvent(MMGameEvent gameEvent)
+		public virtual void OnMMEvent(PLGameEvent gameEvent)
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			if (gameEvent.EventName == "Load")
 			{
 				if (_targetGroup == null)
@@ -65,7 +65,7 @@ namespace SpectralDepths.TopDown
 
 		public virtual void OnMMEvent(TopDownEngineEvent tdEvent)
 		{
-			#if MM_CINEMACHINE
+			#if PL_CINEMACHINE
 			if (tdEvent.EventType == TopDownEngineEventTypes.PlayerDeath)
 			{
 				int i = 0;
@@ -86,8 +86,8 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMGameEvent>();
-			this.MMEventStartListening<TopDownEngineEvent>();
+			this.PLEventStartListening<PLGameEvent>();
+			this.PLEventStartListening<TopDownEngineEvent>();
 		}
 
 		/// <summary>
@@ -95,8 +95,8 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMGameEvent>();
-			this.MMEventStopListening<TopDownEngineEvent>();
+			this.PLEventStopListening<PLGameEvent>();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -9,11 +9,11 @@ namespace SpectralDepths.TopDown
 	/// <summary>
 	/// An ability that casts a cone of vision around the character.
 	/// </summary>
-	[RequireComponent(typeof(MMConeOfVision))]
+	[RequireComponent(typeof(PLConeOfVision))]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Cone of Vision")]
 	public class CharacterConeOfVision : TopDownMonoBehaviour
 	{
-		protected MMConeOfVision _coneOfVision;
+		protected PLConeOfVision _coneOfVision;
 		protected CharacterOrientation3D _characterOrientation;
 
 		/// <summary>
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 		protected virtual void Awake()
 		{
 			_characterOrientation = this.gameObject.GetComponentInParent<CharacterOrientation3D>();
-			_coneOfVision = this.gameObject.GetComponent<MMConeOfVision>();
+			_coneOfVision = this.gameObject.GetComponent<PLConeOfVision>();
 		}
 
 		/// <summary>

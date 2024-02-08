@@ -1,5 +1,5 @@
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -11,7 +11,7 @@ namespace SpectralDepths.TopDown
 	/// See https://docs.unity3d.com/Manual/class-ScriptExecution.html for more details
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/Input Manager")]
-	public class InputManager : MMSingleton<InputManager>
+	public class InputManager : PLSingleton<InputManager>
 	{
 		[Header("Settings")]
 		/// set this to false to prevent the InputManager from reading input
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 		public bool ResetButtonStatesOnFocusLoss = true;
         
 		[Header("Player binding")]
-		[MMInformation("The first thing you need to set on your InputManager is the PlayerID. This ID will be used to bind the input manager to your character(s). You'll want to go with Player1, Player2, Player3 or Player4.",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("The first thing you need to set on your InputManager is the PlayerID. This ID will be used to bind the input manager to your character(s). You'll want to go with Player1, Player2, Player3 or Player4.",PLInformationAttribute.InformationType.Info,false)]
 		/// a string identifying the target player(s). You'll need to set this exact same string on your Character, and set its type to Player
 		[Tooltip("a string identifying the target player(s). You'll need to set this exact same string on your Character, and set its type to Player")]
 		public string PlayerID = "Player1";
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
 		public enum MovementControls { Joystick, Arrows }
 		
 		[Header("Mobile controls")]
-		[MMInformation("If you check Auto Mobile Detection, the engine will automatically switch to mobile controls when your build target is Android or iOS. You can also force mobile or desktop (keyboard, gamepad) controls using the dropdown below.\nNote that if you don't need mobile controls and/or GUI this component can also work on its own, just put it on an empty GameObject instead.",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("If you check Auto Mobile Detection, the engine will automatically switch to mobile controls when your build target is Android or iOS. You can also force mobile or desktop (keyboard, gamepad) controls using the dropdown below.\nNote that if you don't need mobile controls and/or GUI this component can also work on its own, just put it on an empty GameObject instead.",PLInformationAttribute.InformationType.Info,false)]
 		/// if this is set to true, the InputManager will try to detect what mode it should be in, based on the current target device
 		[Tooltip("if this is set to true, the InputManager will try to detect what mode it should be in, based on the current target device")]
 		public bool AutoMobileDetection = true;
@@ -43,7 +43,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is true, the weapon mode will be forced to the selected WeaponForcedMode")]
 		public bool ForceWeaponMode = false;
 		/// use this to force a control mode for weapons
-		[MMCondition("ForceWeaponMode", true)]
+		[PLCondition("ForceWeaponMode", true)]
 		[Tooltip("use this to force a control mode for weapons")]
 		public WeaponAim.AimControls WeaponForcedMode;
 		/// if this is true, mobile controls will be hidden in editor mode, regardless of the current build target or the forced mode
@@ -56,7 +56,7 @@ namespace SpectralDepths.TopDown
 		public bool IsMobile { get; protected set; }
 
 		[Header("Movement settings")]
-		[MMInformation("Turn SmoothMovement on to have inertia in your controls (meaning there'll be a small delay between a press/release of a direction and your character moving/stopping). You can also define here the horizontal and vertical thresholds.",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Turn SmoothMovement on to have inertia in your controls (meaning there'll be a small delay between a press/release of a direction and your character moving/stopping). You can also define here the horizontal and vertical thresholds.",PLInformationAttribute.InformationType.Info,false)]
 		/// If set to true, acceleration / deceleration will take place when moving / stopping
 		[Tooltip("If set to true, acceleration / deceleration will take place when moving / stopping")]
 		public bool SmoothMovement=true;
@@ -65,45 +65,45 @@ namespace SpectralDepths.TopDown
 		public Vector2 Threshold = new Vector2(0.1f, 0.4f);
 
 		[Header("Camera Rotation")]
-		[MMInformation("Here you can decide whether or not camera rotation should impact your input. That can be useful in, for example, a 3D isometric game, if you want 'up' to mean some other direction than Vector3.up/forward.", MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Here you can decide whether or not camera rotation should impact your input. That can be useful in, for example, a 3D isometric game, if you want 'up' to mean some other direction than Vector3.up/forward.", PLInformationAttribute.InformationType.Info, false)]
 		/// if this is true, any directional input coming into this input manager will be rotated to align with the current camera orientation
 		[Tooltip("if this is true, any directional input coming into this input manager will be rotated to align with the current camera orientation")]
 		public bool RotateInputBasedOnCameraDirection = false;
         
 		/// the jump button, used for jumps and validation
-		public MMInput.IMButton JumpButton { get; protected set; }
+		public PLInput.IMButton JumpButton { get; protected set; }
 		/// the run button
-		public MMInput.IMButton RunButton { get; protected set; }
+		public PLInput.IMButton RunButton { get; protected set; }
 		/// the dash button
-		public MMInput.IMButton DashButton { get; protected set; }
+		public PLInput.IMButton DashButton { get; protected set; }
 		/// the crouch button
-		public MMInput.IMButton CrouchButton { get; protected set; }
+		public PLInput.IMButton CrouchButton { get; protected set; }
 		/// the shoot button
-		public MMInput.IMButton ShootButton { get; protected set; }
+		public PLInput.IMButton ShootButton { get; protected set; }
 		/// the activate button, used for interactions with zones
-		public MMInput.IMButton InteractButton { get; protected set; }
+		public PLInput.IMButton InteractButton { get; protected set; }
 		/// the shoot button
-		public MMInput.IMButton SecondaryShootButton { get; protected set; }
+		public PLInput.IMButton SecondaryShootButton { get; protected set; }
 		/// the reload button
-		public MMInput.IMButton ReloadButton { get; protected set; }
+		public PLInput.IMButton ReloadButton { get; protected set; }
 		/// the pause button
-		public MMInput.IMButton PauseButton { get; protected set; }
+		public PLInput.IMButton PauseButton { get; protected set; }
 		/// the rotate camera right button
-		public MMInput.IMButton RotateCameraLeftButton { get; protected set; }
+		public PLInput.IMButton RotateCameraLeftButton { get; protected set; }
 		/// the rotate camera right button
-		public MMInput.IMButton RotateCameraRightButton { get; protected set; }
+		public PLInput.IMButton RotateCameraRightButton { get; protected set; }
 		/// the time control button
-		public MMInput.IMButton TimeControlButton { get; protected set; }
+		public PLInput.IMButton TimeControlButton { get; protected set; }
 		/// the button used to switch character (either via model or prefab switch)
-		public MMInput.IMButton SwitchCharacterButton { get; protected set; }
+		public PLInput.IMButton SwitchCharacterButton { get; protected set; }
 		/// the switch weapon button
-		public MMInput.IMButton SwitchWeaponButton { get; protected set; }
+		public PLInput.IMButton SwitchWeaponButton { get; protected set; }
 		/// the attackmove button
-		public MMInput.IMButton CommandAttackMoveButton { get; protected set; }
+		public PLInput.IMButton CommandAttackMoveButton { get; protected set; }
 		/// the shoot axis, used as a button (non analogic)
-		public MMInput.ButtonStates ShootAxis { get; protected set; }
+		public PLInput.ButtonStates ShootAxis { get; protected set; }
 		/// the shoot axis, used as a button (non analogic)
-		public MMInput.ButtonStates SecondaryShootAxis { get; protected set; }
+		public PLInput.ButtonStates SecondaryShootAxis { get; protected set; }
 		/// the primary movement value (used to move the character around)
 		public Vector2 PrimaryMovement { get { return _primaryMovement; } }
 		/// the secondary movement (usually the right stick on a gamepad), used to aim
@@ -122,7 +122,7 @@ namespace SpectralDepths.TopDown
 		protected Camera _targetCamera;
 		protected bool _camera3D;
 		protected float _cameraAngle;
-		protected List<MMInput.IMButton> ButtonList;
+		protected List<PLInput.IMButton> ButtonList;
 		protected Vector2 _primaryMovement = Vector2.zero;
 		protected Vector2 _secondaryMovement = Vector2.zero;
 		protected float _cameraRotationInput = 0f;
@@ -206,22 +206,22 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void InitializeButtons()
 		{
-			ButtonList = new List<MMInput.IMButton> ();
-			ButtonList.Add(JumpButton = new MMInput.IMButton (PlayerID, "Jump", JumpButtonDown, JumpButtonPressed, JumpButtonUp));
-			ButtonList.Add(RunButton  = new MMInput.IMButton (PlayerID, "Run", RunButtonDown, RunButtonPressed, RunButtonUp));
-			ButtonList.Add(InteractButton = new MMInput.IMButton(PlayerID, "Interact", InteractButtonDown, InteractButtonPressed, InteractButtonUp));
-			ButtonList.Add(DashButton  = new MMInput.IMButton (PlayerID, "Dash", DashButtonDown, DashButtonPressed, DashButtonUp));
-			ButtonList.Add(CrouchButton  = new MMInput.IMButton (PlayerID, "Crouch", CrouchButtonDown, CrouchButtonPressed, CrouchButtonUp));
-			ButtonList.Add(SecondaryShootButton = new MMInput.IMButton(PlayerID, "SecondaryShoot", SecondaryShootButtonDown, SecondaryShootButtonPressed, SecondaryShootButtonUp));
-			ButtonList.Add(ShootButton = new MMInput.IMButton (PlayerID, "Shoot", ShootButtonDown, ShootButtonPressed, ShootButtonUp)); 
-			ButtonList.Add(ReloadButton = new MMInput.IMButton (PlayerID, "Reload", ReloadButtonDown, ReloadButtonPressed, ReloadButtonUp));
-			ButtonList.Add(SwitchWeaponButton = new MMInput.IMButton (PlayerID, "SwitchWeapon", SwitchWeaponButtonDown, SwitchWeaponButtonPressed, SwitchWeaponButtonUp));
-			ButtonList.Add(PauseButton = new MMInput.IMButton(PlayerID, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
-			ButtonList.Add(TimeControlButton = new MMInput.IMButton(PlayerID, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
-			ButtonList.Add(SwitchCharacterButton = new MMInput.IMButton(PlayerID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
-			ButtonList.Add(RotateCameraLeftButton = new MMInput.IMButton(PlayerID, "RotateCameraLeft", RotateCameraLeftButtonDown, RotateCameraLeftButtonPressed, RotateCameraLeftButtonUp));
-			ButtonList.Add(RotateCameraRightButton = new MMInput.IMButton(PlayerID, "RotateCameraRight", RotateCameraRightButtonDown, RotateCameraRightButtonPressed, RotateCameraRightButtonUp));
-			ButtonList.Add(CommandAttackMoveButton = new MMInput.IMButton(PlayerID, "CommandAttackMove", CommandAttackMoveButtonDown, CommandAttackMoveButtonPressed, CommandAttackMoveButtonUp));
+			ButtonList = new List<PLInput.IMButton> ();
+			ButtonList.Add(JumpButton = new PLInput.IMButton (PlayerID, "Jump", JumpButtonDown, JumpButtonPressed, JumpButtonUp));
+			ButtonList.Add(RunButton  = new PLInput.IMButton (PlayerID, "Run", RunButtonDown, RunButtonPressed, RunButtonUp));
+			ButtonList.Add(InteractButton = new PLInput.IMButton(PlayerID, "Interact", InteractButtonDown, InteractButtonPressed, InteractButtonUp));
+			ButtonList.Add(DashButton  = new PLInput.IMButton (PlayerID, "Dash", DashButtonDown, DashButtonPressed, DashButtonUp));
+			ButtonList.Add(CrouchButton  = new PLInput.IMButton (PlayerID, "Crouch", CrouchButtonDown, CrouchButtonPressed, CrouchButtonUp));
+			ButtonList.Add(SecondaryShootButton = new PLInput.IMButton(PlayerID, "SecondaryShoot", SecondaryShootButtonDown, SecondaryShootButtonPressed, SecondaryShootButtonUp));
+			ButtonList.Add(ShootButton = new PLInput.IMButton (PlayerID, "Shoot", ShootButtonDown, ShootButtonPressed, ShootButtonUp)); 
+			ButtonList.Add(ReloadButton = new PLInput.IMButton (PlayerID, "Reload", ReloadButtonDown, ReloadButtonPressed, ReloadButtonUp));
+			ButtonList.Add(SwitchWeaponButton = new PLInput.IMButton (PlayerID, "SwitchWeapon", SwitchWeaponButtonDown, SwitchWeaponButtonPressed, SwitchWeaponButtonUp));
+			ButtonList.Add(PauseButton = new PLInput.IMButton(PlayerID, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
+			ButtonList.Add(TimeControlButton = new PLInput.IMButton(PlayerID, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
+			ButtonList.Add(SwitchCharacterButton = new PLInput.IMButton(PlayerID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
+			ButtonList.Add(RotateCameraLeftButton = new PLInput.IMButton(PlayerID, "RotateCameraLeft", RotateCameraLeftButtonDown, RotateCameraLeftButtonPressed, RotateCameraLeftButtonUp));
+			ButtonList.Add(RotateCameraRightButton = new PLInput.IMButton(PlayerID, "RotateCameraRight", RotateCameraRightButtonDown, RotateCameraRightButtonPressed, RotateCameraRightButtonUp));
+			ButtonList.Add(CommandAttackMoveButton = new PLInput.IMButton(PlayerID, "CommandAttackMove", CommandAttackMoveButtonDown, CommandAttackMoveButtonPressed, CommandAttackMoveButtonUp));
 
 		}
 
@@ -283,7 +283,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void GetInputButtons()
 		{
-			foreach(MMInput.IMButton button in ButtonList)
+			foreach(PLInput.IMButton button in ButtonList)
 			{
 				if (Input.GetButton(button.ButtonID))
 				{
@@ -306,15 +306,15 @@ namespace SpectralDepths.TopDown
 		public virtual void ProcessButtonStates()
 		{
 			// for each button, if we were at ButtonDown this frame, we go to ButtonPressed. If we were at ButtonUp, we're now Off
-			foreach (MMInput.IMButton button in ButtonList)
+			foreach (PLInput.IMButton button in ButtonList)
 			{
-				if (button.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+				if (button.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 				{
-					button.State.ChangeState(MMInput.ButtonStates.ButtonPressed);				
+					button.State.ChangeState(PLInput.ButtonStates.ButtonPressed);				
 				}	
-				if (button.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+				if (button.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 				{
-					button.State.ChangeState(MMInput.ButtonStates.Off);				
+					button.State.ChangeState(PLInput.ButtonStates.Off);				
 				}	
 			}
 		}
@@ -368,8 +368,8 @@ namespace SpectralDepths.TopDown
 		{
 			if (!IsMobile && InputDetectionActive)
 			{
-				ShootAxis = MMInput.ProcessAxisAsButton (_axisShoot, Threshold.y, ShootAxis);
-				SecondaryShootAxis = MMInput.ProcessAxisAsButton(_axisShootSecondary, Threshold.y, SecondaryShootAxis, MMInput.AxisTypes.Positive);
+				ShootAxis = PLInput.ProcessAxisAsButton (_axisShoot, Threshold.y, ShootAxis);
+				SecondaryShootAxis = PLInput.ProcessAxisAsButton(_axisShootSecondary, Threshold.y, SecondaryShootAxis, PLInput.AxisTypes.Positive);
 			}
 		}
 
@@ -497,12 +497,12 @@ namespace SpectralDepths.TopDown
 				if (_camera3D)
 				{
 					_cameraAngle = _targetCamera.transform.localEulerAngles.y;
-					return MMMaths.RotateVector2(input, -_cameraAngle);
+					return PLMaths.RotateVector2(input, -_cameraAngle);
 				}
 				else
 				{
 					_cameraAngle = _targetCamera.transform.localEulerAngles.z;
-					return MMMaths.RotateVector2(input, _cameraAngle);
+					return PLMaths.RotateVector2(input, _cameraAngle);
 				}
 			}
 			else
@@ -519,7 +519,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (!hasFocus && ResetButtonStatesOnFocusLoss && (ButtonList != null))
 			{
-				ForceAllButtonStatesTo(MMInput.ButtonStates.ButtonUp);
+				ForceAllButtonStatesTo(PLInput.ButtonStates.ButtonUp);
 			}
 		}
 
@@ -527,70 +527,70 @@ namespace SpectralDepths.TopDown
 		/// Lets you force the state of all buttons in the InputManager to the one specified in parameters
 		/// </summary>
 		/// <param name="newState"></param>
-		public virtual void ForceAllButtonStatesTo(MMInput.ButtonStates newState)
+		public virtual void ForceAllButtonStatesTo(PLInput.ButtonStates newState)
 		{
-			foreach (MMInput.IMButton button in ButtonList)
+			foreach (PLInput.IMButton button in ButtonList)
 			{
 				button.State.ChangeState(newState);
 			}
 		}
-		public virtual void RotateCameraLeftButtonDown()		{ RotateCameraLeftButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void RotateCameraLeftButtonPressed()		{ RotateCameraLeftButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void RotateCameraLeftButtonUp()			{ RotateCameraLeftButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void RotateCameraLeftButtonDown()		{ RotateCameraLeftButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void RotateCameraLeftButtonPressed()		{ RotateCameraLeftButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void RotateCameraLeftButtonUp()			{ RotateCameraLeftButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 		
-		public virtual void RotateCameraRightButtonDown()		{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void RotateCameraRightButtonPressed()	{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void RotateCameraRightButtonUp()			{ RotateCameraRightButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
-		public virtual void CommandAttackMoveButtonDown()		{ CommandAttackMoveButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void CommandAttackMoveButtonPressed()	{ CommandAttackMoveButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void CommandAttackMoveButtonUp()			{ CommandAttackMoveButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void RotateCameraRightButtonDown()		{ RotateCameraRightButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void RotateCameraRightButtonPressed()	{ RotateCameraRightButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void RotateCameraRightButtonUp()			{ RotateCameraRightButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
+		public virtual void CommandAttackMoveButtonDown()		{ CommandAttackMoveButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void CommandAttackMoveButtonPressed()	{ CommandAttackMoveButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void CommandAttackMoveButtonUp()			{ CommandAttackMoveButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void JumpButtonDown()		{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void JumpButtonPressed()		{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void JumpButtonUp()			{ JumpButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void JumpButtonDown()		{ JumpButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void JumpButtonPressed()		{ JumpButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void JumpButtonUp()			{ JumpButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void DashButtonDown()		{ DashButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void DashButtonPressed()		{ DashButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void DashButtonUp()			{ DashButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void DashButtonDown()		{ DashButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void DashButtonPressed()		{ DashButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void DashButtonUp()			{ DashButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void CrouchButtonDown()		{ CrouchButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void CrouchButtonPressed()	{ CrouchButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void CrouchButtonUp()		{ CrouchButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void CrouchButtonDown()		{ CrouchButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void CrouchButtonPressed()	{ CrouchButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void CrouchButtonUp()		{ CrouchButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void RunButtonDown()			{ RunButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void RunButtonPressed()		{ RunButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void RunButtonUp()			{ RunButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void RunButtonDown()			{ RunButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void RunButtonPressed()		{ RunButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void RunButtonUp()			{ RunButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void ReloadButtonDown()		{ ReloadButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void ReloadButtonPressed()	{ ReloadButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void ReloadButtonUp()		{ ReloadButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void ReloadButtonDown()		{ ReloadButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void ReloadButtonPressed()	{ ReloadButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void ReloadButtonUp()		{ ReloadButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void InteractButtonDown() { InteractButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
-		public virtual void InteractButtonPressed() { InteractButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
-		public virtual void InteractButtonUp() { InteractButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+		public virtual void InteractButtonDown() { InteractButton.State.ChangeState(PLInput.ButtonStates.ButtonDown); }
+		public virtual void InteractButtonPressed() { InteractButton.State.ChangeState(PLInput.ButtonStates.ButtonPressed); }
+		public virtual void InteractButtonUp() { InteractButton.State.ChangeState(PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void ShootButtonDown()		{ ShootButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void ShootButtonPressed()	{ ShootButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void ShootButtonUp()			{ ShootButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void ShootButtonDown()		{ ShootButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void ShootButtonPressed()	{ ShootButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void ShootButtonUp()			{ ShootButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void SecondaryShootButtonDown() { SecondaryShootButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
-		public virtual void SecondaryShootButtonPressed() { SecondaryShootButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
-		public virtual void SecondaryShootButtonUp() { SecondaryShootButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+		public virtual void SecondaryShootButtonDown() { SecondaryShootButton.State.ChangeState(PLInput.ButtonStates.ButtonDown); }
+		public virtual void SecondaryShootButtonPressed() { SecondaryShootButton.State.ChangeState(PLInput.ButtonStates.ButtonPressed); }
+		public virtual void SecondaryShootButtonUp() { SecondaryShootButton.State.ChangeState(PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void PauseButtonDown() { PauseButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
-		public virtual void PauseButtonPressed() { PauseButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
-		public virtual void PauseButtonUp() { PauseButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+		public virtual void PauseButtonDown() { PauseButton.State.ChangeState(PLInput.ButtonStates.ButtonDown); }
+		public virtual void PauseButtonPressed() { PauseButton.State.ChangeState(PLInput.ButtonStates.ButtonPressed); }
+		public virtual void PauseButtonUp() { PauseButton.State.ChangeState(PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void TimeControlButtonDown() { TimeControlButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
-		public virtual void TimeControlButtonPressed() { TimeControlButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
-		public virtual void TimeControlButtonUp() { TimeControlButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+		public virtual void TimeControlButtonDown() { TimeControlButton.State.ChangeState(PLInput.ButtonStates.ButtonDown); }
+		public virtual void TimeControlButtonPressed() { TimeControlButton.State.ChangeState(PLInput.ButtonStates.ButtonPressed); }
+		public virtual void TimeControlButtonUp() { TimeControlButton.State.ChangeState(PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void SwitchWeaponButtonDown()		{ SwitchWeaponButton.State.ChangeState (MMInput.ButtonStates.ButtonDown); }
-		public virtual void SwitchWeaponButtonPressed()		{ SwitchWeaponButton.State.ChangeState (MMInput.ButtonStates.ButtonPressed); }
-		public virtual void SwitchWeaponButtonUp()			{ SwitchWeaponButton.State.ChangeState (MMInput.ButtonStates.ButtonUp); }
+		public virtual void SwitchWeaponButtonDown()		{ SwitchWeaponButton.State.ChangeState (PLInput.ButtonStates.ButtonDown); }
+		public virtual void SwitchWeaponButtonPressed()		{ SwitchWeaponButton.State.ChangeState (PLInput.ButtonStates.ButtonPressed); }
+		public virtual void SwitchWeaponButtonUp()			{ SwitchWeaponButton.State.ChangeState (PLInput.ButtonStates.ButtonUp); }
 
-		public virtual void SwitchCharacterButtonDown() { SwitchCharacterButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
-		public virtual void SwitchCharacterButtonPressed() { SwitchCharacterButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
-		public virtual void SwitchCharacterButtonUp() { SwitchCharacterButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+		public virtual void SwitchCharacterButtonDown() { SwitchCharacterButton.State.ChangeState(PLInput.ButtonStates.ButtonDown); }
+		public virtual void SwitchCharacterButtonPressed() { SwitchCharacterButton.State.ChangeState(PLInput.ButtonStates.ButtonPressed); }
+		public virtual void SwitchCharacterButtonUp() { SwitchCharacterButton.State.ChangeState(PLInput.ButtonStates.ButtonUp); }
 	}
 }

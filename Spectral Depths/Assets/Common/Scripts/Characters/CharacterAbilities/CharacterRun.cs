@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {	
@@ -42,15 +42,15 @@ namespace SpectralDepths.TopDown
 			{
 				if (_inputManager.PrimaryMovement.magnitude > AutoRunThreshold)
 				{
-					_inputManager.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed);
+					_inputManager.RunButton.State.ChangeState(PLInput.ButtonStates.ButtonPressed);
 				}
 			}
 
-			if (_inputManager.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+			if (_inputManager.RunButton.State.CurrentState == PLInput.ButtonStates.ButtonDown || _inputManager.RunButton.State.CurrentState == PLInput.ButtonStates.ButtonPressed)
 			{
 				RunStart();
 			}				
-			if (_inputManager.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (_inputManager.RunButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 			{
 				RunStop();
 			}
@@ -60,7 +60,7 @@ namespace SpectralDepths.TopDown
 				{
 					if (_inputManager.PrimaryMovement.magnitude <= AutoRunThreshold)
 					{
-						_inputManager.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonUp);
+						_inputManager.RunButton.State.ChangeState(PLInput.ButtonStates.ButtonUp);
 						RunStop();
 					}
 				}
@@ -198,7 +198,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _runningAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Running),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _runningAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Running),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 
 		protected override void OnDisable()

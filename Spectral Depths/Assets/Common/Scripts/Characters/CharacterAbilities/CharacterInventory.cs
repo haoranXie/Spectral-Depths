@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -17,9 +17,9 @@ namespace SpectralDepths.TopDown
 	/// Add this component to a character and it'll be able to control an inventory
 	/// Animator parameters : none
 	/// </summary>
-	[MMHiddenProperties("AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Inventory")] 
-	public class CharacterInventory : CharacterAbility, MMEventListener<MMInventoryEvent>
+	public class CharacterInventory : CharacterAbility, PLEventListener<PLInventoryEvent>
 	{
 		public enum WeaponRotationModes { Normal, AddEmptySlot, AddInitialWeapon }
         
@@ -121,14 +121,14 @@ namespace SpectralDepths.TopDown
 			{
 				foreach (AutoPickItem item in AutoPickItems)
 				{
-					MMInventoryEvent.Trigger(MMInventoryEventType.Pick, null, item.Item.TargetInventoryName, item.Item, item.Quantity, 0, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, item.Item.TargetInventoryName, item.Item, item.Quantity, 0, PlayerID);
 				}
 			}
 
 			// we auto equip a weapon if needed
 			if ((AutoEquipWeaponOnStart != null) && !_initialized && canAutoEquip)
 			{
-				MMInventoryEvent.Trigger(MMInventoryEventType.Pick, null, AutoEquipWeaponOnStart.TargetInventoryName, AutoEquipWeaponOnStart, 1, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, AutoEquipWeaponOnStart.TargetInventoryName, AutoEquipWeaponOnStart, 1, 0, PlayerID);
 				EquipWeapon(AutoEquipWeaponOnStart.ItemID);
 			}
 			_initialized = true;
@@ -185,7 +185,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			if (_inputManager.SwitchWeaponButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.SwitchWeaponButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				SwitchWeapon ();
 			}
@@ -265,17 +265,17 @@ namespace SpectralDepths.TopDown
 		{
 			if ((weaponID == _emptySlotWeaponName) && (CharacterHandleWeapon != null))
 			{
-				MMInventoryEvent.Trigger(MMInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
 				CharacterHandleWeapon.ChangeWeapon(null, _emptySlotWeaponName, false);
-				MMInventoryEvent.Trigger(MMInventoryEventType.Redraw, null, WeaponInventory.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventory.name, null, 0, 0, PlayerID);
 				return;
 			}
 
 			if ((weaponID == _initialSlotWeaponName) && (CharacterHandleWeapon != null))
 			{
-				MMInventoryEvent.Trigger(MMInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
 				CharacterHandleWeapon.ChangeWeapon(CharacterHandleWeapon.InitialWeapon, _initialSlotWeaponName, false);
-				MMInventoryEvent.Trigger(MMInventoryEventType.Redraw, null, WeaponInventory.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventory.name, null, 0, 0, PlayerID);
 				return;
 			}
 			
@@ -287,7 +287,7 @@ namespace SpectralDepths.TopDown
 				}
 				if (MainInventory.Content[i].ItemID == weaponID)
 				{
-					MMInventoryEvent.Trigger(MMInventoryEventType.EquipRequest, null, MainInventory.name, MainInventory.Content[i], 0, i, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, null, MainInventory.name, MainInventory.Content[i], 0, i, PlayerID);
 					break;
 				}
 			}
@@ -323,9 +323,9 @@ namespace SpectralDepths.TopDown
 		/// When an inventory gets loaded, if it's our WeaponInventory, we check if there's already a weapon equipped, and if yes, we equip it
 		/// </summary>
 		/// <param name="inventoryEvent">Inventory event.</param>
-		public virtual void OnMMEvent(MMInventoryEvent inventoryEvent)
+		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
 		{
-			if (inventoryEvent.InventoryEventType == MMInventoryEventType.InventoryLoaded)
+			if (inventoryEvent.InventoryEventType == PLInventoryEventType.InventoryLoaded)
 			{
 				if (inventoryEvent.TargetInventoryName == WeaponInventoryName)
 				{
@@ -340,7 +340,7 @@ namespace SpectralDepths.TopDown
 					}
 				}
 			}
-			if (inventoryEvent.InventoryEventType == MMInventoryEventType.Pick)
+			if (inventoryEvent.InventoryEventType == PLInventoryEventType.Pick)
 			{
 				bool isSubclass = (inventoryEvent.EventItem.GetType().IsSubclassOf(typeof(InventoryWeapon)));
 				bool isClass = (inventoryEvent.EventItem.GetType() == typeof(InventoryWeapon));
@@ -375,26 +375,26 @@ namespace SpectralDepths.TopDown
 			base.OnDeath();
 			if (WeaponInventory != null)
 			{
-				MMInventoryEvent.Trigger(MMInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
 			}            
 		}
 
 		/// <summary>
-		/// On enable, we start listening for MMGameEvents. You may want to extend that to listen to other types of events.
+		/// On enable, we start listening for PLGameEvents. You may want to extend that to listen to other types of events.
 		/// </summary>
 		protected override void OnEnable()
 		{
 			base.OnEnable();
-			this.MMEventStartListening<MMInventoryEvent>();
+			this.PLEventStartListening<PLInventoryEvent>();
 		}
 
 		/// <summary>
-		/// On disable, we stop listening for MMGameEvents. You may want to extend that to stop listening to other types of events.
+		/// On disable, we stop listening for PLGameEvents. You may want to extend that to stop listening to other types of events.
 		/// </summary>
 		protected override void OnDisable()
 		{
 			base.OnDisable ();
-			this.MMEventStopListening<MMInventoryEvent>();
+			this.PLEventStopListening<PLInventoryEvent>();
 		}
 	}
 }

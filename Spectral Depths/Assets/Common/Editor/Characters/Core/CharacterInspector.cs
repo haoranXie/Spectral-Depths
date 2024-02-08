@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.Rendering;
 
 namespace SpectralDepths.TopDown

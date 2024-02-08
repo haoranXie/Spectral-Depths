@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -162,7 +162,7 @@ namespace SpectralDepths.TopDown
 			// we return the first unobscured target
 			foreach (Transform t in _potentialTargets)
 			{
-				_boxcastDirection = (Vector2)(t.gameObject.MMGetComponentNoAlloc<Collider2D>().bounds.center - _collider.bounds.center);
+				_boxcastDirection = (Vector2)(t.gameObject.PLGetComponentNoAlloc<Collider2D>().bounds.center - _collider.bounds.center);
                 
 				if (ObstaclesDetectionMode == ObstaclesDetectionModes.Boxcast)
 				{
@@ -170,7 +170,7 @@ namespace SpectralDepths.TopDown
 				}
 				else
 				{
-					_hit = MMDebug.RayCast(_collider.bounds.center, _boxcastDirection, _boxcastDirection.magnitude,
+					_hit = PLDebug.RayCast(_collider.bounds.center, _boxcastDirection, _boxcastDirection.magnitude,
 						ObstacleMask, Color.yellow, true);
 				}
                 

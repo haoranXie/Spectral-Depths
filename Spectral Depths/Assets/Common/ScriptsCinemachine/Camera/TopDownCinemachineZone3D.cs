@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// Add this class to a box collider and it'll let you define a zone that, when entered, enables a virtual camera, letting you define sections inside your level easily
 	/// </summary>
-	public class TopDownCinemachineZone3D : MMCinemachineZone3D
+	public class TopDownCinemachineZone3D : PLCinemachineZone3D
 	{
 		[Header("Top Down Engine")]
 		/// if this is true, the zone will require colliders that want to trigger it to have a Character components of type Player
@@ -19,13 +19,13 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// On Awake, adds a camera controller if needed
 		/// </summary>
-		#if MM_CINEMACHINE
+		#if PL_CINEMACHINE
 		protected override void Awake()
 		{
 			base.Awake();
 			if (Application.isPlaying)
 			{
-				_cinemachineCameraController = VirtualCamera.gameObject.MMGetComponentAroundOrAdd<CinemachineCameraController>();
+				_cinemachineCameraController = VirtualCamera.gameObject.PLGetComponentAroundOrAdd<CinemachineCameraController>();
 				_cinemachineCameraController.ConfineCameraToLevelBounds = false;    
 			}
 		}
@@ -60,7 +60,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (RequiresPlayerCharacter)
 			{
-				_character = collider.MMGetComponentNoAlloc<Character>();
+				_character = collider.PLGetComponentNoAlloc<Character>();
 				if (_character == null)
 				{
 					return false;

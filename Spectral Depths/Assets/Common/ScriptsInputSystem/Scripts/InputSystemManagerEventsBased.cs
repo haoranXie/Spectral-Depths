@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,7 +39,7 @@ namespace SpectralDepths.TopDown
         /// </summary>
         /// <param name="context"></param>
         /// <param name="imButton"></param>
-        protected virtual void BindButton(InputAction.CallbackContext context, MMInput.IMButton imButton)
+        protected virtual void BindButton(InputAction.CallbackContext context, PLInput.IMButton imButton)
         {
             if (!context.performed)
             {
@@ -52,11 +52,11 @@ namespace SpectralDepths.TopDown
             {
                 if (button.wasPressedThisFrame)
                 {
-                    imButton.State.ChangeState(MMInput.ButtonStates.ButtonDown);
+                    imButton.State.ChangeState(PLInput.ButtonStates.ButtonDown);
                 }
                 if (button.wasReleasedThisFrame)
                 {
-                    imButton.State.ChangeState(MMInput.ButtonStates.ButtonUp);
+                    imButton.State.ChangeState(PLInput.ButtonStates.ButtonUp);
                 }
             }
         }

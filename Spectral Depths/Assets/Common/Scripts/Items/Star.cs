@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,7 +43,7 @@ namespace SpectralDepths.TopDown
 		{
 			e.SceneName = sceneName;
 			e.StarID = starID;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 }

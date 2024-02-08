@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 using System;
 
 namespace SpectralDepths.TopDown
@@ -11,9 +11,9 @@ namespace SpectralDepths.TopDown
 	/// This base class, meant to be extended (see ProjectileWeapon.cs for an example of that) handles rate of fire (rate of use actually), and ammo reloading
 	/// </summary>
 	[SelectionBase]
-	public class Weapon : MMMonoBehaviour 
+	public class Weapon : PLMonoBehaviour 
 	{
-		[MMInspectorGroup("ID", true, 7)]
+		[PLInspectorGroup("ID", true, 7)]
 		/// the name of the weapon, only used for debugging
 		[Tooltip("the name of the weapon, only used for debugging")]
 		public string WeaponName;
@@ -24,10 +24,10 @@ namespace SpectralDepths.TopDown
 		public enum WeaponStates { WeaponIdle, WeaponStart, WeaponDelayBeforeUse, WeaponUse, WeaponDelayBetweenUses, WeaponStop, WeaponReloadNeeded, WeaponReloadStart, WeaponReload, WeaponReloadStop, WeaponInterrupted }
 
 		/// whether or not the weapon is currently active
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not the weapon is currently active")]
 		public bool WeaponCurrentlyActive = true;
-		[MMInspectorGroup("Variants", true, 7)]
+		[PLInspectorGroup("Variants", true, 7)]
 		/// reference to Player Used Variant of weapon
 		[Tooltip("reference to Player Used Variant of weapon")]
 		public Weapon PlayerWeaponVersion;
@@ -35,7 +35,7 @@ namespace SpectralDepths.TopDown
 		public Weapon AIWeaponVersion;
 		
 
-		[MMInspectorGroup("Use", true, 10)]
+		[PLInspectorGroup("Use", true, 10)]
 		/// if this is true, this weapon will be able to read input (usually via the CharacterHandleWeapon ability), otherwise player input will be disabled
 		[Tooltip("if this is true, this weapon will be able to read input (usually via the CharacterHandleWeapon ability), otherwise player input will be disabled")]
 		public bool InputAuthorized = true;
@@ -66,7 +66,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the time between shots in a burst sequence (in seconds)")]
 		public float BurstTimeBetweenShots = 0.1f;
 
-		[MMInspectorGroup("Magazine", true, 11)]
+		[PLInspectorGroup("Magazine", true, 11)]
 		/// whether or not the weapon is magazine based. If it's not, it'll just take its ammo inside a global pool
 		[Tooltip("whether or not the weapon is magazine based. If it's not, it'll just take its ammo inside a global pool")]
 		public bool MagazineBased = false;
@@ -95,11 +95,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is true, the weapon won't try and reload if the ammo is empty, when using WeaponAmmo")]
 		public bool PreventReloadIfAmmoEmpty = false;
 		/// the current amount of ammo loaded inside the weapon
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current amount of ammo loaded inside the weapon")]
 		public int CurrentAmmoLoaded = 0;
 
-		[MMInspectorGroup("Position", true, 12)]
+		[PLInspectorGroup("Position", true, 12)]
 		/// an offset that will be applied to the weapon once attached to the center of the WeaponAttachment transform.
 		[Tooltip("an offset that will be applied to the weapon once attached to the center of the WeaponAttachment transform.")]
 		public Vector3 WeaponAttachmentOffset = Vector3.zero;
@@ -119,7 +119,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is true, the weapon will flip to match the character's orientation")]
 		public bool WeaponShouldFlip = true;
 
-		[MMInspectorGroup("IK", true, 13)]
+		[PLInspectorGroup("IK", true, 13)]
 		/// the transform to which the character's left hand should be attached to
 		[Tooltip("the transform to which the character's left hand should be attached to")]
 		public Transform LeftHandHandle;
@@ -127,7 +127,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the transform to which the character's right hand should be attached to")]
 		public Transform RightHandHandle;
 
-		[MMInspectorGroup("Movement", true, 14)]
+		[PLInspectorGroup("Movement", true, 14)]
 		/// if this is true, a multiplier will be applied to movement while the weapon is active
 		[Tooltip("if this is true, a multiplier will be applied to movement while the weapon is active")]
 		public bool ModifyMovementWhileAttacking = false;
@@ -141,12 +141,12 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is true all aim will be prevented while the weapon is active")]
 		public bool PreventAllAimWhileInUse = false;
 
-		[MMInspectorGroup("Recoil", true, 15)]
+		[PLInspectorGroup("Recoil", true, 15)]
 		/// the force to apply to push the character back when shooting - positive values will push the character back, negative values will launch it forward, turning that recoil into a thrust
 		[Tooltip("the force to apply to push the character back when shooting - positive values will push the character back, negative values will launch it forward, turning that recoil into a thrust")]
 		public float RecoilForce = 0f;
 
-		[MMInspectorGroup("Animation", true, 16)]
+		[PLInspectorGroup("Animation", true, 16)]
 		/// the other animators (other than the Character's) that you want to update every time this weapon gets used
 		[Tooltip("the other animators (other than the Character's) that you want to update every time this weapon gets used")]
 		public List<Animator> Animators;
@@ -157,7 +157,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is true, the weapon's animator(s) will mirror the animation parameter of the owner character (that way your weapon's animator will be able to 'know' if the character is walking, jumping, etc)")]
 		public bool MirrorCharacterAnimatorParameters = false;
 
-		[MMInspectorGroup("Animation Parameters Names", true, 17)]
+		[PLInspectorGroup("Animation Parameters Names", true, 17)]
 		/// the ID of the weapon to pass to the animator
 		[Tooltip("the ID of the weapon to pass to the animator")]
 		public int WeaponAnimationID = 0;
@@ -201,30 +201,30 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the name of the parameter to send to true as long as this weapon is equipped, used or not. While all the other parameters defined here are updated by the Weapon class itself, and passed to the weapon and character, this one will be updated by CharacterHandleWeapon only.")]
 		public string EquippedAnimationParameter;
         
-		[MMInspectorGroup("Feedbacks", true, 18)]
+		[PLInspectorGroup("Feedbacks", true, 18)]
 		/// the feedback to play when the weapon starts being used
 		[Tooltip("the feedback to play when the weapon starts being used")]
-		public MMFeedbacks WeaponStartMMFeedback;
+		public PLFeedbacks WeaponStartMMFeedback;
 		/// the feedback to play while the weapon is in use
 		[Tooltip("the feedback to play while the weapon is in use")]
-		public MMFeedbacks WeaponUsedMMFeedback;
+		public PLFeedbacks WeaponUsedMMFeedback;
 		/// if set, this feedback will be used randomly instead of WeaponUsedMMFeedback
 		[Tooltip("if set, this feedback will be used randomly instead of WeaponUsedMMFeedback")]
-		public MMFeedbacks WeaponUsedMMFeedbackAlt;
+		public PLFeedbacks WeaponUsedMMFeedbackAlt;
 		/// the feedback to play when the weapon stops being used
 		[Tooltip("the feedback to play when the weapon stops being used")]
-		public MMFeedbacks WeaponStopMMFeedback;
+		public PLFeedbacks WeaponStopMMFeedback;
 		/// the feedback to play when the weapon gets reloaded
 		[Tooltip("the feedback to play when the weapon gets reloaded")]
-		public MMFeedbacks WeaponReloadMMFeedback;
+		public PLFeedbacks WeaponReloadMMFeedback;
 		/// the feedback to play when the weapon gets reloaded
 		[Tooltip("the feedback to play when the weapon gets reloaded")]
-		public MMFeedbacks WeaponReloadNeededMMFeedback;
+		public PLFeedbacks WeaponReloadNeededMMFeedback;
 		/// the feedback to play when the weapon can't reload as there's no more ammo available. You'll need PreventReloadIfAmmoEmpty to be true for this to work
 		[Tooltip("the feedback to play when the weapon can't reload as there's no more ammo available. You'll need PreventReloadIfAmmoEmpty to be true for this to work")]
-		public MMFeedbacks WeaponReloadImpossibleMMFeedback;
+		public PLFeedbacks WeaponReloadImpossibleMMFeedback;
         
-		[MMInspectorGroup("Settings", true, 19)]
+		[PLInspectorGroup("Settings", true, 19)]
 		/// If this is true, the weapon will initialize itself on start, otherwise it'll have to be init manually, usually by the CharacterHandleWeapon class
 		[Tooltip("If this is true, the weapon will initialize itself on start, otherwise it'll have to be init manually, usually by the CharacterHandleWeapon class")]
 		public bool InitializeOnStart = false;
@@ -239,13 +239,13 @@ namespace SpectralDepths.TopDown
 		/// the weapon's owner's CharacterHandleWeapon component
 		public CharacterHandleWeapon CharacterHandleWeapon { get; set; }
 		/// if true, the weapon is flipped
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("if true, the weapon is flipped right now")]
 		public bool Flipped;
 		/// the WeaponAmmo component optionnally associated to this weapon
 		public WeaponAmmo WeaponAmmo { get; protected set; }
 		/// the weapon's state machine
-		public MMStateMachine<WeaponStates> WeaponState;
+		public PLStateMachine<WeaponStates> WeaponState;
 
 		protected SpriteRenderer _spriteRenderer;
 		protected WeaponAim _weaponAim;
@@ -314,7 +314,7 @@ namespace SpectralDepths.TopDown
 			_comboWeapon = this.gameObject.GetComponent<ComboWeapon>();
 			_weaponPreventShooting = this.gameObject.GetComponent<WeaponPreventShooting>();
 
-			WeaponState = new MMStateMachine<WeaponStates>(gameObject, true);
+			WeaponState = new PLStateMachine<WeaponStates>(gameObject, true);
 			WeaponState.ChangeState(WeaponStates.WeaponIdle);
 			WeaponAmmo = GetComponent<WeaponAmmo>();
 			_animatorParameters = new List<HashSet<int>>();
@@ -680,7 +680,7 @@ namespace SpectralDepths.TopDown
 				ShootRequest();
 				_lastShootRequestAt = Time.time;
 				remainingShots--;
-				yield return MMCoroutine.WaitFor(interval);
+				yield return PLCoroutine.WaitFor(interval);
 			}
 		}
 
@@ -1035,7 +1035,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (WeaponUsedMMFeedbackAlt != null)
 			{
-				int random = MMMaths.RollADice(2);
+				int random = PLMaths.RollADice(2);
 				if (random > 1)
 				{
 					WeaponUsedMMFeedbackAlt?.PlayFeedbacks(this.transform.position);
@@ -1094,7 +1094,7 @@ namespace SpectralDepths.TopDown
 
 					if (MirrorCharacterAnimatorParameters)
 					{
-						MMAnimatorMirror mirror = Animators[i].gameObject.AddComponent<MMAnimatorMirror>();
+						PLAnimatorMirror mirror = Animators[i].gameObject.AddComponent<PLAnimatorMirror>();
 						mirror.SourceAnimator = _ownerAnimator;
 						mirror.TargetAnimator = Animators[i];
 						mirror.Initialization();
@@ -1115,23 +1115,23 @@ namespace SpectralDepths.TopDown
 
 		protected virtual void AddParametersToAnimator(Animator animator, HashSet<int> list)
 		{
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, EquippedAnimationParameter, out _equippedAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, WeaponAngleAnimationParameter, out _weaponAngleAnimationParameter, AnimatorControllerParameterType.Float, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, WeaponAngleRelativeAnimationParameter, out _weaponAngleRelativeAnimationParameter, AnimatorControllerParameterType.Float, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, IdleAnimationParameter, out _idleAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, StartAnimationParameter, out _startAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, DelayBeforeUseAnimationParameter, out _delayBeforeUseAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, DelayBetweenUsesAnimationParameter, out _delayBetweenUsesAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, StopAnimationParameter, out _stopAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, ReloadStartAnimationParameter, out _reloadStartAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, ReloadStopAnimationParameter, out _reloadStopAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, ReloadAnimationParameter, out _reloadAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, SingleUseAnimationParameter, out _singleUseAnimationParameter, AnimatorControllerParameterType.Bool, list);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, UseAnimationParameter, out _useAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, EquippedAnimationParameter, out _equippedAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, WeaponAngleAnimationParameter, out _weaponAngleAnimationParameter, AnimatorControllerParameterType.Float, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, WeaponAngleRelativeAnimationParameter, out _weaponAngleRelativeAnimationParameter, AnimatorControllerParameterType.Float, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, IdleAnimationParameter, out _idleAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, StartAnimationParameter, out _startAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, DelayBeforeUseAnimationParameter, out _delayBeforeUseAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, DelayBetweenUsesAnimationParameter, out _delayBetweenUsesAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, StopAnimationParameter, out _stopAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, ReloadStartAnimationParameter, out _reloadStartAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, ReloadStopAnimationParameter, out _reloadStopAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, ReloadAnimationParameter, out _reloadAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, SingleUseAnimationParameter, out _singleUseAnimationParameter, AnimatorControllerParameterType.Bool, list);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, UseAnimationParameter, out _useAnimationParameter, AnimatorControllerParameterType.Bool, list);
 
 			if (_comboWeapon != null)
 			{
-				MMAnimatorExtensions.AddAnimatorParameterIfExists(animator, _comboWeapon.ComboInProgressAnimationParameter, out _comboInProgressAnimationParameter, AnimatorControllerParameterType.Bool, list);
+				PLAnimatorExtensions.AddAnimatorParameterIfExists(animator, _comboWeapon.ComboInProgressAnimationParameter, out _comboInProgressAnimationParameter, AnimatorControllerParameterType.Bool, list);
 			}
 		}
 
@@ -1154,37 +1154,37 @@ namespace SpectralDepths.TopDown
 
 		protected virtual void UpdateAnimator(Animator animator, HashSet<int> list)
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _equippedAnimationParameter, true, list);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _idleAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponIdle), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _startAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponStart), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _delayBeforeUseAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBeforeUse), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _useAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBeforeUse || WeaponState.CurrentState == Weapon.WeaponStates.WeaponUse || WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBetweenUses), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _singleUseAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponUse), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _delayBetweenUsesAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBetweenUses), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _stopAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponStop), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _reloadStartAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponReloadStart), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _reloadAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponReload), list, PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(animator, _reloadStopAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponReloadStop), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _equippedAnimationParameter, true, list);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _idleAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponIdle), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _startAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponStart), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _delayBeforeUseAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBeforeUse), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _useAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBeforeUse || WeaponState.CurrentState == Weapon.WeaponStates.WeaponUse || WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBetweenUses), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _singleUseAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponUse), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _delayBetweenUsesAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponDelayBetweenUses), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _stopAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponStop), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _reloadStartAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponReloadStart), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _reloadAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponReload), list, PerformAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(animator, _reloadStopAnimationParameter, (WeaponState.CurrentState == Weapon.WeaponStates.WeaponReloadStop), list, PerformAnimatorSanityChecks);
 
 			if (Owner != null)
 			{
-				MMAnimatorExtensions.UpdateAnimatorBool(animator, _aliveAnimationParameter, (Owner.ConditionState.CurrentState != CharacterStates.CharacterConditions.Dead), list, PerformAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorBool(animator, _aliveAnimationParameter, (Owner.ConditionState.CurrentState != CharacterStates.CharacterConditions.Dead), list, PerformAnimatorSanityChecks);
 			}
 
 			if (_weaponAim != null)
 			{
-				MMAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleAnimationParameter, _weaponAim.CurrentAngle, list, PerformAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleRelativeAnimationParameter, _weaponAim.CurrentAngleRelative, list, PerformAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleAnimationParameter, _weaponAim.CurrentAngle, list, PerformAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleRelativeAnimationParameter, _weaponAim.CurrentAngleRelative, list, PerformAnimatorSanityChecks);
 			}
 			else
 			{
-				MMAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleAnimationParameter, 0f, list, PerformAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleRelativeAnimationParameter, 0f, list, PerformAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleAnimationParameter, 0f, list, PerformAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(animator, _weaponAngleRelativeAnimationParameter, 0f, list, PerformAnimatorSanityChecks);
 			}
 
 			if (_comboWeapon != null)
 			{
-				MMAnimatorExtensions.UpdateAnimatorBool(animator, _comboInProgressAnimationParameter, _comboWeapon.ComboInProgress, list, PerformAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorBool(animator, _comboInProgressAnimationParameter, _comboWeapon.ComboInProgress, list, PerformAnimatorSanityChecks);
 			}
 		}
 	}

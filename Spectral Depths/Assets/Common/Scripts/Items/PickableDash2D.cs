@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace  SpectralDepths.TopDown
 {
@@ -41,7 +41,7 @@ namespace  SpectralDepths.TopDown
 		/// <param name="picker"></param>
 		protected override void Pick(GameObject picker)
 		{
-			_character.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterDash2D>()?.PermitAbility(true);
+			_character.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterDash2D>()?.PermitAbility(true);
 		}
 	}
 }

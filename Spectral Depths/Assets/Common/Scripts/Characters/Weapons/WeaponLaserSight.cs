@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -22,7 +22,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("if this is false, raycasts won't be computed for this laser sight")]
 		public bool PerformRaycast = true;
 		/// if this is false, the laser won't be drawn
-		[MMCondition("PerformRaycast")]
+		[PLCondition("PerformRaycast")]
 		[Tooltip("if this is false, the laser won't be drawn")]
 		public bool DrawLaser = true;
 
@@ -126,11 +126,11 @@ namespace SpectralDepths.TopDown
 			if (Mode == Modes.ThreeD)
 			{
 				// our laser will be shot from the weapon's laser origin
-				_origin = MMMaths.RotatePointAroundPivot(_thisPosition + _laserOffset, _thisPosition, _thisRotation);
-				_raycastOrigin = MMMaths.RotatePointAroundPivot(_thisPosition + RaycastOriginOffset, _thisPosition, _thisRotation);
+				_origin = PLMaths.RotatePointAroundPivot(_thisPosition + _laserOffset, _thisPosition, _thisRotation);
+				_raycastOrigin = PLMaths.RotatePointAroundPivot(_thisPosition + RaycastOriginOffset, _thisPosition, _thisRotation);
 
 				// we cast a ray in front of the weapon to detect an obstacle
-				_hit = MMDebug.Raycast3D(_raycastOrigin, _thisForward, LaserMaxDistance, LaserCollisionMask, Color.red, true);
+				_hit = PLDebug.Raycast3D(_raycastOrigin, _thisForward, LaserMaxDistance, LaserCollisionMask, Color.red, true);
 
 				// if we've hit something, our destination is the raycast hit
 				if (_hit.transform != null)
@@ -151,11 +151,11 @@ namespace SpectralDepths.TopDown
 					_laserOffset.x = -LaserOriginOffset.x;
 				}
 
-				_raycastOrigin = MMMaths.RotatePointAroundPivot(_weaponPosition + _laserOffset, _weaponPosition, _weaponRotation);
+				_raycastOrigin = PLMaths.RotatePointAroundPivot(_weaponPosition + _laserOffset, _weaponPosition, _weaponRotation);
 				_origin = _raycastOrigin;
 
 				// we cast a ray in front of the weapon to detect an obstacle
-				_hit2D = MMDebug.RayCast(_raycastOrigin, _weaponRotation * _direction, LaserMaxDistance, LaserCollisionMask, Color.red, true);
+				_hit2D = PLDebug.RayCast(_raycastOrigin, _weaponRotation * _direction, LaserMaxDistance, LaserCollisionMask, Color.red, true);
 				if (_hit2D)
 				{
 					_destination = _hit2D.point;
@@ -165,7 +165,7 @@ namespace SpectralDepths.TopDown
 				{
 					_destination = _origin;
 					_destination.x = _destination.x + LaserMaxDistance * _direction.x;
-					_destination = MMMaths.RotatePointAroundPivot(_destination, _weaponPosition, _weaponRotation);
+					_destination = PLMaths.RotatePointAroundPivot(_destination, _weaponPosition, _weaponRotation);
 				}
 			}
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -32,7 +32,7 @@ namespace SpectralDepths.TopDown
         
 		[Header("Head")]
 		/// the minimum and maximum weights to apply to the Head look at weights when using IK 
-		[MMVector("Min","Max")]
+		[PLVector("Min","Max")]
 		public Vector2 HeadWeights = new Vector2(0f, 1f);
         
 		protected Animator _animator;

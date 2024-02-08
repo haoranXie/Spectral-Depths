@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
@@ -12,7 +12,7 @@ namespace SpectralDepths.TopDown
 	public class KillZone : TopDownMonoBehaviour
 	{
 		[Header("Targets")]
-		[MMInformation("This component will make your object kill objects that collide with it. Here you can define what layers will be killed.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("This component will make your object kill objects that collide with it. Here you can define what layers will be killed.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		// the layers containing the objects that will be damaged by this object
 		[Tooltip("the layers containing the objects that will be damaged by this object")]
 		public LayerMask TargetLayerMask = LayerManager.PlayerLayerMask;
@@ -83,12 +83,12 @@ namespace SpectralDepths.TopDown
 			}
 
 			// if what we're colliding with isn't part of the target layers, we do nothing and exit
-			if (!MMLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
+			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
 			{
 				return;
 			}
 
-			_colliderHealth = collider.gameObject.MMGetComponentNoAlloc<Health>();
+			_colliderHealth = collider.gameObject.PLGetComponentNoAlloc<Health>();
 
 			// if what we're colliding with is damageable
 			if (_colliderHealth != null)

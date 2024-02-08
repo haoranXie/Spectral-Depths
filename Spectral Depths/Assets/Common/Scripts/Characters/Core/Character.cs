@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
@@ -23,13 +23,13 @@ namespace SpectralDepths.TopDown
 		public enum FacingDirections { West, East, North, South }
 
 		public enum CharacterDimensions { Type2D, Type3D }
-		[MMReadOnly]
+		[PLReadOnly]
 		public CharacterDimensions CharacterDimension;
 
 		/// the possible character types : player controller or AI (controlled by the computer)
 		public enum CharacterTypes { Player, AI }
 
-		[MMInformation("The Character script is the mandatory basis for all Character abilities. Your character can either be a Non Player Character, controlled by an AI, or a Player character, controlled by the player. In this case, you'll need to specify a PlayerID, which must match the one specified in your InputManager. Usually 'Player1', 'Player2', etc.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("The Character script is the mandatory basis for all Character abilities. Your character can either be a Non Player Character, controlled by an AI, or a Player character, controlled by the player. In this case, you'll need to specify a PlayerID, which must match the one specified in your InputManager. Usually 'Player1', 'Player2', etc.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// Is the character player-controlled or controlled by an AI ?
 		[Tooltip("Is the character player-controlled or controlled by an AI ?")]
 		public CharacterTypes CharacterType = CharacterTypes.AI;
@@ -40,7 +40,7 @@ namespace SpectralDepths.TopDown
 		public CharacterStates CharacterState { get; protected set; }
 
 		[Header("Animator")]
-		[MMInformation("The engine will try and find an animator for this character. If it's on the same gameobject it should have found it. If it's nested somewhere, you'll need to bind it below. You can also decide to get rid of it altogether, in that case, just uncheck 'use mecanim'.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("The engine will try and find an animator for this character. If it's on the same gameobject it should have found it. If it's nested somewhere, you'll need to bind it below. You can also decide to get rid of it altogether, in that case, just uncheck 'use mecanim'.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// the character animator
 		[Tooltip("the character animator, that this class and all abilities should update parameters on")]
 		public Animator CharacterAnimator;
@@ -55,7 +55,7 @@ namespace SpectralDepths.TopDown
 		public bool DisableAnimatorLogs = true;
 
 		[Header("Bindings")]
-		[MMInformation("Leave this unbound if this is a regular, sprite-based character, and if the SpriteRenderer and the Character are on the same GameObject. If not, you'll want to parent the actual model to the Character object, and bind it below. See the 3D demo characters for an example of that. The idea behind that is that the model may move, flip, but the collider will remain unchanged.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Leave this unbound if this is a regular, sprite-based character, and if the SpriteRenderer and the Character are on the same GameObject. If not, you'll want to parent the actual model to the Character object, and bind it below. See the 3D demo characters for an example of that. The idea behind that is that the model may move, flip, but the collider will remain unchanged.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// the 'model' (can be any gameobject) used to manipulate the character. Ideally it's separated (and nested) from the collider/TopDown controller/abilities, to avoid messing with collisions.
 		[Tooltip("the 'model' (can be any gameobject) used to manipulate the character. Ideally it's separated (and nested) from the collider/TopDown controller/abilities, to avoid messing with collisions.")]
 		public GameObject CharacterModel;
@@ -64,7 +64,7 @@ namespace SpectralDepths.TopDown
 		public Health CharacterHealth;
         
 		[Header("Events")]
-		[MMInformation("Here you can define whether or not you want to have that character trigger events when changing state. See the MMTools' State Machine doc for more info.",MoreMountains.Tools.MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Here you can define whether or not you want to have that character trigger events when changing state. See the PLTools' State Machine doc for more info.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// If this is true, the Character's state machine will emit events when entering/exiting a state
 		[Tooltip("If this is true, the Character's state machine will emit events when entering/exiting a state")]
 		public bool SendStateChangeEvents = true;
@@ -84,8 +84,8 @@ namespace SpectralDepths.TopDown
 		public bool OptimizeForMobile = true;
 
 		/// State Machines
-		public MMStateMachine<CharacterStates.MovementStates> MovementState;
-		public MMStateMachine<CharacterStates.CharacterConditions> ConditionState;
+		public PLStateMachine<CharacterStates.MovementStates> MovementState;
+		public PLStateMachine<CharacterStates.CharacterConditions> ConditionState;
 
 		/// associated camera and input manager
 		public InputManager LinkedInputManager { get; protected set; }
@@ -152,18 +152,18 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Initialization()
 		{            
-			if (this.gameObject.MMGetComponentNoAlloc<TopDownController2D>() != null)
+			if (this.gameObject.PLGetComponentNoAlloc<TopDownController2D>() != null)
 			{
 				CharacterDimension = CharacterDimensions.Type2D;
 			}
-			if (this.gameObject.MMGetComponentNoAlloc<TopDownController3D>() != null)
+			if (this.gameObject.PLGetComponentNoAlloc<TopDownController3D>() != null)
 			{
 				CharacterDimension = CharacterDimensions.Type3D;
 			}
 
 			// we initialize our state machines
-			MovementState = new MMStateMachine<CharacterStates.MovementStates>(gameObject,SendStateChangeEvents);
-			ConditionState = new MMStateMachine<CharacterStates.CharacterConditions>(gameObject,SendStateChangeEvents);
+			MovementState = new PLStateMachine<CharacterStates.MovementStates>(gameObject,SendStateChangeEvents);
+			ConditionState = new PLStateMachine<CharacterStates.CharacterConditions>(gameObject,SendStateChangeEvents);
 
 			// we get the current input manager
 			SetInputManager();
@@ -205,9 +205,9 @@ namespace SpectralDepths.TopDown
 			{
 				if (OptimizeForMobile && LinkedInputManager.IsMobile)
 				{
-					if (this.gameObject.MMGetComponentNoAlloc<MMConeOfVision2D>() != null)
+					if (this.gameObject.PLGetComponentNoAlloc<PLConeOfVision2D>() != null)
 					{
-						this.gameObject.MMGetComponentNoAlloc<MMConeOfVision2D>().enabled = false;
+						this.gameObject.PLGetComponentNoAlloc<PLConeOfVision2D>().enabled = false;
 					}
 				}
 			}            
@@ -388,22 +388,22 @@ namespace SpectralDepths.TopDown
 		protected virtual void InitializeAnimatorParameters()
 		{
 			if (_animator == null) { return; }
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _groundedAnimationParameterName, out _groundedAnimationParameter, AnimatorControllerParameterType.Bool, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _currentSpeedAnimationParameterName, out _currentSpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _xSpeedAnimationParameterName, out _xSpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _ySpeedAnimationParameterName, out _ySpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _zSpeedAnimationParameterName, out _zSpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _idleAnimationParameterName, out _idleAnimationParameter, AnimatorControllerParameterType.Bool, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _aliveAnimationParameterName, out _aliveAnimationParameter, AnimatorControllerParameterType.Bool, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _randomAnimationParameterName, out _randomAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _randomConstantAnimationParameterName, out _randomConstantAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _xVelocityAnimationParameterName, out _xVelocityAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _yVelocityAnimationParameterName, out _yVelocityAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
-			MMAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _zVelocityAnimationParameterName, out _zVelocityAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _groundedAnimationParameterName, out _groundedAnimationParameter, AnimatorControllerParameterType.Bool, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _currentSpeedAnimationParameterName, out _currentSpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _xSpeedAnimationParameterName, out _xSpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _ySpeedAnimationParameterName, out _ySpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _zSpeedAnimationParameterName, out _zSpeedAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _idleAnimationParameterName, out _idleAnimationParameter, AnimatorControllerParameterType.Bool, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _aliveAnimationParameterName, out _aliveAnimationParameter, AnimatorControllerParameterType.Bool, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _randomAnimationParameterName, out _randomAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _randomConstantAnimationParameterName, out _randomConstantAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _xVelocityAnimationParameterName, out _xVelocityAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _yVelocityAnimationParameterName, out _yVelocityAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
+			PLAnimatorExtensions.AddAnimatorParameterIfExists(_animator, _zVelocityAnimationParameterName, out _zVelocityAnimationParameter, AnimatorControllerParameterType.Float, _animatorParameters);
             
 			// we update our constant float animation parameter
 			int randomConstant = UnityEngine.Random.Range(0, 1000);
-			MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _randomConstantAnimationParameter, randomConstant, _animatorParameters, RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorInteger(_animator, _randomConstantAnimationParameter, randomConstant, _animatorParameters, RunAnimatorSanityChecks);
 		}
 
 		/// <summary>
@@ -582,17 +582,17 @@ namespace SpectralDepths.TopDown
 
 			if ((UseDefaultMecanim) && (_animator!= null))
 			{
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _groundedAnimationParameter, _controller.Grounded,_animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _aliveAnimationParameter, (ConditionState.CurrentState != CharacterStates.CharacterConditions.Dead),_animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _currentSpeedAnimationParameter, _controller.CurrentMovement.magnitude, _animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _xSpeedAnimationParameter, _controller.CurrentMovement.x,_animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _ySpeedAnimationParameter, _controller.CurrentMovement.y,_animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _zSpeedAnimationParameter, _controller.CurrentMovement.z,_animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter,(MovementState.CurrentState == CharacterStates.MovementStates.Idle),_animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _randomAnimationParameter, _animatorRandomNumber, _animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _xVelocityAnimationParameter, _controller.Velocity.x, _animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _yVelocityAnimationParameter, _controller.Velocity.y, _animatorParameters, RunAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _zVelocityAnimationParameter, _controller.Velocity.z, _animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, _groundedAnimationParameter, _controller.Grounded,_animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, _aliveAnimationParameter, (ConditionState.CurrentState != CharacterStates.CharacterConditions.Dead),_animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _currentSpeedAnimationParameter, _controller.CurrentMovement.magnitude, _animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _xSpeedAnimationParameter, _controller.CurrentMovement.x,_animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _ySpeedAnimationParameter, _controller.CurrentMovement.y,_animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _zSpeedAnimationParameter, _controller.CurrentMovement.z,_animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter,(MovementState.CurrentState == CharacterStates.MovementStates.Idle),_animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _randomAnimationParameter, _animatorRandomNumber, _animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _xVelocityAnimationParameter, _controller.Velocity.x, _animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _yVelocityAnimationParameter, _controller.Velocity.y, _animatorParameters, RunAnimatorSanityChecks);
+				PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _zVelocityAnimationParameter, _controller.Velocity.z, _animatorParameters, RunAnimatorSanityChecks);
 
 
 				foreach (CharacterAbility ability in _characterAbilities)
@@ -618,14 +618,14 @@ namespace SpectralDepths.TopDown
 			// we raise it from the dead (if it was dead)
 			ConditionState.ChangeState(CharacterStates.CharacterConditions.Normal);
 			// we re-enable its 2D collider
-			if (this.gameObject.MMGetComponentNoAlloc<Collider2D>() != null)
+			if (this.gameObject.PLGetComponentNoAlloc<Collider2D>() != null)
 			{
-				this.gameObject.MMGetComponentNoAlloc<Collider2D>().enabled = true;
+				this.gameObject.PLGetComponentNoAlloc<Collider2D>().enabled = true;
 			}
 			// we re-enable its 3D collider
-			if (this.gameObject.MMGetComponentNoAlloc<Collider>() != null)
+			if (this.gameObject.PLGetComponentNoAlloc<Collider>() != null)
 			{
-				this.gameObject.MMGetComponentNoAlloc<Collider>().enabled = true;
+				this.gameObject.PLGetComponentNoAlloc<Collider>().enabled = true;
 			}
 
 			// we make it handle collisions again
@@ -634,9 +634,9 @@ namespace SpectralDepths.TopDown
 			_controller.Reset();
 
 			// we kill all potential velocity
-			if (this.gameObject.MMGetComponentNoAlloc<Rigidbody2D>() != null)
+			if (this.gameObject.PLGetComponentNoAlloc<Rigidbody2D>() != null)
 			{
-				this.gameObject.MMGetComponentNoAlloc<Rigidbody2D>().velocity = Vector3.zero;
+				this.gameObject.PLGetComponentNoAlloc<Rigidbody2D>().velocity = Vector3.zero;
 			}
 
 			Reset();
@@ -747,7 +747,7 @@ namespace SpectralDepths.TopDown
 			this.ConditionState.ChangeState(newCondition);
 			if (resetControllerForces) { _controller?.SetMovement(Vector2.zero); }
 			if (disableGravity && (_controller != null)) { _controller.GravityActive = false; }
-			yield return MMCoroutine.WaitFor(duration);
+			yield return PLCoroutine.WaitFor(duration);
 			this.ConditionState.ChangeState(_lastState);
 			if (disableGravity && (_controller != null)) { _controller.GravityActive = true; }
 		}

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -66,7 +66,7 @@ namespace SpectralDepths.TopDown
 				StopCoroutine(_hideCoroutine);
 			}
 			ContainerCanvasGroup.alpha = 0f;
-			StartCoroutine(MMFade.FadeCanvasGroup(ContainerCanvasGroup, FadeInDuration, 1f, true));
+			StartCoroutine(PLFade.FadeCanvasGroup(ContainerCanvasGroup, FadeInDuration, 1f, true));
 		}
 
 		public virtual void Hide()
@@ -81,7 +81,7 @@ namespace SpectralDepths.TopDown
 		protected virtual IEnumerator HideCo()
 		{
 			ContainerCanvasGroup.alpha = 1f;
-			StartCoroutine(MMFade.FadeCanvasGroup(ContainerCanvasGroup, FadeOutDuration, 0f, true));
+			StartCoroutine(PLFade.FadeCanvasGroup(ContainerCanvasGroup, FadeOutDuration, 0f, true));
 			yield return new WaitForSeconds(FadeOutDuration);
 			this.gameObject.SetActive(false);
 		}

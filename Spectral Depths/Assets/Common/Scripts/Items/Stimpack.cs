@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -24,13 +24,13 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider">Other.</param>
 		protected override void Pick(GameObject picker)
 		{
-			Character character = picker.gameObject.MMGetComponentNoAlloc<Character>();
+			Character character = picker.gameObject.PLGetComponentNoAlloc<Character>();
 			if (OnlyForPlayerCharacter && (character != null) && (_character.CharacterType != Character.CharacterTypes.Player))
 			{
 				return;
 			}
 
-			Health characterHealth = picker.gameObject.MMGetComponentNoAlloc<Health>();
+			Health characterHealth = picker.gameObject.PLGetComponentNoAlloc<Health>();
 			// else, we give health to the player
 			if (characterHealth != null)
 			{

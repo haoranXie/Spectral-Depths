@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -115,7 +115,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _pushingAnimationParameter, _pushing,_character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _pushingAnimationParameter, _pushing,_character._animatorParameters, _character.RunAnimatorSanityChecks);
 		}
 	}
 }

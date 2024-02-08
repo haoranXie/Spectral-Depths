@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
 
 namespace SpectralDepths.TopDown
 {
@@ -37,7 +37,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (PickSfx!=null) 
 				{	
-					MMSoundManagerSoundPlayEvent.Trigger(PickSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);
+					PLSoundManagerSoundPlayEvent.Trigger(PickSfx, PLSoundManager.PLSoundManagerTracks.Sfx, this.transform.position);
 				}
 
 				if (Effect != null)

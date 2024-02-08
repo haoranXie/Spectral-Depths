@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Text;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.UI;
 
 namespace SpectralDepths.TopDown
@@ -11,7 +11,7 @@ namespace SpectralDepths.TopDown
 	/// and that can be used to display the current ammo level of a weapon
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/GUI/AmmoDisplay")]
-	public class AmmoDisplay : MMProgressBar 
+	public class AmmoDisplay : PLProgressBar 
 	{
 		/// the ID of the AmmoDisplay 
 		[Tooltip("the ID of the AmmoDisplay ")]

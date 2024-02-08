@@ -1,5 +1,5 @@
 using System;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,7 +17,7 @@ namespace SpectralDepths.TopDown
 		[Tooltip("It this is true, the character will have to be tagged Player for this to work")]
 		public bool RequiresPlayer = true;
 		/// if this is true, a character (and possibly a player based on the setting above) is in the area
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("if this is true, a character (and possibly a player based on the setting above) is in the area")]
 		public bool CharacterInArea = false;
 		/// a UnityEvent to fire when the targeted character enters the area
@@ -118,7 +118,7 @@ namespace SpectralDepths.TopDown
 		/// <returns></returns>
 		protected virtual bool TargetFound(GameObject collider)
 		{
-			_character = collider.gameObject.MMGetComponentNoAlloc<Character>();
+			_character = collider.gameObject.PLGetComponentNoAlloc<Character>();
             
 			if (_character == null)
 			{

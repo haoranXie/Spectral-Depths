@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// This class handles a X-players split screen setup
 	/// </summary>
-	public class MultiplayerSplitCameraRig : TopDownMonoBehaviour, MMEventListener<MMGameEvent>
+	public class MultiplayerSplitCameraRig : TopDownMonoBehaviour, PLEventListener<PLGameEvent>
 	{
 		[Header("Multiplayer Split Camera Rig")]
 		/// the list of camera controllers to bind to level manager players on load
@@ -33,7 +33,7 @@ namespace SpectralDepths.TopDown
 		/// When the cameras are ready to be bound (we're being told so by the LevelManager usually), we bind them
 		/// </summary>
 		/// <param name="gameEvent"></param>
-		public virtual void OnMMEvent(MMGameEvent gameEvent)
+		public virtual void OnMMEvent(PLGameEvent gameEvent)
 		{
 			if (gameEvent.EventName == "CameraBound")
 			{
@@ -46,7 +46,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMGameEvent>();
+			this.PLEventStartListening<PLGameEvent>();
 		}
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMGameEvent>();
+			this.PLEventStopListening<PLGameEvent>();
 		}
 	}
 }

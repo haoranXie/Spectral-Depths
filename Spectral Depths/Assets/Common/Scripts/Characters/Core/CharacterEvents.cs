@@ -1,71 +1,71 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {	
 	/// <summary>
 	/// A list of possible events used by the character
 	/// </summary>
-	public enum MMCharacterEventTypes
+	public enum PLCharacterEventTypes
 	{
 		ButtonActivation,
 		Jump
 	}
 
 	/// <summary>
-	/// MMCharacterEvents are used in addition to the events triggered by the character's state machine, to signal stuff happening that is not necessarily linked to a change of state
+	/// PLCharacterEvents are used in addition to the events triggered by the character's state machine, to signal stuff happening that is not necessarily linked to a change of state
 	/// </summary>
-	public struct MMCharacterEvent
+	public struct PLCharacterEvent
 	{
 		public Character TargetCharacter;
-		public MMCharacterEventTypes EventType;
+		public PLCharacterEventTypes EventType;
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SpectralDepths.TopDown.MMCharacterEvent"/> struct.
+		/// Initializes a new instance of the <see cref="SpectralDepths.TopDown.PLCharacterEvent"/> struct.
 		/// </summary>
 		/// <param name="character">Character.</param>
 		/// <param name="eventType">Event type.</param>
-		public MMCharacterEvent(Character character, MMCharacterEventTypes eventType)
+		public PLCharacterEvent(Character character, PLCharacterEventTypes eventType)
 		{
 			TargetCharacter = character;
 			EventType = eventType;
 		}
 
-		static MMCharacterEvent e;
-		public static void Trigger(Character character, MMCharacterEventTypes eventType)
+		static PLCharacterEvent e;
+		public static void Trigger(Character character, PLCharacterEventTypes eventType)
 		{
 			e.TargetCharacter = character;
 			e.EventType = eventType;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 	
-	public enum MMLifeCycleEventTypes { Death, Revive }
+	public enum PLLifeCycleEventTypes { Death, Revive }
 
-	public struct MMLifeCycleEvent
+	public struct PLLifeCycleEvent
 	{
 		public Health AffectedHealth;
-		public MMLifeCycleEventTypes MMLifeCycleEventTypes;
+		public PLLifeCycleEventTypes PLLifeCycleEventTypes;
 		
-		public MMLifeCycleEvent(Health affectedHealth, MMLifeCycleEventTypes lifeCycleEventType)
+		public PLLifeCycleEvent(Health affectedHealth, PLLifeCycleEventTypes lifeCycleEventType)
 		{
 			AffectedHealth = affectedHealth;
-			MMLifeCycleEventTypes = lifeCycleEventType;
+			PLLifeCycleEventTypes = lifeCycleEventType;
 		}
 
-		static MMLifeCycleEvent e;
-		public static void Trigger(Health affectedHealth, MMLifeCycleEventTypes lifeCycleEventType)
+		static PLLifeCycleEvent e;
+		public static void Trigger(Health affectedHealth, PLLifeCycleEventTypes lifeCycleEventType)
 		{
 			e.AffectedHealth = affectedHealth;
-			e.MMLifeCycleEventTypes = lifeCycleEventType;
-			MMEventManager.TriggerEvent(e);
+			e.PLLifeCycleEventTypes = lifeCycleEventType;
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 
 	/// <summary>
 	/// An event fired when something takes damage
 	/// </summary>
-	public struct MMDamageTakenEvent
+	public struct PLDamageTakenEvent
 	{
 		public Health AffectedHealth;
 		public GameObject Instigator;
@@ -74,14 +74,14 @@ namespace SpectralDepths.TopDown
 		public float PreviousHealth;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SpectralDepths.TopDown.MMDamageTakenEvent"/> struct.
+		/// Initializes a new instance of the <see cref="SpectralDepths.TopDown.PLDamageTakenEvent"/> struct.
 		/// </summary>
 		/// <param name="affectedHealth">Affected Health.</param>
 		/// <param name="instigator">Instigator.</param>
 		/// <param name="currentHealth">Current health.</param>
 		/// <param name="damageCaused">Damage caused.</param>
 		/// <param name="previousHealth">Previous health.</param>
-		public MMDamageTakenEvent(Health affectedHealth, GameObject instigator, float currentHealth, float damageCaused, float previousHealth)
+		public PLDamageTakenEvent(Health affectedHealth, GameObject instigator, float currentHealth, float damageCaused, float previousHealth)
 		{
 			AffectedHealth = affectedHealth;
 			Instigator = instigator;
@@ -90,7 +90,7 @@ namespace SpectralDepths.TopDown
 			PreviousHealth = previousHealth;
 		}
 
-		static MMDamageTakenEvent e;
+		static PLDamageTakenEvent e;
 		public static void Trigger(Health affectedHealth, GameObject instigator, float currentHealth, float damageCaused, float previousHealth)
 		{
 			e.AffectedHealth = affectedHealth;
@@ -98,7 +98,7 @@ namespace SpectralDepths.TopDown
 			e.CurrentHealth = currentHealth;
 			e.DamageCaused = damageCaused;
 			e.PreviousHealth = previousHealth;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 }

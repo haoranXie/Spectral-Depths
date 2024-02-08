@@ -1,5 +1,5 @@
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace SpectralDepths.TopDown
 		/// the possible modes this weapon laser sight can run on, 3D by default
 		public enum Modes { TwoD, ThreeD }
 
-		[MMInspectorGroup("Hitscan Spawn", true, 23)]
+		[PLInspectorGroup("Hitscan Spawn", true, 23)]
 		/// the offset position at which the projectile will spawn
 		[Tooltip("the offset position at which the projectile will spawn")]
 		public Vector3 ProjectileSpawnOffset = Vector3.zero;
@@ -29,11 +29,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether or not the spread should be random (if not it'll be equally distributed)")]
 		public bool RandomSpread = true;
 		/// the projectile's spawn position
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the projectile's spawn position")]
 		public Vector3 SpawnPosition = Vector3.zero;
 
-		[MMInspectorGroup("Hitscan", true, 24)]
+		[PLInspectorGroup("Hitscan", true, 24)]
 		/// whether this hitscan should work in 2D or 3D
 		[Tooltip("whether this hitscan should work in 2D or 3D")]
 		public Modes Mode = Modes.ThreeD;
@@ -57,18 +57,18 @@ namespace SpectralDepths.TopDown
 		[Tooltip("a list of typed damage definitions that will be applied on top of the base damage")]
 		public List<TypedDamage> TypedDamages;
 		
-		[MMInspectorGroup("Hit Damageable", true, 25)]
-		/// a MMFeedbacks to move to the position of the hit and to play when hitting something with a Health component
-		[Tooltip("a MMFeedbacks to move to the position of the hit and to play when hitting something with a Health component")]
-		public MMFeedbacks HitDamageable;
+		[PLInspectorGroup("Hit Damageable", true, 25)]
+		/// a PLFeedbacks to move to the position of the hit and to play when hitting something with a Health component
+		[Tooltip("a PLFeedbacks to move to the position of the hit and to play when hitting something with a Health component")]
+		public PLFeedbacks HitDamageable;
 		/// a particle system to move to the position of the hit and to play when hitting something with a Health component
 		[Tooltip("a particle system to move to the position of the hit and to play when hitting something with a Health component")]
 		public ParticleSystem DamageableImpactParticles;
         
-		[MMInspectorGroup("Hit Non Damageable", true, 26)]
-		/// a MMFeedbacks to move to the position of the hit and to play when hitting something without a Health component
-		[Tooltip("a MMFeedbacks to move to the position of the hit and to play when hitting something without a Health component")]
-		public MMFeedbacks HitNonDamageable;
+		[PLInspectorGroup("Hit Non Damageable", true, 26)]
+		/// a PLFeedbacks to move to the position of the hit and to play when hitting something without a Health component
+		[Tooltip("a PLFeedbacks to move to the position of the hit and to play when hitting something without a Health component")]
+		public PLFeedbacks HitNonDamageable;
 		/// a particle system to move to the position of the hit and to play when hitting something without a Health component
 		[Tooltip("a particle system to move to the position of the hit and to play when hitting something without a Health component")]
 		public ParticleSystem NonDamageableImpactParticles;
@@ -87,7 +87,7 @@ namespace SpectralDepths.TopDown
 		protected Health _health;
 		protected Vector3 _damageDirection;
 
-		[MMInspectorButton("TestShoot")]
+		[PLInspectorButton("TestShoot")]
 		/// a button to test the shoot method
 		public bool TestShootButton;
 
@@ -184,7 +184,7 @@ namespace SpectralDepths.TopDown
 			{
 				// if 3D
 				_origin = SpawnPosition;
-				_hit = MMDebug.Raycast3D(_origin, _randomSpreadDirection, HitscanMaxDistance, HitscanTargetLayers, Color.red, true);
+				_hit = PLDebug.Raycast3D(_origin, _randomSpreadDirection, HitscanMaxDistance, HitscanTargetLayers, Color.red, true);
                 
 				// if we've hit something, our destination is the raycast hit
 				if (_hit.transform != null)
@@ -207,7 +207,7 @@ namespace SpectralDepths.TopDown
 
 				// we cast a ray in front of the weapon to detect an obstacle
 				_origin = SpawnPosition;
-				_hit2D = MMDebug.RayCast(_origin, _randomSpreadDirection, HitscanMaxDistance, HitscanTargetLayers, Color.red, true);
+				_hit2D = PLDebug.RayCast(_origin, _randomSpreadDirection, HitscanMaxDistance, HitscanTargetLayers, Color.red, true);
 				if (_hit2D)
 				{
 					_hitObject = _hit2D.collider.gameObject;
@@ -231,7 +231,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			_health = _hitObject.MMGetComponentNoAlloc<Health>();
+			_health = _hitObject.PLGetComponentNoAlloc<Health>();
 
 			if (_health == null)
 			{

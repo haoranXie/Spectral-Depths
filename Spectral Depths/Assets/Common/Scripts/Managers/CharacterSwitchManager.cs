@@ -1,5 +1,5 @@
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -17,7 +17,7 @@ namespace SpectralDepths.TopDown
 		public enum NextCharacterChoices { Sequential, Random }
 
 		[Header("Character Switch")]
-		[MMInformation("Add this component to an empty object in your scene, and when you'll press the SwitchCharacter button (P by default, change that in Unity's InputManager settings), your main character will be replaced by one of the prefabs in the list set on this component. You can decide the order (sequential or random), and have as many as you want.", MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Add this component to an empty object in your scene, and when you'll press the SwitchCharacter button (P by default, change that in Unity's InputManager settings), your main character will be replaced by one of the prefabs in the list set on this component. You can decide the order (sequential or random), and have as many as you want.", PLInformationAttribute.InformationType.Info, false)]
 
 		/// the list of possible characters prefabs to switch to
 		[Tooltip("the list of possible characters prefabs to switch to")]
@@ -91,7 +91,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 
-			if (_inputManager.SwitchCharacterButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.SwitchCharacterButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				SwitchCharacter();
 			}
@@ -132,7 +132,7 @@ namespace SpectralDepths.TopDown
 			// we keep the health if needed
 			if (CommonHealth)
 			{
-				_instantiatedCharacters[CurrentIndex].gameObject.MMGetComponentNoAlloc<Health>().SetHealth(LevelManager.Instance.Players[0].gameObject.MMGetComponentNoAlloc<Health>().CurrentHealth);
+				_instantiatedCharacters[CurrentIndex].gameObject.PLGetComponentNoAlloc<Health>().SetHealth(LevelManager.Instance.Players[0].gameObject.PLGetComponentNoAlloc<Health>().CurrentHealth);
 			}
 
 			// we put it in the same state the old one was in
@@ -151,8 +151,8 @@ namespace SpectralDepths.TopDown
 			}
 
 			// we trigger a switch event (for the camera to know, mostly)
-			MMEventManager.TriggerEvent(_switchEvent);
-			MMCameraEvent.Trigger(MMCameraEventTypes.RefreshAutoFocus, LevelManager.Instance.Players[0], null);
+			PLEventManager.TriggerEvent(_switchEvent);
+			PLCameraEvent.Trigger(PLCameraEventTypes.RefreshAutoFocus, LevelManager.Instance.Players[0], null);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
 #endif
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	/// Add this component to a character and it'll be able to activate button zones
 	/// Animator parameters : Activating (bool)
 	/// </summary>
-	[MMHiddenProperties("AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Button Activation")] 
 	public class CharacterButtonActivation : CharacterAbility 
 	{
@@ -25,7 +25,7 @@ namespace SpectralDepths.TopDown
 		public bool PreventJumpInButtonActivatedZone = true; 
 		/// the current button activated zone
 		[Tooltip("the current button activated zone this character is in")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public ButtonActivated ButtonActivatedZone;
 
 		protected bool _activating = false;
@@ -59,7 +59,7 @@ namespace SpectralDepths.TopDown
 				switch (ButtonActivatedZone.InputType)
 				{
 					case ButtonActivated.InputTypes.Default:
-						buttonPressed = (_inputManager.InteractButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+						buttonPressed = (_inputManager.InteractButton.State.CurrentState == PLInput.ButtonStates.ButtonDown);
 						break;
 					#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 						case ButtonActivated.InputTypes.Button:
@@ -107,7 +107,7 @@ namespace SpectralDepths.TopDown
 				}
 
 				// we trigger a character event
-				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.ButtonActivation);
+				PLCharacterEvent.Trigger(_character, PLCharacterEventTypes.ButtonActivation);
 
 				ButtonActivatedZone.TriggerButtonAction();
 				PlayAbilityStartFeedbacks();
@@ -139,7 +139,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _activatingAnimationParameter, _activating, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorBool(_animator, _activatingAnimationParameter, _activating, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 			if (_activating && (ButtonActivatedZone != null) && (ButtonActivatedZone.AnimationTriggerParameterName != ""))
 			{
 				_animator.SetTrigger(ButtonActivatedZone.AnimationTriggerParameterName);

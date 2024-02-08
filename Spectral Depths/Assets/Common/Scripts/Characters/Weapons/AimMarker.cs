@@ -1,5 +1,5 @@
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,27 +23,27 @@ namespace SpectralDepths.TopDown
 		public Vector3 Offset;
 		/// When in Interpolate mode, the duration of the movement animation
 		[Tooltip("When in Interpolate mode, the duration of the movement animation")]
-		[MMEnumCondition("MovementMode", (int)MovementModes.Interpolate)]
+		[PLEnumCondition("MovementMode", (int)MovementModes.Interpolate)]
 		public float MovementDuration = 0.2f;
 		/// When in Interpolate mode, the curve to animate the movement on
 		[Tooltip("When in Interpolate mode, the curve to animate the movement on")]
-		[MMEnumCondition("MovementMode", (int)MovementModes.Interpolate)]
-		public MMTween.MMTweenCurve MovementCurve = MMTween.MMTweenCurve.EaseInCubic;
+		[PLEnumCondition("MovementMode", (int)MovementModes.Interpolate)]
+		public PLTween.PLTweenCurve MovementCurve = PLTween.PLTweenCurve.EaseInCubic;
 		/// When in Interpolate mode, the delay before the marker moves when changing target
 		[Tooltip("When in Interpolate mode, the delay before the marker moves when changing target")]
-		[MMEnumCondition("MovementMode", (int)MovementModes.Interpolate)]
+		[PLEnumCondition("MovementMode", (int)MovementModes.Interpolate)]
 		public float MovementDelay = 0f;
 
 		[Header("Feedbacks")]
 		/// A feedback to play when a target is found and we didn't have one already
 		[Tooltip("A feedback to play when a target is found and we didn't have one already")]
-		public MMFeedbacks FirstTargetFeedback;
+		public PLFeedbacks FirstTargetFeedback;
 		/// a feedback to play when we already had a target and just found a new one
 		[Tooltip("a feedback to play when we already had a target and just found a new one")]
-		public MMFeedbacks NewTargetAssignedFeedback;
+		public PLFeedbacks NewTargetAssignedFeedback;
 		/// a feedback to play when no more targets are found, and we just lost our last target
 		[Tooltip("a feedback to play when no more targets are found, and we just lost our last target")]
-		public MMFeedbacks NoMoreTargetFeedback;
+		public PLFeedbacks NoMoreTargetFeedback;
 
 		protected Transform _target;
 		protected Transform _targetLastFrame = null;
@@ -118,7 +118,7 @@ namespace SpectralDepths.TopDown
 			}
 			else
 			{
-				MMTween.MoveTransform(this, this.transform, this.transform.position, _target.transform.position + Offset, _movementDelayWFS, MovementDelay, MovementDuration, MovementCurve);
+				PLTween.MoveTransform(this, this.transform, this.transform.position, _target.transform.position + Offset, _movementDelayWFS, MovementDelay, MovementDuration, MovementCurve);
 			}
 		}
 

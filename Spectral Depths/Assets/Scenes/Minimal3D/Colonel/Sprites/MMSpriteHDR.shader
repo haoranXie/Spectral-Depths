@@ -1,4 +1,4 @@
-﻿Shader "MoreMountains/SpriteHDR"
+﻿Shader "SpectralDepths/SpriteHDR"
 {
     Properties
     {

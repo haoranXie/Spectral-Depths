@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -27,13 +27,13 @@ namespace SpectralDepths.TopDown
 		public bool FlipWhenChargeWeaponFlips = true;
 		/// a feedback to trigger when this step starts charging
 		[Tooltip("a feedback to trigger when this step starts charging")]
-		public MMFeedbacks ChargeStartFeedbacks;
+		public PLFeedbacks ChargeStartFeedbacks;
 		/// a feedback to trigger when this step gets interrupted (when the charge is dropped at this step)
 		[Tooltip("a feedback to trigger when this step gets interrupted (when the charge is dropped at this step)")]
-		public MMFeedbacks ChargeInterruptedFeedbacks;
+		public PLFeedbacks ChargeInterruptedFeedbacks;
 		/// a feedback to trigger when this step completes and the charge potentially moves on to the next step
 		[Tooltip("a feedback to trigger when this step completes and the charge potentially moves on to the next step")]
-		public MMFeedbacks ChargeCompleteFeedbacks;
+		public PLFeedbacks ChargeCompleteFeedbacks;
 		/// the total time (in seconds) from the complete start of the charge weapon to this weapon's charge being complete
 		public float ChargeTotalDuration { get; set; }
 		/// whether this step's charge has started or not
@@ -57,7 +57,7 @@ namespace SpectralDepths.TopDown
 		/// the current time value
 		public virtual float CurrentTime => TimescaleMode == TimescaleModes.Scaled ? Time.time : Time.unscaledTime;
 
-		[MMInspectorGroup("Charge Weapon", true, 22)]
+		[PLInspectorGroup("Charge Weapon", true, 22)]
 		[Header("List of Weapons in the Charge Sequence")]
 		/// the list of weapons that make up this charge weapon's sequence of steps
 		[Tooltip("the list of weapons that make up this charge weapon's sequence of steps")]
@@ -77,11 +77,11 @@ namespace SpectralDepths.TopDown
 		[Header("Debug")]
 		/// the current charge index in the Weapons step list
 		[Tooltip("the current charge index in the Weapons step list")]
-		[MMReadOnly]
+		[PLReadOnly]
 		public int CurrentChargeIndex = 0;
 		/// whether this weapon is currently charging or not
 		[Tooltip("whether this weapon is currently charging or not")]
-		[MMReadOnly] 
+		[PLReadOnly] 
 		public bool Charging = false;
 
 		protected float _chargingStartedAt = 0f;

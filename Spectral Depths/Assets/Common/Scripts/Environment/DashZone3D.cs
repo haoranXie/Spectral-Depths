@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -109,7 +109,7 @@ namespace SpectralDepths.TopDown
 			}
 
 			// we make sure it's the right kind of character
-			_character = collider.gameObject.MMGetComponentNoAlloc<Character>();
+			_character = collider.gameObject.PLGetComponentNoAlloc<Character>();
 			_characterDash3D = _character?.FindAbility<CharacterDash3D>();
 			if (_characterDash3D == null)
 			{
@@ -168,7 +168,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (_characterHandleWeapon.CurrentWeapon != null)
 				{
-					_weaponAim3D = _characterHandleWeapon.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim3D>();
+					_weaponAim3D = _characterHandleWeapon.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim3D>();
 					if (_weaponAim3D != null)
 					{
 						_weaponAimControl = _weaponAim3D.AimControl;

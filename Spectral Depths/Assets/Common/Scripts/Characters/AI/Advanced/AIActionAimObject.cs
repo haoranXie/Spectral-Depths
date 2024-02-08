@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -33,7 +33,7 @@ namespace SpectralDepths.TopDown
 		public bool Interpolate = false;
 		/// the rate at which to interpolate the rotation
 		[Tooltip("the rate at which to interpolate the rotation")]
-		[MMCondition("Interpolate", true)] 
+		[PLCondition("Interpolate", true)] 
 		public float InterpolateRate = 5f;
         
 		protected CharacterHandleWeapon _characterHandleWeapon;
@@ -93,7 +93,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (Interpolate)
 			{
-				_newAim = MMMaths.Lerp(_newAim, direction, InterpolateRate, Time.deltaTime);
+				_newAim = PLMaths.Lerp(_newAim, direction, InterpolateRate, Time.deltaTime);
 			}
 			else
 			{
@@ -118,7 +118,7 @@ namespace SpectralDepths.TopDown
 		{
 			if ((_characterHandleWeapon != null) && (_characterHandleWeapon.CurrentWeapon != null))
 			{
-				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 			}            
 		}
         

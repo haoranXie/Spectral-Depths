@@ -1,6 +1,6 @@
 using System;
-using MoreMountains.Feedbacks;
-using MoreMountains.Tools;
+using SpectralDepths.Feedbacks;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -28,7 +28,7 @@ namespace SpectralDepths.TopDown
 		public DamageTypeModes DamageTypeMode = DamageTypeModes.BaseDamage;
 		/// In TypedDamage mode, the type of damage this resistance will interact with
 		[Tooltip("In TypedDamage mode, the type of damage this resistance will interact with")]
-		[MMEnumCondition("DamageTypeMode", (int)DamageTypeModes.TypedDamage)]
+		[PLEnumCondition("DamageTypeMode", (int)DamageTypeModes.TypedDamage)]
 		public DamageType TypeResistance;
 		/// the way to reduce (or increase) received damage. Multiplier will multiply incoming damage by a multiplier, flat will subtract a constant value from incoming damage. 
 		[Tooltip("the way to reduce (or increase) received damage. Multiplier will multiply incoming damage by a multiplier, flat will subtract a constant value from incoming damage.")]
@@ -37,18 +37,18 @@ namespace SpectralDepths.TopDown
 		[Header("Damage Modifiers")]
 		/// In multiplier mode, the multiplier to apply to incoming damage. 0.5 will reduce it in half, while a value of 2 will create a weakness to the specified damage type, and damages will double.
 		[Tooltip("In multiplier mode, the multiplier to apply to incoming damage. 0.5 will reduce it in half, while a value of 2 will create a weakness to the specified damage type, and damages will double.")]
-		[MMEnumCondition("DamageModifierMode", (int)DamageModifierModes.Multiplier)]
+		[PLEnumCondition("DamageModifierMode", (int)DamageModifierModes.Multiplier)]
 		public float DamageMultiplier = 0.25f;
 		/// In flat mode, the amount of damage to subtract every time that type of damage is received
 		[Tooltip("In flat mode, the amount of damage to subtract every time that type of damage is received")]
-		[MMEnumCondition("DamageModifierMode", (int)DamageModifierModes.Flat)]
+		[PLEnumCondition("DamageModifierMode", (int)DamageModifierModes.Flat)]
 		public float FlatDamageReduction = 10f;
 		/// whether or not incoming damage of the specified type should be clamped between a min and a max
 		[Tooltip("whether or not incoming damage of the specified type should be clamped between a min and a max")] 
 		public bool ClampDamage = false;
 		/// the values between which to clamp incoming damage
 		[Tooltip("the values between which to clamp incoming damage")]
-		[MMVector("Min","Max")]
+		[PLVector("Min","Max")]
 		public Vector2 DamageModifierClamps = new Vector2(0f,10f);
 
 		[Header("Condition Change")]
@@ -68,24 +68,24 @@ namespace SpectralDepths.TopDown
 		public KnockbackModifierModes KnockbackModifierMode = KnockbackModifierModes.Multiplier;
 		/// In multiplier mode, the multiplier to apply to incoming knockback. 0.5 will reduce it in half, while a value of 2 will create a weakness to the specified damage type, and knockback intensity will double.
 		[Tooltip("In multiplier mode, the multiplier to apply to incoming knockback. 0.5 will reduce it in half, while a value of 2 will create a weakness to the specified damage type, and knockback intensity will double.")]
-		[MMEnumCondition("KnockbackModifierMode", (int)DamageModifierModes.Multiplier)]
+		[PLEnumCondition("KnockbackModifierMode", (int)DamageModifierModes.Multiplier)]
 		public float KnockbackMultiplier = 1f;
 		/// In flat mode, the amount of knockback to subtract every time that type of damage is received
 		[Tooltip("In flat mode, the amount of knockback to subtract every time that type of damage is received")]
-		[MMEnumCondition("KnockbackModifierMode", (int)DamageModifierModes.Flat)]
+		[PLEnumCondition("KnockbackModifierMode", (int)DamageModifierModes.Flat)]
 		public float FlatKnockbackMagnitudeReduction = 10f;
 		/// whether or not incoming knockback of the specified type should be clamped between a min and a max
 		[Tooltip("whether or not incoming knockback of the specified type should be clamped between a min and a max")] 
 		public bool ClampKnockback = false;
 		/// the values between which to clamp incoming knockback magnitude
 		[Tooltip("the values between which to clamp incoming knockback magnitude")]
-		[MMCondition("ClampKnockback", true)]
+		[PLCondition("ClampKnockback", true)]
 		public float KnockbackMaxMagnitude = 10f;
 
 		[Header("Feedbacks")]
 		/// This feedback will only be triggered if damage of the matching type is received
 		[Tooltip("This feedback will only be triggered if damage of the matching type is received")]
-		public MMFeedbacks OnDamageReceived;
+		public PLFeedbacks OnDamageReceived;
 		/// whether or not this feedback can be interrupted (stopped) when that type of damage is interrupted
 		[Tooltip("whether or not this feedback can be interrupted (stopped) when that type of damage is interrupted")]
 		public bool InterruptibleFeedback = false;

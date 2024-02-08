@@ -1,4 +1,4 @@
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -124,7 +124,7 @@ namespace SpectralDepths.TopDown
 			foreach (Transform t in _potentialTargets)
 			{
 				_raycastDirection = t.position - _raycastOrigin;
-				RaycastHit hit = MMDebug.Raycast3D(_raycastOrigin, _raycastDirection, _raycastDirection.magnitude, ObstacleMask.value, Color.yellow, true);
+				RaycastHit hit = PLDebug.Raycast3D(_raycastOrigin, _raycastDirection, _raycastDirection.magnitude, ObstacleMask.value, Color.yellow, true);
 				if (hit.collider == null)
 				{
 					_brain.Target = t;

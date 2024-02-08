@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -19,7 +19,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Start()
 		{
-			this.gameObject.MMGetComponentNoAlloc<Collider>().isTrigger = true;
+			this.gameObject.PLGetComponentNoAlloc<Collider>().isTrigger = true;
 		}
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider"></param>
 		protected virtual void OnTriggerEnter(Collider collider)
 		{
-			_characterCrouch = collider.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterCrouch>();
+			_characterCrouch = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterCrouch>();
 			if (_characterCrouch != null)
 			{
 				_characterCrouch.StartForcedCrouch();
@@ -41,7 +41,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider"></param>
 		protected virtual void OnTriggerExit(Collider collider)
 		{
-			_characterCrouch = collider.gameObject.MMGetComponentNoAlloc<Character>()?.FindAbility<CharacterCrouch>();
+			_characterCrouch = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterCrouch>();
 			if (_characterCrouch != null)
 			{
 				_characterCrouch.StopForcedCrouch();

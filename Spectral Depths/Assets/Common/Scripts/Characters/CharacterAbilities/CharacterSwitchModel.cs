@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -11,7 +11,7 @@ namespace SpectralDepths.TopDown
 	/// If instead you'd like to change the prefab entirely, look at the CharacterSwitchManager class.
 	/// If you want to swap characters between a bunch of characters within a scene, look at the CharacterSwap ability and CharacterSwapManager
 	/// </summary>
-	[MMHiddenProperties("AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Switch Model")] 
 	public class CharacterSwitchModel : CharacterAbility
 	{
@@ -19,7 +19,7 @@ namespace SpectralDepths.TopDown
 		public enum NextModelChoices { Sequential, Random }
 
 		[Header("Models")]
-		[MMInformation("Add this component to a character and it'll be able to switch its model when pressing the SwitchCharacter button (P by default).", MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("Add this component to a character and it'll be able to switch its model when pressing the SwitchCharacter button (P by default).", PLInformationAttribute.InformationType.Info, false)]
 
 		/// the list of possible characters models to switch to
 		[Tooltip("the list of possible characters models to switch to")]
@@ -87,7 +87,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-			if (_inputManager.SwitchCharacterButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.SwitchCharacterButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
 				SwitchModel();
 			}	
@@ -145,7 +145,7 @@ namespace SpectralDepths.TopDown
 			// we bind our animator
 			if (AutoBindAnimator)
 			{
-				_character.CharacterAnimator = CharacterModels[CurrentIndex].gameObject.MMGetComponentNoAlloc<Animator>();
+				_character.CharacterAnimator = CharacterModels[CurrentIndex].gameObject.PLGetComponentNoAlloc<Animator>();
 				_character.AssignAnimator(true);
 				SendMessage(_bindAnimatorMessage, SendMessageOptions.DontRequireReceiver);                
 			} 

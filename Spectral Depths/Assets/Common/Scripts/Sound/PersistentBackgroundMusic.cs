@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 	/// Careful : only one background music will be played at a time.
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Sound/PersistentBackgroundMusic")]
-	public class PersistentBackgroundMusic : MMPersistentSingleton<PersistentBackgroundMusic>
+	public class PersistentBackgroundMusic : PLPersistentSingleton<PersistentBackgroundMusic>
 	{
 		/// the background music clip to use as persistent background music
 		[Tooltip("the background music clip to use as persistent background music")]
@@ -35,13 +35,13 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Start()
 		{
-			MMSoundManagerPlayOptions options = MMSoundManagerPlayOptions.Default;
+			PLSoundManagerPlayOptions options = PLSoundManagerPlayOptions.Default;
 			options.Loop = Loop;
 			options.Location = Vector3.zero;
-			options.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
+			options.MmSoundManagerTrack = PLSoundManager.PLSoundManagerTracks.Music;
 			options.Persistent = true;
             
-			MMSoundManagerSoundPlayEvent.Trigger(SoundClip, options);
+			PLSoundManagerSoundPlayEvent.Trigger(SoundClip, options);
 		}
 	}
 }

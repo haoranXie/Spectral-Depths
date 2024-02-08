@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	/// </summary>
 	[RequireComponent(typeof(LineRenderer))]
 	[AddComponentMenu("Spectral Depths/Weapons/Weapon Auto Aim Radius Circle")]
-	public class WeaponAutoAimRadiusCircle : MMLineRendererCircle
+	public class WeaponAutoAimRadiusCircle : PLLineRendererCircle
 	{
 		[Header("Weapon Radius")]
 		public CharacterHandleWeapon TargetHandleWeaponAbility;

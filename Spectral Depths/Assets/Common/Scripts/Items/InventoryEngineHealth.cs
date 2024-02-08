@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System;
-using MoreMountains.InventoryEngine;
+using SpectralDepths.InventoryEngine;
 
 namespace SpectralDepths.TopDown
 {	
-	[CreateAssetMenu(fileName = "InventoryEngineHealth", menuName = "MoreMountains/TopDownEngine/InventoryEngineHealth", order = 1)]
+	[CreateAssetMenu(fileName = "InventoryEngineHealth", menuName = "SpectralDepths/TopDownEngine/InventoryEngineHealth", order = 1)]
 	[Serializable]
 	/// <summary>
 	/// Pickable health item
@@ -14,7 +14,7 @@ namespace SpectralDepths.TopDown
 	public class InventoryEngineHealth : InventoryItem 
 	{
 		[Header("Health")]
-		[MMInformation("Here you need specify the amount of health gained when using this item.",MMInformationAttribute.InformationType.Info,false)]
+		[PLInformation("Here you need specify the amount of health gained when using this item.",PLInformationAttribute.InformationType.Info,false)]
 		/// the amount of health to add to the player when the item is used
 		[Tooltip("the amount of health to add to the player when the item is used")]
 		public float HealthBonus;

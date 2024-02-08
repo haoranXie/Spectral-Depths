@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
+using SpectralDepths.Tools;
+using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {	
@@ -20,16 +20,16 @@ namespace SpectralDepths.TopDown
 		public LayerMask BounceLayers = LayerManager.ObstaclesLayerMask;
 		/// a feedback to trigger at every bounce
 		[Tooltip("a feedback to trigger at every bounce")]
-		public MMFeedbacks BounceFeedback;
+		public PLFeedbacks BounceFeedback;
 
 		[Header("Bounciness")]
 		/// the min and max amount of bounces (a value will be picked at random between both bounds)
 		[Tooltip("the min and max amount of bounces (a value will be picked at random between both bounds)")]
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		public Vector2Int AmountOfBounces = new Vector2Int(10,10);
 		/// the min and max speed multiplier to apply at every bounce (a value will be picked at random between both bounds)
 		[Tooltip("the min and max speed multiplier to apply at every bounce (a value will be picked at random between both bounds)")]
-		[MMVector("Min", "Max")]
+		[PLVector("Min", "Max")]
 		public Vector2 SpeedModifier = Vector2.one;
 
 		protected Vector3 _positionLastFrame;
@@ -79,7 +79,7 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider"></param>
 		protected virtual void Colliding(GameObject collider)
 		{
-			if (!BounceLayers.MMContains(collider.layer))
+			if (!BounceLayers.PLContains(collider.layer))
 			{
 				return;
 			}
@@ -88,13 +88,13 @@ namespace SpectralDepths.TopDown
 
 			if (BoundsBasedOn == WaysToDetermineBounds.Collider)
 			{
-				RaycastHit hit = MMDebug.Raycast3D(this.transform.position, Direction.normalized, BounceRaycastLength, BounceLayers, MMColors.DarkOrange, true);
+				RaycastHit hit = PLDebug.Raycast3D(this.transform.position, Direction.normalized, BounceRaycastLength, BounceLayers, PLColors.DarkOrange, true);
 				EvaluateHit3D(hit);
 			}
 
 			if (BoundsBasedOn == WaysToDetermineBounds.Collider2D)
 			{
-				RaycastHit2D hit = MMDebug.RayCast(this.transform.position, Direction.normalized, BounceRaycastLength, BounceLayers, MMColors.DarkOrange, true);
+				RaycastHit2D hit = PLDebug.RayCast(this.transform.position, Direction.normalized, BounceRaycastLength, BounceLayers, PLColors.DarkOrange, true);
 				EvaluateHit2D(hit);
 			}
 		}

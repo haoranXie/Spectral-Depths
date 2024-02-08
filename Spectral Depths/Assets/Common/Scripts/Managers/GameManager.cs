@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using System.Collections.Generic;
-using MoreMountains.InventoryEngine;
-using MoreMountains.Feedbacks;
+using SpectralDepths.InventoryEngine;
+using SpectralDepths.Feedbacks;
 using UnityEngine.Events;
 
 namespace SpectralDepths.TopDown
@@ -72,7 +72,7 @@ namespace SpectralDepths.TopDown
 		{
 			e.EventType = eventType;
 			e.OriginCharacter = originCharacter;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	} 
 
@@ -108,7 +108,7 @@ namespace SpectralDepths.TopDown
 		{
 			e.PointsMethod = pointsMethod;
 			e.Points = points;
-			MMEventManager.TriggerEvent(e);
+			PLEventManager.TriggerEvent(e);
 		}
 	}
 
@@ -142,10 +142,10 @@ namespace SpectralDepths.TopDown
 	/// The game manager is a persistent singleton that handles points and time
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/Game Manager")]
-	public class GameManager : 	MMPersistentSingleton<GameManager>, 
-		MMEventListener<MMGameEvent>, 
-		MMEventListener<TopDownEngineEvent>, 
-		MMEventListener<TopDownEnginePointEvent>
+	public class GameManager : 	PLPersistentSingleton<GameManager>, 
+		PLEventListener<PLGameEvent>, 
+		PLEventListener<TopDownEngineEvent>, 
+		PLEventListener<TopDownEnginePointEvent>
 	{
 		/// the target frame rate for the game
 		[Tooltip("the target frame rate for the game")]
@@ -165,7 +165,7 @@ namespace SpectralDepths.TopDown
 
 		[Header("Points")]
 		/// the current number of game points
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the current number of game points")]
 		public int Points;
 
@@ -253,7 +253,7 @@ namespace SpectralDepths.TopDown
 		public virtual void Reset()
 		{
 			Points = 0;
-			MMTimeScaleEvent.Trigger(MMTimeScaleMethods.Reset, 1f, 0f, false, 0f, true);
+			PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Reset, 1f, 0f, false, 0f, true);
 			Paused = false;
 		}
 		/// <summary>
@@ -346,7 +346,7 @@ namespace SpectralDepths.TopDown
 			// if time is not already stopped		
 			if (Time.timeScale>0.0f)
 			{
-				MMTimeScaleEvent.Trigger(MMTimeScaleMethods.For, 0f, 0f, false, 0f, true);
+				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, 0f, 0f, false, 0f, true);
 				Instance.Paused=true;
 				if ((GUIManager.HasInstance) && (pauseMethod == PauseMethods.PauseMenu))
 				{
@@ -375,7 +375,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public virtual void UnPause(PauseMethods pauseMethod = PauseMethods.PauseMenu)
 		{
-			MMTimeScaleEvent.Trigger(MMTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);
+			PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);
 			Instance.Paused = false;
 			if ((GUIManager.HasInstance) && (pauseMethod == PauseMethods.PauseMenu))
 			{ 
@@ -395,7 +395,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public virtual void InputPause()
 		{
-			if (InputManager.Instance.PauseButton.State.CurrentState == MMInput.ButtonStates.ButtonDown )
+			if (InputManager.Instance.PauseButton.State.CurrentState == PLInput.ButtonStates.ButtonDown )
 			{
 				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TogglePause, null);
 			}
@@ -408,10 +408,10 @@ namespace SpectralDepths.TopDown
 		{
 			OnPause?.Invoke();
 
-			if (MuteSfxTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx); }
-			if (MuteUITrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.UI); }
-			if (MuteMusicTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Music); }
-			if (MuteMasterTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.MuteTrack, MMSoundManager.MMSoundManagerTracks.Master); }		
+			if (MuteSfxTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Sfx); }
+			if (MuteUITrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.UI); }
+			if (MuteMusicTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Music); }
+			if (MuteMasterTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.MuteTrack, PLSoundManager.PLSoundManagerTracks.Master); }		
 		}
 		/// <summary>
 		/// Unmutes Sound based on parameters
@@ -420,10 +420,10 @@ namespace SpectralDepths.TopDown
 		{
 			OnUnpause?.Invoke();
 
-			if (MuteSfxTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Sfx); }
-			if (MuteUITrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.UI); }
-			if (MuteMusicTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Music); }
-			if (MuteMasterTrackSounds) { MMSoundManagerTrackEvent.Trigger(MMSoundManagerTrackEventTypes.UnmuteTrack, MMSoundManager.MMSoundManagerTracks.Master); }
+			if (MuteSfxTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Sfx); }
+			if (MuteUITrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.UI); }
+			if (MuteMusicTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Music); }
+			if (MuteMasterTrackSounds) { PLSoundManagerTrackEvent.Trigger(PLSoundManagerTrackEventTypes.UnmuteTrack, PLSoundManager.PLSoundManagerTracks.Master); }
 		}
         
 		/// <summary>
@@ -500,9 +500,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public virtual void ResetAllSaves()
 		{
-			MMSaveLoadManager.DeleteSaveFolder("InventoryEngine");
-			MMSaveLoadManager.DeleteSaveFolder("TopDownEngine");
-			MMSaveLoadManager.DeleteSaveFolder("MMAchievements");
+			PLSaveLoadManager.DeleteSaveFolder("InventoryEngine");
+			PLSaveLoadManager.DeleteSaveFolder("TopDownEngine");
+			PLSaveLoadManager.DeleteSaveFolder("PLAchievements");
 		}
 
 		/// <summary>
@@ -545,7 +545,7 @@ namespace SpectralDepths.TopDown
 
 			if (LevelManager.Instance.Players[0] != null)
 			{
-				if (LevelManager.Instance.Players[0].gameObject.MMGetComponentNoAlloc<CharacterPersistence>() != null)
+				if (LevelManager.Instance.Players[0].gameObject.PLGetComponentNoAlloc<CharacterPersistence>() != null)
 				{
 					Destroy(LevelManager.Instance.Players[0].gameObject);	
 				}
@@ -553,10 +553,10 @@ namespace SpectralDepths.TopDown
 		}
 
 		/// <summary>
-		/// Catches MMGameEvents and acts on them, playing the corresponding sounds
+		/// Catches PLGameEvents and acts on them, playing the corresponding sounds
 		/// </summary>
-		/// <param name="gameEvent">MMGameEvent event.</param>
-		public virtual void OnMMEvent(MMGameEvent gameEvent)
+		/// <param name="gameEvent">PLGameEvent event.</param>
+		public virtual void OnMMEvent(PLGameEvent gameEvent)
 		{
 			switch (gameEvent.EventName)
 			{
@@ -627,9 +627,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<MMGameEvent> ();
-			this.MMEventStartListening<TopDownEngineEvent> ();
-			this.MMEventStartListening<TopDownEnginePointEvent> ();
+			this.PLEventStartListening<PLGameEvent> ();
+			this.PLEventStartListening<TopDownEngineEvent> ();
+			this.PLEventStartListening<TopDownEnginePointEvent> ();
 		}
 
 		/// <summary>
@@ -637,9 +637,9 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<MMGameEvent> ();
-			this.MMEventStopListening<TopDownEngineEvent> ();
-			this.MMEventStopListening<TopDownEnginePointEvent> ();
+			this.PLEventStopListening<PLGameEvent> ();
+			this.PLEventStopListening<TopDownEngineEvent> ();
+			this.PLEventStopListening<TopDownEnginePointEvent> ();
 		}
 	}
 }

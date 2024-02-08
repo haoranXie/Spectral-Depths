@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 
 namespace SpectralDepths.TopDown
 {
@@ -10,7 +10,7 @@ namespace SpectralDepths.TopDown
 	/// Add this ability to a character and it'll rotate or flip to face the direction of movement or the weapon's, or both, or none
 	/// Only add this ability to a 2D character
 	/// </summary>
-	[MMHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
+	[PLHiddenProperties("AbilityStartFeedbacks", "AbilityStopFeedbacks")]
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Orientation 2D")]
 	public class CharacterOrientation2D : CharacterAbility
 	{
@@ -20,10 +20,10 @@ namespace SpectralDepths.TopDown
 		/// the facing mode for this character
 		public FacingModes FacingMode = FacingModes.None;
 
-		[MMEnumCondition("FacingMode", (int)FacingModes.WeaponDirection, (int)FacingModes.Both)]
+		[PLEnumCondition("FacingMode", (int)FacingModes.WeaponDirection, (int)FacingModes.Both)]
 		public FacingBases FacingBase = FacingBases.WeaponAngle;
         
-		[MMInformation("You can also decide if the character must automatically flip when going backwards or not. Additionnally, if you're not using sprites, you can define here how the character's model's localscale will be affected by flipping. By default it flips on the x axis, but you can change that to fit your model.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("You can also decide if the character must automatically flip when going backwards or not. Additionnally, if you're not using sprites, you can define here how the character's model's localscale will be affected by flipping. By default it flips on the x axis, but you can change that to fit your model.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 
 		[Header("Horizontal Flip")]
 
@@ -31,33 +31,33 @@ namespace SpectralDepths.TopDown
 		[Tooltip("whether we should flip the model's scale when the character changes direction or not	")]
 		public bool ModelShouldFlip = false;
 		/// the scale value to apply to the model when facing left
-		[MMCondition("ModelShouldFlip", true)]
+		[PLCondition("ModelShouldFlip", true)]
 		[Tooltip("the scale value to apply to the model when facing left")]
 		public Vector3 ModelFlipValueLeft = new Vector3(-1, 1, 1);
 		/// the scale value to apply to the model when facing right
-		[MMCondition("ModelShouldFlip", true)]
+		[PLCondition("ModelShouldFlip", true)]
 		[Tooltip("the scale value to apply to the model when facing right")]
 		public Vector3 ModelFlipValueRight = new Vector3(1, 1, 1);
 		/// whether we should rotate the model on direction change or not		
 		[Tooltip("whether we should rotate the model on direction change or not")]
 		public bool ModelShouldRotate;
 		/// the rotation to apply to the model when it changes direction		
-		[MMCondition("ModelShouldRotate", true)]
+		[PLCondition("ModelShouldRotate", true)]
 		[Tooltip("the rotation to apply to the model when it changes direction")]
 		public Vector3 ModelRotationValueLeft = new Vector3(0f, 180f, 0f);
 		/// the rotation to apply to the model when it changes direction		
-		[MMCondition("ModelShouldRotate", true)]
+		[PLCondition("ModelShouldRotate", true)]
 		[Tooltip("the rotation to apply to the model when it changes direction")]
 		public Vector3 ModelRotationValueRight = new Vector3(0f, 0f, 0f);
 		/// the speed at which to rotate the model when changing direction, 0f means instant rotation		
-		[MMCondition("ModelShouldRotate", true)]
+		[PLCondition("ModelShouldRotate", true)]
 		[Tooltip("the speed at which to rotate the model when changing direction, 0f means instant rotation	")]
 		public float ModelRotationSpeed = 0f;
         
 		[Header("Direction")]
 
 		/// true if the player is facing right
-		[MMInformation("It's usually good practice to build all your characters facing right. If that's not the case of this character, select Left instead.", MoreMountains.Tools.MMInformationAttribute.InformationType.Info, false)]
+		[PLInformation("It's usually good practice to build all your characters facing right. If that's not the case of this character, select Left instead.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
 		[Tooltip("true if the player is facing right")]
 		public Character.FacingDirections InitialFacingDirection = Character.FacingDirections.East;
 		/// the threshold at which movement is considered
@@ -67,11 +67,11 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the threshold at which weapon gets considered")]
 		public float AbsoluteThresholdWeapon = 0.5f;
 		/// the direction this character is currently facing
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("the direction this character is currently facing")]
 		public Character.FacingDirections CurrentFacingDirection = Character.FacingDirections.East;
 		/// whether or not this character is facing right
-		[MMReadOnly]
+		[PLReadOnly]
 		[Tooltip("whether or not this character is facing right")]
 		public bool IsFacingRight = true;
 
@@ -479,12 +479,12 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _horizontalDirectionAnimationParameter, _horizontalDirection, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _verticalDirectionAnimationParameter, _verticalDirection, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _horizontalDirectionAnimationParameter, _horizontalDirection, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _verticalDirectionAnimationParameter, _verticalDirection, _character._animatorParameters, _character.RunAnimatorSanityChecks);
 
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _horizontalSpeedAnimationParameter, _newSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _verticalSpeedAnimationParameter, _newSpeed.y, _character._animatorParameters, _character.RunAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _facingDirectionAnimationParameter, _directionFloat, _character._animatorParameters);      
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _horizontalSpeedAnimationParameter, _newSpeed.x, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _verticalSpeedAnimationParameter, _newSpeed.y, _character._animatorParameters, _character.RunAnimatorSanityChecks);
+			PLAnimatorExtensions.UpdateAnimatorFloat(_animator, _facingDirectionAnimationParameter, _directionFloat, _character._animatorParameters);      
 		}
 
 	}

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -52,19 +52,19 @@ namespace SpectralDepths.TopDown
 		public bool OffsetAlongMagnitude = false;
 		/// the minimum bounds of the velocity's magnitude
 		[Tooltip("the minimum bounds of the velocity's magnitude")]
-		[MMCondition("OffsetAlongMagnitude", true)]
+		[PLCondition("OffsetAlongMagnitude", true)]
 		public float MinimumVelocity = 0f;
 		/// the maximum bounds of the velocity's magnitude
 		[Tooltip("the maximum bounds of the velocity's magnitude")]
-		[MMCondition("OffsetAlongMagnitude", true)]
+		[PLCondition("OffsetAlongMagnitude", true)]
 		public float MaximumVelocity = 7f;
 		/// the distance at which to position the marker when at the lowest velocity
 		[Tooltip("the distance at which to position the marker when at the lowest velocity")]
-		[MMCondition("OffsetAlongMagnitude", true)]
+		[PLCondition("OffsetAlongMagnitude", true)]
 		public float OffsetRemapMin = 0f;
 		/// the distance at which to position the marker when at the highest velocity
 		[Tooltip("the distance at which to position the marker when at the highest velocity")]
-		[MMCondition("OffsetAlongMagnitude", true)]
+		[PLCondition("OffsetAlongMagnitude", true)]
 		public float OffsetRemapMax = 1f;
         
 		[Header("Auto Disable")]
@@ -73,7 +73,7 @@ namespace SpectralDepths.TopDown
 		public bool DisableBelowThreshold = false;
 		/// the threshold below which to disable the marker
 		[Tooltip("the threshold below which to disable the marker")]
-		[MMCondition("DisableBelowThreshold", true)]
+		[PLCondition("DisableBelowThreshold", true)]
 		public float DisableThreshold = 0.1f;
         
 		[Header("Interpolation")] 
@@ -82,7 +82,7 @@ namespace SpectralDepths.TopDown
 		public bool Interpolate = false;
 		/// the rate at which to interpolate the rotation
 		[Tooltip("the rate at which to interpolate the rotation")]
-		[MMCondition("Interpolate", true)] 
+		[PLCondition("Interpolate", true)] 
 		public float InterpolateRate = 5f;
         
 		[Header("Interpolation")] 
@@ -154,7 +154,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (Interpolate)
 			{
-				_direction = MMMaths.Lerp(_direction, direction, InterpolateRate, Time.deltaTime);
+				_direction = PLMaths.Lerp(_direction, direction, InterpolateRate, Time.deltaTime);
 			}
 			else
 			{
@@ -186,7 +186,7 @@ namespace SpectralDepths.TopDown
 
 			if (OffsetAlongMagnitude)
 			{
-				float remappedValue = MMMaths.Remap(rawValue, MinimumVelocity, MaximumVelocity, OffsetRemapMin, OffsetRemapMax);
+				float remappedValue = PLMaths.Remap(rawValue, MinimumVelocity, MaximumVelocity, OffsetRemapMin, OffsetRemapMax);
 
 				_newPosition += ForwardVector * remappedValue; 
 				_newPosition = _newRotation * _newPosition;
@@ -194,7 +194,7 @@ namespace SpectralDepths.TopDown
 
 			if (Interpolate)
 			{
-				_newPosition = MMMaths.Lerp(DirectionMarker.transform.localPosition, _newPosition, InterpolateRate, Time.deltaTime);
+				_newPosition = PLMaths.Lerp(DirectionMarker.transform.localPosition, _newPosition, InterpolateRate, Time.deltaTime);
 			}
 
 			DirectionMarker.transform.localPosition = _newPosition;
@@ -212,7 +212,7 @@ namespace SpectralDepths.TopDown
 		{
 			if ((_characterHandleWeapon != null) && (_characterHandleWeapon.CurrentWeapon != null))
 			{
-				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.MMGetComponentNoAlloc<WeaponAim>();
+				_weaponAim = _characterHandleWeapon.CurrentWeapon.gameObject.PLGetComponentNoAlloc<WeaponAim>();
 			}            
 		}
 	}    

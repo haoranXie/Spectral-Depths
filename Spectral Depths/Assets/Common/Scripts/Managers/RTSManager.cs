@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using UnityEngine.AI;
 using System.Runtime.Remoting.Messaging;
 using System.Diagnostics.Tracing;
@@ -18,9 +18,9 @@ namespace SpectralDepths.TopDown
     /// </summary>
     [AddComponentMenu("Spectral Depths/Managers/RTS Manager")]
 
-    public class GameRTSController : MonoBehaviour, MMEventListener<TopDownEngineEvent>, MMEventListener<RTSEvent>
+    public class GameRTSController : MonoBehaviour, PLEventListener<TopDownEngineEvent>, PLEventListener<RTSEvent>
     {
-        [MMInformation("The RTSManager is responsible for allowing the player to select units for canInput, formations, and RTS-related visual indicators",MMInformationAttribute.InformationType.Info,false)]
+        [PLInformation("The RTSManager is responsible for allowing the player to select units for canInput, formations, and RTS-related visual indicators",PLInformationAttribute.InformationType.Info,false)]
         [Header("RTS Mode")]
 		[Tooltip("Turn on or off the player being able to RTS")]
 		public bool RTSMode;
@@ -116,7 +116,7 @@ namespace SpectralDepths.TopDown
         private bool _commandAttackButtonIsPressed = false;
         private void HandleInput()
         {
-			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && !_commandAttackButtonIsPressed)
+			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonDown && !_commandAttackButtonIsPressed)
 			{
                 switch(_curretCommand)
                 {
@@ -135,7 +135,7 @@ namespace SpectralDepths.TopDown
                         break;  
                 }
             }
-			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 			{     
                 _commandAttackButtonIsPressed = false;
 			}
@@ -566,8 +566,8 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable()
 		{
-			this.MMEventStartListening<TopDownEngineEvent> ();
-			this.MMEventStartListening<RTSEvent> ();
+			this.PLEventStartListening<TopDownEngineEvent> ();
+			this.PLEventStartListening<RTSEvent> ();
 
 		}
 
@@ -576,8 +576,8 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			this.MMEventStopListening<TopDownEngineEvent> ();
-			this.MMEventStopListening<RTSEvent> ();
+			this.PLEventStopListening<TopDownEngineEvent> ();
+			this.PLEventStopListening<RTSEvent> ();
         }
     }
 }

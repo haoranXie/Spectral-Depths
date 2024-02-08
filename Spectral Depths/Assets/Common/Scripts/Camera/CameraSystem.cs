@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
+using SpectralDepths.Tools;
 using Cinemachine;
 
 namespace SpectralDepths.TopDown{
     /// <summary>
     /// Used for RTS camera movement
     /// </summary>
-    public class CameraSystem : MMSingleton<CameraSystem>
+    public class CameraSystem : PLSingleton<CameraSystem>
     {
 		[Tooltip("Enable/Disable Use of this camera")]
         public bool UseRTSCamera = true;
@@ -97,8 +97,8 @@ namespace SpectralDepths.TopDown{
 
         public void SwapToPlayerCamera(Character playerToFollow)
         {
-			MMCameraEvent.Trigger(MMCameraEventTypes.SetTargetCharacter, playerToFollow);
-			MMCameraEvent.Trigger(MMCameraEventTypes.StartFollowing);
+			PLCameraEvent.Trigger(PLCameraEventTypes.SetTargetCharacter, playerToFollow);
+			PLCameraEvent.Trigger(PLCameraEventTypes.StartFollowing);
             RTSCamera.Priority=0;
             PlayerCamera.Priority=1;
         }
@@ -148,22 +148,22 @@ namespace SpectralDepths.TopDown{
 
         private void InputRotateCamera()
         {
-			if (_linkedInputManager.RotateCameraLeftButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_linkedInputManager.RotateCameraLeftButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
                 _rotateDir = +1;
 			}
-			if (_linkedInputManager.RotateCameraLeftButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (_linkedInputManager.RotateCameraLeftButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 			{   
                 if(_rotateDir==+1f)
                 {
                     _rotateDir = 0;    
                 }
 			}
-			if (_linkedInputManager.RotateCameraRightButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_linkedInputManager.RotateCameraRightButton.State.CurrentState == PLInput.ButtonStates.ButtonDown)
 			{
                 _rotateDir = -1f;
             }
-			if (_linkedInputManager.RotateCameraRightButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (_linkedInputManager.RotateCameraRightButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
 			{     
                 if(_rotateDir==-1f)   
                 {

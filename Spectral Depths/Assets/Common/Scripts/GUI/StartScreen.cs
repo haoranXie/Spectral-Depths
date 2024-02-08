@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
-using MoreMountains.Tools;
-using MoreMountains.MMInterface;
+using SpectralDepths.Tools;
+using SpectralDepths.PLInterface;
 
 namespace SpectralDepths.TopDown
 {
@@ -16,8 +16,8 @@ namespace SpectralDepths.TopDown
 		/// the level to load after the start screen
 		[Tooltip("the level to load after the start screen")]
 		public string NextLevel;
-		/// the name of the MMSceneLoadingManager scene you want to use
-		[Tooltip("the name of the MMSceneLoadingManager scene you want to use")]
+		/// the name of the PLSceneLoadingManager scene you want to use
+		[Tooltip("the name of the PLSceneLoadingManager scene you want to use")]
 		public string LoadingSceneName = "";
 		/// the delay after which the level should auto skip (if less than 1s, won't autoskip)
 		[Tooltip("the delay after which the level should auto skip (if less than 1s, won't autoskip)")]
@@ -32,15 +32,15 @@ namespace SpectralDepths.TopDown
 		public float FadeOutDuration = 1f;
 		/// the tween type to use to fade the startscreen in and out 
 		[Tooltip("the tween type to use to fade the startscreen in and out ")]
-		public MMTweenType Tween = new MMTweenType(MMTween.MMTweenCurve.EaseInOutCubic);
+		public PLTweenType Tween = new PLTweenType(PLTween.PLTweenCurve.EaseInOutCubic);
 
 		[Header("Sound Settings Bindings")]
 		/// the switch used to turn the music on or off
 		[Tooltip("the switch used to turn the music on or off")]
-		public MMSwitch MusicSwitch;
+		public PLSwitch MusicSwitch;
 		/// the switch used to turn the SFX on or off
 		[Tooltip("the switch used to turn the SFX on or off")]
-		public MMSwitch SfxSwitch;
+		public PLSwitch SfxSwitch;
 
 		/// <summary>
 		/// Initialization
@@ -48,7 +48,7 @@ namespace SpectralDepths.TopDown
 		protected virtual void Awake()
 		{	
 			GUIManager.Instance.SetHUDActive (false);
-			MMFadeOutEvent.Trigger(FadeInDuration, Tween);
+			PLFadeOutEvent.Trigger(FadeInDuration, Tween);
 			Cursor.visible = true;
 			if (AutoSkipDelay > 1f)
 			{
@@ -66,13 +66,13 @@ namespace SpectralDepths.TopDown
 			
 			if (MusicSwitch != null)
 			{
-				MusicSwitch.CurrentSwitchState = MMSoundManager.Instance.settingsSo.Settings.MusicOn ? MMSwitch.SwitchStates.Right : MMSwitch.SwitchStates.Left;
+				MusicSwitch.CurrentSwitchState = PLSoundManager.Instance.settingsSo.Settings.MusicOn ? PLSwitch.SwitchStates.Right : PLSwitch.SwitchStates.Left;
 				MusicSwitch.InitializeState ();
 			}
 
 			if (SfxSwitch != null)
 			{
-				SfxSwitch.CurrentSwitchState = MMSoundManager.Instance.settingsSo.Settings.SfxOn ? MMSwitch.SwitchStates.Right : MMSwitch.SwitchStates.Left;
+				SfxSwitch.CurrentSwitchState = PLSoundManager.Instance.settingsSo.Settings.SfxOn ? PLSwitch.SwitchStates.Right : PLSwitch.SwitchStates.Left;
 				SfxSwitch.InitializeState ();
 			}
 		}
@@ -93,7 +93,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public virtual void ButtonPressed()
 		{
-			MMFadeInEvent.Trigger(FadeOutDuration, Tween);
+			PLFadeInEvent.Trigger(FadeOutDuration, Tween);
 			// if the user presses the "Jump" button, we start the first level.
 			StartCoroutine (LoadFirstLevel ());
 		}
@@ -107,11 +107,11 @@ namespace SpectralDepths.TopDown
 			yield return new WaitForSeconds (FadeOutDuration);
 			if (LoadingSceneName == "")
 			{
-				MMAdditiveSceneLoadingManager.LoadScene (NextLevel);	
+				PLAdditiveSceneLoadingManager.LoadScene (NextLevel);	
 			}
 			else
 			{
-				MMAdditiveSceneLoadingManager.LoadScene (NextLevel, LoadingSceneName);
+				PLAdditiveSceneLoadingManager.LoadScene (NextLevel, LoadingSceneName);
 			}
 			
 		}
