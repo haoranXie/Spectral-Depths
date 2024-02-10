@@ -1,0 +1,13 @@
+Detective: "This changes everything. {a}We're dealing with a whole new level of evil here."
+
+Partner: "I know. {c}It's hard to believe that someone could do something...{wa 3}like this."
+
+Detective: "We need to find this lolicon and put a stop to his kidnapping. {c}But how do we even begin to track him down?"
+
+Partner: "Maybe we can start by looking at the place of kidnappings.{wa 1} See if there's any connection between them."
+
+Detective "Good idea.{wc 1} But we need to be careful.{a} If this guy is kidnapping lolis,{wa 1} he might have some hostages."
+
+Partner: "We'll have to try and be secretive about this then.{a} To make sure he doesn't know we are on his tail."
+
+Detective: "Alright.{a} In the meantime, I'll try to gather as much evidence as possible.{c} We'll catch this guy, no matter what it takes."

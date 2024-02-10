@@ -4,4 +4,6 @@ setScene("School Grounds" -s 5.5)
 
 Haoran "I agree, \"Quote Here\""
 
+Haoran "Yes, \"Quote Here\""
+
 narrator "And so they all agreed that Haoran sucks. And so they all agreed that Haoran sucks. And so they all agreed that Haoran sucks. And so they all agreed that Haoran sucks. And so they all agreed that Haoran sucks. And so they all agreed that Haoran sucks." PlaySong(End, - 0.5), list(players), saveGame(1 -g all -f simple)
