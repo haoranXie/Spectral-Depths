@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+//The data container holding all segments and information pertaining to a single dialogue line
 public class DLDialogueData
 {
     public List<DIALOGUE_SEGMENT> segments; //Segments are segments of dialogue seperated by the commands
@@ -68,7 +69,7 @@ public class DLDialogueData
         public string dialogue;
         public StartSignal startSignal;
         public float signalDelay;
-        public enum StartSignal { None, C, A, WA, WC }
+        public enum StartSignal { None, C, A, WA, WC}
 
         public bool appendText => (startSignal == StartSignal.A || startSignal == StartSignal.WA);
     }

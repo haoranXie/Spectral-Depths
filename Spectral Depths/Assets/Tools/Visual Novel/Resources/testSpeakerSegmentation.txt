@@ -1,0 +1,7 @@
+Michiru as ??? "Hello there"
+
+Michiru as ??? at 1:0 "Hello there"
+
+Michiru at 0.5:0.5 as The Girl "Hello there"
+
+Michiru as ??? [0:Angle1, 1:happy] at 0 "Hello there"

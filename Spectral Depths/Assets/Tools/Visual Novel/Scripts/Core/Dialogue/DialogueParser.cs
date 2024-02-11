@@ -8,7 +8,7 @@ namespace DIALOGUE
     //System that handles parsing functions to convert strings into DialogueLines
     public class DialogueParser
     {
-        private const string commandRegexPattern = "\\w*[^\\s]\\("; // A word of any length(w*) so long white space(s) does not(^) follow it and then a parenthathese ('(')
+        private const string commandRegexPattern = @"\w*[^\s]\("; // A word of any length(w*) so long white space(s) does not(^) follow it and then a parenthathese ('(')
 
         //Calls RipContent method that parses string into three sections
         //@return three new strings speaker, dialogue, command
