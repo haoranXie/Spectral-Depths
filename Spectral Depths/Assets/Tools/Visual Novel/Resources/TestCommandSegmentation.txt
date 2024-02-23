@@ -1,0 +1,7 @@
+Haoran "Let's kidnap some lolis!" playSong("Funky Beets" -v 0.75 -p 1), setMood(chill)
+
+Loli "Uh Oh, I need to run!" playVoice("e_d1_v2" -v 1.5), setBackground(Playground -t "Diagonal Lines" -s 3.5)
+
+setAccomplishment("Escape the lolicon" true), setCLI(Loli 0; Angle 1; Intrigued -s 2.3 -l true)
+
+showScene(false), StopMusic(all -s 1.5)

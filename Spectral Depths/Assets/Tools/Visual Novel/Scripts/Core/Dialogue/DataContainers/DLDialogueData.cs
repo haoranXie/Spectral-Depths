@@ -8,8 +8,6 @@ public class DLDialogueData
     public List<DIALOGUE_SEGMENT> segments; //Segments are segments of dialogue seperated by the commands
     private const string segmentIdentifierPattern = @"\{[ca]\}|\{w[ca]\s\d*\.?\d*\}"; //String pattern to identify segments
 
-    public bool hasDialogue => segments.Count > 0;//If we have segments we have dialogue
-
     //constructor
     public DLDialogueData(string rawDialogue) //Dialogue section ripped from string
     {
