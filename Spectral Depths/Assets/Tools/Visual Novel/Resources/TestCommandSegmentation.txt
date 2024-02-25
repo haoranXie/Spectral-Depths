@@ -1,3 +1,15 @@
+Haoran
+
+Haoran "(This is a thought)"
+
+print_1p("This is a command running straight from our dialogue file!")
+
+Haoran "Move left" moveCharDemo(left)
+
+Haoran "move Right" moveCharDemo(right)
+
+Haoran "Move left and then Right." print_1p("Start Moving"), [wait]moveCharDemo(left), [wait]moveCharDemo(right), print_1p("Done Moving")
+,
 Haoran "Let's kidnap some lolis!" playSong("Funky Beets" -v 0.75 -p 1), setMood(chill)
 
 Loli "Uh Oh, I need to run!" playVoice("e_d1_v2" -v 1.5), setBackground(Playground -t "Diagonal Lines" -s 3.5)

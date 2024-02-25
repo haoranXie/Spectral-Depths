@@ -8,7 +8,7 @@ namespace DIALOGUE
     //System that handles parsing functions to convert strings into DialogueLines
     public class DialogueParser
     {
-        private const string commandRegexPattern = @"\w*[^\s]\("; // A word of any length(w*) so long white space(s) does not(^) follow it and then a parenthathese ('(')
+        private const string commandRegexPattern = @"[\w\[\]]*[^\s]\("; // A word of any length(w*) so long white space(s) does not(^) follow it and then a parenthathese ('(')
 
         //Calls RipContent method that parses string into three sections
         //@return three new strings speaker, dialogue, command
@@ -52,15 +52,19 @@ namespace DIALOGUE
 
             //Indentifying Command Pattern
             Regex commandRegex = new Regex(commandRegexPattern); //Making new string pattern assigned to commandRegex
-            Match match = commandRegex.Match(rawLine); //Matches rawline with pattern of commandRegex
+            MatchCollection matches = commandRegex.Matches(rawLine); //Matches rawline with pattern of commandRegex
             int commandStart = -1;
-            if(match.Success)
+            foreach(Match match in matches)
             {
-                commandStart = match.Index;
-
-                if(dialogueStart == -1 && dialogueEnd == -1) //If no dialogue in line
-                    return ("", "", rawLine.Trim()); //return empty speaker, empty dialogue, trimed rawline(command)(rawline with no space)
+                if (match.Index < dialogueStart || match.Index > dialogueEnd)
+                {
+                    commandStart = match.Index;
+                    break;
+                }
             }
+
+            if (commandStart != -1 && (dialogueStart == -1 && dialogueEnd == -1))
+                return ("", "", rawLine.Trim());
 
             //If we are here then we either have dialogue or a multi word argument in a command. Figure out which it is(quotation marks detected)
             if (dialogueStart != -1 && dialogueEnd != -1 && (commandStart == -1 || commandStart > dialogueEnd)) //If it is dialogue
@@ -74,7 +78,8 @@ namespace DIALOGUE
             else if (commandStart != -1 && dialogueStart > commandStart)
                 commands = rawLine;
             else
-                speaker = rawLine;
+                dialogue = rawLine;
+
             return (speaker, dialogue, commands);
         }
     }

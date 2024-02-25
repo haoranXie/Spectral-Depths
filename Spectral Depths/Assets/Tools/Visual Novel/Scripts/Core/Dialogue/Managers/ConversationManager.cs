@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Hosting;
 using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -63,6 +64,11 @@ namespace DIALOGUE
                 //Run any commands
                 if (line.hasCommands)
                     yield return Line_RunCommands(line);
+
+                //THIS MAKES COMMANDS AUTOMATICALLY RUN
+                if (line.hasDialogue)
+                    //Wait for user input
+                    yield return WaitForUserInput(); //THIS MAKES COMMANDS AUTOMATICALLY RUN
             }
         }
 
@@ -72,18 +78,27 @@ namespace DIALOGUE
             if (line.hasSpeaker)
                 dialogueSystem.ShowSpeakerName(line.speakerData.displayname);
             else
-                dialogueSystem.HideSpeakerName();
+                dialogueSystem.HideSpeakerName();//REMOVE ELSE IF YOU DONT WANT TO TYPE SPEAKER NAME EACH TIME FOR SAME CHARACTER IN TEXTFILE
 
             //Build dialogue
             yield return BuildLineSegments(line.dialogueData);
 
             //Wait for user input
-            yield return WaitForUserInput();
+            //yield return WaitForUserInput(); THIS MAKES COMMANDS RUN AFTER ANOTHER CLICK
         }
 
         IEnumerator Line_RunCommands(DialogueLine line)
         {
-            Debug.Log(line.commandData);
+            List<DLCommandData.Command> commands = line.commandData.commands;
+
+            foreach(DLCommandData.Command command in commands)
+            {
+                if (command.waitForCompletion)
+                    yield return CommandManager.instance.Execute(command.name, command.arguments);
+                else
+                    CommandManager.instance.Execute(command.name, command.arguments);
+            }
+
             yield return null;
         }
 

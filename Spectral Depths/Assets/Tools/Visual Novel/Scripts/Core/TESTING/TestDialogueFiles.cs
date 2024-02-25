@@ -56,6 +56,7 @@ public class TestDialogueFiles : MonoBehaviour
         **/
 
         //Debug split command lines
+        /**
         foreach (string line in lines)
         {
             if (string.IsNullOrWhiteSpace(line))
@@ -69,7 +70,8 @@ public class TestDialogueFiles : MonoBehaviour
                 Debug.Log($"Command [{i}] '{command.name}' has arguments [{string.Join(", ", command.arguments)}]");
             }
         }
+        **/
 
-        //DialogueSystem.instance.Say(lines); //Inputs lines into Dialogue System to put into method "Say"
+        DialogueSystem.instance.Say(lines); //Inputs lines into Dialogue System to put into method "Say"
     }
 }
