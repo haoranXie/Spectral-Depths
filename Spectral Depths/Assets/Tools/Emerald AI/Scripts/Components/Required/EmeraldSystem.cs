@@ -70,24 +70,24 @@ namespace EmeraldAI
         //Initialize Emerald AI and its components
         void Awake()
         {
-            MovementComponent = GetComponent<EmeraldMovement>();
-            AnimationComponent = GetComponent<EmeraldAnimation>();
-            SoundComponent = GetComponent<EmeraldSounds>();          
-            DetectionComponent = GetComponent<EmeraldDetection>();
-            BehaviorsComponent = GetComponent<EmeraldBehaviors>();          
-            CombatComponent = GetComponent<EmeraldCombat>();
-            HealthComponent = GetComponent<EmeraldHealth>();
-            OptimizationComponent = GetComponent<EmeraldOptimization>();
-            EventsComponent = GetComponent<EmeraldEvents>();
-            DebuggerComponent = GetComponent<EmeraldDebugger>();
-            UIComponent = GetComponent<EmeraldUI>();
-            ItemsComponent = GetComponent<EmeraldItems>();
-            SoundDetectorComponent = GetComponent<EmeraldSoundDetector>();
-            InverseKinematicsComponent = GetComponent<EmeraldInverseKinematics>();
-            TPMComponent = GetComponent<TargetPositionModifier>();
-            m_NavMeshAgent = GetComponent<NavMeshAgent>();
-            AIBoxCollider = GetComponent<BoxCollider>();
-            AIAnimator = GetComponent<Animator>();
+            MovementComponent = GetComponentInChildrenInChildren<EmeraldMovement>();
+            AnimationComponent = GetComponentInChildren<EmeraldAnimation>();
+            SoundComponent = GetComponentInChildren<EmeraldSounds>();          
+            DetectionComponent = GetComponentInChildren<EmeraldDetection>();
+            BehaviorsComponent = GetComponentInChildren<EmeraldBehaviors>();          
+            CombatComponent = GetComponentInChildren<EmeraldCombat>();
+            HealthComponent = GetComponentInChildren<EmeraldHealth>();
+            OptimizationComponent = GetComponentInChildren<EmeraldOptimization>();
+            EventsComponent = GetComponentInChildren<EmeraldEvents>();
+            DebuggerComponent = GetComponentInChildren<EmeraldDebugger>();
+            UIComponent = GetComponentInChildren<EmeraldUI>();
+            ItemsComponent = GetComponentInChildren<EmeraldItems>();
+            SoundDetectorComponent = GetComponentInChildren<EmeraldSoundDetector>();
+            InverseKinematicsComponent = GetComponentInChildren<EmeraldInverseKinematics>();
+            TPMComponent = GetComponentInChildren<TargetPositionModifier>();
+            m_NavMeshAgent = GetComponentInChildren<NavMeshAgent>();
+            AIBoxCollider = GetComponentInChildren<BoxCollider>();
+            AIAnimator = GetComponentInChildren<Animator>();
             InitializeEmeraldObjectPool();
             InitializeCombatText();
         }
