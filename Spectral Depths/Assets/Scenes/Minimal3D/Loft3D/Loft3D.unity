@@ -1019,8 +1019,8 @@ MonoBehaviour:
   OutroFadeDuration: 0.1
   FaderID: 0
   FadeCurve:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 6
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 6
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -1062,8 +1062,8 @@ MonoBehaviour:
     BeforeExitFadeDelay: 0.25
     ExitFadeDuration: 0.2
     EntryFadeTween:
-      MMTweenDefinitionType: 0
-      MMTweenCurve: 0
+      PLTweenDefinitionType: 0
+      PLTweenCurve: 0
       Curve:
         serializedVersion: 2
         m_Curve: []
@@ -1072,8 +1072,8 @@ MonoBehaviour:
         m_RotationOrder: 4
       Initialized: 0
     ExitFadeTween:
-      MMTweenDefinitionType: 0
-      MMTweenCurve: 0
+      PLTweenDefinitionType: 0
+      PLTweenCurve: 0
       Curve:
         serializedVersion: 2
         m_Curve: []
@@ -4412,6 +4412,17 @@ MonoBehaviour:
   GameOverScene: 
   Points: 0
   PauseGameWhenInventoryOpens: 1
+  QuickPause: 1
+  MuteSfxTrackSounds: 1
+  MuteUITrackSounds: 0
+  MuteMusicTrackSounds: 0
+  MuteMasterTrackSounds: 0
+  OnPause:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnpause:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &598334959
 Transform:
   m_ObjectHideFlags: 0
@@ -4747,14 +4758,16 @@ MonoBehaviour:
     m_Bits: 2097920
   m_UseGeometry: 1
   m_DefaultArea: 0
+  m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
-  m_BuildHeightMesh: 0
+  m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: f3be6d7d246feaf4e91af06eb7475bc4, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!4 &627456237
 Transform:
   m_ObjectHideFlags: 0
@@ -5000,9 +5013,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1152185924973054, guid: d4529f47989526241929319abfdfc29d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1338538590396494, guid: d4529f47989526241929319abfdfc29d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1448112055169428, guid: d4529f47989526241929319abfdfc29d, type: 3}
       propertyPath: m_Name
       value: 3DCameras --------------------------------------------------------
+      objectReference: {fileID: 0}
+    - target: {fileID: 1663069989844724, guid: d4529f47989526241929319abfdfc29d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949124879215796, guid: d4529f47989526241929319abfdfc29d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4199879678763332, guid: d4529f47989526241929319abfdfc29d, type: 3}
       propertyPath: m_RootOrder
@@ -5123,6 +5152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AllowMSAA
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114782585485191344, guid: d4529f47989526241929319abfdfc29d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114893584720601648, guid: d4529f47989526241929319abfdfc29d,
         type: 3}
@@ -12386,7 +12420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   CanSpawn: 1
   UseUnscaledTime: 0
   PoolerMode: 0

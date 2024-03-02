@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554186fd0b9ae594dad66993f12f6ac9, type: 3}
   m_Name: FogOfWarRenderFeature
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   renderPassEvent: 350

@@ -701,8 +701,8 @@ MonoBehaviour:
   OutroFadeDuration: 0.1
   FaderID: 0
   FadeCurve:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 6
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 6
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -744,8 +744,8 @@ MonoBehaviour:
     BeforeExitFadeDelay: 0.25
     ExitFadeDuration: 0.2
     EntryFadeTween:
-      MMTweenDefinitionType: 0
-      MMTweenCurve: 0
+      PLTweenDefinitionType: 0
+      PLTweenCurve: 0
       Curve:
         serializedVersion: 2
         m_Curve: []
@@ -754,8 +754,8 @@ MonoBehaviour:
         m_RotationOrder: 4
       Initialized: 0
     ExitFadeTween:
-      MMTweenDefinitionType: 0
-      MMTweenCurve: 0
+      PLTweenDefinitionType: 0
+      PLTweenCurve: 0
       Curve:
         serializedVersion: 2
         m_Curve: []
@@ -11045,7 +11045,8 @@ PrefabInstance:
       value: 98.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7029013403200363249, guid: c02be6942a12f6a46a7ca79be901983b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1809710142717510, guid: c02be6942a12f6a46a7ca79be901983b,
@@ -13868,7 +13869,8 @@ PrefabInstance:
       value: 98.24618
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7029013403200363249, guid: c02be6942a12f6a46a7ca79be901983b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1809710142717510, guid: c02be6942a12f6a46a7ca79be901983b,
@@ -17625,7 +17627,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7029013403200363249, guid: c02be6942a12f6a46a7ca79be901983b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1809710142717510, guid: c02be6942a12f6a46a7ca79be901983b,
@@ -19855,7 +19858,8 @@ PrefabInstance:
       value: 49.65766
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7029013403200363249, guid: c02be6942a12f6a46a7ca79be901983b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1809710142717510, guid: c02be6942a12f6a46a7ca79be901983b,

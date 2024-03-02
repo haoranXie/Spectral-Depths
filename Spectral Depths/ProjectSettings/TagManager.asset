@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - World
   - NoMask
+  - CinemachineTarget
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - Allies
   - Obstacles
   - Ground
   - Player

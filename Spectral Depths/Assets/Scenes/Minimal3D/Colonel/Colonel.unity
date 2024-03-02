@@ -556,10 +556,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ZoomTween:
-    MMTweenDefinitionType: 1
-    MMTweenCurve: 4
+    PLTweenDefinitionType: 1
+    PLTweenCurve: 4
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -604,7 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   DefaultShakeAmplitude: 0.3
   DefaultShakeFrequency: 20
   IdleAmplitude: 0
@@ -749,8 +749,8 @@ MonoBehaviour:
   OutroFadeDuration: 0.1
   FaderID: 0
   FadeCurve:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 6
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 6
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -792,8 +792,8 @@ MonoBehaviour:
     BeforeExitFadeDelay: 0.25
     ExitFadeDuration: 0.2
     EntryFadeTween:
-      MMTweenDefinitionType: 0
-      MMTweenCurve: 0
+      PLTweenDefinitionType: 0
+      PLTweenCurve: 0
       Curve:
         serializedVersion: 2
         m_Curve: []
@@ -802,8 +802,8 @@ MonoBehaviour:
         m_RotationOrder: 4
       Initialized: 0
     ExitFadeTween:
-      MMTweenDefinitionType: 0
-      MMTweenCurve: 0
+      PLTweenDefinitionType: 0
+      PLTweenCurve: 0
       Curve:
         serializedVersion: 2
         m_Curve: []
@@ -1556,10 +1556,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ZoomTween:
-    MMTweenDefinitionType: 1
-    MMTweenCurve: 4
+    PLTweenDefinitionType: 1
+    PLTweenCurve: 4
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -1604,7 +1604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   DefaultShakeAmplitude: 0.3
   DefaultShakeFrequency: 20
   IdleAmplitude: 0
@@ -7191,10 +7191,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ZoomTween:
-    MMTweenDefinitionType: 1
-    MMTweenCurve: 4
+    PLTweenDefinitionType: 1
+    PLTweenCurve: 4
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -7239,7 +7239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   DefaultShakeAmplitude: 0.3
   DefaultShakeFrequency: 20
   IdleAmplitude: 0
@@ -15283,12 +15283,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   FlashID: 0
   Interruptable: 0
   FlashInTween:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 0
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 0
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -15315,8 +15315,8 @@ MonoBehaviour:
       m_RotationOrder: 4
     Initialized: 0
   FlashOutTween:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 0
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 0
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -15345,7 +15345,7 @@ MonoBehaviour:
   DebugSettings:
     ChannelMode: 0
     Channel: 0
-    MMChannelDefinition: {fileID: 0}
+    PLChannelDefinition: {fileID: 0}
     FlashColor: {r: 1, g: 1, b: 1, a: 1}
     FlashDuration: 0.2
     FlashAlpha: 1
@@ -16964,8 +16964,8 @@ MonoBehaviour:
   ForcedInitState: 2
   DefaultDuration: 0.2
   DefaultTween:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 0
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 0
     Curve:
       serializedVersion: 2
       m_Curve:
@@ -19555,7 +19555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ShakeDuration: 0.8
   PlayOnAwake: 0
   PermanentShake: 0
@@ -19679,7 +19679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ShakeDuration: 0.2
   PlayOnAwake: 0
   PermanentShake: 0
@@ -19775,7 +19775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ShakeDuration: 2
   PlayOnAwake: 0
   PermanentShake: 0
@@ -19990,6 +19990,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Colonel
       objectReference: {fileID: 0}
+    - target: {fileID: 6542761184744291723, guid: 791e0862de6c79941973ed781c9decb4,
+        type: 3}
+      propertyPath: TriggerFilter
+      value: 195
+      objectReference: {fileID: 0}
     - target: {fileID: 8137671938092297529, guid: 791e0862de6c79941973ed781c9decb4,
         type: 3}
       propertyPath: m_Enabled
@@ -20192,7 +20197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ShakeDuration: 0.2
   PlayOnAwake: 0
   PermanentShake: 0
@@ -20270,7 +20275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ShakeDuration: 0.8
   PlayOnAwake: 0
   PermanentShake: 0
@@ -20436,7 +20441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChannelMode: 0
   Channel: 0
-  MMChannelDefinition: {fileID: 0}
+  PLChannelDefinition: {fileID: 0}
   ShakeDuration: 0.2
   PlayOnAwake: 0
   PermanentShake: 0
