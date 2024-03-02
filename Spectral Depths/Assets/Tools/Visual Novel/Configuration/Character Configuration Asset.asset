@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c058e2318f90714598ef46379da5f9d, type: 3}
+  m_Name: Character Configuration Asset
+  m_EditorClassIdentifier: 
+  characters:
+  - name: Alice
+    alias: a
+    characterType: 1
+    nameColor: {r: 1, g: 1, b: 1, a: 1}
+    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+  - name: Michiru
+    alias: m
+    characterType: 0
+    nameColor: {r: 0.9339623, g: 0.88159275, b: 0.23349057, a: 1}
+    dialogueColor: {r: 0.93333334, g: 0.88235295, b: 0.23529412, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+  - name: Haoran
+    alias: h
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 1}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}

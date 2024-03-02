@@ -2,36 +2,38 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static DLCommandData;
 
-//A database of all commands that are available for the CommandManager to use
-public class CommandDatabase
+namespace COMMANDS
 {
-    private Dictionary<string, Delegate> database = new Dictionary<string, Delegate>();
-
-    public bool HasCommand(string commandName) => database.ContainsKey(commandName);
-
-    //Adding command to database
-    public void AddCommand(string commandName, Delegate command)
+    //A database of all commands that are available for the CommandManager to use
+    public class CommandDatabase
     {
-        if (!database.ContainsKey(commandName))
-        {
-            database.Add(commandName, command);
-        }
-        else
-            Debug.LogError($"Command already exists in the database '{commandName}'");
+        private Dictionary<string, Delegate> database = new Dictionary<string, Delegate>();
 
-    }
+        public bool HasCommand(string commandName) => database.ContainsKey(commandName);
 
-    //Getting a command from the database
-    public Delegate GetCommand(string commandName)
-    {
-        if (!database.ContainsKey(commandName))
+        //Adding command to database
+        public void AddCommand(string commandName, Delegate command)
         {
-            Debug.LogError($"Command '{commandName}' does not exist in the database");
-            return null;
+            if (!database.ContainsKey(commandName))
+            {
+                database.Add(commandName, command);
+            }
+            else
+                Debug.LogError($"Command already exists in the database '{commandName}'");
+
         }
 
-        return database[commandName];
+        //Getting a command from the database
+        public Delegate GetCommand(string commandName)
+        {
+            if (!database.ContainsKey(commandName))
+            {
+                Debug.LogError($"Command '{commandName}' does not exist in the database");
+                return null;
+            }
+
+            return database[commandName];
+        }
     }
 }

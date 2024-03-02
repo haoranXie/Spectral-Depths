@@ -8,6 +8,9 @@ namespace DIALOGUE
     //System to control the dialogue on the screen
     public class DialogueSystem : MonoBehaviour
     {
+        [SerializeField] private DialogueSystemConfigurationSO _config;
+        public DialogueSystemConfigurationSO config => _config;
+
         //Declares method to call other scripts
         public DialogueContainer dialogueContainer = new DialogueContainer();
         private ConversationManager conversationManager;
