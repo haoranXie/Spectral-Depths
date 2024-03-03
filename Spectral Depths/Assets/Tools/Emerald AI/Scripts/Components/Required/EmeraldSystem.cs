@@ -70,7 +70,7 @@ namespace EmeraldAI
         //Initialize Emerald AI and its components
         void Awake()
         {
-            MovementComponent = GetComponentInChildrenInChildren<EmeraldMovement>();
+            MovementComponent = GetComponentInChildren<EmeraldMovement>();
             AnimationComponent = GetComponentInChildren<EmeraldAnimation>();
             SoundComponent = GetComponentInChildren<EmeraldSounds>();          
             DetectionComponent = GetComponentInChildren<EmeraldDetection>();
