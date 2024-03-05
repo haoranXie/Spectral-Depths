@@ -78,7 +78,7 @@ namespace DIALOGUE
             else if (commandStart != -1 && dialogueStart > commandStart)
                 commands = rawLine;
             else
-                dialogue = rawLine;
+                speaker = rawLine; //dialogue = rawline if you want unformatted line, (hi) as dialogue not speaker
 
             return (speaker, dialogue, commands);
         }

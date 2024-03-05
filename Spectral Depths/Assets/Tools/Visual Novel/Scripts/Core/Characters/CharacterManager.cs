@@ -18,6 +18,22 @@ namespace CHARACTERS
             instance = this;
         }
 
+        public CharacterConfigData GetCharacterConfig(string characterName)
+        {
+            return config.GetConfig(characterName);
+        }
+
+        //Gets character data, if does not exist can prompt create character, if do not want, end
+        public Character GetCharacters(string characterName, bool createIfDoesNotExist = false)
+        {
+            if (characters.ContainsKey(characterName.ToLower()))
+                return characters[characterName.ToLower()];
+            else if (createIfDoesNotExist)
+                return CreateCharacter(characterName);
+
+            return null;
+        }
+
         //Creating a character
         public Character CreateCharacter(string characterName)
         {
@@ -49,16 +65,26 @@ namespace CHARACTERS
 
         private Character CreateCharacterFromInfo(CHARACTER_INFO info)
         {
-            switch(info.config.characterType)
+            CharacterConfigData config = info.config;
+
+            /**
+            if (config.characterType == Character.CharacterType.Text)
+                return new CharacterText(info.name, config);
+
+            if (config.characterType == Character.CharacterType.Sprite || config.characterType == Character.CharacterType.SpriteSheet)
+                return new CharacterSprite(info.name, config);
+            **/
+
+            switch (info.config.characterType)
             {
                 case Character.CharacterType.Text:
-                    return new CharacterText(info.name);
+                    return new CharacterText(info.name, config);
 
                 case Character.CharacterType.Sprite:
                 case Character.CharacterType.SpriteSheet:
-                    return new CharacterSprite(info.name);
+                    return new CharacterSprite(info.name, config);
             }
-            CharacterConfigData config = info.config;
+
             return null;
         }
 

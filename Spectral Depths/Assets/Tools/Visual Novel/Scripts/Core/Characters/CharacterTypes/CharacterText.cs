@@ -7,7 +7,7 @@ namespace CHARACTERS
     //A character with no grahical art. Text operations only
     public class CharacterText : Character
     {
-        public CharacterText(string name) : base(name)
+        public CharacterText(string name, CharacterConfigData config) : base(name, config)
         {
             Debug.Log($"Created Text Character: '{name}'");
         }

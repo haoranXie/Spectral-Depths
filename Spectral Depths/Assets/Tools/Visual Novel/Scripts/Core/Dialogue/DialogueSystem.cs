@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using CHARACTERS;
 
 namespace DIALOGUE
 {
@@ -49,28 +50,44 @@ namespace DIALOGUE
             onUserPrompt_Next?.Invoke(); //Checks if onUserPrompt_Next is null so it only runs if it isn't null
         }
 
+        public void ApplySpeakerDataToDialogueContainer(string speakerName)
+        {
+            Character character = CharacterManager.instance.GetCharacters(speakerName);
+            CharacterConfigData config = character != null ? character.config : CharacterManager.instance.GetCharacterConfig(speakerName);
+
+            ApplySpeakerDataToDialogueContainer(config);
+        }
+
+        public void ApplySpeakerDataToDialogueContainer(CharacterConfigData config)
+        {
+            dialogueContainer.SetDialogueColor(config.dialogueColor);
+            dialogueContainer.SetDialogueFont(config.dialogueFont);
+            dialogueContainer.nameContainer.SetNameColor(config.nameColor);
+            dialogueContainer.nameContainer.SetNameFont(config.nameFont);
+        }
+
         //Method that shows speaker name
         public void ShowSpeakerName(string speakerName = "")
         {
-            if (speakerName.ToLower() != "narrator") //CAN ADD LATER "THOUGHTS" SO IT ALSO DOESN'T SHOW WHEN ITS A THOUGHT
+            if (speakerName.ToLower() != "narrator" && speakerName.ToLower() != "thoughts") //CAN ADD LATER "THOUGHTS" SO IT ALSO DOESN'T SHOW WHEN ITS A THOUGHT
                 dialogueContainer.nameContainer.Show(speakerName);
             else
-                HideSpeakerName(); //THIS HIDES SPEAKER NAME IF SAME SPEAKER COMES BACK
+                HideSpeakerName(); //THIS HIDES SPEAKER NAME IF SAME SPEAKER COMES BACK??? It might not actually do that
         }
 
         //Method that hides speaker name
         public void HideSpeakerName() => dialogueContainer.nameContainer.Hide();
 
         //Takes in speaker and dialogue string and compacts it into a list of strings(conversation)
-        public void Say(string speaker, string dialogue)
+        public Coroutine Say(string speaker, string dialogue)
         {
             List<string> conversation = new List<string>() { $"{speaker} \"{dialogue}\"" };
-            Say(conversation);
+            return Say(conversation);
         }
 
-        public void Say(List<string> conversation)
+        public Coroutine Say(List<string> conversation)
         {
-            conversationManager.StartConversation(conversation);
+            return conversationManager.StartConversation(conversation);
         }
     }
 }

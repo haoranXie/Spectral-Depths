@@ -30,11 +30,13 @@ namespace DIALOGUE
         {
             userPrompt = true;
         }
-        public void StartConversation(List<string> conversation)
+        public Coroutine StartConversation(List<string> conversation)
         {
             StopConversation(); //Stops conversation if there is already one going on
 
             process = dialogueSystem.StartCoroutine(RunningConversation(conversation));
+
+            return process;
         }
 
         //Stops conversation if there is already one going on
