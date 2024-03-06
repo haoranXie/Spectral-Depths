@@ -47,6 +47,9 @@ namespace SpectralDepths.TopDown
 		/// Set this to false if you want to implement your own animation system
 		[Tooltip("Set this to false if you want to implement your own animation system")]
 		public bool UseDefaultMecanim = true;
+  		/// Set this to true if using profile based animation system
+		[Tooltip("Set this to false if you want to implement your own animation system")]
+		public bool UseProfileMecanim = false;
 		/// If this is true, sanity checks will be performed to make sure animator parameters exist before updating them. Turning this to false will increase performance but will throw errors if you're trying to update non existing parameters. Make sure your animator has the required parameters.
 		[Tooltip("If this is true, sanity checks will be performed to make sure animator parameters exist before updating them. Turning this to false will increase performance but will throw errors if you're trying to update non existing parameters. Make sure your animator has the required parameters.")]
 		public bool RunAnimatorSanityChecks = false;
