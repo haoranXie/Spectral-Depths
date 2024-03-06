@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using CHARACTERS;
 using DIALOGUE;
+using TMPro;
 
 namespace TESTING
 {
     public class TestCharacters : MonoBehaviour
     {
+        public TMP_FontAsset tempFont;
+
         // Start is called before the first frame update
         void Start()
         {
-            //Character Alice = CharacterManager.instance.CreateCharacter("Alice");
+            //Character Generic = CharacterManager.instance.CreateCharacter("Generic");
             //Character Michiru = CharacterManager.instance.CreateCharacter("Michiru");
             //Character Michiru2 = CharacterManager.instance.CreateCharacter("Michiru");
             //Character DNE = CharacterManager.instance.CreateCharacter("DNE");
@@ -20,6 +23,15 @@ namespace TESTING
 
         IEnumerator Test()
         {
+            Character Raelin = CharacterManager.instance.CreateCharacter("Raelin");
+            yield return new WaitForSeconds(1f);
+            yield return Raelin.Hide();
+            yield return new WaitForSeconds(0.5f);
+            yield return Raelin.Show();
+            yield return Raelin.Say("Hello");
+
+            //Test Character Speaking
+            /**
             Character Elen = CharacterManager.instance.CreateCharacter("Elen");
             Character Adam = CharacterManager.instance.CreateCharacter("Adam");
             Character Ben = CharacterManager.instance.CreateCharacter("Benjamin");
@@ -33,6 +45,17 @@ namespace TESTING
             };
             yield return Elen.Say(lines);
 
+            Elen.SetNameColor(Color.red);
+            Elen.SetDialogueColor(Color.green);
+            Elen.SetNameFont(tempFont);
+            Elen.SetDialogueFont(tempFont);
+
+            yield return Elen.Say(lines);
+
+            Elen.ResetConfigurationData();
+
+            yield return Elen.Say(lines);
+
             lines = new List<string>()
             {
                 "I am Adam.",
@@ -43,6 +66,7 @@ namespace TESTING
             yield return Ben.Say("This is a line that I want to say.{a} It is a simple line.");
 
             Debug.Log("Finished");
+            **/
         }
 
         // Update is called once per frame

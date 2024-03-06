@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Character Configuration Asset
   m_EditorClassIdentifier: 
   characters:
-  - name: Elen
-    alias: s
+  - name: Generic
+    alias: Suspicious Person
     characterType: 1
     nameColor: {r: 0.0979441, g: 0.40587267, b: 0.6698113, a: 1}
     dialogueColor: {r: 0.098039225, g: 0.4039216, b: 0.67058825, a: 1}
-    nameFont: {fileID: 11400000, guid: 4b3ca92aab226154cb119ae26fb4bac1, type: 2}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
   - name: Adam
-    alias: e
+    alias: A
     characterType: 0
     nameColor: {r: 0.9339623, g: 0.88159275, b: 0.23349057, a: 1}
     dialogueColor: {r: 0.93333334, g: 0.88235295, b: 0.23529412, a: 1}
@@ -30,6 +30,13 @@ MonoBehaviour:
   - name: Benjamin
     alias: ben
     characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 1}
+    dialogueColor: {r: 0, g: 0, b: 0, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+  - name: Raelin
+    alias: R
+    characterType: 1
     nameColor: {r: 0, g: 0, b: 0, a: 1}
     dialogueColor: {r: 0, g: 0, b: 0, a: 1}
     nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
