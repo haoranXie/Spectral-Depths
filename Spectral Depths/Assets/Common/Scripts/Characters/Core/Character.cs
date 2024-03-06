@@ -3,6 +3,9 @@ using System.Collections;
 using SpectralDepths.Tools;
 using System.Collections.Generic;
 using System;
+using EmeraldAI;
+
+
 using Random = UnityEngine.Random;
 
 namespace SpectralDepths.TopDown

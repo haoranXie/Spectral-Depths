@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SpectralDepths.Tools;
 using SpectralDepths.Feedbacks;
 using System.Linq;
+using EmeraldAI;
 
 namespace SpectralDepths.TopDown
 {	
