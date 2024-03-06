@@ -120,6 +120,7 @@ namespace SpectralDepths.TopDown
 		protected float _horizontalInput;
 		protected bool _startFeedbackIsPlaying = false;
 		protected List<CharacterHandleWeapon> _handleWeaponList;
+  		protected EmeraldSystem _emeraldComponent;
 
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
 		public virtual string HelpBoxText() { return ""; }
@@ -167,7 +168,12 @@ namespace SpectralDepths.TopDown
 			_state = _character.CharacterState;
 			_movement = _character.MovementState;
 			_condition = _character.ConditionState;
+   			if(_character.UseEmeraldAI)
+      			{
+	 			_emeraldComponent = _character.EmeraldComponent;
+	 		}
 			_abilityInitialized = true;
+   		
 		}
 
 		/// <summary>
@@ -192,7 +198,14 @@ namespace SpectralDepths.TopDown
 
 			if (_animator != null)
 			{
-				InitializeAnimatorParameters();
+   				if(_character.UseEmeraldAI)
+       				{
+	   				InitializeAnimationProfile();
+	   			}
+       				else
+	   			{
+	       				InitializeAnimatorParameters();
+       				}
 			}
 		}
 
@@ -203,7 +216,14 @@ namespace SpectralDepths.TopDown
 		{
 
 		}
-
+		/// <summary>
+		/// Intiliazation for the use of Emerald AI's animation profile
+		/// </summary>
+  		protected virtual void InitializeAnimationProfile()
+		{
+  
+		}
+  
 		/// <summary>
 		/// Internal method to check if an input manager is present or not
 		/// </summary>
@@ -264,6 +284,14 @@ namespace SpectralDepths.TopDown
 		{
 
 		}
+  
+		/// <summary>
+		/// Does the same as UpdateAnimator but relies on Emerald AI's animation profile
+		/// </summary>
+  		public virtual void UpdateAnimationProfile()
+    		{
+      
+      		}
 
 		/// <summary>
 		/// Changes the status of the ability's permission
