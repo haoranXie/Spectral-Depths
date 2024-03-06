@@ -38,6 +38,14 @@ namespace SpectralDepths.TopDown
 		public string PlayerID = "";
 		/// the various states of the character
 		public CharacterStates CharacterState { get; protected set; }
+  
+		[Header("Emerald AI")]
+		[PLInformation("To ensure modularity, all of these are optional ticks in case Emerald AI is used",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
+		/// the character animator
+		public bool UseEmeraldAI = false;
+		[Tooltip("Emerald System necessary for binding")]
+		[PLCondition("UseEmeraldAI", true)]
+		public EmeraldSystem EmeraldComponent;
 
 		[Header("Animator")]
 		[PLInformation("The engine will try and find an animator for this character. If it's on the same gameobject it should have found it. If it's nested somewhere, you'll need to bind it below. You can also decide to get rid of it altogether, in that case, just uncheck 'use mecanim'.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
