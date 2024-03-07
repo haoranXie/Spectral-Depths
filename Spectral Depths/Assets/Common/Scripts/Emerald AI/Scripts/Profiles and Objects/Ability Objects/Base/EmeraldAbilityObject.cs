@@ -33,7 +33,7 @@ namespace EmeraldAI
         {
             Transform Target = null;
 
-            EmeraldSystem EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
 
             if (TargetType == AbilityData.TargetTypes.MultipleRandomEnemies || TargetType == AbilityData.TargetTypes.SingleRandomEnemy)
             {

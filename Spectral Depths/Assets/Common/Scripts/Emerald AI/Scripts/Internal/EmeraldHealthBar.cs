@@ -35,7 +35,7 @@ namespace EmeraldAI.Utility
             canvas = GetComponent<Canvas>();
             EmeraldUI = transform.parent.parent.GetComponent<EmeraldUI>();
             EmeraldHeath = transform.parent.parent.GetComponent<EmeraldHealth>();
-            EmeraldComponent = transform.parent.parent.GetComponent<EmeraldSystem>();
+            EmeraldComponent = transform.parent.parent.GetComponentInParent<EmeraldSystem>();
             if (m_Camera == null) m_Camera = GameObject.FindGameObjectWithTag(EmeraldUI.CameraTag).GetComponent<Camera>(); //Get a reference to the camera via the EmeraldUI.CameraTag.
 
             CG = GetComponent<CanvasGroup>();

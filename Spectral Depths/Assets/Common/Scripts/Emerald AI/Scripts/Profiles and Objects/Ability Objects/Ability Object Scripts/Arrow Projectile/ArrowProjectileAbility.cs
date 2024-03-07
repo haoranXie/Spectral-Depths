@@ -32,7 +32,7 @@ namespace EmeraldAI
         {
             Transform Target = GetTarget(Owner, AbilityData.TargetTypes.CurrentTarget);
 
-            EmeraldSystem EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
             if (EmeraldComponent != null)
             {
                 if (EmeraldComponent.AnimationComponent.IsDodging || EmeraldComponent.AnimationComponent.IsGettingHit) return;

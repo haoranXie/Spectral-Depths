@@ -54,7 +54,7 @@ namespace EmeraldAI
         void Start ()
         {
             CurrentHealth = StartingHealth;
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.CombatComponent.OnExitCombat += StartHealing; //Subscribe to the OnExitCombat event for StartHealing
         }
 
@@ -100,7 +100,7 @@ namespace EmeraldAI
             //In order to have the most reliable On Do Damage events, simply invoke the attacker's OnDoDoamage callback through a public function, given it is an Emerald AI agent.
             if (AttackerTransform != null)
             {
-                EmeraldSystem AttackEmeraldComponent = AttackerTransform.GetComponent<EmeraldSystem>();
+                EmeraldSystem AttackEmeraldComponent = AttackerTransform.GetComponentInParent<EmeraldSystem>();
                 if (AttackEmeraldComponent != null) AttackEmeraldComponent.CombatComponent.InvokeDoDamage();
                 if (AttackEmeraldComponent != null && CriticalHit) AttackEmeraldComponent.CombatComponent.InvokeDoCritDamage();
             }

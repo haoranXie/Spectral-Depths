@@ -15,7 +15,7 @@ namespace EmeraldAI
 
         public void Initialize (GameObject owner, AreaOfEffectAbility abilityData)
         {
-            EmeraldComponent = owner.GetComponent<EmeraldSystem>();
+            EmeraldComponent = owner.GetComponentInParent<EmeraldSystem>();
             Enemies = EmeraldComponent.DetectionComponent.DetectionLayerMask;
             CurrentAbilityData = abilityData;
             Owner = owner;

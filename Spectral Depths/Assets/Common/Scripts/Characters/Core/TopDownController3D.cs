@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SpectralDepths.TopDown
 {
-	[RequireComponent(typeof(Rigidbody))]
+	//[RequireComponent(typeof(Rigidbody))]
 	[RequireComponent(typeof(Collider))]
 	[RequireComponent(typeof(CharacterController))]
 	[AddComponentMenu("Spectral Depths/Character/Core/TopDown Controller 3D")]
@@ -36,6 +36,9 @@ namespace SpectralDepths.TopDown
 		/// how the velocity should be affected when jumping from a moving ground
 		[Tooltip("how the velocity should be affected when jumping from a moving ground")]
 		public VelocityTransferOnJump VelocityTransferMethod = VelocityTransferOnJump.FloorVelocity;
+		/// whether or not using rigidbody
+		[Tooltip("how the velocity should be affected when jumping from a moving ground")]
+		public bool UseRigidBody = true;
         
 		[Header("Raycasts")]
 		/// the layer to consider as obstacles (will prevent movement)
@@ -179,7 +182,7 @@ namespace SpectralDepths.TopDown
 
 			_characterController = this.gameObject.GetComponent<CharacterController>();
 			_transform = this.transform;
-			_rigidBody = this.gameObject.GetComponent<Rigidbody>();
+			if(UseRigidBody){_rigidBody = this.gameObject.GetComponent<Rigidbody>();}
 			_collider = this.gameObject.GetComponent<Collider>();
 			_originalColliderHeight = _characterController.height;
 			_originalColliderCenter = _characterController.center;

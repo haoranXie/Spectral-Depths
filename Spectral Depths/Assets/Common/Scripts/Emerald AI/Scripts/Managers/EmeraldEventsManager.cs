@@ -12,7 +12,7 @@ namespace EmeraldAI
 
         void Awake()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             MovementComponent = GetComponent<EmeraldMovement>();
             EmeraldUI = GetComponent<EmeraldUI>();
         }

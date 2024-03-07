@@ -44,7 +44,6 @@ namespace SpectralDepths.TopDown
   
 		[Header("Emerald AI")]
 		[PLInformation("To ensure modularity, all of these are optional ticks in case Emerald AI is used",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
-		/// the character animator
 		public bool UseEmeraldAI = false;
 		[Tooltip("Emerald System necessary for binding")]
 		[PLCondition("UseEmeraldAI", true)]

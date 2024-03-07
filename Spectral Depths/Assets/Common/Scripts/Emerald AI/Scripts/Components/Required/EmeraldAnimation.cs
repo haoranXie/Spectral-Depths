@@ -8,6 +8,7 @@ namespace EmeraldAI
     [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/animation-component")]
     public class EmeraldAnimation : MonoBehaviour
     {
+        [SerializeField]
         #region Animation States
         public AnimatorStateInfo CurrentStateInfo;
         public bool IsEmoting;
@@ -77,9 +78,9 @@ namespace EmeraldAI
         /// </summary>
         void InitailizeAnimations()
         {
-            AIAnimator = GetComponent<Animator>();
+            AIAnimator = GetComponentInChildren<Animator>();
             AIAnimator.runtimeAnimatorController = m_AnimationProfile.AIAnimator;
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             EmeraldComponent.HealthComponent.OnTakeDamage += PlayHitAnimation; //Subscribe to the OnTakeDamage event for Hit Animations
             EmeraldComponent.HealthComponent.OnTakeCritDamage += PlayHitAnimation; //Subscribe to the OnTakeCritDamage event for Hit Animations
@@ -192,8 +193,8 @@ namespace EmeraldAI
         /// </summary>
         public void SetupAnimator ()
         {
-            AIAnimator = GetComponent<Animator>();
-            EmeraldComponent = GetComponent<EmeraldSystem>(); ;
+            AIAnimator = GetComponentInChildren<Animator>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>(); ;
 
             if (AIAnimator.layerCount >= 2)
                 AIAnimator.SetLayerWeight(1, 1);

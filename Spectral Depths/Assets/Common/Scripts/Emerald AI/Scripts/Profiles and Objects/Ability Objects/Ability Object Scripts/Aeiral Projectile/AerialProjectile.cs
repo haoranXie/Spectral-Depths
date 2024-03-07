@@ -97,7 +97,7 @@ namespace EmeraldAI
                 InitialTargetPosition = StartingICombat.DamagePosition();
             }
 
-            EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
             CurrentAbilityData = abilityData;
             m_Collider.enabled = true;
 

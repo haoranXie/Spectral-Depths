@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using SpectralDepths.TopDown;
 
 namespace EmeraldAI.Utility
 {
@@ -264,6 +265,7 @@ namespace EmeraldAI.Utility
             foreach (Rigidbody R in EmeraldComponent.GetComponentsInChildren<Rigidbody>())
             {
                 R.isKinematic = true;
+                if ((R.gameObject.layer ==23)){R.isKinematic=false;}
             }
 
             if (EmeraldComponent.LBDComponent != null)
@@ -272,7 +274,10 @@ namespace EmeraldAI.Utility
             foreach (Collider C in EmeraldComponent.GetComponentsInChildren<Collider>())
             {
                 C.enabled = false;
+                if ((C.gameObject.layer ==23)){C.enabled=true;}
             }
+
+
 
             EmeraldComponent.GetComponent<BoxCollider>().enabled = true;
         }

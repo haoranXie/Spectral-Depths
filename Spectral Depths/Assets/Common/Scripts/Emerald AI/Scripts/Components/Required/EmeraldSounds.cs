@@ -33,9 +33,9 @@ namespace EmeraldAI
         /// </summary>
         public void InitializeSounds()
         {
-            EmeraldHealth = GetComponent<EmeraldHealth>();
-            EmeraldItems = GetComponent<EmeraldItems>();
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldHealth = GetComponentInParent<EmeraldHealth>();
+            EmeraldItems = GetComponentInParent<EmeraldItems>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             //Do not subscribe to any delegates if the sound profile is null.
             if (SoundProfile == null)
@@ -53,7 +53,7 @@ namespace EmeraldAI
             }
 
             IdleSoundsSeconds = Random.Range(SoundProfile.IdleSoundsSecondsMin, SoundProfile.IdleSoundsSecondsMax + 1);
-            m_AudioSource = GetComponent<AudioSource>();
+            m_AudioSource = GetComponentInChildren<AudioSource>();
             m_SecondaryAudioSource = gameObject.AddComponent<AudioSource>();
             m_SecondaryAudioSource.spatialBlend = m_AudioSource.spatialBlend;
             m_SecondaryAudioSource.minDistance = m_AudioSource.minDistance;

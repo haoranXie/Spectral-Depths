@@ -41,7 +41,7 @@ namespace EmeraldAI
         /// </summary>
         void InitializeDebugger ()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             IKComponent = GetComponent<EmeraldInverseKinematics>();
             EmeraldComponent.DetectionComponent.OnEnemyTargetDetected += DebugDetectedEnemyTarget; //Subscribe to the OnEnemyTargetDetected delegate for DebugDetectedEnemyTarget
             EmeraldComponent.DetectionComponent.OnPlayerDetected += DebugDetectedPlayerTarget; //Subscribe to the OnEnemyTargetDetected delegate for DebugDetectedPlayerTarget

@@ -9,6 +9,7 @@ namespace EmeraldAI
     /// <summary>
     /// Updates most required Emerald Components so they are only using 1 update function. This also allows all components to easily be accessed from one source.
     /// </summary>
+    /*
     #region Required Components
     [RequireComponent(typeof(EmeraldAnimation))]
     [RequireComponent(typeof(EmeraldDetection))]
@@ -22,7 +23,7 @@ namespace EmeraldAI
     [RequireComponent(typeof(AudioSource))]
     [SelectionBase]
     #endregion
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/")]
+    */
     public class EmeraldSystem : MonoBehaviour
     {
         #region Target Info

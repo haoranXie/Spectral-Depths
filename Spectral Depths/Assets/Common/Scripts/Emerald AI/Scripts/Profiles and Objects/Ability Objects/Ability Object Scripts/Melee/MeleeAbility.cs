@@ -22,7 +22,7 @@ namespace EmeraldAI
 
         public override void InvokeAbility(GameObject Owner, Transform AttackTransform = null)
         {
-            EmeraldSystem EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
             EmeraldWeaponCollision WeaponCollision = EmeraldComponent.CombatComponent.CurrentWeaponCollision;
             Transform Target = EmeraldComponent.CombatTarget;
             float TargetAngle = EmeraldComponent.CombatComponent.TargetAngle;
@@ -65,7 +65,7 @@ namespace EmeraldAI
             //Return if the target is teleporting.
             if (TargetRoot.transform.localScale == Vector3.one * 0.003f) return;
 
-            EmeraldSystem EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
             LocationBasedDamageArea m_LocationBasedDamageArea = Target.GetComponent<LocationBasedDamageArea>();
             ICombat m_ICombat = TargetRoot.GetComponent<ICombat>();
 

@@ -122,7 +122,7 @@ namespace EmeraldAI
         /// </summary>
         void InitializeCombat ()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.HealthComponent.OnDeath += CancelAllCombatActions; //Subscribe to the OnDeath event for CancelCombatActions
             EmeraldComponent.DetectionComponent.OnEnemyTargetDetected += EnterCombat; //Subscribe to the OnDeath event for CancelCombatActions
             EmeraldComponent.DetectionComponent.OnNullTarget += NullCombatTarget; //Subscribe to the OnNullTarget event for NullCombatTarget

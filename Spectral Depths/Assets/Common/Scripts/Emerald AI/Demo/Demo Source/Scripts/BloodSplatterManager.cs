@@ -24,7 +24,7 @@ namespace EmeraldAI.Example
         void Start()
         {
             EmeraldEventsComponent = GetComponent<EmeraldEvents>();
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldEventsComponent.OnTakeDamageEvent.AddListener(() => { CreateBloodSplatter(); });
         }
 

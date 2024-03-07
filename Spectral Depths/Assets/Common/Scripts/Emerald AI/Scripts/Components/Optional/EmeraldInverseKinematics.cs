@@ -52,8 +52,8 @@ namespace EmeraldAI
         /// </summary>
         private void InitializeIK()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
-            m_RigBuilder = GetComponent<RigBuilder>(); //Get the AI's RigBuilder.
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
+            m_RigBuilder = GetComponentInChildren<RigBuilder>(); //Get the AI's RigBuilder.
 
             if (m_RigBuilder == null)
             {

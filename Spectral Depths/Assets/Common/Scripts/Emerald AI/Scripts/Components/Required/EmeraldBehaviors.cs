@@ -73,7 +73,7 @@ namespace EmeraldAI
         /// </summary>
         public virtual void InitailizeBehaviors ()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             ResetState();
 

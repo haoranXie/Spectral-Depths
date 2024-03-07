@@ -48,7 +48,7 @@ namespace EmeraldAI
         /// </summary>
         void InitializeEvents ()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.MovementComponent.OnReachedDestination += OnReachedDestinationEvent.Invoke; //Subscribe the OnReachedDestinationEvent to the OnReachedDestination delegate.
             EmeraldComponent.MovementComponent.OnReachedWaypoint += OnReachedWaypointEvent.Invoke; //Subscribe the OnReachedWaypointEvent to the OnReachedWaypoint delegate.
             EmeraldComponent.MovementComponent.OnGeneratedWaypoint += OnGeneratedWaypointEvent.Invoke; //Subscribe the OnGeneratedWaypointEvent to the OnGeneratedWaypoint delegate.

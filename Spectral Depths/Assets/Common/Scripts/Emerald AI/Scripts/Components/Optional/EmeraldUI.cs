@@ -72,7 +72,7 @@ namespace EmeraldAI
         /// </summary>
         void InitializeUI ()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.DetectionComponent.OnDetectionUpdate += UpdateAIUI; //Subscribe to the OnDetectionUpdate event for updating the UI's state.
 
             if (AutoCreateHealthBars == YesOrNo.Yes && HealthBarCanvas == null || DisplayAIName == YesOrNo.Yes && HealthBarCanvas == null)

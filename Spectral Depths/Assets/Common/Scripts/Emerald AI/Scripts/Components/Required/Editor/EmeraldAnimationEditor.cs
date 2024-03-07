@@ -27,7 +27,7 @@ namespace EmeraldAI.Utility
         void OnEnable()
         {
             EmeraldAnimation self = (EmeraldAnimation)target;
-            self.AIAnimator = self.GetComponent<Animator>();
+            self.AIAnimator = self.GetComponentInChildren<Animator>();
             if (AnimationsEditorIcon == null) AnimationsEditorIcon = Resources.Load("Editor Icons/EmeraldAnimation") as Texture;
 
             ApplyRuntimeAnimatorController(self);

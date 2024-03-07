@@ -44,7 +44,7 @@ namespace EmeraldAI.Utility
         void OnEnable()
         {
             EmeraldMovement self = (EmeraldMovement)target;
-            EmeraldComp = self.GetComponent<EmeraldSystem>();
+            EmeraldComp = self.GetComponentInParent<EmeraldSystem>();
             EmeraldAnimation = self.GetComponent<EmeraldAnimation>();
             if (MovementEditorIcon == null) MovementEditorIcon = Resources.Load("Editor Icons/EmeraldMovement") as Texture;
 

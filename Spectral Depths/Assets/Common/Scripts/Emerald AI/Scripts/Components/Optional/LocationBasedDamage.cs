@@ -46,7 +46,7 @@ namespace EmeraldAI
 
         public void InitializeLocationBasedDamage()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.LBDComponent = this;
             EmeraldComponent.AIBoxCollider.size = new Vector3(0.015f, 0.015f, 0.015f);
             EmeraldComponent.AIBoxCollider.center = Vector3.zero;

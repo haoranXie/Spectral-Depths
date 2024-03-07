@@ -54,7 +54,7 @@ namespace EmeraldAI
         {
             if (OptimizeAI == YesOrNo.Yes)
             {
-                EmeraldComponent = GetComponent<EmeraldSystem>();
+                EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
                 if (OptimizeAI == YesOrNo.Yes && MeshType == MeshTypes.SingleMesh)
                 {

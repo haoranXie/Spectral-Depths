@@ -9,6 +9,7 @@ using System.Diagnostics.Tracing;
 using UnityEngine.Rendering;
 using UnityEngine.Pool;
 using System.Runtime.CompilerServices;
+using EmeraldAI;
 
 namespace SpectralDepths.TopDown
 
@@ -299,7 +300,8 @@ namespace SpectralDepths.TopDown
 
             foreach(KeyValuePair<int,GameObject> character in SelectedTable)
             {
-                character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
+                //character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
+                EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
                 targetPositionIndex = (targetPositionIndex + 1) % targetPositionList.Count;
             }  
         }
@@ -351,9 +353,10 @@ namespace SpectralDepths.TopDown
         /// </summary>
         /// <param name="gameObject"></param>
         public void AddSelected(GameObject gameObject){
-            int  id = FindCharacterComponentInParent(gameObject).GetInstanceID();
+            GameObject character = FindCharacterComponentInParent(gameObject);
+            int  id = character.GetInstanceID();
             if(!(SelectedTable.ContainsKey(id))){
-                SelectedTable.Add(id,gameObject);
+                SelectedTable.Add(id,character);
             }
             RTSEvent.Trigger(RTSEventTypes.PlayerSelected, null, SelectedTable);
         }

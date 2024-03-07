@@ -28,7 +28,7 @@ namespace EmeraldAI
         IEnumerator InitializeTeleport (GameObject Owner, Transform Target)
         {
             AbilityData.SpawnEffectAndSound(Owner, Owner.GetComponent<ICombat>().DamagePosition(), TeleportSettings.DisappearEffect, TeleportSettings.DisappearEffectTimeoutSeconds, TeleportSettings.DisappearSoundsList);
-            EmeraldSystem EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.m_NavMeshAgent.enabled = false;
             EmeraldComponent.AIAnimator.speed = 0.2f;
 

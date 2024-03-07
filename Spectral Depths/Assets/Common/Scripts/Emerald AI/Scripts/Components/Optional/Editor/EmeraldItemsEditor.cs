@@ -33,7 +33,7 @@ namespace EmeraldAI.Utility
         void OnEnable()
         {
             EmeraldItems self = (EmeraldItems)target;
-            EmeraldComp = self.GetComponent<EmeraldSystem>();
+            EmeraldComp = self.GetComponentInParent<EmeraldSystem>();
             EmeraldAnimation = self.GetComponent<EmeraldAnimation>();
             EmeraldCombat = self.GetComponent<EmeraldCombat>();
             if (ItemsEditorIcon == null) ItemsEditorIcon = Resources.Load("Editor Icons/EmeraldItems") as Texture;

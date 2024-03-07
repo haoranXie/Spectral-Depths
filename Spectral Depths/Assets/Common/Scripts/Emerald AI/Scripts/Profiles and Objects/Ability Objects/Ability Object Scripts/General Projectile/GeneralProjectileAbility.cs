@@ -38,7 +38,7 @@ namespace EmeraldAI
 
             for (int i = 0; i < GeneralProjectileSettings.TotalProjectiles; i++)
             {
-                EmeraldSystem EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+                EmeraldSystem EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
                 if (EmeraldComponent != null)
                 {
                     if (EmeraldComponent.AnimationComponent.IsDodging || EmeraldComponent.AnimationComponent.IsGettingHit) yield break;

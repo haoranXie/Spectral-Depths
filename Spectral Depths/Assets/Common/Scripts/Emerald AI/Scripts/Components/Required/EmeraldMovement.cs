@@ -136,8 +136,9 @@ namespace EmeraldAI
         public void InitializeMovement ()
         {
             AIPath = new NavMeshPath();
-            AIAnimator = GetComponent<Animator>();
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
+
+            AIAnimator = GetComponentInChildren<Animator>();
             AnimationComponent = GetComponent<EmeraldAnimation>();
             EmeraldComponent.CombatComponent.OnExitCombat += DefaultMovement; //Subscribe to the OnExitCombat event to set an AI's DefaultMovement state.
             StartingMovementState = CurrentMovementState;

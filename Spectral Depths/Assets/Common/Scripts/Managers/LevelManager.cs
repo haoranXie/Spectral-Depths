@@ -118,6 +118,8 @@ namespace SpectralDepths.TopDown
 			base.Awake();
 			_collider = this.GetComponent<Collider>();
 			_initialSpawnPointPosition = (InitialSpawnPoint == null) ? Vector3.zero : InitialSpawnPoint.transform.position;
+			StartCoroutine(InitializationCoroutine());
+
 		}
 
 		/// <summary>
@@ -125,7 +127,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Start()
 		{
-			StartCoroutine(InitializationCoroutine());
+			//StartCoroutine(InitializationCoroutine());
 		}
 
 		protected virtual IEnumerator InitializationCoroutine()

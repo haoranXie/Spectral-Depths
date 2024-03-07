@@ -64,7 +64,7 @@ namespace EmeraldAI
         /// </summary>
         public void CreateDroppableWeapon()
         {
-            EmeraldSystem EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {
@@ -161,7 +161,7 @@ namespace EmeraldAI
         /// </summary>
         public void EquipWeapon(string WeaponTypeToEnable)
         {
-            EmeraldSystem EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             if (WeaponTypeToEnable == "Weapon Type 1")
             {
@@ -198,7 +198,7 @@ namespace EmeraldAI
         /// </summary>
         public void UnequipWeapon(string WeaponTypeToDisable)
         {
-            EmeraldSystem EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             if (WeaponTypeToDisable == "Weapon Type 1")
             {
@@ -288,7 +288,7 @@ namespace EmeraldAI
         /// </summary>
         public void ResetSettings()
         {
-            EmeraldSystem EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {
@@ -310,7 +310,7 @@ namespace EmeraldAI
 
         public void EnableWeaponCollider(string Name)
         {
-            EmeraldSystem EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {
@@ -336,7 +336,7 @@ namespace EmeraldAI
 
         public void DisableWeaponCollider(string Name)
         {
-            EmeraldSystem EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
 
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {

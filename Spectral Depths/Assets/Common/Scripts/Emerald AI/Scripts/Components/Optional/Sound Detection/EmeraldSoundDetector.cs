@@ -92,7 +92,7 @@ namespace EmeraldAI.SoundDetection
         {
             CurrentThreatAmount = 0;
             TimeSinceLastAttractModifier = AttractModifierCooldown;
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldMovement = GetComponent<EmeraldMovement>();
             EmeraldDetection = GetComponent<EmeraldDetection>();
         }

@@ -72,12 +72,13 @@ namespace EmeraldAI
         float ObstructionTimer;
         EmeraldSystem EmeraldComponent;
         #endregion
-
+        
         void Start()
         {
             InitializeDetection();
-            Invoke(nameof(InitializeLayers), 0.1f);
+            Invoke(nameof(InitializeLayers), 1f);
         }
+        
 
         /// <summary>
         /// Copy the layers from the ObstructionDetectionLayerMask. This also adds the AI's internal
@@ -86,7 +87,7 @@ namespace EmeraldAI
         void InitializeLayers ()
         {
             InternalObstructionLayerMask = ObstructionDetectionLayerMask;
-
+            
             for (int i = 0; i < 32; i++)
             {
                 if (LBDLayers == (LBDLayers | (1 << i)))
@@ -94,6 +95,7 @@ namespace EmeraldAI
                     InternalObstructionLayerMask |= (1 << i);
                 }
             }
+            
         }
 
         /// <summary>
@@ -101,19 +103,20 @@ namespace EmeraldAI
         /// </summary>
         void InitializeDetection ()
         {
-            EmeraldComponent = GetComponent<EmeraldSystem>();
+            
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.CombatComponent.OnExitCombat += ReturnToDefaultState; //Subscribe the ReturnToDefaultState function to the OnExitCombat delegate 
             EmeraldComponent.HealthComponent.OnDeath += ClearTargetToFollow; //Subscribe the RemoveTargetToFollow function to the OnDeath delegate 
             OnNullTarget += NullNonCombatTarget; //Subscribe the NullNonCombatTarget function to the OnNullTarget delegate 
-
+            
             if (FactionData == null) FactionData = Resources.Load("Faction Data") as EmeraldFactionData;
             if (EmeraldComponent.LBDComponent == null) Utility.EmeraldCombatManager.DisableRagdoll(EmeraldComponent);
-
+            
             StartingDetectionRadius = DetectionRadius;
             TargetObstructed = true;
             StartingFieldOfViewAngle = FieldOfViewAngle;
             StartingDetectionRadius = DetectionRadius;
-
+            
             //If the user forgot to add a head transform, create a temporary one to avoid an error and still allow the AI to function.
             if (HeadTransform == null)
             {
@@ -125,6 +128,7 @@ namespace EmeraldAI
 
             SetupFactions();
             Invoke(nameof(CheckFactionRelations), 0.1f);
+            
         }
 
         /// <summary>
@@ -549,7 +553,7 @@ namespace EmeraldAI
         /// </summary>
         public void SetTargetToFollow(Transform Target, bool CopyFactionData = true)
         {
-            EmeraldSystem TargetEmeraldComponent = Target.GetComponent<EmeraldSystem>(); //Attempt to get the Target's EmeraldComponent
+            EmeraldSystem TargetEmeraldComponent = Target.GetComponentInParent<EmeraldSystem>(); //Attempt to get the Target's EmeraldComponent
             if (TargetEmeraldComponent != null)
             {
                 if (TargetEmeraldComponent.CombatTarget == transform) TargetEmeraldComponent.CombatComponent.ClearTarget(); //If the Target is another AI, clear its targets
@@ -584,7 +588,7 @@ namespace EmeraldAI
             //This is also called through the OnDeath callback and removes this AI as a follower of its Target to Follow.
             if (EmeraldComponent.TargetToFollow)
             {
-                EmeraldSystem TargetEmeraldComponent = EmeraldComponent.TargetToFollow.GetComponent<EmeraldSystem>(); //Attempt to get this AI's Target to Follow
+                EmeraldSystem TargetEmeraldComponent = EmeraldComponent.TargetToFollow.GetComponentInParent<EmeraldSystem>(); //Attempt to get this AI's Target to Follow
 
                 if (TargetEmeraldComponent)
                 {

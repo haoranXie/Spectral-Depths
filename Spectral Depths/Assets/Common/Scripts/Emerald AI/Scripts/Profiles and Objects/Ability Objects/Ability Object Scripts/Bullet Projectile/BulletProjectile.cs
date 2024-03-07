@@ -66,7 +66,7 @@ namespace EmeraldAI
                 InitialTargetPosition = StartingICombat.DamagePosition();
             }
 
-            EmeraldComponent = Owner.GetComponent<EmeraldSystem>();
+            EmeraldComponent = Owner.GetComponentInParent<EmeraldSystem>();
             CurrentAbilityData = abilityData;
 
             GetLBDColliders(); //Get a reference to the Owner's LBD component so internal colliders can be ignored.

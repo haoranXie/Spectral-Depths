@@ -91,7 +91,7 @@ namespace EmeraldAI.SoundDetection
             {
                 if (m_DetectedTargets[i].GetComponent<EmeraldSoundDetector>() != null)
                 {
-                    EmeraldSystem EmeraldComponent = m_DetectedTargets[i].GetComponent<EmeraldSystem>(); //Cache each EmeraldSystem
+                    EmeraldSystem EmeraldComponent = m_DetectedTargets[i].GetComponentInParent<EmeraldSystem>(); //Cache each EmeraldSystem
 
                     //Don't allow AI with follower targets to use Attract Modifiers.
                     if (EmeraldComponent.TargetToFollow != null) continue;
