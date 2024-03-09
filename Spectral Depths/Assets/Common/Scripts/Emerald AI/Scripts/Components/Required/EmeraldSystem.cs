@@ -28,7 +28,7 @@ namespace EmeraldAI
     {
         #region Target Info
         //Since these are evenly used across multiple components, these are kept in the main Emerald System script.
-        [HideInInspector] public Transform CombatTarget;
+        public Transform CombatTarget;
         [HideInInspector] public Transform TargetToFollow;
         [HideInInspector] public Transform LookAtTarget;
         [HideInInspector] [SerializeField] public CurrentTargetInfoClass CurrentTargetInfo = null;
@@ -68,6 +68,14 @@ namespace EmeraldAI
         [HideInInspector] public LocationBasedDamage LBDComponent;
         #endregion
 
+        #region On Components
+        [HideInInspector] public bool AnimationComponentOn = true;
+        [HideInInspector] public bool MovementComponentOn = true;
+        [HideInInspector] public bool BehaviorsComponentOn = true;
+        [HideInInspector] public bool DetectionComponentOn = true;
+        [HideInInspector] public bool CombatComponentOn = true;
+
+        #endregion
         //Initialize Emerald AI and its components
         void Awake()
         {
@@ -140,11 +148,11 @@ namespace EmeraldAI
         {
             if (HealthComponent.CurrentHealth <= 0) return;
 
-            AnimationComponent.AnimationUpdate(); //A custom update function for the EmeraldAnimation called through the EmeraldAISystem script.
-            MovementComponent.MovementUpdate(); //A custom update function for the EmeraldMovement called through the EmeraldAISystem script.
-            BehaviorsComponent.BehaviorUpdate(); //A custom update function for the EmeraldBehaviors script called through the EmeraldAISystem script.
-            DetectionComponent.DetectionUpdate(); //A custom update function for the EmeraldDetection script called through the EmeraldAISystem script.
-            CombatComponent.CombatUpdate(); //A custom update function for the EmeraldCombat script called through the EmeraldAISystem script.
+            if(AnimationComponentOn){AnimationComponent.AnimationUpdate();} //A custom update function for the EmeraldAnimation called through the EmeraldAISystem script.
+            if(MovementComponentOn){MovementComponent.MovementUpdate();} //A custom update function for the EmeraldMovement called through the EmeraldAISystem script.
+            if(BehaviorsComponentOn){BehaviorsComponent.BehaviorUpdate();} //A custom update function for the EmeraldBehaviors script called through the EmeraldAISystem script.
+            if(DetectionComponentOn){DetectionComponent.DetectionUpdate();} //A custom update function for the EmeraldDetection script called through the EmeraldAISystem script.
+            if(CombatComponentOn){CombatComponent.CombatUpdate();} //A custom update function for the EmeraldCombat script called through the EmeraldAISystem script.
             if (DebuggerComponent) DebuggerComponent.DebuggerUpdate(); //A custom update function for the EmeraldDebugger script called through the EmeraldAISystem script.
         }
 

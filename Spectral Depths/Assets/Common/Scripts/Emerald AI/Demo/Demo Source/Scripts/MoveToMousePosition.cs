@@ -13,7 +13,7 @@ public class MoveToMousePosition : MonoBehaviour
     private void Start()
     {
         EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-			_mainCamera = Camera.main;
+		_mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -32,6 +32,7 @@ public class MoveToMousePosition : MonoBehaviour
 				RaycastHit distance;
 				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
 				{
+
                     if (EmeraldComponent != null)
                     {
                         EmeraldAPI.Movement.SetCustomDestination(EmeraldComponent, distance.point);

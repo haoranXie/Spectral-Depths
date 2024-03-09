@@ -472,6 +472,12 @@ namespace SpectralDepths.TopDown
 				_health.OnDeath += OnDeath;
 				_health.OnHit += OnHit;
 			}
+
+			if(_character.UseEmeraldAI)
+			{
+				_character.GetComponent<EmeraldHealth>().OnDeath += OnDeath;
+				_character.GetComponent<EmeraldHealth>().OnTakeAnyDamage += OnHit;
+			}
 		}
 
 		/// <summary>
@@ -485,6 +491,11 @@ namespace SpectralDepths.TopDown
 				_health.OnDeath -= OnDeath;
 				_health.OnHit -= OnHit;
 			}	
+			if(_character.UseEmeraldAI)
+			{
+				_character.GetComponent<EmeraldHealth>().OnDeath -= OnDeath;
+				_character.GetComponent<EmeraldHealth>().OnTakeAnyDamage -= OnHit;
+			}
 		}
 	}
 }

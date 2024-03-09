@@ -288,8 +288,16 @@ namespace EmeraldAI
             if (Target != EmeraldComponent.TargetToFollow && !CurrentFollowers.Contains(Target) && IsEnemyTarget(Target) && EmeraldComponent.BehaviorsComponent.CurrentBehaviorType != EmeraldBehaviors.BehaviorTypes.Passive)
             {
                 CurrentDetectionState = DetectionStates.Alert;
-                if (!LineOfSightTargets.Contains(Target.GetComponent<Collider>()))
-                    LineOfSightTargets.Add(Target.GetComponent<Collider>());
+                Collider[] colliders = Target.GetComponents<Collider>();
+                foreach(Collider collider in colliders)
+                {
+                    if(!(collider is CharacterController))
+                    {
+                        if (!LineOfSightTargets.Contains(collider))
+                            LineOfSightTargets.Add(collider);
+                        break;
+                    }
+                }
             }
 
             if (EmeraldComponent.LookAtTarget == null && EmeraldComponent.CombatTarget == null)
@@ -324,6 +332,7 @@ namespace EmeraldAI
                             //Use a special layer mask that also includes the layers of internal colliders (from the LDB component) as these can block the AI's line of sight.
                             if (Physics.Raycast(HeadTransform.position, direction, out hit, DetectionRadius, ~InternalObstructionLayerMask))
                             {
+
                                 if (hit.collider != null && LineOfSightTargets.Contains(hit.collider))
                                 {
                                     SearchForTarget(PickTargetType);

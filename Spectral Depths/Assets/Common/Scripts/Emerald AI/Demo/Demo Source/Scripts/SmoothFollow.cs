@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace EmeraldAI.CharacterController
+namespace EmeraldAI
 {
     public class SmoothFollow : MonoBehaviour
     {

@@ -858,6 +858,11 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnEnable ()
 		{
+			if(UseEmeraldAI)
+			{
+				GetComponent<EmeraldHealth>().OnDeath += OnDeath;
+				GetComponent<EmeraldHealth>().OnTakeAnyDamage += OnHit;
+			}
 			if (CharacterHealth != null)
 			{
 				if (!_onReviveRegistered)
@@ -879,7 +884,13 @@ namespace SpectralDepths.TopDown
 			{
 				CharacterHealth.OnDeath -= OnDeath;
 				CharacterHealth.OnHit -= OnHit;
-			}			
+			}		
+			if(UseEmeraldAI)
+			{
+				GetComponent<EmeraldHealth>().OnDeath -= OnDeath;
+				GetComponent<EmeraldHealth>().OnTakeAnyDamage -= OnHit;
+			}
+
 		}
 	}
 }
