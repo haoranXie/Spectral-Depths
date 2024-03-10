@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EmeraldAI.Utility;
+using System;
 
 namespace EmeraldAI
 {
@@ -28,6 +29,8 @@ namespace EmeraldAI
         public int MaxDistanceFromStartingArea = 30;
         public float FollowingStoppingDistance = 2f;
         public bool IsAiming;
+        //True as long as character is under orders
+        public bool IsOrdered;
 
         public delegate void StartFleeHandler();
         public event StartFleeHandler OnFlee;
@@ -94,6 +97,7 @@ namespace EmeraldAI
             EmeraldComponent.DetectionComponent.OnNullTarget += ResetState;
             EmeraldComponent.CombatComponent.OnKilledTarget += OnKilledTarget;
             EmeraldComponent.HealthComponent.OnTakeDamage += OnTakeDamage;
+            EmeraldComponent.MovementComponent.OnReachedOrderedWaypoint += ExitOrderedBehaviour;
 
             if (CurrentBehaviorType == BehaviorTypes.Passive)
             {
@@ -129,6 +133,9 @@ namespace EmeraldAI
             {
                 case "Non Combat":
                     WanderBehavior();
+                    break;
+                case "Ordered":
+                    OrderedBehavior();
                     break;
                 case "Cautious":
                     CautiousBehavior();
@@ -251,6 +258,17 @@ namespace EmeraldAI
         }
 
         /// <summary>
+        /// Custom Behaviour based off Orders
+        /// </summary>
+        public virtual void OrderedBehavior()
+        {
+            if (EmeraldComponent.MovementComponent.AIAgentActive && !EmeraldComponent.CombatComponent.DeathDelayActive)
+            {
+                EmeraldComponent.MovementComponent.OrderedMovement();
+            }
+        }
+
+        /// <summary>
         /// Used for tracking when a target is outside of an AI's detection radius.
         /// </summary>
         public virtual void DetectTargetTracker()
@@ -349,11 +367,29 @@ namespace EmeraldAI
 
         /// <summary>
         /// When detecting a target, update the AI's current destination to be equal to their current position until the combat movement code can take over.
+        /// Will not trigger if under custom orders
         /// </summary>
         public virtual void OnDetectTarget()
         {
-            BehaviorState = "Cautious";
-            EmeraldComponent.m_NavMeshAgent.SetDestination(transform.position);
+            if(!IsOrdered)
+            {
+                BehaviorState = "Cautious";
+                EmeraldComponent.m_NavMeshAgent.SetDestination(transform.position);
+            }
+        }
+
+        public virtual void ExitOrderedBehaviour()
+        {
+            IsOrdered=false;
+            BehaviorState = "Non Combat";
+        }
+
+        /// <summary>
+        /// When player inputs orders
+        /// </summary>
+        public void ChangeBehaviourType(String Behaviour)
+        {
+            BehaviorState = Behaviour;
         }
 
         /// <summary>

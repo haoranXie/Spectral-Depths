@@ -19,7 +19,7 @@ namespace SpectralDepths.TopDown
     /// </summary>
     [AddComponentMenu("Spectral Depths/Managers/RTS Manager")]
 
-    public class GameRTSController : MonoBehaviour, PLEventListener<TopDownEngineEvent>, PLEventListener<RTSEvent>
+    public class GameRTSController : PLSingleton<GameRTSController>, PLEventListener<TopDownEngineEvent>, PLEventListener<RTSEvent>
     {
         [PLInformation("The RTSManager is responsible for allowing the player to select units for canInput, formations, and RTS-related visual indicators",PLInformationAttribute.InformationType.Info,false)]
         [Header("RTS Mode")]
@@ -41,10 +41,15 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the color of the selection box on UI")]
 		public Color SelectionBoxColor = new Color(0.8f,0.8f,0.95f,0.25f);
 		[Header("RTS Visual Indicators")]
-		[Tooltip("Right Click Movement Indicator")]
-        public GameObject MovementIndicator;
+		[Tooltip("Right Click Movement Click Indicator")]
+        public GameObject MovementClickIndicator;
+		[Tooltip("Line between Movement Click Indicator")]
+        public GameObject MovementEdgeIndicator;
+		[Tooltip("Point between Edge Indicator")]
+        public GameObject MovementVertexIndicator;
+        
 		[Tooltip("A-Left Click Attack-Movement Indicator")]
-        public GameObject AttackMovementIndicator;
+        public GameObject AttackMovementClickIndicator;
 		[Tooltip("Default Mouse")]
         [SerializeField] private Texture2D _defualtCursor;
 		[Tooltip("A-Left Click Attack-Movement Mouse Indicator")]
@@ -54,11 +59,14 @@ namespace SpectralDepths.TopDown
         [SerializeField] private AudioSource _charSwitchSound;
 		[Tooltip("Command Sound")]
         [SerializeField] private AudioSource _commandSound;
-
+        public PLSimpleObjectPooler MovementClickIndicatorPool;
+        public PLSimpleObjectPooler AttackMovementClickIndicatorPool;
+        public PLSimpleObjectPooler MovementVertexIndicatorPool;
+        public PLSimpleObjectPooler MovementEdgeIndicatorPool;
 
 
         //Holdes all the selected Game Objects
-        public Dictionary<int,GameObject> SelectedTable = new Dictionary<int, GameObject>();
+        public Dictionary<int,Character> SelectedTable = new Dictionary<int, Character>();
 
         //All possible commands
         public enum Commands
@@ -95,6 +103,27 @@ namespace SpectralDepths.TopDown
             dragSelect=false;
             canInput=true;
             Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
+            PLSimpleObjectPooler[] pLSimpleObjectPoolers = GetComponents<PLSimpleObjectPooler>();
+            foreach(PLSimpleObjectPooler plSimpleObjectPool in pLSimpleObjectPoolers)
+            {
+                if(plSimpleObjectPool.GameObjectToPool == MovementClickIndicator)
+                {
+                    MovementClickIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == AttackMovementClickIndicator)
+                {
+                    AttackMovementClickIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == MovementVertexIndicator)
+                {
+                    MovementVertexIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == MovementEdgeIndicator)
+                {
+                    MovementEdgeIndicatorPool = plSimpleObjectPool;
+                }
+
+            }
         }
 
         private void Update(){
@@ -262,7 +291,11 @@ namespace SpectralDepths.TopDown
 				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
 				{
 					target=distance.point;
-                    Instantiate(MovementIndicator,distance.point,Quaternion.identity);
+                    GameObject movementClickIndicator = MovementClickIndicatorPool.GetPooledGameObject();
+                    movementClickIndicator.transform.position = distance.point;
+                    movementClickIndicator.transform.rotation = Quaternion.identity;
+                    movementClickIndicator.gameObject.SetActive(true);
+                    //Instantiate(MovementClickIndicator,distance.point,Quaternion.identity);
                     RTSEvent.Trigger(RTSEventTypes.CommandForceMove,null,SelectedTable);
                     SetPositionsCircle();
 				}
@@ -281,7 +314,10 @@ namespace SpectralDepths.TopDown
 				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
 				{
 					target=distance.point;
-                    Instantiate(AttackMovementIndicator,distance.point,Quaternion.identity);
+                    GameObject attackMovementClickIndicator = AttackMovementClickIndicatorPool.GetPooledGameObject();
+                    attackMovementClickIndicator.transform.position = distance.point;
+                    attackMovementClickIndicator.transform.rotation = Quaternion.identity;
+                    attackMovementClickIndicator.gameObject.SetActive(true);
                     RTSEvent.Trigger(RTSEventTypes.CommandForceAttack,null,SelectedTable);
                     SetPositionsCircle();
 				}
@@ -298,12 +334,126 @@ namespace SpectralDepths.TopDown
             List<Vector3> targetPositionList = GetPositionListAround(target,distanceBetweenEachCharacter,distanceBetweenEachRing);
             int targetPositionIndex = 0;
 
-            foreach(KeyValuePair<int,GameObject> character in SelectedTable)
+            foreach(KeyValuePair<int,Character> character in SelectedTable)
             {
+                if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                {
+                    EmeraldAPI.Movement.OrderAddCustomWaypoint(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex]);
+                    SetIndicators(character.Value.EmeraldComponent);
+                }
+                else
+                {
+                    RemoveIndicators(character.Value.EmeraldComponent);
+                    EmeraldAPI.Movement.OrderSetCustomDestination(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex]);
+                }
                 //character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
-                EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
+                //EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
                 targetPositionIndex = (targetPositionIndex + 1) % targetPositionList.Count;
             }  
+        }
+        /// <summary>
+        /// Sets and shows MovementEdge and MovementVertex indicators for specific character
+        /// </summary>
+        /// <param name="emeraldSystem"></param>
+        public void SetIndicators(EmeraldSystem emeraldSystem)
+        {
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count == 1 ) return;
+            if(emeraldSystem.MovementComponent.MovementEdgeIndicator==null) emeraldSystem.MovementComponent.MovementEdgeIndicator = MovementEdgeIndicatorPool.GetPooledGameObject();
+            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList==null) emeraldSystem.MovementComponent.MovementVertexIndicatorList = new List<GameObject>();
+            if(emeraldSystem.MovementComponent.MovementLineIndicator==null) emeraldSystem.MovementComponent.MovementLineIndicator = emeraldSystem.MovementComponent.MovementEdgeIndicator.GetComponent<LineRenderer>();
+
+            emeraldSystem.MovementComponent.MovementLineIndicator.positionCount = emeraldSystem.MovementComponent.OrderedWaypointsList.Count;
+
+
+            emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.SetActive(true);
+
+            GameObject movementVertexIndicator = MovementVertexIndicatorPool.GetPooledGameObject();
+            Vector3 newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1];
+            newPosition.y += (float)0.1;
+            movementVertexIndicator.transform.position = newPosition;
+            emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1,newPosition);
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count==2)
+            {
+                newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-2];
+                emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count-2,newPosition);
+            } 
+            
+            movementVertexIndicator.gameObject.SetActive(true);
+            emeraldSystem.MovementComponent.MovementVertexIndicatorList.Add(movementVertexIndicator);
+    
+        }
+        /// <summary>
+        /// Shows MovementEdge and MovementVertex indicators for specific character
+        /// </summary>
+        /// <param name="emeraldSystem"></param>
+        public void ShowIndicators(EmeraldSystem emeraldSystem)
+        {
+            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
+            {
+                foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
+                {
+                    gameObject.SetActive(true);
+                }
+            } 
+            if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
+            {
+                emeraldSystem.MovementComponent.MovementEdgeIndicator.SetActive(true);
+            } 
+        }
+        /// <summary>
+        /// Hides MovementEdge and MovementVertex indicators for specific character
+        /// </summary>
+        public void HideIndicators(EmeraldSystem emeraldSystem)
+        {
+            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
+            {
+                foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
+                {
+                    gameObject.SetActive(false);
+                }
+            } 
+            if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
+            {
+                emeraldSystem.MovementComponent.MovementEdgeIndicator.SetActive(false);
+            } 
+        }
+        public void RemoveIndicators(EmeraldSystem emeraldSystem)
+        {
+            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
+            {
+                foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
+                {
+                    gameObject.SetActive(false);
+                }
+                emeraldSystem.MovementComponent.MovementVertexIndicatorList = null;
+            } 
+            if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
+            {
+                emeraldSystem.MovementComponent.MovementEdgeIndicator.SetActive(false);
+                emeraldSystem.MovementComponent.MovementLineIndicator = null;
+                emeraldSystem.MovementComponent.MovementEdgeIndicator = null;
+            } 
+        }
+
+        /// <summary>
+        /// Hides all indicators
+        /// </summary>
+        public void HideAllIndicators()
+        {
+            foreach(KeyValuePair<int,Character> character in SelectedTable)
+            {
+                HideIndicators(character.Value.EmeraldComponent);
+            } 
+        }
+        /// <summary>
+        /// removes all indicators
+        /// </summary>
+        public void RemoveAllIndicators()
+        {
+            foreach(KeyValuePair<int,Character> character in SelectedTable)
+            {
+                RemoveIndicators(character.Value.EmeraldComponent);
+            } 
         }
 
         /// <summary>
@@ -353,11 +503,12 @@ namespace SpectralDepths.TopDown
         /// </summary>
         /// <param name="gameObject"></param>
         public void AddSelected(GameObject gameObject){
-            GameObject character = FindCharacterComponentInParent(gameObject);
-            int  id = character.GetInstanceID();
+            Character character = FindCharacterComponentInParent(gameObject);
+            int id = character.GetInstanceID();
             if(!(SelectedTable.ContainsKey(id))){
                 SelectedTable.Add(id,character);
             }
+            ShowIndicators(SelectedTable[id].EmeraldComponent);
             RTSEvent.Trigger(RTSEventTypes.PlayerSelected, null, SelectedTable);
         }
 
@@ -367,9 +518,9 @@ namespace SpectralDepths.TopDown
         /// <param name="gameObject"></param>
 
         public void Deselect(int id){
+            HideIndicators(SelectedTable[id].EmeraldComponent);
             SelectedTable.Remove(id);
             RTSEvent.Trigger(RTSEventTypes.PlayerSelected, null, SelectedTable);
-
         }
         /// <summary>
         /// Removes all objects from selection dictionary and fires RTSEvent
@@ -377,6 +528,7 @@ namespace SpectralDepths.TopDown
         /// <param name="gameObject"></param>
 
         public void DeselectAll(){
+            HideAllIndicators();
             SelectedTable.Clear();
             RTSEvent.Trigger(RTSEventTypes.PlayerSelected,null, SelectedTable);
         }
@@ -408,7 +560,6 @@ namespace SpectralDepths.TopDown
                 new Vector2(topRight.x, bottomLeft.y)
             };
             return corners;
-
         }
 
         //Generate a mesh from the 4 bottom points
@@ -438,18 +589,15 @@ namespace SpectralDepths.TopDown
         void OnTriggerEnter(Collider other)
         {
             if ((CharacterLayerMasks & (1 << other.gameObject.layer)) != 0){
-                GameObject character = FindCharacterComponentInParent(other.gameObject);
-                if(character){
-                    AddSelected(character);
-                }
+                AddSelected(other.gameObject);
             }
         }
 
-        private GameObject FindCharacterComponentInParent(GameObject childObject)
+        private Character FindCharacterComponentInParent(GameObject childObject)
         {
             if(childObject.GetComponent<Character>()!=null)
             {
-                return childObject;
+                return childObject.GetComponent<Character>();
             }
             // Traverse the hierarchy upwards
             Transform parentTransform = childObject.transform.parent;
@@ -461,7 +609,7 @@ namespace SpectralDepths.TopDown
                 // If a Character component is found, return it
                 if (characterComponent != null)
                 {
-                    return parentTransform.gameObject;
+                    return characterComponent;
                 }
 
                 // Move up to the next parent

@@ -3,6 +3,7 @@ using System.Collections;
 using SpectralDepths.Tools;
 using System.Collections.Generic;
 using System;
+using SpectralDepths.Feedbacks;
 using EmeraldAI;
 
 
@@ -48,6 +49,9 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Emerald System necessary for binding")]
 		[PLCondition("UseEmeraldAI", true)]
 		public EmeraldSystem EmeraldComponent;
+		[Tooltip("the feedback to play when dying")]
+		[PLCondition("UseEmeraldAI", true)]
+		public PLFeedbacks DeathMMFeedbacks;
 
 		[Header("Animator")]
 		[PLInformation("The engine will try and find an animator for this character. If it's on the same gameobject it should have found it. If it's nested somewhere, you'll need to bind it below. You can also decide to get rid of it altogether, in that case, just uncheck 'use mecanim'.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
@@ -210,6 +214,11 @@ namespace SpectralDepths.TopDown
 			CameraTarget.transform.SetParent(this.transform);
 			CameraTarget.transform.localPosition = Vector3.zero;
 			CameraTarget.name = "CameraTarget";
+
+			if(UseEmeraldAI)
+			{
+				DeathMMFeedbacks?.Initialization(this.gameObject);
+			}
 
 			if (LinkedInputManager != null)
 			{
@@ -845,7 +854,19 @@ namespace SpectralDepths.TopDown
 			if (MovementState.CurrentState != CharacterStates.MovementStates.FallingDownHole)
 			{
 				MovementState.ChangeState(CharacterStates.MovementStates.Idle);
-			}            
+			}  
+			if (CharacterHealth==null)
+			{
+				ConditionState.ChangeState(CharacterStates.CharacterConditions.Dead);
+				Reset();   
+				DeathMMFeedbacks?.PlayFeedbacks(this.transform.position);
+				if (_controller != null)
+				{				
+					_controller.CollisionsOff();	
+					_controller.enabled = false;
+				}
+			} 
+      
 		}
 
 		protected virtual void OnHit()

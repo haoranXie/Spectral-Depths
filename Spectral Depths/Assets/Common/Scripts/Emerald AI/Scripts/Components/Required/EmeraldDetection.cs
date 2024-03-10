@@ -108,7 +108,8 @@ namespace EmeraldAI
             EmeraldComponent.CombatComponent.OnExitCombat += ReturnToDefaultState; //Subscribe the ReturnToDefaultState function to the OnExitCombat delegate 
             EmeraldComponent.HealthComponent.OnDeath += ClearTargetToFollow; //Subscribe the RemoveTargetToFollow function to the OnDeath delegate 
             OnNullTarget += NullNonCombatTarget; //Subscribe the NullNonCombatTarget function to the OnNullTarget delegate 
-            
+            EmeraldComponent.MovementComponent.OnReachedOrderedWaypoint += ExitOrderedBehaviour;
+
             if (FactionData == null) FactionData = Resources.Load("Faction Data") as EmeraldFactionData;
             if (EmeraldComponent.LBDComponent == null) Utility.EmeraldCombatManager.DisableRagdoll(EmeraldComponent);
             
@@ -158,7 +159,7 @@ namespace EmeraldAI
         void FixedUpdate()
         {
             if (EmeraldComponent.BehaviorsComponent.CurrentBehaviorType == EmeraldBehaviors.BehaviorTypes.Passive) return; //Don't allow passive AI to use line of sight
-
+            if (!EmeraldComponent.DetectionComponentOn) return;
             if (!EmeraldComponent.CombatComponent.CombatState || EmeraldComponent.CombatComponent.DeathDelayActive)
             {
                 LineOfSightDetection();
@@ -322,7 +323,6 @@ namespace EmeraldAI
                 {
                     Vector3 direction = C.bounds.center - HeadTransform.position;
                     float angle = Vector3.Angle(new Vector3(direction.x, 0, direction.z), transform.forward);
-
                     //Only check targets that are within the AI's line of sight.
                     if (angle < FieldOfViewAngle * 0.5f)
                     {
@@ -646,7 +646,11 @@ namespace EmeraldAI
                 return false;
             }
         }
-
+        public virtual void ExitOrderedBehaviour()
+        {
+            EmeraldComponent.CombatTarget = null;
+            EmeraldComponent.DetectionComponentOn = true;
+        }
         public int GetFaction()
         {
             return CurrentFaction;

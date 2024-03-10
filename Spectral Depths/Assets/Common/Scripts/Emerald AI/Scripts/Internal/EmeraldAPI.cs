@@ -450,6 +450,41 @@ namespace EmeraldAI
             }
 
             /// <summary>
+            /// Overrides the AI's Wander Type to Custom and sets the AI's destination to the Vector3 position. This is useful functionality like point and click movement, schedules, and more.
+            /// Puts the the AI's behavior to Ordered and removes all checkpoints
+            /// </summary>
+            /// <param name="EmeraldComponent"> The AI's EmeraldSystem who will use this API call.</param>
+            public static void OrderSetCustomDestination(EmeraldSystem EmeraldComponent, Vector3 DestinationPosition)
+            {
+                EmeraldComponent.MovementComponent.ResetOrderedMovement();
+                EmeraldComponent.MovementComponent.OrderedWaypointsList.Add(DestinationPosition);
+                EmeraldComponent.BehaviorsComponent.IsOrdered=true;
+                if(EmeraldComponent.BehaviorsComponent.BehaviorState != "Ordered") EmeraldComponent.BehaviorsComponent.ChangeBehaviourType("Ordered");
+                if(EmeraldComponent.CombatComponent.CombatState){EmeraldComponent.CombatComponent.ExitCombat();}
+                EmeraldComponent.DetectionComponentOn = false;
+                EmeraldComponent.MovementComponent.SetNonDelayedDestination(EmeraldComponent.MovementComponent.OrderedWaypointsList[0]);
+            }
+
+
+
+            /// <summary>
+            /// Overrides the AI's Wander Type to Custom and adds a waypoint to the AI's current ordered movement. This is useful functionality like point and click movement, schedules, and more.
+            /// Puts the AI's behaviour to Ordered
+            /// </summary>
+            /// <param name="EmeraldComponent"> The AI's EmeraldSystem who will use this API call.</param>
+            public static void OrderAddCustomWaypoint(EmeraldSystem EmeraldComponent, Vector3 DestinationPosition)
+            {
+                if(EmeraldComponent.MovementComponent.OrderedWaypointsList.Count == 0)
+                {
+                    OrderSetCustomDestination(EmeraldComponent, DestinationPosition);
+                }
+                else
+                {                
+                    EmeraldComponent.MovementComponent.OrderedWaypointsList.Add(DestinationPosition);
+                }
+            }
+
+            /// <summary>
             /// Sets the AI's destination to the Vector3 position.
             /// </summary>
             /// <param name="EmeraldComponent"> The AI's EmeraldSystem who will use this API call.</param>

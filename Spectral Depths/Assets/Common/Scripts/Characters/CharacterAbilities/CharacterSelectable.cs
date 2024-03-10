@@ -17,6 +17,10 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("visual to indicate when character is selected")]
 		public Transform SelectedVisual;
 
+		/// collider to select the character
+		[Tooltip("collider to select the character")]
+		public Collider SelectedCollider;
+
         
         public bool selected;
         public bool OnlySelected; //True if character is only one selected 
@@ -30,7 +34,7 @@ namespace SpectralDepths.TopDown{
             switch(rtsEvent.EventType)
             {
                 case RTSEventTypes.PlayerSelected:
-                    if(rtsEvent.SelectedTable.ContainsKey(_character.gameObject.GetInstanceID())){
+                    if(rtsEvent.SelectedTable.ContainsKey(_character.GetInstanceID())){
                         Selected();
                         if(rtsEvent.SelectedTable.Count==1)
                         {
@@ -68,6 +72,13 @@ namespace SpectralDepths.TopDown{
             DeSelected();
             this.PLEventStopListening<RTSEvent>();
             RTSEvent.Trigger(RTSEventTypes.SelectionDisabled,_character,null);
+        }
+
+        protected override void OnDeath()
+        {
+            base.OnDeath();
+            DeSelected();
+            SelectedCollider.gameObject.SetActive(false);
         }
 
     }

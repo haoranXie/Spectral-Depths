@@ -620,6 +620,7 @@ namespace EmeraldAI
         void ReturnToDefaultState ()
         {
             EmeraldComponent.AIAnimator.SetBool("Combat State Active", false);
+            EmeraldComponent.AIAnimator.SetBool("Strafe Active", false);
             EmeraldComponent.AnimationComponent.WarningAnimationTriggered = false;
         }
 

@@ -23,12 +23,12 @@ namespace SpectralDepths.TopDown
 	}
 	public struct RTSEvent
 	{
-        public Dictionary<int, GameObject> SelectedTable;
+        public Dictionary<int, Character> SelectedTable;
 		public Character OriginCharacter;
 		public RTSEventTypes EventType;
 
 
-        public RTSEvent(RTSEventTypes eventType, Character originCharacter, Dictionary<int, GameObject> selectedTable)
+        public RTSEvent(RTSEventTypes eventType, Character originCharacter, Dictionary<int, Character> selectedTable)
 		{
 			EventType = eventType;
             SelectedTable = selectedTable;
@@ -36,7 +36,7 @@ namespace SpectralDepths.TopDown
 		}
 
 		static RTSEvent e;
-        public static void Trigger(RTSEventTypes eventType, Character originCharacter, Dictionary<int, GameObject> selectedTable)
+        public static void Trigger(RTSEventTypes eventType, Character originCharacter, Dictionary<int, Character> selectedTable)
 		{
 			e.EventType = eventType;
             e.SelectedTable = selectedTable;

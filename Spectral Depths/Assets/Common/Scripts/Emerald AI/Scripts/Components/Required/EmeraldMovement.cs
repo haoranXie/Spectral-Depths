@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using EmeraldAI.Utility;
+using SpectralDepths.TopDown;
 
 namespace EmeraldAI
 {
@@ -53,7 +54,9 @@ namespace EmeraldAI
         public float DecelerationDampTime = 0.15f;
         public float WaypointTimer;
         public int WaypointIndex = 0;
+        public int OrderedWaypointIndex = 0;
         public List<Vector3> WaypointsList = new List<Vector3>();
+        public List<Vector3> OrderedWaypointsList = new List<Vector3>();
         public float DestinationAdjustedAngle;
         public Vector3 DestinationDirection;
         public bool RotateTowardsTarget = false;
@@ -71,10 +74,15 @@ namespace EmeraldAI
         public bool LockTurning;
         public bool ReturningToStartInProgress = false;
         public bool AIAgentActive = false;
+        public List<GameObject> MovementVertexIndicatorList;
+        public GameObject MovementEdgeIndicator;
+        public LineRenderer MovementLineIndicator;
         public delegate void ReachedDestinationHandler();
         public event ReachedDestinationHandler OnReachedDestination;
         public delegate void ReachedWaypointHandler();
         public event ReachedWaypointHandler OnReachedWaypoint;
+        public delegate void ReachedOrderedWaypointHandler();
+        public event ReachedWaypointHandler OnReachedOrderedWaypoint;
         public delegate void GeneratedWaypointHandler();
         public event GeneratedWaypointHandler OnGeneratedWaypoint;
         #endregion
@@ -140,6 +148,7 @@ namespace EmeraldAI
 
             AIAnimator = GetComponentInChildren<Animator>();
             AnimationComponent = GetComponent<EmeraldAnimation>();
+
             EmeraldComponent.CombatComponent.OnExitCombat += DefaultMovement; //Subscribe to the OnExitCombat event to set an AI's DefaultMovement state.
             StartingMovementState = CurrentMovementState;
             WaitTime = Random.Range((float)MinimumWaitTime, MaximumWaitTime + 1);
@@ -170,6 +179,7 @@ namespace EmeraldAI
             {
                 AlignOnStart();
             }
+            EmeraldComponent.HealthComponent.OnDeath += ResetMovement;
         }
 
         /// <summary>
@@ -251,6 +261,14 @@ namespace EmeraldAI
         {
             m_NavMeshAgent.destination = Destination;
             yield return new WaitForSeconds(1);
+            LockTurning = false;
+            AIAnimator.SetBool("Idle Active", false);
+            MovementInitialized = true;
+        }
+
+        public void SetNonDelayedDestination(Vector3 Destination)
+        {
+            m_NavMeshAgent.destination = Destination;
             LockTurning = false;
             AIAnimator.SetBool("Idle Active", false);
             MovementInitialized = true;
@@ -606,7 +624,36 @@ namespace EmeraldAI
             GetSurfaceNormal();
             transform.rotation = Quaternion.FromToRotation(transform.up, SurfaceNormal) * transform.rotation;
         }
+        /// <summary>
+        /// Handle's AI's waypoints while under Ordered Movement
+        /// </summary>
 
+        void NextOrderedWaypoint()
+        {
+            if (!m_NavMeshAgent.pathPending)
+            {
+                float WaypointStoppingDistance = OrderedWaypointIndex < OrderedWaypointsList.Count ? (m_NavMeshAgent.stoppingDistance + 1.25f) : StoppingDistance;
+                if (m_NavMeshAgent.remainingDistance <= WaypointStoppingDistance)
+                {
+                    OrderedWaypointIndex++;
+                    if(OrderedWaypointIndex>=OrderedWaypointsList.Count)
+                    {
+                        OrderedWaypointsList.Clear();
+                        ReachedDestination = true;
+                        LockTurning = false;
+                        if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
+                        if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
+                        OnReachedDestination?.Invoke();
+                        OnReachedOrderedWaypoint?.Invoke();
+                    }
+                    if (m_NavMeshAgent.enabled && OrderedWaypointIndex<OrderedWaypointsList.Count)
+                    {
+                        m_NavMeshAgent.destination = OrderedWaypointsList[OrderedWaypointIndex];
+                    }
+                }
+            }
+            CheckPath(m_NavMeshAgent.destination);             
+        }
         /// <summary>
         /// Handles our AI's waypoints when using the Waypoint Wander Type
         /// </summary>
@@ -766,6 +813,40 @@ namespace EmeraldAI
             }
 
             ClearReturnToStart();
+        }
+        /// <summary>
+        /// Method that is called when the player gives custom ordered movements from RTSManager
+        /// </summary>
+        public void OrderedMovement()
+        {
+            if (DefaultMovementPaused) return;
+
+            if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance + 1.5f && MovementInitialized)
+            {
+                NextOrderedWaypoint();
+            }
+            //Play an idle sound if the AI is not moving and the Idle Seconds have been met. 
+            if (!AnimationComponent.IsMoving && EmeraldComponent.SoundComponent != null)
+            {
+                EmeraldComponent.SoundComponent.IdleSoundsUpdate();
+            }
+
+            //If the AI gets moved, for whatever reason, disable Idle Active so it can move back to its current destination.
+            if (m_NavMeshAgent.remainingDistance > StoppingDistance + 0.1f && AIAnimator.GetBool("Idle Active"))
+            {
+                AIAnimator.SetBool("Idle Active", false);
+            }
+        }
+        /// <summary>
+        /// Method that is called when first entering orders or for resetting orders
+        /// </summary>
+        public void ResetOrderedMovement()
+        {
+            m_NavMeshAgent.stoppingDistance = 0.1f;
+            m_NavMeshAgent.autoBraking = false;
+            OrderedWaypointsList.Clear();
+            OrderedWaypointIndex=0;
+            ResetWanderSettings();
         }
 
         /// <summary>
@@ -947,6 +1028,7 @@ namespace EmeraldAI
             BackupDelayActive = false;
         }
 
+
         /// <summary>
         /// Stops the AI's backing up process and resets all of its settings.
         /// </summary>
@@ -1102,6 +1184,8 @@ namespace EmeraldAI
 
             BackingUpTimer = 0;
 
+            //Stops this if AI is under orders
+            if (EmeraldComponent.BehaviorsComponent.IsOrdered) return;
             //Resets the AI's stopping distances.
             if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
             else m_NavMeshAgent.stoppingDistance = 0.1f;
@@ -1116,7 +1200,6 @@ namespace EmeraldAI
         void ReturnToStartingDestination ()
         {
             if (EmeraldComponent.TargetToFollow) return; //Don't set the AI's wandering position if it has a follow target
-
             if (WanderType == WanderTypes.Dynamic)
             {
                 GenerateDynamicWaypoint();
@@ -1184,6 +1267,17 @@ namespace EmeraldAI
             WaypointTimer = 0;
             ReachedWaypoint = false;
             ReachedDestination = false;
+        }
+        /// <summary>
+        /// Called when dead
+        /// </summary>
+        public void ResetMovement()
+        {
+            OrderedWaypointsList.Clear();
+            ReachedDestination = true;
+            LockTurning = false;
+            if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
+            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
         }
     }
 }

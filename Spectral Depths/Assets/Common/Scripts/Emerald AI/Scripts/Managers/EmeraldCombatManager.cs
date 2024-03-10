@@ -293,7 +293,6 @@ namespace EmeraldAI.Utility
                 return;
 
             EmeraldComponent.AIAnimator.enabled = false;
-
             if (EmeraldComponent.LBDComponent == null)
             {
                 foreach (Collider C in EmeraldComponent.GetComponentsInChildren<Collider>())
