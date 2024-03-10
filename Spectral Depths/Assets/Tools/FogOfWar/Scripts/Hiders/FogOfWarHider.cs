@@ -8,6 +8,7 @@ namespace FOW
     public class FogOfWarHider : MonoBehaviour
     {
         public Transform[] samplePoints;
+        public bool PermanentlyReveal = false;
         [HideInInspector] public float maxDistBetweenPoints;
 
         [HideInInspector] public int seenCount;
@@ -18,6 +19,7 @@ namespace FOW
             CalculateSamplePointData();
             RegisterHider();
         }
+
         private void OnDisable()
         {
             SetActive(true);
@@ -68,16 +70,13 @@ namespace FOW
             }
         }
 
-        /// <summary>
-        /// example method to show how to use the callback.
-        /// </summary>
-        void CallbackTest(bool isActive)
-        {
-            Debug.Log(isActive);
-        }
-
         public void AddSeer(FogOfWarRevealer seer)   //see-er?
         {
+            if (PermanentlyReveal)
+            {
+                enabled = false;
+                return;
+            }
             seenBy.Add(seer);
             if (seenCount == 0)
             {
@@ -85,6 +84,7 @@ namespace FOW
             }
             seenCount++;
         }
+
         public void RemoveSeer(FogOfWarRevealer seer)   //see-er?
         {
             seenBy.Remove(seer);

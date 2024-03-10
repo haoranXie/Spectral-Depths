@@ -7,7 +7,6 @@ using SpectralDepths.TopDown;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/movement-component")]
     public class EmeraldMovement : MonoBehaviour
     {
         #region Movement Variables
@@ -638,6 +637,7 @@ namespace EmeraldAI
                     OrderedWaypointIndex++;
                     if(OrderedWaypointIndex>=OrderedWaypointsList.Count)
                     {
+                        if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1];}
                         OrderedWaypointsList.Clear();
                         ReachedDestination = true;
                         LockTurning = false;

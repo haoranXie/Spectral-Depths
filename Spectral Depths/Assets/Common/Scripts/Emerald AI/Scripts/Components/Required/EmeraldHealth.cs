@@ -9,7 +9,6 @@ namespace EmeraldAI
     /// <summary>
     /// Handles how an receives damage and track health. The Damage function is called through the IDamageable interface script.
     /// </summary>
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/health-component")]
     public class EmeraldHealth : MonoBehaviour, IDamageable
     {
         #region Health variables       
@@ -17,6 +16,7 @@ namespace EmeraldAI
         public int StartingHealth = 50;
         public int HealRate = 0;
         public bool Immortal = false;
+        public bool IgnoreGettingHit = false;
         public List<string> CurrentActiveEffects;
         public bool HitEffectFoldout;
         public YesOrNo UseHitEffect = YesOrNo.No;
@@ -56,6 +56,7 @@ namespace EmeraldAI
             CurrentHealth = StartingHealth;
             EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.CombatComponent.OnExitCombat += StartHealing; //Subscribe to the OnExitCombat event for StartHealing
+            EmeraldComponent.MovementComponent.OnReachedOrderedWaypoint += OnReachedOrderedWaypoint;
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace EmeraldAI
         /// </summary>
         void CheckForAttacker (Transform AttackerTransform)
         {
-            if (EmeraldComponent.CombatTarget == null && !EmeraldComponent.CombatComponent.CombatState)
+            if (EmeraldComponent.CombatTarget == null && !EmeraldComponent.CombatComponent.CombatState && !IgnoreGettingHit)
             {
                 StartCoroutine(DelaySetDetectedTarget(AttackerTransform));
             }
@@ -244,6 +245,11 @@ namespace EmeraldAI
                     SpawnedBlood.transform.position = EmeraldComponent.CombatComponent.DamagePosition() + EmeraldComponent.HealthComponent.HitEffectPosOffset;
                 }
             }
+        }
+        
+        void OnReachedOrderedWaypoint()
+        {
+            IgnoreGettingHit=false;
         }
     }
 }

@@ -220,6 +220,7 @@ namespace EmeraldAI
                 EmeraldComponent.DetectionComponent.SetDetectedTarget(EmeraldComponent.CombatTarget);
             }
 
+
             /// <summary>
             /// Searches for a new random target within the AI's Detection Radius.
             /// </summary>
@@ -254,6 +255,14 @@ namespace EmeraldAI
                 {
                     EmeraldComponent.HealthComponent.InstantlyRefillAIHealth();
                 }
+            }
+            /// <summary>
+            /// Doesn't target enemies when getting hit
+            /// </summary>
+            /// <param name="EmeraldComponent"></param>
+            public static void IgnoreGettingHit(EmeraldSystem EmeraldComponent)
+            {
+                EmeraldComponent.HealthComponent.IgnoreGettingHit = true;
             }
 
             /// <summary>

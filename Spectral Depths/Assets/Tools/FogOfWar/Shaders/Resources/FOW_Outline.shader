@@ -105,7 +105,7 @@ Shader "Hidden/FullScreen/FOW/Outline"
 
 #endif
 
-                float coneCheckOut;
+                float coneCheckOut = 0;
                 FOW_Outline_float(pos, height, coneCheckOut);
                 coneCheckOut = 1 - coneCheckOut;
 

@@ -5,7 +5,6 @@ using EmeraldAI.Utility;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/animation-component")]
     public class EmeraldAnimation : MonoBehaviour
     {
         [SerializeField]

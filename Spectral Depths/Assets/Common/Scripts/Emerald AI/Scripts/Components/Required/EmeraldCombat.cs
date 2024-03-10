@@ -5,7 +5,6 @@ using EmeraldAI.Utility;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/combat-component")]
     public class EmeraldCombat : MonoBehaviour, ICombat
     {
         #region Combat Variables

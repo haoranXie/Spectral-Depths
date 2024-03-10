@@ -297,7 +297,7 @@ namespace SpectralDepths.TopDown
                     movementClickIndicator.gameObject.SetActive(true);
                     //Instantiate(MovementClickIndicator,distance.point,Quaternion.identity);
                     RTSEvent.Trigger(RTSEventTypes.CommandForceMove,null,SelectedTable);
-                    SetPositionsCircle();
+                    SetPositions();
 				}
 			}
 		}
@@ -319,15 +319,38 @@ namespace SpectralDepths.TopDown
                     attackMovementClickIndicator.transform.rotation = Quaternion.identity;
                     attackMovementClickIndicator.gameObject.SetActive(true);
                     RTSEvent.Trigger(RTSEventTypes.CommandForceAttack,null,SelectedTable);
-                    SetPositionsCircle();
+                    SetPositions();
 				}
                 SwitchToDefaultCommand();
 			}
 		}
         /// <summary>
-        /// Grabs the MouseDrivenPathFinderAI3D component and assigns each unit a unique position
+        /// Assigns each unit the same positions along where the player clicks
         /// </summary>
-        public void SetPositionsCircle(){
+        public void SetPositions()
+        {
+            foreach(KeyValuePair<int,Character> character in SelectedTable)
+            {
+                if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                {
+                    EmeraldAPI.Health.IgnoreGettingHit(character.Value.EmeraldComponent);
+                    EmeraldAPI.Movement.OrderAddCustomWaypoint(character.Value.EmeraldComponent, target);
+                    SetIndicators(character.Value.EmeraldComponent, target);
+                }
+                else
+                {
+                    EmeraldAPI.Health.IgnoreGettingHit(character.Value.EmeraldComponent);
+                    RemoveIndicators(character.Value.EmeraldComponent);
+                    EmeraldAPI.Movement.OrderSetCustomDestination(character.Value.EmeraldComponent, target);
+                }
+                //character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
+                //EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
+            }  
+        }
+        /// <summary>
+        /// Assigns each unit a unique position along a line from where the player clicks
+        /// </summary>
+        public void SetPositionsLine(){
             float[] distanceBetweenEachCharacter = {2f,4f,6f};
             int[] distanceBetweenEachRing = {1,2,3};
 
@@ -339,7 +362,7 @@ namespace SpectralDepths.TopDown
                 if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                 {
                     EmeraldAPI.Movement.OrderAddCustomWaypoint(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex]);
-                    SetIndicators(character.Value.EmeraldComponent);
+                    SetIndicators(character.Value.EmeraldComponent, target);
                 }
                 else
                 {
@@ -355,7 +378,7 @@ namespace SpectralDepths.TopDown
         /// Sets and shows MovementEdge and MovementVertex indicators for specific character
         /// </summary>
         /// <param name="emeraldSystem"></param>
-        public void SetIndicators(EmeraldSystem emeraldSystem)
+        public void SetIndicators(EmeraldSystem emeraldSystem, Vector3 indicatorPosition)
         {
             if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count == 1 ) return;
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator==null) emeraldSystem.MovementComponent.MovementEdgeIndicator = MovementEdgeIndicatorPool.GetPooledGameObject();
@@ -368,7 +391,8 @@ namespace SpectralDepths.TopDown
             emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.SetActive(true);
 
             GameObject movementVertexIndicator = MovementVertexIndicatorPool.GetPooledGameObject();
-            Vector3 newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1];
+            //Vector3 newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1];
+            Vector3 newPosition = indicatorPosition;
             newPosition.y += (float)0.1;
             movementVertexIndicator.transform.position = newPosition;
             emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1,newPosition);

@@ -102,7 +102,7 @@ Shader "Hidden/FullScreen/FOW/Blur"
 
 #endif
 
-                float coneCheckOut;
+                float coneCheckOut = 0;
 #if HARD
                 FOW_Hard_float(pos, height, coneCheckOut);
 #elif SOFT

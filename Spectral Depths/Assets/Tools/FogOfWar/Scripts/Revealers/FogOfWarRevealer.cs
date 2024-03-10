@@ -346,7 +346,7 @@ namespace FOW
 
         Vector3 GetSegmentEnd(int index)
         {
-            return GetEyePosition() + (DirFromAngle(ViewPoints[index].Angle, true) * ViewPoints[index].Radius);
+            return GetEyePosition() + (DirFromAngle(ViewPoints[index].Angle, true) * (ViewPoints[index].DidHit ? ViewPoints[index].Radius : RayDistance));
         }
 #endif
 
@@ -558,8 +558,8 @@ namespace FOW
             for (int i = 1; i < iterationSteps; i++)
             {
 #if UNITY_EDITOR
-                if (DebugMode && DrawExpectedNextPoints)
-                    Debug.DrawLine(twoDTo3dDebug(iteration.Points[i]), twoDTo3dDebug(iteration.NextPoints[i]) + Vector3.up * (.03f / (iterationNumber+1)), UnityEngine.Random.ColorHSV());
+                if (DebugMode && DrawExpectedNextPoints && !FirstIteration)
+                    Debug.DrawLine(Get3Dfrom2D(iteration.Points[i]), Get3Dfrom2D(iteration.NextPoints[i]) + FogOfWarWorld.UpVector * (.03f / (iterationNumber+1)), UnityEngine.Random.ColorHSV());
 #endif
 
                 bool cond;
@@ -871,7 +871,7 @@ namespace FOW
                     //if (DebugMode && i == DEBUGEDGESLICE)
                     if (DebugMode && DrawEdgeResolveRays)
                     {
-                        Debug.DrawLine(twoDTo3dDebug(ViewPoints[i].Point), twoDTo3dDebug(nextPoint) + Vector3.up * .03f, UnityEngine.Random.ColorHSV());
+                        Debug.DrawLine(Get3Dfrom2D(ViewPoints[i].Point), Get3Dfrom2D(nextPoint) + Vector3.up * .03f, UnityEngine.Random.ColorHSV());
                         Debug.DrawRay(EyePosition, DirFromAngle(currentAngle, true) * currentRay.distance, angleAdd >= 0 ? Color.green : Color.cyan);
                     }
                         
@@ -916,9 +916,10 @@ namespace FOW
             //return Mathf.Approximately(0, (v1 - v2).sqrMagnitude);
         }
 
-        Vector3 twoDTo3dDebug(Vector2 twoD)
+        protected abstract Vector3 _Get3Dfrom2D(Vector2 twoD);
+        Vector3 Get3Dfrom2D(Vector2 twoD)
         {
-            return new Vector3(twoD.x, transform.position.y, twoD.y);
+            return _Get3Dfrom2D(twoD);
         }
 
         [BurstCompile]

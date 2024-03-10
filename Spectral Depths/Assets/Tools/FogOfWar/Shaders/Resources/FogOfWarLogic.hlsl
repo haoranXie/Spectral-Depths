@@ -22,25 +22,18 @@ struct ConeEdgeStruct
 };
 
 #pragma multi_compile_local HARD SOFT
-//#pragma multi_compile_local _ BLEED
-bool BLEED;
 #pragma multi_compile_local _ INNER_SOFTEN
-//#pragma multi_compile_local FADE_EXP FADE_SMOOTH FADE_SMOOTHER FADE_SMOOTHSTEP
-int _fadeType;
-//#pragma multi_compile_local _ MIN_DIST_ON
-
-//#pragma multi_compile_local BLEND_MAX BLEND_ADDITIVE
-bool BLEND_MAX;
-//#pragma multi_compile_local _ USE_WORLD_BOUNDS
-
 #pragma multi_compile_local _ SAMPLE_REALTIME
-//#pragma multi_compile_local _ SAMPLE_TEXTURE
 #pragma multi_compile_local _ USE_TEXTURE_BLUR
+
+bool BLEED;
+int _fadeType;
+bool BLEND_MAX;
 
 float _extraRadius;
 
 float _fadeOutDegrees;
-//float _fadeOutDistance;
+float _edgeSoftenDistance;
 float _unboscuredFadeOutDistance;
 
 int _NumCircles;
@@ -55,15 +48,14 @@ float4 _worldBounds;
 float _worldBoundsSoftenDistance;
 float _worldBoundsInfluence;
 
+float _fadePower;
+
 float lineThickness = .1;
 
-//2D shenanigans
+//2D variables
 float _cameraSize;
 float2 _cameraPosition;
 float _cameraRotation;
-
-//int _fadeType;
-float _fadePower;
 
 float Unity_InverseLerp_float4(float4 A, float4 B, float4 T)
 {
@@ -208,8 +200,8 @@ void FOW_Hard_float(float2 Position, float height, out float Out)
     for (int i = 0; i < _NumCircles; i++)
     {
         CircleStruct circle = _CircleBuffer[_ActiveCircleIndices[i]];
-        float distToCircleOrigin = distance(Position, circle.circleOrigin);
-        if (distToCircleOrigin < circle.circleRadius)
+        float distToRevealerOrigin = distance(Position, circle.circleOrigin);
+        if (distToRevealerOrigin < circle.circleRadius)
         {
 #if IGNORE_HEIGHT
             float heightDist = 0;
@@ -221,7 +213,7 @@ void FOW_Hard_float(float2 Position, float height, out float Out)
                 continue;
 
 //#if MIN_DIST_ON
-            if (circle.unobscuredRadius < 0 && distToCircleOrigin < -circle.unobscuredRadius)
+            if (circle.unobscuredRadius < 0 && distToRevealerOrigin < -circle.unobscuredRadius)
                 continue;
 //#endif
 
@@ -246,8 +238,8 @@ void FOW_Hard_float(float2 Position, float height, out float Out)
                 if (degDiff > -segmentAngle && degDiff < 0)
                 {
                     //float lerpVal = (deg - prevAng) / (currentCone.edgeAngle - prevAng);
-                    //float distToConeEnd = lerp(previousCone.length, currentCone.length, lerpVal);
-                    float distToConeEnd = currentCone.length;
+                    //float DistToSegmentEnd = lerp(previousCone.length, currentCone.length, lerpVal);
+                    float DistToSegmentEnd = currentCone.length;
                     //if (abs(previousCone.length - circle.circleRadius) > .001 || abs(currentCone.length - circle.circleRadius) > .001)
                     if (previousCone.cutShort && currentCone.cutShort)
                     {
@@ -268,7 +260,7 @@ void FOW_Hard_float(float2 Position, float height, out float Out)
                         float y = (a1 * c2 - a2 * c1) / determinant;
                     
                         float2 intercection = float2(x, y);
-                        distToConeEnd = distance(intercection, circle.circleOrigin) + _extraRadius;
+                        DistToSegmentEnd = distance(intercection, circle.circleOrigin) + _extraRadius;
                         
                         if (BLEED)
                         {
@@ -277,12 +269,12 @@ void FOW_Hard_float(float2 Position, float height, out float Out)
                             float2 arcOrigin = rotPoint + (float2(-(end.y - rotPoint.y), (end.x - rotPoint.x)) * 3);
                             float arcLength = distance(start, arcOrigin);
                             float2 newRelativePosition = arcOrigin + normalize(Position - arcOrigin) * arcLength;
-                            distToConeEnd += distance(intercection, newRelativePosition) / 2;
+                            DistToSegmentEnd += distance(intercection, newRelativePosition) / 2;
                         }
                     }
-                    distToConeEnd = max(distToConeEnd, circle.unobscuredRadius);
+                    DistToSegmentEnd = max(DistToSegmentEnd, circle.unobscuredRadius);
                     
-                    if (distToCircleOrigin < distToConeEnd)
+                    if (distToRevealerOrigin < DistToSegmentEnd)
                     {
                         Out = circle.revealerOpacity;
                         return;
@@ -291,7 +283,7 @@ void FOW_Hard_float(float2 Position, float height, out float Out)
                 
                 previousCone = currentCone;
             }
-            if (distToCircleOrigin < circle.unobscuredRadius)
+            if (distToRevealerOrigin < circle.unobscuredRadius)
             {
                 Out = circle.revealerOpacity;
                 return;
@@ -311,9 +303,9 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
     {
         float RevealerOut = 0;
         CircleStruct circle = _CircleBuffer[_ActiveCircleIndices[i]];
-        float distToCircleOrigin = distance(Position, circle.circleOrigin);
+        float distToRevealerOrigin = distance(Position, circle.circleOrigin);
         float _fadeOutDistance = circle.circleFade;
-        if (distToCircleOrigin < circle.circleRadius + _fadeOutDistance)
+        if (distToRevealerOrigin < circle.circleRadius + _fadeOutDistance)
         {
 #if IGNORE_HEIGHT
             float heightDist = 0;
@@ -333,12 +325,12 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
 //#if MIN_DIST_ON
             if (circle.unobscuredRadius < 0)
             {
-                if (distToCircleOrigin < -circle.unobscuredRadius + _unboscuredFadeOutDistance)
+                if (distToRevealerOrigin < -circle.unobscuredRadius + _unboscuredFadeOutDistance)
                 {
-                    if (distToCircleOrigin < -circle.unobscuredRadius)
+                    if (distToRevealerOrigin < -circle.unobscuredRadius)
                         continue;
-                    //Out = max(Out, heightDist * lerp(1, 0, (distToCircleOrigin - circle.unobscuredRadius) / _unboscuredFadeOutDistance));
-                    heightDist *= (distToCircleOrigin - -circle.unobscuredRadius) / _unboscuredFadeOutDistance;
+                    //Out = max(Out, heightDist * lerp(1, 0, (distToRevealerOrigin - circle.unobscuredRadius) / _unboscuredFadeOutDistance));
+                    heightDist *= (distToRevealerOrigin - -circle.unobscuredRadius) / _unboscuredFadeOutDistance;
                 }
             }
 //#endif
@@ -370,15 +362,15 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
 #endif
                 {
                     //float lerpVal = clamp(segmentAngle-degDiff, 0, segmentAngle)/segmentAngle;
-                    //float distToConeEnd = lerp(previousCone.length, currentCone.length, lerpVal);
-                    float distToConeEnd = currentCone.length;
-                    float newBlurDistance = (distToConeEnd / circle.circleRadius) * _fadeOutDistance;
+                    //float DistToSegmentEnd = lerp(previousCone.length, currentCone.length, lerpVal);
+                    float DistToSegmentEnd = currentCone.length;
+                    float newBlurDistance = (DistToSegmentEnd / circle.circleRadius) * _fadeOutDistance;
                     newBlurDistance = _fadeOutDistance;
                     
 #if INNER_SOFTEN
                     if (!(degDiff > -segmentAngle && degDiff < 0))
                     {
-                        float softDistToConeEnd = distToConeEnd;
+                        float softDistToSegmentEnd = DistToSegmentEnd;
                         float softnewBlurDistance = newBlurDistance;
 
                         float angDiff = degDiff / _fadeOutDegrees;
@@ -386,7 +378,7 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
                         {
                             angDiff = clamp(((segmentAngle - degDiff) / _fadeOutDegrees), 0, 1);
                         }
-                        //float arcLen = (2 * (distToConeEnd * distToConeEnd)) - (2 * distToConeEnd * distToConeEnd * cos(radians(_fadeOutDegrees)));
+                        //float arcLen = (2 * (DistToSegmentEnd * DistToSegmentEnd)) - (2 * DistToSegmentEnd * DistToSegmentEnd * cos(radians(_fadeOutDegrees)));
                         
                         if (previousCone.cutShort)
                         {
@@ -394,42 +386,42 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
                             if (currentCone.cutShort)
                             {
                                 softnewBlurDistance = 0;
-                                //softDistToConeEnd = 0;
+                                //softDistToSegmentEnd = 0;
                             }
                             if ((c == 0 || c == circle.numSegments - 1))
                             {
-                                softnewBlurDistance = distToConeEnd - circle.circleRadius;
-                                softDistToConeEnd = circle.circleRadius;
+                                softnewBlurDistance = DistToSegmentEnd - circle.circleRadius;
+                                softDistToSegmentEnd = circle.circleRadius;
                             }
                             
-                            if (distToConeEnd > circle.circleRadius)
+                            if (DistToSegmentEnd > circle.circleRadius)
                             {
-                                softnewBlurDistance = distToConeEnd - circle.circleRadius;
-                                softDistToConeEnd = circle.circleRadius;
+                                softnewBlurDistance = DistToSegmentEnd - circle.circleRadius;
+                                softDistToSegmentEnd = circle.circleRadius;
                             }
                             //if (currentCone.cutShort && !(c == 0 || c == circle.numSegments-1))
                             //{
                                 //softnewBlurDistance = 0;
-                                //softDistToConeEnd = 0;
+                                //softDistToSegmentEnd = 0;
                             //}
                         }
                         else
                         {
-                            softDistToConeEnd = min(previousCone.length, currentCone.length);
+                            softDistToSegmentEnd = min(previousCone.length, currentCone.length);
                         }
                         //softnewBlurDistance+= arcLen;
 
-                        if (distToCircleOrigin < softDistToConeEnd + softnewBlurDistance)
+                        if (distToRevealerOrigin < softDistToSegmentEnd + softnewBlurDistance)
                         {
-                            //if (distToCircleOrigin < softDistToConeEnd)
+                            //if (distToRevealerOrigin < softDistToSegmentEnd)
                             //{
                             //    //RevealerOut = max(RevealerOut, heightDist * cos(angDiff * 1.570796));
                             //    RevealerOut = max(RevealerOut, heightDist * SmoothValue((1-angDiff)));
                             //}
                             //else
-                            ////RevealerOut = max(RevealerOut, heightDist * lerp(0, cos(angDiff * 1.570796), clamp(((softDistToConeEnd + _fadeOutDistance) - distToCircleOrigin) / _fadeOutDistance, 0, 1)));
+                            ////RevealerOut = max(RevealerOut, heightDist * lerp(0, cos(angDiff * 1.570796), clamp(((softDistToSegmentEnd + _fadeOutDistance) - distToRevealerOrigin) / _fadeOutDistance, 0, 1)));
                     
-                            float b = CalculateFadeZonePercent(softDistToConeEnd, _fadeOutDistance, distToCircleOrigin);
+                            float b = CalculateFadeZonePercent(softDistToSegmentEnd, _fadeOutDistance, distToRevealerOrigin);
                             float x = (1-angDiff);
                             RevealerOut = max(RevealerOut, heightDist * SmoothValue(b) * SmoothValue(x) );
                         }
@@ -441,6 +433,7 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
                     //previousCone = currentCone;
                     //continue;
                     //if (abs(previousCone.length - circle.circleRadius) > .001 || abs(currentCone.length - circle.circleRadius) > .001)
+                    float finalMultiplier = 1;
                     if (previousCone.cutShort && currentCone.cutShort)
                     {
                         float2 start = circle.circleOrigin + float2(cos(radians(prevAng)), sin(radians(prevAng))) * previousCone.length;
@@ -460,14 +453,21 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
                         float y = (a1 * c2 - a2 * c1) / determinant;
                     
                         float2 intercection = float2(x, y);
-                        distToConeEnd = distance(intercection, circle.circleOrigin);
+                        DistToSegmentEnd = distance(intercection, circle.circleOrigin);
+                        
+                        finalMultiplier = CalculateFadeZonePercent(_extraRadius, _edgeSoftenDistance, distToRevealerOrigin - DistToSegmentEnd);
+                        finalMultiplier = saturate(finalMultiplier);
+                        
                         newBlurDistance = 0;
-                        if (distToConeEnd > circle.circleRadius)
+                        if (DistToSegmentEnd > circle.circleRadius)
                         {
-                            newBlurDistance = distToConeEnd - circle.circleRadius;
-                            distToConeEnd = circle.circleRadius;
+                            newBlurDistance = max(0, DistToSegmentEnd - circle.circleRadius);
+                            DistToSegmentEnd = circle.circleRadius;
                         }
-                        distToConeEnd += _extraRadius;
+                        newBlurDistance += _edgeSoftenDistance;
+                        
+                        //_fadeOutDistance = _edgeSoftenDistance;
+                        //DistToSegmentEnd += _extraRadius;
                         newBlurDistance += _extraRadius;
                         
                         if (BLEED)
@@ -480,18 +480,19 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
                             newBlurDistance += distance(intercection, newRelativePosition) / 2;
                         }
                     }
-                    distToConeEnd = max(distToConeEnd, circle.unobscuredRadius);
-                    distToConeEnd = min(distToConeEnd, circle.circleRadius);
+                    newBlurDistance = min(newBlurDistance, circle.circleRadius + _fadeOutDistance);
+                    DistToSegmentEnd = max(DistToSegmentEnd, circle.unobscuredRadius);
+                    DistToSegmentEnd = min(DistToSegmentEnd, circle.circleRadius);
                     
-                    if (distToCircleOrigin < distToConeEnd + newBlurDistance)
+                    if (distToRevealerOrigin < DistToSegmentEnd + newBlurDistance)
                     {
-                        //if (distToCircleOrigin < distToConeEnd)
+                        //if (distToRevealerOrigin < DistToSegmentEnd)
                         //{
                         //    RevealerOut = 1 * heightDist;
                         //    break;
                         //}
-                        //RevealerOut = max(RevealerOut, heightDist * ((distToConeEnd + _fadeOutDistance) - distToCircleOrigin) / _fadeOutDistance);
-                        RevealerOut = max(RevealerOut, heightDist * SmoothValue(CalculateFadeZonePercent(distToConeEnd, _fadeOutDistance, distToCircleOrigin)));
+                        //RevealerOut = max(RevealerOut, heightDist * ((DistToSegmentEnd + _fadeOutDistance) - distToRevealerOrigin) / _fadeOutDistance);
+                        RevealerOut = max(RevealerOut, heightDist * SmoothValue(CalculateFadeZonePercent(DistToSegmentEnd, _fadeOutDistance, distToRevealerOrigin)) * finalMultiplier);
                         previousCone = currentCone;
                         continue;
                     }
@@ -499,24 +500,25 @@ void FOW_Soft_float(float2 Position, float height, out float Out)
                 
                 previousCone = currentCone;
             }
-            //if (distToCircleOrigin < circle.unobscuredRadius)
+            //if (distToRevealerOrigin < circle.unobscuredRadius)
             //{
             //    Out = 1;
             //    return;
             //}
-            if (distToCircleOrigin < circle.unobscuredRadius + _unboscuredFadeOutDistance)
+            if (distToRevealerOrigin < circle.unobscuredRadius + _unboscuredFadeOutDistance)
             {
-                if (distToCircleOrigin < circle.unobscuredRadius)
+                if (distToRevealerOrigin < circle.unobscuredRadius)
                 {
                     RevealerOut = 1 * heightDist;
                         //break;
                 }
                 else
-                    RevealerOut = max(RevealerOut, heightDist * lerp(1, 0, (distToCircleOrigin - circle.unobscuredRadius) / _unboscuredFadeOutDistance));
+                    RevealerOut = max(RevealerOut, heightDist * lerp(1, 0, (distToRevealerOrigin - circle.unobscuredRadius) / _unboscuredFadeOutDistance));
             }
         }
         RevealerOut = clamp(abs(RevealerOut), 0, 1);
         CustomCurve_float(RevealerOut, RevealerOut);
+        RevealerOut *= circle.revealerOpacity;
         if (BLEND_MAX)
             Out = max(Out, RevealerOut);
         else
@@ -548,8 +550,8 @@ void FOW_Outline_float(float2 Position, float height, out float Out)
     for (int i = 0; i < _NumCircles; i++)
     {
         CircleStruct circle = _CircleBuffer[_ActiveCircleIndices[i]];
-        float distToCircleOrigin = distance(Position, circle.circleOrigin);
-        if (distToCircleOrigin < circle.circleRadius + lineThickness)
+        float distToRevealerOrigin = distance(Position, circle.circleOrigin);
+        if (distToRevealerOrigin < circle.circleRadius + lineThickness)
         {
 #if IGNORE_HEIGHT
             float heightDist = 0;
@@ -561,7 +563,7 @@ void FOW_Outline_float(float2 Position, float height, out float Out)
                 continue;
 
 //#if MIN_DIST_ON
-            if (circle.unobscuredRadius < 0 && distToCircleOrigin < -circle.unobscuredRadius)
+            if (circle.unobscuredRadius < 0 && distToRevealerOrigin < -circle.unobscuredRadius)
                 continue;
 //#endif
 
@@ -605,8 +607,8 @@ void FOW_Outline_float(float2 Position, float height, out float Out)
                 if (degDiff > -segmentAngle && degDiff < 0)
                 {
                     //float lerpVal = (deg - prevAng) / (currentCone.edgeAngle - prevAng);
-                    //float distToConeEnd = lerp(previousCone.length, currentCone.length, lerpVal);
-                    float distToConeEnd = currentCone.length;
+                    //float DistToSegmentEnd = lerp(previousCone.length, currentCone.length, lerpVal);
+                    float DistToSegmentEnd = currentCone.length;
                     //if (abs(previousCone.length - circle.circleRadius) > .001 || abs(currentCone.length - circle.circleRadius) > .001)
                     if (previousCone.cutShort && currentCone.cutShort)
                     {
@@ -627,11 +629,11 @@ void FOW_Outline_float(float2 Position, float height, out float Out)
                         float y = (a1 * c2 - a2 * c1) / determinant;
                     
                         float2 intercection = float2(x, y);
-                        distToConeEnd = distance(intercection, circle.circleOrigin);
+                        DistToSegmentEnd = distance(intercection, circle.circleOrigin);
                     }
-                    distToConeEnd = max(distToConeEnd, circle.unobscuredRadius);
+                    DistToSegmentEnd = max(DistToSegmentEnd, circle.unobscuredRadius);
                     
-                    if (distance(distToCircleOrigin, distToConeEnd) < lineThickness)
+                    if (distance(distToRevealerOrigin, DistToSegmentEnd) < lineThickness)
                     {
                         Out = 1;
                         return;

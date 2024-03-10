@@ -6,7 +6,6 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/detection-component")]
     public class EmeraldDetection : MonoBehaviour, IFaction
     {
         #region Detection Variables

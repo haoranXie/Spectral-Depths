@@ -6,7 +6,7 @@ namespace FOW
 {
     public class HiderDisableRenderers : HiderBehavior
     {
-        public Renderer[] ObjectsToHide;
+        [SerializeField] private Renderer[] ObjectsToHide;
 
         protected override void OnHide()
         {
@@ -18,6 +18,19 @@ namespace FOW
         {
             foreach (Renderer renderer in ObjectsToHide)
                 renderer.enabled = true;
+        }
+
+        public void ModifyHiddenRenderers(Renderer[] newObjectsToHide)
+        {
+            OnReveal();
+            ObjectsToHide = newObjectsToHide;
+            if (!enabled)
+                return;
+
+            if (!IsEnabled)
+                OnHide();
+            else
+                OnReveal();
         }
     }
 }

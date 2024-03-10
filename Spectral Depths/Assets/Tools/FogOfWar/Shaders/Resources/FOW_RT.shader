@@ -55,7 +55,7 @@ Shader "Hidden/FullScreen/FOW/FOW_RT"
             {
                 //fixed4 color = tex2D(_MainTex, i.uv);
 
-                float coneCheckOut;
+                float coneCheckOut = 0;
 				float2 pos = float2(((i.uv.x-.5) * _worldBounds.x) + _worldBounds.y, ((i.uv.y-.5) * _worldBounds.z) + _worldBounds.w);
 
                 //return float4(pos.x, pos.y, 0,1);

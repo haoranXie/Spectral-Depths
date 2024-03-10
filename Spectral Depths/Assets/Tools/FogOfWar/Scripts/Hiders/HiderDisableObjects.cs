@@ -6,7 +6,7 @@ namespace FOW
 {
     public class HiderDisableObjects : HiderBehavior
     {
-        public GameObject[] ObjectsToHide;
+        [SerializeField] private GameObject[] ObjectsToHide;
 
         protected override void OnHide()
         {

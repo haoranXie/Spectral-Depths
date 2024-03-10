@@ -26,6 +26,7 @@ namespace FOW
         public bool UsingSoftening;
         //[Tooltip("how far to blur the edges. only used for soft fog types")]
         //public float SoftenDistance = 3;
+        public float EdgeSoftenDistance = 0f;
         public float UnobscuredSoftenDistance = .25f;
         public bool UseInnerSoften = true;
         public float InnerSoftenAngle = 5;
@@ -208,7 +209,6 @@ namespace FOW
 #endif
             Initialize();
         }
-
         private void OnEnable()
         {
             Initialize();
@@ -303,8 +303,6 @@ namespace FOW
             FogOfWarMaterial.SetBuffer(Shader.PropertyToID("_CircleBuffer"), circleBuffer);
             FogOfWarMaterial.SetBuffer(Shader.PropertyToID("_ConeBuffer"), anglesBuffer);
             UpdateMaterialProperties(FogOfWarMaterial);
-            gameObject.SetActive(false);
-            gameObject.SetActive(true);
         }
 #endif
         #endregion
@@ -477,7 +475,10 @@ namespace FOW
                 }
             }
             else
+            {
+                UpVector = -Vector3.forward;
                 material.EnableKeyword("IS_2D");
+            }
 
             material.SetBuffer(Shader.PropertyToID("_ActiveCircleIndices"), indicesBuffer);
             material.SetBuffer(Shader.PropertyToID("_CircleBuffer"), circleBuffer);
@@ -531,6 +532,7 @@ namespace FOW
                 material.SetFloat(Shader.PropertyToID("_fadeOutDegrees"), 0);
 
             material.SetFloat(extraRadiusID, SightExtraAmount);
+            material.SetFloat(Shader.PropertyToID("_edgeSoftenDistance"), EdgeSoftenDistance);
             material.SetFloat(maxDistanceID, MaxFogDistance);
 
             //material.DisableKeyword("FADE_LINEAR");
@@ -1028,11 +1030,20 @@ namespace FOW
                 //    fow.UpdateFogConfig();
                 //}
 
-                float softenDist = fow.UnobscuredSoftenDistance;
-                float newSoftenDist = EditorGUILayout.FloatField("Un-Obscured area Soften Distance: ", softenDist);
-                if (newSoftenDist != softenDist)
+                float EdgeSoftenDistance = fow.EdgeSoftenDistance;
+                float newEdgeSoftenDist = EditorGUILayout.FloatField("Edge Softening Distance: ", EdgeSoftenDistance);
+                if (!Mathf.Approximately(newEdgeSoftenDist, EdgeSoftenDistance))
                 {
-                    fow.UnobscuredSoftenDistance = newSoftenDist;
+                    fow.EdgeSoftenDistance = Mathf.Max(0, newEdgeSoftenDist);
+                    Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
+                    fow.UpdateFogConfig();
+                }
+
+                float unobscuredsoftenDist = fow.UnobscuredSoftenDistance;
+                float newUnobscuredSoftenDist = EditorGUILayout.FloatField("Un-Obscured area Soften Distance: ", unobscuredsoftenDist);
+                if (!Mathf.Approximately(newUnobscuredSoftenDist, unobscuredsoftenDist))
+                {
+                    fow.UnobscuredSoftenDistance = Mathf.Max(0, newUnobscuredSoftenDist);
                     Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
                     fow.UpdateFogConfig();
                 }
@@ -1047,20 +1058,21 @@ namespace FOW
                 }
                 if (newinnerSoften)
                 {
-                    softenDist = fow.InnerSoftenAngle;
-                    newSoftenDist = EditorGUILayout.FloatField("Inner Soften Angle: ", softenDist);
-                    if (newSoftenDist != softenDist)
+                    float softenAng = fow.InnerSoftenAngle;
+                    float newSoftenAng = EditorGUILayout.FloatField("Inner Soften Angle: ", softenAng);
+                    if (!Mathf.Approximately(newSoftenAng, softenAng))
                     {
-                        fow.InnerSoftenAngle = newSoftenDist;
+                        fow.InnerSoftenAngle = Mathf.Max(0, newSoftenAng);
                         Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
                         fow.UpdateFogConfig();
                     }
                 }
             }
 
+
             float oldExtraSightAmount = fow.SightExtraAmount;
             float newExtraSightAmount = EditorGUILayout.Slider("Revealer Extra Sight Distance: ", oldExtraSightAmount, -.01f, 1);
-            if (oldExtraSightAmount != newExtraSightAmount)
+            if (!Mathf.Approximately(oldExtraSightAmount, newExtraSightAmount))
             {
                 fow.SightExtraAmount = newExtraSightAmount;
                 Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1069,7 +1081,7 @@ namespace FOW
 
             float oldMaxDist = fow.MaxFogDistance;
             float newMaxDist = EditorGUILayout.Slider("Max Fog Distance: ", oldMaxDist, 0, 10000);
-            if (oldMaxDist != newMaxDist)
+            if (!Mathf.Approximately(oldMaxDist, newMaxDist))
             {
                 fow.MaxFogDistance = newMaxDist;
                 Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1112,7 +1124,7 @@ namespace FOW
 
                 float oldStrength = fow.SaturationStrength;
                 float newStrength = EditorGUILayout.Slider("Unknown Area Saturation Strength: ", oldStrength, 0, 1);
-                if (oldStrength != newStrength)
+                if (!Mathf.Approximately(oldStrength, newStrength))
                 {
                     fow.SaturationStrength = newStrength;
                     Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1123,7 +1135,7 @@ namespace FOW
             {
                 float oldBlur = fow.BlurStrength;
                 float newBlur = EditorGUILayout.Slider("Unknown Area Blur Strength: ", oldBlur, -1, 1);
-                if (oldBlur != newBlur)
+                if (!Mathf.Approximately(oldBlur, newBlur))
                 {
                     fow.BlurStrength = newBlur;
                     Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1140,7 +1152,7 @@ namespace FOW
                 //}
                 float oldBlurOffset = fow.BlurDistanceScreenPercentMin;
                 float newBlurOffset = EditorGUILayout.Slider("Min Screen Percent: ", oldBlurOffset, 0, 2);
-                if (oldBlurOffset != newBlurOffset)
+                if (!Mathf.Approximately(oldBlurOffset, newBlurOffset))
                 {
                     fow.BlurDistanceScreenPercentMin = newBlurOffset;
                     Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1244,7 +1256,7 @@ namespace FOW
                     }
                     float oldCBlurAmmount = fow.ConstantTextureBlurAmount;
                     float newCBlurAmount = EditorGUILayout.Slider("---Texture Blur Amount: ", oldCBlurAmmount, 0, 5);
-                    if (oldCBlurAmmount != newCBlurAmount)
+                    if (!Mathf.Approximately(oldCBlurAmmount, newCBlurAmount))
                     {
                         fow.ConstantTextureBlurAmount = newCBlurAmount;
                         Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1268,7 +1280,7 @@ namespace FOW
             {
                 float boundSoftendistance = fow.WorldBoundsSoftenDistance;
                 float newboundSoftendistance = EditorGUILayout.Slider("World Bounds Soften Distance:", boundSoftendistance, 0, 5);
-                if (boundSoftendistance != newboundSoftendistance)
+                if (!Mathf.Approximately(boundSoftendistance, newboundSoftendistance))
                 {
                     fow.WorldBoundsSoftenDistance = newboundSoftendistance;
                     Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1277,7 +1289,7 @@ namespace FOW
 
                 float boundsInfluence = fow.WorldBoundsInfluence;
                 float newboundsInfluence = EditorGUILayout.Slider("World Bounds Influence:", boundsInfluence, 0, 1);
-                if (boundsInfluence != newboundsInfluence)
+                if (!Mathf.Approximately(boundsInfluence, newboundsInfluence))
                 {
                     fow.WorldBoundsInfluence = newboundsInfluence;
                     Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1375,7 +1387,7 @@ namespace FOW
                 {
                     float oldRegrowSpeed = fow.FogRegrowSpeed;
                     float newRegrowSpeed = EditorGUILayout.Slider("Fog Regrow Speed: ", oldRegrowSpeed, 0, 10);
-                    if (oldRegrowSpeed != newRegrowSpeed)
+                    if (!Mathf.Approximately(oldRegrowSpeed, newRegrowSpeed))
                     {
                         fow.FogRegrowSpeed = newRegrowSpeed;
                         Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1383,7 +1395,7 @@ namespace FOW
                     }
                     float oldInitVal = fow.InitialFogExplorationValue;
                     float newInitVal = EditorGUILayout.Slider("Initial Fog Exploration: ", oldInitVal, 0, 1);
-                    if (oldInitVal != newInitVal)
+                    if (!Mathf.Approximately(oldInitVal, newInitVal))
                     {
                         fow.InitialFogExplorationValue = newInitVal;
                         Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");
@@ -1391,7 +1403,7 @@ namespace FOW
                     }
                     float oldRegrowMax = fow.MaxFogRegrowAmount;
                     float newRegrowMax = EditorGUILayout.Slider("Max Fog Regrow Amount: ", oldRegrowMax, 0, 1);
-                    if (oldRegrowMax != newRegrowMax)
+                    if (!Mathf.Approximately(oldRegrowMax, newRegrowMax))
                     {
                         fow.MaxFogRegrowAmount = newRegrowMax;
                         Undo.RegisterCompleteObjectUndo(fow, "Change FOW parameters");

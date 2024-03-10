@@ -644,6 +644,7 @@ MonoBehaviour:
   - {fileID: 1367260627}
   - {fileID: 1301903183}
   - {fileID: 67011678}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -1017,6 +1018,7 @@ MonoBehaviour:
   - {fileID: 2053173782}
   - {fileID: 1302390178}
   - {fileID: 518238302}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -1225,6 +1227,7 @@ MonoBehaviour:
   - {fileID: 1083909651}
   - {fileID: 1348237858}
   - {fileID: 1300354825}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -2076,6 +2079,7 @@ MonoBehaviour:
   FogType: 1
   AllowBleeding: 0
   UsingSoftening: 0
+  EdgeSoftenDistance: 0.3
   UnobscuredSoftenDistance: 0.25
   UseInnerSoften: 1
   InnerSoftenAngle: 5
@@ -2540,6 +2544,7 @@ MonoBehaviour:
   - {fileID: 96098764}
   - {fileID: 2116306598}
   - {fileID: 806728574}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -2753,6 +2758,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2846,6 +2852,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de49a7657279af4c8e6f1889b2e8626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &971205472
 GameObject:
   m_ObjectHideFlags: 0
@@ -3670,6 +3720,7 @@ MonoBehaviour:
   - {fileID: 1990665955}
   - {fileID: 1701051988}
   - {fileID: 1087117161}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -4133,6 +4184,7 @@ MonoBehaviour:
   - {fileID: 1571207767}
   - {fileID: 38513136}
   - {fileID: 509521010}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -4570,6 +4622,7 @@ MonoBehaviour:
   - {fileID: 1450670272}
   - {fileID: 571368500}
   - {fileID: 951340088}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -5102,6 +5155,7 @@ MonoBehaviour:
   - {fileID: 1041067335}
   - {fileID: 1087087313}
   - {fileID: 1172193057}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -5174,6 +5228,7 @@ MonoBehaviour:
   - {fileID: 1308143048}
   - {fileID: 264474718}
   - {fileID: 1960939120}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -5677,6 +5732,7 @@ MonoBehaviour:
   - {fileID: 1033216219}
   - {fileID: 410218697}
   - {fileID: 601822693}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -6419,6 +6475,7 @@ MonoBehaviour:
   - {fileID: 1167660536}
   - {fileID: 351508098}
   - {fileID: 87194645}
+  PermanentlyReveal: 0
   maxDistBetweenPoints: 0
   seenCount: 0
   seenBy: []
@@ -6670,7 +6727,7 @@ Transform:
   m_GameObject: {fileID: 1816961257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5.63}
+  m_LocalPosition: {x: 0, y: 0, z: 0.493}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

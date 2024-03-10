@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/sounds-component")]
     public class EmeraldSounds : MonoBehaviour
     {
         #region Variables

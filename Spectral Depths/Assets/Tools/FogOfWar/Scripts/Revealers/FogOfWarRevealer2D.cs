@@ -90,7 +90,12 @@ namespace FOW
 
         protected override float GetEuler()
         {
-            return transform.eulerAngles.z;
+            Vector3 up = transform.up;
+            up.z = 0;
+            up.Normalize();
+            float ang = Vector3.SignedAngle(up, Vector3.up, -Vector3.forward);
+            return -ang;
+            //return transform.eulerAngles.z;
         }
 
         protected override Vector3 GetEyePosition()
@@ -121,7 +126,7 @@ namespace FOW
                     {
                         samplePoint = hiderInQuestion.samplePoints[j];
                         distToHider = distBetweenVectors(samplePoint.position, GetEyePosition());
-                        if (distToHider < UnobscuredRadius || (distToHider < sightDist && Mathf.Abs(AngleBetweenVector2(samplePoint.position - GetEyePosition(), getForward())) < ViewAngle / 2))
+                        if (distToHider < UnobscuredRadius || (distToHider < sightDist && Mathf.Abs(AngleBetweenVector2(samplePoint.position - GetEyePosition(), GetForward())) < ViewAngle / 2))
                         {
                             SetHiderPosition(samplePoint.position);
                             if (!Physics2D.Raycast(GetEyePosition(), hiderPosition - GetEyePosition(), distToHider, ObstacleMask))
@@ -169,7 +174,7 @@ namespace FOW
                 sightDist += RevealHiderInFadeOutZonePercentage * SoftenDistance;
 
             float distToPoint = distBetweenVectors(point, GetEyePosition());
-            if (distToPoint < UnobscuredRadius || (distToPoint < sightDist && Mathf.Abs(AngleBetweenVector2(point - GetEyePosition(), getForward())) < ViewAngle / 2))
+            if (distToPoint < UnobscuredRadius || (distToPoint < sightDist && Mathf.Abs(AngleBetweenVector2(point - GetEyePosition(), GetForward())) < ViewAngle / 2))
             {
                 SetHiderPosition(point);
                 if (!Physics2D.Raycast(GetEyePosition(), hiderPosition - transform.position, distToPoint, ObstacleMask))
@@ -212,9 +217,10 @@ namespace FOW
             return Vector2.Distance(vec1, vec2);
         }
 
-        Vector3 getForward()
+        Vector3 GetForward()
         {
-            return new Vector3(-transform.up.x, transform.up.y, 0).normalized;
+            return new Vector3(transform.up.x, transform.up.y, 0).normalized;
+            //return new Vector3(-transform.up.x, transform.up.y, 0).normalized;
         }
 
         RaycastHit2D rayHit;
@@ -241,6 +247,11 @@ namespace FOW
             direction.x = Mathf.Cos(angleInDegrees * Mathf.Deg2Rad);
             direction.y = Mathf.Sin(angleInDegrees * Mathf.Deg2Rad);
             return direction;
+        }
+
+        protected override Vector3 _Get3Dfrom2D(Vector2 pos)
+        {
+            return new Vector3(pos.x, pos.y, 0);
         }
     }
 }

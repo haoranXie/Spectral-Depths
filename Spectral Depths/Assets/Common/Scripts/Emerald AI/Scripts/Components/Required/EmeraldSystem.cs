@@ -68,14 +68,12 @@ namespace EmeraldAI
         [HideInInspector] public LocationBasedDamage LBDComponent;
         #endregion
 
-        #region On Components
         [HideInInspector] public bool AnimationComponentOn = true;
         [HideInInspector] public bool MovementComponentOn = true;
         [HideInInspector] public bool BehaviorsComponentOn = true;
         [HideInInspector] public bool DetectionComponentOn = true;
         [HideInInspector] public bool CombatComponentOn = true;
 
-        #endregion
         //Initialize Emerald AI and its components
         void Awake()
         {
@@ -147,7 +145,6 @@ namespace EmeraldAI
         void Update()
         {
             if (HealthComponent.CurrentHealth <= 0) return;
-
             if(AnimationComponentOn){AnimationComponent.AnimationUpdate();} //A custom update function for the EmeraldAnimation called through the EmeraldAISystem script.
             if(MovementComponentOn){MovementComponent.MovementUpdate();} //A custom update function for the EmeraldMovement called through the EmeraldAISystem script.
             if(BehaviorsComponentOn){BehaviorsComponent.BehaviorUpdate();} //A custom update function for the EmeraldBehaviors script called through the EmeraldAISystem script.

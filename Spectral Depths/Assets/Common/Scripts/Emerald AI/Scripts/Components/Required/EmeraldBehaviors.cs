@@ -10,7 +10,6 @@ namespace EmeraldAI
     /// This script handles all of Emerald AI's behaviors and states. Most functions can be overridden to create custom behaviors or functionality.
     /// </summary>
     [System.Serializable]
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-required/behaviors-component")]
     public class EmeraldBehaviors : MonoBehaviour
     {
         #region Behavior Variables

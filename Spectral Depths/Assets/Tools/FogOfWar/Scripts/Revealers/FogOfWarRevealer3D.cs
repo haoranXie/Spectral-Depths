@@ -431,13 +431,30 @@ namespace FOW
 				ray.point = GetVector2D(transform.position) + (ray.direction * RayDistance);
 			}
 		}
+
 		float2 vec2d;
-		float2 GetVector2D(Vector3 normal)
+		float2 GetVector2D(Vector3 vector)
         {
-			vec2d.x = normal.x;
-			vec2d.y = normal.z;
+			switch (FogOfWarWorld.instance.gamePlane)
+			{
+				case FogOfWarWorld.GamePlane.XZ:
+					vec2d.x = vector.x;
+					vec2d.y = vector.z;
+					return vec2d;
+				case FogOfWarWorld.GamePlane.XY:
+					vec2d.x = vector.x;
+					vec2d.y = vector.y;
+					return vec2d;
+				case FogOfWarWorld.GamePlane.ZY:
+					vec2d.x = vector.z;
+					vec2d.y = vector.y;
+					return vec2d;
+			}
+			vec2d.x = vector.x;
+			vec2d.y = vector.z;
 			return vec2d;
         }
+
 		protected override float GetEuler()
         {
             switch (FogOfWarWorld.instance.gamePlane)
@@ -450,8 +467,14 @@ namespace FOW
 					float ang = Vector3.SignedAngle(up, Vector3.up, FogOfWarWorld.UpVector);
 					return -ang;
 					//return -transform.rotation.eulerAngles.z;
-                case FogOfWarWorld.GamePlane.ZY: return transform.eulerAngles.x;
-            }
+                case FogOfWarWorld.GamePlane.ZY:
+					Vector3 upz = transform.up;
+					upz.x = 0;
+					upz.Normalize();
+					float angz = Vector3.SignedAngle(upz, Vector3.up, FogOfWarWorld.UpVector);
+					return -angz;
+					//return transform.eulerAngles.x;
+			}
             return transform.eulerAngles.y;
         }
 		protected override Vector3 GetEyePosition()
@@ -476,24 +499,24 @@ namespace FOW
 				hiderInQuestion = FogOfWarWorld.hiders[i];
 				bool seen = false;
 				Transform samplePoint;
-				float minDistToHider = distBetweenVectors(hiderInQuestion.transform.position, eyePos) - hiderInQuestion.maxDistBetweenPoints;
+				float minDistToHider = DistBetweenVectors(hiderInQuestion.transform.position, eyePos) - hiderInQuestion.maxDistBetweenPoints;
 				if (minDistToHider < UnobscuredRadius || (minDistToHider < sightDist))
 				{
 					for (int j = 0; j < hiderInQuestion.samplePoints.Length; j++)
 					{
 						samplePoint = hiderInQuestion.samplePoints[j];
 
-						distToHider = distBetweenVectors(samplePoint.position, eyePos);
+						distToHider = DistBetweenVectors(samplePoint.position, eyePos);
 						switch(FogOfWarWorld.instance.gamePlane)
                         {
 							case FogOfWarWorld.GamePlane.XZ: heightDist = Mathf.Abs(eyePos.y - samplePoint.position.y); break;
 							case FogOfWarWorld.GamePlane.XY: heightDist = Mathf.Abs(eyePos.z - samplePoint.position.z); break;
 							case FogOfWarWorld.GamePlane.ZY: heightDist = Mathf.Abs(eyePos.x - samplePoint.position.x); break;
                         }
-                        if ((distToHider < UnobscuredRadius || (distToHider < sightDist && Mathf.Abs(AngleBetweenVector2(samplePoint.position - eyePos, getForward())) <= ViewAngle / 2)) && 
+                        if ((distToHider < UnobscuredRadius || (distToHider < sightDist && Mathf.Abs(AngleBetweenVector2(samplePoint.position - eyePos, GetForward())) <= ViewAngle / 2)) && 
 							heightDist < VisionHeight)
 						{
-							setHiderPosition(samplePoint.position);
+							SetHiderPosition(samplePoint.position);
 							if (!Physics.Raycast(eyePos, hiderPosition - eyePos, distToHider, ObstacleMask))
 							{
 								seen = true;
@@ -526,7 +549,7 @@ namespace FOW
 			Profiler.EndSample();
 #endif
 		}
-		void setHiderPosition(Vector3 point)
+		void SetHiderPosition(Vector3 point)
         {
 			switch (FogOfWarWorld.instance.gamePlane)
 			{
@@ -553,10 +576,10 @@ namespace FOW
 			if (FogOfWarWorld.instance.UsingSoftening)
 				sightDist += RevealHiderInFadeOutZonePercentage * SoftenDistance;
 
-			float distToPoint = distBetweenVectors(point, GetEyePosition());
-			if (distToPoint < UnobscuredRadius || (distToPoint < sightDist && Mathf.Abs(AngleBetweenVector2(point - GetEyePosition(), getForward())) < ViewAngle / 2))
+			float distToPoint = DistBetweenVectors(point, GetEyePosition());
+			if (distToPoint < UnobscuredRadius || (distToPoint < sightDist && Mathf.Abs(AngleBetweenVector2(point - GetEyePosition(), GetForward())) < ViewAngle / 2))
 			{
-				setHiderPosition(point);
+				SetHiderPosition(point);
 				if (!Physics.Raycast(GetEyePosition(), hiderPosition - transform.position, distToPoint, ObstacleMask))
 					return true;
 			}
@@ -620,7 +643,8 @@ namespace FOW
 			float sign = (Vector2.Dot(_vec1Rotated90, vec2) < 0) ? -1.0f : 1.0f;
 			return Vector2.Angle(vec1, vec2) * sign;
 		}
-		float distBetweenVectors(Vector3 _vec1, Vector3 _vec2)
+
+		float DistBetweenVectors(Vector3 _vec1, Vector3 _vec2)
 		{
             switch (FogOfWarWorld.instance.gamePlane)
             {
@@ -646,12 +670,13 @@ namespace FOW
             return Vector2.Distance(vec1, vec2);
 		}
 
-        Vector3 getForward()
+        Vector3 GetForward()
         {
             switch (FogOfWarWorld.instance.gamePlane)
             {
                 case FogOfWarWorld.GamePlane.XZ: return transform.forward;
-                case FogOfWarWorld.GamePlane.XY: return new Vector3(-transform.up.x, transform.up.y, 0).normalized;
+				case FogOfWarWorld.GamePlane.XY: return transform.up;
+				//case FogOfWarWorld.GamePlane.XY: return new Vector3(-transform.up.x, transform.up.y, 0).normalized;
                 //case FogOfWarWorld.GamePlane.XY: return -transform.right;
                 case FogOfWarWorld.GamePlane.ZY: return transform.up;
             }
@@ -689,5 +714,16 @@ namespace FOW
             direction.y = Mathf.Sin(angleInDegrees * Mathf.Deg2Rad);
             return direction;
         }
-	}
+
+        protected override Vector3 _Get3Dfrom2D(Vector2 pos)
+        {
+			switch (FogOfWarWorld.instance.gamePlane)
+            {
+				case FogOfWarWorld.GamePlane.XZ: return new Vector3(pos.x, transform.position.y, pos.y);
+				case FogOfWarWorld.GamePlane.XY: return new Vector3(pos.x, pos.y, transform.position.z);
+				case FogOfWarWorld.GamePlane.ZY: return new Vector3(transform.position.x, pos.y, pos.x);
+			}
+			return new Vector3(pos.x, transform.position.y, pos.y);
+		}
+    }
 }
