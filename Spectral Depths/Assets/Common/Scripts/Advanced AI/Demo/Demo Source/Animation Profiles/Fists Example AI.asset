@@ -18,8 +18,8 @@ MonoBehaviour:
   AnimationsUpdated: 0
   AnimationListsChanged: 0
   MissingRuntimeController: 0
-  FilePath: Assets/Emerald AI/Demo/Demo Source/Animator Controllers/Fist Example
-    AI.overrideController
+  FilePath: Assets/Common/Scripts/Advanced AI/Demo/Demo Source/Animator Controllers/Fist
+    Example AI.overrideController
   AnimatorCullingMode: 0
   WalkFoldout: 1
   RunFoldout: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   Type2IdleFoldout: 0
   Type1AttacksFoldout: 0
   Type2AttacksFoldout: 0
-  Type1EquipsFoldout: 1
+  Type1EquipsFoldout: 0
   Type2EquipsFoldout: 0
   Type1CombatAnimationsFoldout: 1
   Type2CombatAnimationsFoldout: 0

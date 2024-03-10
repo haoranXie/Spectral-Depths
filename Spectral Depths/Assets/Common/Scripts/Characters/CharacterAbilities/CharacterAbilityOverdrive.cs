@@ -24,10 +24,13 @@ namespace SpectralDepths.TopDown
 		public bool DeathSwitch = true;
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
+
+		private CharacterSelectable _characterSelectable;
 		protected override void Initialization()
 		{
 			base.Initialization();
 			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+1; }
+			_characterSelectable = GetComponent<CharacterSelectable>();
 			/*
 			switch(_character.CharacterType)
 			{
@@ -150,10 +153,14 @@ namespace SpectralDepths.TopDown
 		{
 			base.OnDeath();
 			if(DeathSwitch)
-			{
-				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
+			{	
+				//If under player control
+				if(_character.CharacterType==Character.CharacterTypes.Player){
+					//Reset into RTS mode
+					TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
+					CameraSystem.Instance.SwapToRTSCamera(this.transform);
+				}
 				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
-				CameraSystem.Instance.SwapToRTSCamera(this.transform);
 			}
 		}
 
