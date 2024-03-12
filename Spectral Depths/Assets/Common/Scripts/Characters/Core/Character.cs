@@ -865,9 +865,12 @@ namespace SpectralDepths.TopDown
 					_controller.CollisionsOff();	
 					_controller.enabled = false;
 				}
+
 			} 
       
 		}
+
+
 
 		protected virtual void OnHit()
 		{

@@ -80,6 +80,5 @@ namespace SpectralDepths.TopDown{
             DeSelected();
             SelectedCollider.gameObject.SetActive(false);
         }
-
     }
 }

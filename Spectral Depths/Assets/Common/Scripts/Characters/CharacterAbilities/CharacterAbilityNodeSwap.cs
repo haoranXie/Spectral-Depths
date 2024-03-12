@@ -139,6 +139,12 @@ namespace SpectralDepths.TopDown
 				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 				CameraSystem.Instance.SwapToRTSCamera(this.transform);
 			}
+			this.enabled=false;
 		}
-	}
+        protected override void OnRespawn()
+        {
+            base.OnRespawn();
+			this.enabled=true;
+        }
+    }
 }

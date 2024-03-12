@@ -109,7 +109,7 @@ namespace SpectralDepths.TopDown
 		protected GameObject _model;
 		protected Health _health;
 		protected CharacterMovement _characterMovement;
-		public InputManager _inputManager;
+		protected InputManager _inputManager;
 		protected Animator _animator = null;
 		protected CharacterStates _state;
 		protected SpriteRenderer _spriteRenderer;
