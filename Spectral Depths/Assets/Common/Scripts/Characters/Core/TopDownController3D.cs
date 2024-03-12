@@ -112,7 +112,7 @@ namespace SpectralDepths.TopDown
 		protected Transform _transform;
 		protected Rigidbody _rigidBody;
 		protected Collider _collider;
-		protected CharacterController _characterController;
+		public CharacterController _characterController;
 		protected float _originalColliderHeight;
 		protected Vector3 _originalColliderCenter;
 		protected Vector3 _originalSizeRaycastOrigin;
@@ -141,7 +141,7 @@ namespace SpectralDepths.TopDown
 		protected Vector3 _newVelocity;
 		protected Vector3 _lastHorizontalVelocity;
 		protected Vector3 _newHorizontalVelocity;
-		protected Vector3 _motion;
+		public Vector3 _motion;
 		protected Vector3 _idealVelocity;
 		protected Vector3 _idealDirection;
 		protected Vector3 _horizontalVelocityDelta;
@@ -172,7 +172,8 @@ namespace SpectralDepths.TopDown
 		protected Vector3 _raycastDownDirection = Vector3.down;
 		protected RaycastHit _canGoBackHeadCheck;
 		protected bool _tooSteepLastFrame;
-
+		protected CharacterMovement _characterMovement;
+		protected bool _moveController = true;
 		/// <summary>
 		/// On awake we store our various components for future use
 		/// </summary>
@@ -186,6 +187,8 @@ namespace SpectralDepths.TopDown
 			_collider = this.gameObject.GetComponent<Collider>();
 			_originalColliderHeight = _characterController.height;
 			_originalColliderCenter = _characterController.center;
+			_characterMovement = GetComponent<CharacterMovement>();
+			if(_characterMovement!=null){if(_characterMovement.MovementType == CharacterMovement.MovementTypes.RootMotion) _moveController = false;}
 		}
 
 		#region Update
@@ -359,8 +362,11 @@ namespace SpectralDepths.TopDown
 		{
 			GroundNormal.x = GroundNormal.y = GroundNormal.z = 0f;
 
-			_collisionFlags = _characterController.Move(_motion); // controller move
-
+			if(_moveController){_collisionFlags = _characterController.Move(_motion);} // controller move
+			else{
+				Vector3 motionY = new Vector3(0,_motion.y,0);
+				_collisionFlags = _characterController.Move(motionY);
+			}
 			_lastHitPoint = _hitPoint;
 			_lastGroundNormal = GroundNormal;
 		}

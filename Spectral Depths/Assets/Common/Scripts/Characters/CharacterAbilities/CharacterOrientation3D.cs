@@ -82,6 +82,31 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
 		public bool LockVerticalRotation = true;
 
+		[Header("Mouse Direction")]
+
+		/// If this is true, we'll rotate our model towards the mouse's direction
+		[Tooltip("If this is true, we'll rotate our model towards the mouse's direction")]
+		public bool ShouldRotateToFaceMouseDirection = true;
+		/// the current rotation mode
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[Tooltip("the current rotation mode")]
+		public RotationSpeeds MouseRotationSpeed = RotationSpeeds.Instant;
+		/// the speed at which to rotate towards direction (smooth and absolute only)
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[Tooltip("the speed at which to rotate towards direction (smooth and absolute only)")]
+		public float MovementTurningSensitivity = 2f;
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[Tooltip("the speed at which to rotate towards direction (smooth and absolute only)")]
+		public float RotateToFaceMouseDirectionSpeed = 10f;
+		/// the threshold after which we start rotating (absolute mode only)
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
+		public float AbsoluteThresholdMouse = 0.5f;
+		/// the threshold after which we start rotating (absolute mode only)
+		[PLCondition("ShouldRotateToFaceWeaponDirection", true)]
+		[Tooltip("the threshold after which we start rotating (absolute mode only)")]
+		public bool LockVerticalRotationMouse = true;
+
 		[Header("Animation")]
 
 		/// the speed at which the instant rotation animation parameter float resets to 0
@@ -211,7 +236,6 @@ namespace SpectralDepths.TopDown
 			ComputeRelativeSpeeds();
 		}
 
-
 		/// <summary>
 		/// Rotates the player model to face the current direction
 		/// </summary>
@@ -222,7 +246,6 @@ namespace SpectralDepths.TopDown
 			if ((RotationMode != RotationModes.MovementDirection) && (RotationMode != RotationModes.Both)) { return; }
 
 			_currentDirection = ForcedRotation || _controllerIsNull ? ForcedRotationDirection : _controller.CurrentDirection;
-
 			// if the rotation mode is instant, we simply rotate to face our direction
 			if (MovementRotationSpeed == RotationSpeeds.Instant)
 			{

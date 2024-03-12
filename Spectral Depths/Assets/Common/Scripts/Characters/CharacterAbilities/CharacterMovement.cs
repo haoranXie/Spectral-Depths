@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using SpectralDepths.Tools;
 using System.Collections.Generic;
+using UnityEngine.AI;
+using Codice.CM.Client.Differences;
 
 namespace SpectralDepths.TopDown
 {	
@@ -37,6 +39,10 @@ namespace SpectralDepths.TopDown
 		/// whether or not input should be set from another script
 		[Tooltip("whether or not input should be set from another script")]
 		public bool ScriptDrivenInput = false;
+        public enum MovementTypes { RootMotion, TopdownController };
+		/// whether or not movement should be driven by animation (rootmotion) or topdowncontroller
+		[Tooltip("whether or not input should be set from another script")]
+        public MovementTypes MovementType = MovementTypes.RootMotion;
 
 		[Header("Speed")]
 
@@ -86,7 +92,6 @@ namespace SpectralDepths.TopDown
 		/// the sfx to trigger when touching the ground
 		[Tooltip("the sfx to trigger when touching the ground")]
 		public AudioClip[] TouchTheGroundSfx;
-
 		protected float _movementSpeed;
 		protected float _horizontalMovement;
 		protected float _verticalMovement;
@@ -96,6 +101,10 @@ namespace SpectralDepths.TopDown
 		protected Vector2 _lerpedInput = Vector2.zero;
 		protected float _acceleration = 0f;
 		protected bool _walkParticlesPlaying = false;
+		protected float _directionDampTime = 0.25f;
+		protected float _movementTurningSensitivity =2f;
+		protected float _decelerationDampTime = 0.1f;
+
 
 		protected const string _speedAnimationParameterName = "Speed";
 		protected const string _walkingAnimationParameterName = "Walking";
@@ -103,13 +112,16 @@ namespace SpectralDepths.TopDown
 		protected int _speedAnimationParameter;
 		protected int _walkingAnimationParameter;
 		protected int _idleAnimationParameter;
+		protected CharacterController _characterController;
+	
 
 		/// <summary>
 		/// On Initialization, we set our movement speed to WalkSpeed.
 		/// </summary>
 		protected override void Initialization()
 		{
-			base.Initialization ();
+			base.Initialization();
+			_characterController = _controller3D._characterController;
 			ResetAbility();
 		}
 
@@ -457,8 +469,48 @@ namespace SpectralDepths.TopDown
 			{
 				_movementVector = Vector3.zero;
 			}
-			_controller.SetMovement (_movementVector);
+
+			_controller.SetMovement(_movementVector);
+			if(MovementType==MovementTypes.RootMotion){MoveCharacterRootMotion(_movementVector);}
 		} 
+
+        /// <summary>
+        /// Moves our Character by using Root Motion
+        /// </summary>
+        public void MoveCharacterRootMotion(Vector3 movementVector)
+        {
+			Vector3 velocity = Quaternion.Inverse(transform.rotation) * movementVector;
+			float angle = Mathf.Atan2(velocity.x, velocity.z) * 180.0f / Mathf.PI;
+            //Handles all of the AI's movement and speed calculations for Root Motion
+            if (!MovementForbidden)
+            {
+            	_animator.SetFloat("Direction", angle * _movementTurningSensitivity, _directionDampTime, Time.deltaTime);
+				if(_animator.GetBool("Hit"))
+				{
+                    _animator.SetFloat("Speed", 0, _decelerationDampTime, Time.deltaTime);
+                    velocity = Vector3.zero;
+				}
+				else
+				{
+					
+					switch(_movement.CurrentState)
+					{
+						case CharacterStates.MovementStates.Idle:
+							_animator.SetFloat("Speed", 0, _decelerationDampTime, Time.deltaTime);
+							velocity = Vector3.zero;
+							break;
+						case CharacterStates.MovementStates.Walking:
+                            _animator.SetFloat("Speed", 0.5f, 0.15f, Time.deltaTime);
+							break;
+						case CharacterStates.MovementStates.Running:
+							_animator.SetFloat("Speed", 1f, 0.35f, Time.deltaTime);
+							break;
+
+					}					
+				}
+            }
+        }
+
 
 		/// <summary>
 		/// Every frame, checks if we just hit the ground, and if yes, changes the state and triggers a particle effect

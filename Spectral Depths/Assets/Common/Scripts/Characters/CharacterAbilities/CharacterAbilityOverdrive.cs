@@ -4,6 +4,7 @@ using System.Collections;
 using SpectralDepths.Tools;
 using SpectralDepths.Feedbacks;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 namespace SpectralDepths.TopDown
 {
@@ -25,25 +26,35 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
 
-		private CharacterSelectable _characterSelectable;
+		protected CharacterOrientation3D _characterOrientation3D;
+		protected CharacterController _characterController;
+		protected CharacterSelectable _characterSelectable;
+		protected NavMeshAgent _navMeshAgent;
 		protected override void Initialization()
 		{
 			base.Initialization();
-			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+1; }
+			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+2; }
 			_characterSelectable = GetComponent<CharacterSelectable>();
-			/*
+			_characterController = GetComponent<CharacterController>();
+			_characterOrientation3D = GetComponent<CharacterOrientation3D>();
+			_characterController = GetComponent<CharacterController>();
+			_navMeshAgent = GetComponent<NavMeshAgent>();
+			
 			switch(_character.CharacterType)
 			{
 				//If the Character is under Player controls
 				case Character.CharacterTypes.Player:
-					SwitchToAI();
+					EmeraldModeOff();
+					CharacterModeOn();
 					break;
 				//If the Character is under AI controls
 				case Character.CharacterTypes.AI:
-					SwitchToPlayer();
+					EmeraldModeOn();
+					CharacterModeOff();
 					break;
 			}
-			*/
+			
+
 		}
         
 		public override void EarlyProcessAbility()
@@ -53,9 +64,7 @@ namespace SpectralDepths.TopDown
 			{
 				return;
 			}
-
-			//if(QuickSwapOn){QuickSwap();}
-
+			if(QuickSwapOn){QuickSwap();}
         }
 
 		protected void QuickSwap()
@@ -78,9 +87,6 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToPlayer()
 		{
-			_character.SetCharacterType(Character.CharacterTypes.Player);
-			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
-			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
 			/*
 			for(int i = 0; i<_handleWeaponList.Count;i++)
 			{
@@ -88,15 +94,17 @@ namespace SpectralDepths.TopDown
 			}
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
+			_character.SetCharacterType(Character.CharacterTypes.Player);
+			CharacterModeOn();
+			EmeraldModeOff();
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
+			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
 			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
 			CameraSystem.Instance.SwapToPlayerCamera(_character);
 		}
 
 		private void SwitchToAI()
 		{
-			_character.SetCharacterType(Character.CharacterTypes.AI);
-			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
-			RTSEvent.Trigger(RTSEventTypes.SwitchToRTS,_character,null);
 			/*
 			for(int i = 0; i<_handleWeaponList.Count;i++)
 			{
@@ -104,8 +112,14 @@ namespace SpectralDepths.TopDown
 			}
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
+			_character.SetCharacterType(Character.CharacterTypes.AI);
+			CharacterModeOff();
+			EmeraldModeOn();
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
+			RTSEvent.Trigger(RTSEventTypes.SwitchToRTS,_character,null);
 			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			CameraSystem.Instance.SwapToRTSCamera(this.transform);
+
 		}
 
 		/// <summary>
@@ -114,10 +128,10 @@ namespace SpectralDepths.TopDown
 		protected void CharacterModeOn()
 		{
 			_controller.enabled = true;
-			_controller.CollisionsOn();
+			_characterMovement.enabled=true;
+			_characterOrientation3D.enabled=true;
+			_characterController.enabled=true;
 			_controller.Reset();
-			_character.GetComponent<CharacterController>().enabled=true;
-			_character.GetComponent<CharacterMovement>().enabled = true;
 			_character.CacheAbilities();
 		}
 		/// <summary>
@@ -126,8 +140,9 @@ namespace SpectralDepths.TopDown
 		protected void CharacterModeOff()
 		{
 			_controller.enabled = false;
-			_character.GetComponent<CharacterController>().enabled=false;
-			_character.GetComponent<CharacterMovement>().enabled =false;
+			_characterMovement.enabled=false;
+			_characterOrientation3D.enabled=false;
+			_characterController.enabled=false;
 			_character.CacheAbilities();
 		}
 		/// <summary>
@@ -135,17 +150,22 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void EmeraldModeOn()
 		{
-			
+			_navMeshAgent.enabled=true;
+			_emeraldComponent.MovementComponentOn = true;
+			_emeraldComponent.BehaviorsComponentOn = true;
+			_emeraldComponent.DetectionComponentOn = true;
+			_emeraldComponent.CombatComponentOn = true;
 		}
 		/// <summary>
 		/// Disables Emelerad based controls
 		/// </summary>
 		protected void EmeraldModeOff()
 		{
-
-			_controller.enabled = false;
-			_character.GetComponent<CharacterController>().enabled=false;
-
+			_navMeshAgent.enabled=false;
+			_emeraldComponent.MovementComponentOn = false;
+			_emeraldComponent.BehaviorsComponentOn = false;
+			_emeraldComponent.DetectionComponentOn = false;
+			_emeraldComponent.CombatComponentOn = false;
 		}
 
 
