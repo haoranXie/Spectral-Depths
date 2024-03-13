@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpectralDepths.Tools;
 using Cinemachine;
+using UnityEngine.InputSystem.Controls;
 
 namespace SpectralDepths.TopDown{
     /// <summary>
@@ -86,7 +87,7 @@ namespace SpectralDepths.TopDown{
         private bool _dragPanMoveActive;
         private float _targetFieldOfView;
         private Vector3 _followOffset;
-		protected Vector2 _lerpedInput = Vector2.zero;
+		protected Vector3 _lerpedInput = Vector3.zero;
 		protected Vector3 _movementVector;
 		protected float _movementSpeed;
         protected Vector2 _currentInput;
@@ -177,14 +178,14 @@ namespace SpectralDepths.TopDown{
             else
             {
                 _acceleration = Mathf.Lerp(_acceleration, 1f, Acceleration * Time.deltaTime);
-                _lerpedInput = Vector2.ClampMagnitude(_moveDir, _acceleration);
+                _lerpedInput = Vector3.ClampMagnitude(_moveDir, _acceleration);
                 interpolationSpeed = Acceleration;
             }
 				
 			
 			_movementVector.x = _lerpedInput.x;
 			_movementVector.y = 0f;
-			_movementVector.z = _lerpedInput.y;
+			_movementVector.z = _lerpedInput.z;
 
 			if (InterpolateMovementSpeed)
 			{
@@ -206,7 +207,7 @@ namespace SpectralDepths.TopDown{
 			{
 				_movementVector = Vector3.zero;
 			}
-            Vector3 targetPosition = transform.position + _movementVector;
+            Vector3 targetPosition = transform.position + _movementVector *Time.deltaTime;
             if(MovementBounds!=null)
             {
                 if(!MovementBounds.bounds.Contains(targetPosition))
@@ -214,9 +215,8 @@ namespace SpectralDepths.TopDown{
                     return;
                 }
             }
-            Vector3 newPosition = transform.position;
             // Update the position of the object
-            transform.position = newPosition;
+            transform.position = targetPosition;
 		} 
         /// <summary>
         /// Sets camera movement on x and z axis based on input

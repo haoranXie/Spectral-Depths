@@ -29,6 +29,7 @@ namespace SpectralDepths.TopDown
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
+		protected CharacterHandleWeapon _characterHandleWeapon;
 		protected NavMeshAgent _navMeshAgent;
 		protected override void Initialization()
 		{
@@ -36,6 +37,7 @@ namespace SpectralDepths.TopDown
 			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+2; }
 			_characterSelectable = GetComponent<CharacterSelectable>();
 			_characterController = GetComponent<CharacterController>();
+			_characterHandleWeapon = GetComponent<CharacterHandleWeapon>();
 			_characterOrientation3D = GetComponent<CharacterOrientation3D>();
 			_characterController = GetComponent<CharacterController>();
 			_navMeshAgent = GetComponent<NavMeshAgent>();
@@ -87,11 +89,12 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToPlayer()
 		{
-			/*
+			
 			for(int i = 0; i<_handleWeaponList.Count;i++)
 			{
 				_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
 			}
+			/*
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
 			_character.SetCharacterType(Character.CharacterTypes.Player);
@@ -106,11 +109,13 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToAI()
 		{
-			/*
+			
 			for(int i = 0; i<_handleWeaponList.Count;i++)
 			{
 				_handleWeaponList[i].ChangeToAIVersionOfWeapon();
 			}
+
+			/*
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
 			_character.SetCharacterType(Character.CharacterTypes.AI);
@@ -130,6 +135,7 @@ namespace SpectralDepths.TopDown
 		{
 			_controller.enabled = true;
 			_characterMovement.enabled=true;
+			if(_characterHandleWeapon!=null){_characterHandleWeapon.enabled=true;}
 			_characterOrientation3D.enabled=true;
 			_characterController.enabled=true;
 			_controller.Reset();
@@ -143,6 +149,7 @@ namespace SpectralDepths.TopDown
 			_controller.enabled = false;
 			_characterMovement.enabled=false;
 			_characterOrientation3D.enabled=false;
+			if(_characterHandleWeapon!=null){_characterHandleWeapon.enabled=false;}
 			_characterController.enabled=false;
 			_character.CacheAbilities();
 		}

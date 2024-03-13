@@ -44,7 +44,7 @@ MonoBehaviour:
   Type1BlockFoldout: 0
   Type2BlockFoldout: 0
   Type1CombatWalkFoldout: 0
-  Type1CombatRunFoldout: 0
+  Type1CombatRunFoldout: 1
   Type1CombatTurnFoldout: 0
   Type2CombatWalkFoldout: 0
   Type2CombatRunFoldout: 0
@@ -253,35 +253,35 @@ MonoBehaviour:
       AnimationClip: {fileID: 7400000, guid: c3db31be38cd2444c8b58d3cde31e70e, type: 3}
       Mirror: 0
     RunLeft:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: 34cf87f11bbc57c4b9b73fdd5fa93281, type: 3}
       Mirror: 0
     RunForward:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: a7e98d51bd73b0348b47acf6a9f02766, type: 3}
       Mirror: 0
     RunRight:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: a76b11de25f4d4e4ab91d27f3603c7e7, type: 3}
       Mirror: 0
     RunBack:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: 554523467ee8d4b4ea1722aed5070b8a, type: 3}
       Mirror: 0
     RunForwardLeft:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: 67e46c627b0dc094981ffd97753ea72a, type: 3}
       Mirror: 0
     RunForwardRight:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: e33349a8bcfb33d45b046fd471f11e59, type: 3}
       Mirror: 0
     RunBackLeft:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: 3ad1df7d2c4cd6546b760c44f86275e8, type: 3}
       Mirror: 0
     RunBackRight:
-      AnimationSpeed: 1.2
+      AnimationSpeed: 1.5
       AnimationClip: {fileID: 7400000, guid: c3db31be38cd2444c8b58d3cde31e70e, type: 3}
       Mirror: 0
     TurnLeft:

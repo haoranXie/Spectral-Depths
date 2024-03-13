@@ -290,9 +290,9 @@ namespace SpectralDepths.TopDown
 		/// Does the same as UpdateAnimator but relies on Emerald AI's animation profile
 		/// </summary>
   		public virtual void UpdateAnimationProfile()
-    		{
+    	{
       
-      		}
+      	}
 
 		/// <summary>
 		/// Changes the status of the ability's permission

@@ -175,7 +175,7 @@ namespace SpectralDepths.TopDown
 		protected int _rotationSpeeddAnimationParameter;
 		protected int _yRotationOffsetAnimationParameter;
 		protected int _yRotationOffsetSmoothedAnimationParameter;
-		
+
 		/// <summary>
 		/// On init we grab our model if necessary
 		/// </summary>
@@ -343,6 +343,17 @@ namespace SpectralDepths.TopDown
 					_newWeaponQuaternion = Quaternion.Slerp(WeaponRotatingModel.transform.rotation, _tmpRotation, Time.deltaTime * RotateToFaceWeaponDirectionSpeed);
 				}
 			}
+			if(_character.UseEmeraldAI)
+			{
+            	_animator.SetBool("Combat State Active", true);
+            	_animator.SetBool("Player Controls", true);
+                _animator.SetInteger("Weapon Type State", 1);
+				Vector3 speedoru = _relativeSpeed.normalized;
+				_animator.SetFloat("RemappedForwardSpeedNormalized",speedoru.z);
+				_animator.SetFloat("RemappedLateralSpeedNormalized",speedoru.x);	
+				//_animator.SetFloat("RemappedForwardSpeedNormalized",_characterMovement._normalizedInput.y);
+				//_animator.SetFloat("RemappedLateralSpeedNormalized",_characterMovement._normalizedInput.x);
+			}
 		}
 
 		/// <summary>
@@ -370,7 +381,8 @@ namespace SpectralDepths.TopDown
             
 			if (Time.deltaTime != 0f)
 			{
-				_newSpeed = (this.transform.position - _positionLastFrame) / Time.deltaTime;
+				_newSpeed = _characterMovement._movementVector;
+				//_newSpeed = (this.transform.position - _positionLastFrame) / Time.deltaTime;
 			}
 
 			// relative speed

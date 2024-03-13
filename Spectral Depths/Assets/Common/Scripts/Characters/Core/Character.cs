@@ -621,6 +621,15 @@ namespace SpectralDepths.TopDown
 						ability.UpdateAnimator();
 					}
 				}
+			} else if(UseEmeraldAI)
+			{
+				foreach (CharacterAbility ability in _characterAbilities)
+				{
+					if (ability.enabled && ability.AbilityInitialized)
+					{	
+						ability.UpdateAnimationProfile();
+					}
+				}	
 			}
 		}
 		
