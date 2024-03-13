@@ -97,6 +97,7 @@ namespace SpectralDepths.TopDown
 			_character.SetCharacterType(Character.CharacterTypes.Player);
 			CharacterModeOn();
 			EmeraldModeOff();
+			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();}
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
 			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
 			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}

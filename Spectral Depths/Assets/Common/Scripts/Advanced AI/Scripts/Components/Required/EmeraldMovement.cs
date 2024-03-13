@@ -637,14 +637,7 @@ namespace EmeraldAI
                     OrderedWaypointIndex++;
                     if(OrderedWaypointIndex>=OrderedWaypointsList.Count)
                     {
-                        if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1];}
-                        OrderedWaypointsList.Clear();
-                        ReachedDestination = true;
-                        LockTurning = false;
-                        if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
-                        if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
-                        OnReachedDestination?.Invoke();
-                        OnReachedOrderedWaypoint?.Invoke();
+                        ReachedOrderedWaypoint();
                     }
                     if (m_NavMeshAgent.enabled && OrderedWaypointIndex<OrderedWaypointsList.Count)
                     {
@@ -654,6 +647,21 @@ namespace EmeraldAI
             }
             CheckPath(m_NavMeshAgent.destination);             
         }
+        /// <summary>
+        /// Used when reaching ordered waypoint
+        /// </summary>
+        public void ReachedOrderedWaypoint()
+        {
+            if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1];}
+            OrderedWaypointsList.Clear();
+            ReachedDestination = true;
+            LockTurning = false;
+            if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
+            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
+            OnReachedDestination?.Invoke();
+            OnReachedOrderedWaypoint?.Invoke();
+        }
+
         /// <summary>
         /// Handles our AI's waypoints when using the Waypoint Wander Type
         /// </summary>

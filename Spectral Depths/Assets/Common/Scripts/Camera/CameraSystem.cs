@@ -18,10 +18,24 @@ namespace SpectralDepths.TopDown{
 		public CinemachineVirtualCamera RTSCamera;
 		[Tooltip("Camera for following player topdown action")]
 		public CinemachineVirtualCamera PlayerCamera;
-        [Header("Camera Movement Settings")]
+		[Header("Speed")]
 		/// movespeed of camera
 		[Tooltip("horizontal movespeed of camera")]
-		public float MoveSpeed = 14f;
+		public float MovementSpeed = 14f;
+		/// the acceleration to apply to the current speed / 0f : no acceleration, instant full speed
+		[Tooltip("the acceleration to apply to the current speed / 0f : no acceleration, instant full speed")]
+		public float Acceleration = 10f;
+		/// the deceleration to apply to the current speed / 0f : no deceleration, instant stop
+		[Tooltip("the deceleration to apply to the current speed / 0f : no deceleration, instant stop")]
+		public float Deceleration = 10f;
+		/// whether or not to interpolate movement speed
+		[Tooltip("whether or not to interpolate movement speed")]
+		public bool InterpolateMovementSpeed = false;
+		/// the speed threshold after which the character is not considered idle anymore
+		[Tooltip("the speed threshold after which the character is not considered idle anymore")]
+		public float IdleThreshold = 0.05f;
+
+        [Header("Camera Movement Settings")]
 		[Tooltip("rotatespeed of camera")]
 		public float RotateSpeed = 75f;
 		[Tooltip("DragPanSpeedMult of camera")]
@@ -61,7 +75,7 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("Enable/Disable Keyboard Horizontal Movement")]
         public bool UseKeyboardHorizontal = true;
 
-
+		private float _acceleration = 0f;
 		private InputManager _linkedInputManager;
         private float _horizontalInput;
         private float _verticalInput;
@@ -72,6 +86,12 @@ namespace SpectralDepths.TopDown{
         private bool _dragPanMoveActive;
         private float _targetFieldOfView;
         private Vector3 _followOffset;
+		protected Vector2 _lerpedInput = Vector2.zero;
+		protected Vector3 _movementVector;
+		protected float _movementSpeed;
+        protected Vector2 _currentInput;
+
+
         protected override void Awake(){
             base.Awake();
             SetInputManager();
@@ -117,11 +137,14 @@ namespace SpectralDepths.TopDown{
 
         private void MoveCamera()
         {
+            SetMovement();
+            /*
             _moveDir = transform.forward * _inputDir.z + transform.right * _inputDir.x;
             _moveDir = _moveDir.normalized;
+
             //Moves the camera in Input Direction mutliplied by MoveSpeed
             transform.eulerAngles += new Vector3 (0,_rotateDir*RotateSpeed*Time.deltaTime,0);
-            Vector3 targetPosition = transform.position + _moveDir * MoveSpeed * Time.deltaTime;
+            Vector3 targetPosition = transform.position + _moveDir * MovementSpeed * Time.deltaTime;
             if(MovementBounds!=null)
             {
                 if(!MovementBounds.bounds.Contains(targetPosition))
@@ -131,8 +154,70 @@ namespace SpectralDepths.TopDown{
             }
             transform.position = Vector3.Lerp(transform.position, targetPosition, 0.9f); // You can adjust the interpolation factor (0.1f) for smoother or quicker movement
             //Turns the camera based on Rotate Input Direction
+            */
         }
+		protected virtual void SetMovement()
+		{
+			_movementVector = Vector3.zero;
+			_currentInput = Vector2.zero;
 
+            _moveDir = transform.forward * _inputDir.z + transform.right * _inputDir.x;
+            _currentInput = _moveDir;
+            _moveDir = _moveDir.normalized;
+			float interpolationSpeed = 1f;
+            
+			_lerpedInput = _moveDir;
+
+            if (_moveDir.magnitude == 0)
+            {
+                _acceleration = Mathf.Lerp(_acceleration, 0f, Deceleration * Time.deltaTime);
+                _lerpedInput = Vector2.Lerp(_lerpedInput, _lerpedInput * _acceleration, Time.deltaTime * Deceleration);
+                interpolationSpeed = Deceleration;
+            }
+            else
+            {
+                _acceleration = Mathf.Lerp(_acceleration, 1f, Acceleration * Time.deltaTime);
+                _lerpedInput = Vector2.ClampMagnitude(_moveDir, _acceleration);
+                interpolationSpeed = Acceleration;
+            }
+				
+			
+			_movementVector.x = _lerpedInput.x;
+			_movementVector.y = 0f;
+			_movementVector.z = _lerpedInput.y;
+
+			if (InterpolateMovementSpeed)
+			{
+				_movementSpeed = Mathf.Lerp(_movementSpeed,  MovementSpeed, interpolationSpeed * Time.deltaTime);
+			}
+			else
+			{
+				_movementSpeed = MovementSpeed;
+			}
+
+			_movementVector *= _movementSpeed;
+
+			if (_movementVector.magnitude > MovementSpeed)
+			{
+				_movementVector = Vector3.ClampMagnitude(_movementVector, MovementSpeed);
+			}
+
+			if ((_currentInput.magnitude <= IdleThreshold) && (_movementVector.magnitude < IdleThreshold))
+			{
+				_movementVector = Vector3.zero;
+			}
+            Vector3 targetPosition = transform.position + _movementVector;
+            if(MovementBounds!=null)
+            {
+                if(!MovementBounds.bounds.Contains(targetPosition))
+                {
+                    return;
+                }
+            }
+            Vector3 newPosition = transform.position;
+            // Update the position of the object
+            transform.position = newPosition;
+		} 
         /// <summary>
         /// Sets camera movement on x and z axis based on input
         /// </summary>

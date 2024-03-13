@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEditor.Animations;
 using System.Linq;
+using System.Diagnostics;
 
 namespace EmeraldAI.Utility
 {
@@ -233,6 +234,11 @@ namespace EmeraldAI.Utility
                     m_AnimatorController.layers[0].stateMachine.states[i].state.mirror = EmeraldAnimationComponent.Type1Animations.WalkBack.Mirror;
                     m_AnimatorController.layers[0].stateMachine.states[i].state.speed = EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationSpeed;
                 }
+                else if (m_AnimatorController.layers[0].stateMachine.states[i].state.name == "Player Idle (Type 1)")
+                {
+                    m_AnimatorController.layers[0].stateMachine.states[i].state.motion = EmeraldAnimationComponent.Type1Animations.IdleStationary.AnimationClip;
+                    m_AnimatorController.layers[0].stateMachine.states[i].state.speed = EmeraldAnimationComponent.Type1Animations.IdleStationary.AnimationSpeed;
+                }
                 else if (m_AnimatorController.layers[0].stateMachine.states[i].state.name == "Block (Type 1)")
                 {
                     m_AnimatorController.layers[0].stateMachine.states[i].state.motion = EmeraldAnimationComponent.Type1Animations.BlockIdle.AnimationClip;
@@ -252,6 +258,11 @@ namespace EmeraldAI.Utility
                 {
                     m_AnimatorController.layers[0].stateMachine.states[i].state.motion = EmeraldAnimationComponent.Type1Animations.Recoil.AnimationClip;
                     m_AnimatorController.layers[0].stateMachine.states[i].state.speed = EmeraldAnimationComponent.Type1Animations.Recoil.AnimationSpeed;
+                }
+                else if (m_AnimatorController.layers[0].stateMachine.states[i].state.name == "Stunned (Type 1)")
+                {
+                    m_AnimatorController.layers[0].stateMachine.states[i].state.motion = EmeraldAnimationComponent.Type1Animations.Stunned.AnimationClip;
+                    m_AnimatorController.layers[0].stateMachine.states[i].state.speed = EmeraldAnimationComponent.Type1Animations.Stunned.AnimationSpeed;
                 }
                 else if (m_AnimatorController.layers[0].stateMachine.states[i].state.name == "Stunned (Type 1)")
                 {
@@ -353,7 +364,154 @@ namespace EmeraldAI.Utility
             CombatRunRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunRight.Mirror;
 
             SerializedCombatRunBlendTree.ApplyModifiedProperties();
+
+            
+            //Get and assign Player 1 Walk Blend Tree animations
+            AnimatorState m_StateMachine_PlayerWalking = m_AnimatorController.layers[0].stateMachine.states.ToList().Find(x => x.state.name == "Player Walking (Type 1)").state;
+            
+            BlendTree PlayerWalkingBlendTree = m_StateMachine_PlayerWalking.motion as BlendTree;
+            var SerializedPlayerWalkingBlendTreeRef = new SerializedObject(PlayerWalkingBlendTree);
+            var PlayerWalkingBlendTreeChildren = SerializedPlayerWalkingBlendTreeRef.FindProperty("m_Childs");
+            //Walk Forward
+            var PlayerWalkMotionSlot1 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(0);
+            var PlayerWalkForwardAnimation = PlayerWalkMotionSlot1.FindPropertyRelative("m_Motion");
+            var PlayerWalkForwardAnimationSpeed = PlayerWalkMotionSlot1.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkForwardMirror = PlayerWalkMotionSlot1.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkForward.AnimationSpeed != 0) PlayerWalkForwardAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkForward.AnimationSpeed;
+            PlayerWalkForwardAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkForward.AnimationClip;
+            PlayerWalkForwardMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkForward.Mirror;
+            //Walk Left
+            var PlayerWalkMotionSlot2 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(1);
+            var PlayerWalkLeftAnimation = PlayerWalkMotionSlot2.FindPropertyRelative("m_Motion");
+            var PlayerWalkLeftAnimationSpeed = PlayerWalkMotionSlot2.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkLeftMirror = PlayerWalkMotionSlot2.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkLeft.AnimationSpeed != 0) PlayerWalkLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkLeft.AnimationSpeed;
+            PlayerWalkLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkLeft.AnimationClip;
+            PlayerWalkLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkLeft.Mirror;
+            //Walk Right
+            var PlayerWalkMotionSlot3 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(2);
+            var PlayerWalkRightAnimation = PlayerWalkMotionSlot3.FindPropertyRelative("m_Motion");
+            var PlayerWalkRightAnimationSpeed = PlayerWalkMotionSlot3.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkRightMirror = PlayerWalkMotionSlot3.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkRight.AnimationSpeed != 0) PlayerWalkRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkRight.AnimationSpeed;
+            PlayerWalkRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkRight.AnimationClip;
+            PlayerWalkRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkRight.Mirror;
+            //Walk Forward Left
+            var PlayerWalkMotionSlot4 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(3);
+            var PlayerWalkForwardLeftAnimation = PlayerWalkMotionSlot4.FindPropertyRelative("m_Motion");
+            var PlayerWalkForwardLeftAnimationSpeed = PlayerWalkMotionSlot4.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkForwardLeftMirror = PlayerWalkMotionSlot4.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.AnimationSpeed != 0) PlayerWalkForwardLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.AnimationSpeed;
+            PlayerWalkForwardLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.AnimationClip;
+            PlayerWalkForwardLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.Mirror;
+            //Walk Forward Right
+            var PlayerWalkMotionSlot5 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(4);
+            var PlayerWalkForwardRightAnimation = PlayerWalkMotionSlot5.FindPropertyRelative("m_Motion");
+            var PlayerWalkForwardRightAnimationSpeed = PlayerWalkMotionSlot5.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkForwardRightMirror = PlayerWalkMotionSlot5.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkForwardRight.AnimationSpeed != 0) PlayerWalkForwardRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkForwardRight.AnimationSpeed;
+            PlayerWalkForwardRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkForwardRight.AnimationClip;
+            PlayerWalkForwardRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkForwardRight.Mirror;
+            //Walk Backward Left
+            var PlayerWalkMotionSlot6 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(5);
+            var PlayerWalkBackLeftAnimation = PlayerWalkMotionSlot6.FindPropertyRelative("m_Motion");
+            var PlayerWalkBackLeftAnimationSpeed = PlayerWalkMotionSlot6.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkBackLeftMirror = PlayerWalkMotionSlot6.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkBackLeft.AnimationSpeed != 0) PlayerWalkBackLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkBackLeft.AnimationSpeed;
+            PlayerWalkBackLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkBackLeft.AnimationClip;
+            PlayerWalkBackLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkBackLeft.Mirror;
+            //Walk Backward Right
+            var PlayerWalkMotionSlot7 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(6);
+            var PlayerWalkBackRightAnimation = PlayerWalkMotionSlot7.FindPropertyRelative("m_Motion");
+            var PlayerWalkBackRightAnimationSpeed = PlayerWalkMotionSlot7.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkBackRightMirror = PlayerWalkMotionSlot7.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkBackRight.AnimationSpeed != 0) PlayerWalkBackRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkBackRight.AnimationSpeed;
+            PlayerWalkBackRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkBackRight.AnimationClip;
+            PlayerWalkBackRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkBackRight.Mirror;
+            //Walk Backward
+            var PlayerWalkMotionSlot8 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(7);
+            var PlayerWalkBackAnimation = PlayerWalkMotionSlot8.FindPropertyRelative("m_Motion");
+            var PlayerWalkBackAnimationSpeed = PlayerWalkMotionSlot8.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkBackMirror = PlayerWalkMotionSlot8.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationSpeed != 0) PlayerWalkBackAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationSpeed;
+            PlayerWalkBackAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationClip;
+            PlayerWalkBackMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkBack.Mirror;
+            
+            SerializedPlayerWalkingBlendTreeRef.ApplyModifiedProperties();
+
+            //Get and assign Player 1 Run Blend Tree animations
+            AnimatorState m_StateMachine_PlayerRunning = m_AnimatorController.layers[0].stateMachine.states.ToList().Find(x => x.state.name == "Player Running (Type 1)").state;
+            BlendTree PlayerRunningBlendTree = m_StateMachine_PlayerRunning.motion as BlendTree;
+            var SerializedPlayerRunningBlendTreeRef = new SerializedObject(PlayerRunningBlendTree);
+            var PlayerRunningBlendTreeChildren = SerializedPlayerRunningBlendTreeRef.FindProperty("m_Childs");
+            //Walk Forward
+            var PlayerRunMotionSlot1 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(0);
+            var PlayerRunForwardAnimation = PlayerRunMotionSlot1.FindPropertyRelative("m_Motion");
+            var PlayerRunForwardAnimationSpeed = PlayerRunMotionSlot1.FindPropertyRelative("m_TimeScale");
+            var PlayerRunForwardMirror = PlayerRunMotionSlot1.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunForward.AnimationSpeed != 0) PlayerRunForwardAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunForward.AnimationSpeed;
+            PlayerRunForwardAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunForward.AnimationClip;
+            PlayerRunForwardMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunForward.Mirror;
+            //Walk Left
+            var PlayerRunMotionSlot2 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(1);
+            var PlayerRunLeftAnimation = PlayerRunMotionSlot2.FindPropertyRelative("m_Motion");
+            var PlayerRunLeftAnimationSpeed = PlayerRunMotionSlot2.FindPropertyRelative("m_TimeScale");
+            var PlayerRunLeftMirror = PlayerRunMotionSlot2.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunLeft.AnimationSpeed != 0) PlayerRunLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunLeft.AnimationSpeed;
+            PlayerRunLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunLeft.AnimationClip;
+            PlayerRunLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunLeft.Mirror;
+            //Walk Right
+            var PlayerRunMotionSlot3 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(2);
+            var PlayerRunRightAnimation = PlayerRunMotionSlot3.FindPropertyRelative("m_Motion");
+            var PlayerRunRightAnimationSpeed = PlayerRunMotionSlot3.FindPropertyRelative("m_TimeScale");
+            var PlayerRunRightMirror = PlayerRunMotionSlot3.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunRight.AnimationSpeed != 0) PlayerRunRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunRight.AnimationSpeed;
+            PlayerRunRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunRight.AnimationClip;
+            PlayerRunRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunRight.Mirror;
+            //Walk Forward Left
+            var PlayerRunMotionSlot4 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(3);
+            var PlayerRunForwardLeftAnimation = PlayerRunMotionSlot4.FindPropertyRelative("m_Motion");
+            var PlayerRunForwardLeftAnimationSpeed = PlayerRunMotionSlot4.FindPropertyRelative("m_TimeScale");
+            var PlayerRunForwardLeftMirror = PlayerRunMotionSlot4.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunForwardLeft.AnimationSpeed != 0) PlayerRunForwardLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunForwardLeft.AnimationSpeed;
+            PlayerRunForwardLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunForwardLeft.AnimationClip;
+            PlayerRunForwardLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunForwardLeft.Mirror;
+            //Walk Forward Right
+            var PlayerRunMotionSlot5 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(4);
+            var PlayerRunForwardRightAnimation = PlayerRunMotionSlot5.FindPropertyRelative("m_Motion");
+            var PlayerRunForwardRightAnimationSpeed = PlayerRunMotionSlot5.FindPropertyRelative("m_TimeScale");
+            var PlayerRunForwardRightMirror = PlayerRunMotionSlot5.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunForwardRight.AnimationSpeed != 0) PlayerRunForwardRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunForwardRight.AnimationSpeed;
+            PlayerRunForwardRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunForwardRight.AnimationClip;
+            PlayerRunForwardRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunForwardRight.Mirror;
+            //Walk Backward Left
+            var PlayerRunMotionSlot6 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(5);
+            var PlayerRunBackLeftAnimation = PlayerRunMotionSlot6.FindPropertyRelative("m_Motion");
+            var PlayerRunBackLeftAnimationSpeed = PlayerRunMotionSlot6.FindPropertyRelative("m_TimeScale");
+            var PlayerRunBackLeftMirror = PlayerRunMotionSlot6.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunBackLeft.AnimationSpeed != 0) PlayerRunBackLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunBackLeft.AnimationSpeed;
+            PlayerRunBackLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunBackLeft.AnimationClip;
+            PlayerRunBackLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunBackLeft.Mirror;
+            //Walk Backward Right
+            var PlayerRunMotionSlot7 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(6);
+            var PlayerRunBackRightAnimation = PlayerRunMotionSlot7.FindPropertyRelative("m_Motion");
+            var PlayerRunBackRightAnimationSpeed = PlayerRunMotionSlot7.FindPropertyRelative("m_TimeScale");
+            var PlayerRunBackRightMirror = PlayerRunMotionSlot7.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunBackRight.AnimationSpeed != 0) PlayerRunBackRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunBackRight.AnimationSpeed;
+            PlayerRunBackRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunBackRight.AnimationClip;
+            PlayerRunBackRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunBackRight.Mirror;
+            //Walk Backward
+            var PlayerRunMotionSlot8 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(7);
+            var PlayerRunBackAnimation = PlayerRunMotionSlot8.FindPropertyRelative("m_Motion");
+            var PlayerRunBackAnimationSpeed = PlayerRunMotionSlot8.FindPropertyRelative("m_TimeScale");
+            var PlayerRunBackMirror = PlayerRunMotionSlot8.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunBack.AnimationSpeed != 0) PlayerRunBackAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunBack.AnimationSpeed;
+            PlayerRunBackAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunBack.AnimationClip;
+            PlayerRunBackMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunBack.Mirror;
+
+            SerializedPlayerRunningBlendTreeRef.ApplyModifiedProperties();
         }
+        
 
         /// <summary>
         /// Assigns all type 2 weapon type animations to the Animator Controller.
@@ -421,6 +579,11 @@ namespace EmeraldAI.Utility
                 {
                     m_AnimatorController.layers[0].stateMachine.states[i].state.motion = EmeraldAnimationComponent.Type2Animations.IdleWarning.AnimationClip;
                     m_AnimatorController.layers[0].stateMachine.states[i].state.speed = EmeraldAnimationComponent.Type2Animations.IdleWarning.AnimationSpeed;
+                }
+                else if (m_AnimatorController.layers[0].stateMachine.states[i].state.name == "Player Idle (Type 2)")
+                {
+                    m_AnimatorController.layers[0].stateMachine.states[i].state.motion = EmeraldAnimationComponent.Type2Animations.IdleStationary.AnimationClip;
+                    m_AnimatorController.layers[0].stateMachine.states[i].state.speed = EmeraldAnimationComponent.Type2Animations.IdleStationary.AnimationSpeed;
                 }
                 else if (m_AnimatorController.layers[0].stateMachine.states[i].state.name == "Recoil (Type 2)")
                 {
@@ -527,6 +690,151 @@ namespace EmeraldAI.Utility
             CombatRunRightMirror.boolValue = EmeraldAnimationComponent.Type2Animations.RunRight.Mirror;
 
             SerializedCombatRunBlendTree.ApplyModifiedProperties();
+            
+            //Get and assign Player 1 Walk Blend Tree animations
+            AnimatorState m_StateMachine_PlayerWalking = m_AnimatorController.layers[0].stateMachine.states.ToList().Find(x => x.state.name == "Player Walking (Type 2)").state;
+            BlendTree PlayerWalkingBlendTree = m_StateMachine_PlayerWalking.motion as BlendTree;
+            var SerializedPlayerWalkingBlendTreeRef = new SerializedObject(PlayerWalkingBlendTree);
+            var PlayerWalkingBlendTreeChildren = SerializedPlayerWalkingBlendTreeRef.FindProperty("m_Childs");
+            //Walk Forward
+            var PlayerWalkMotionSlot1 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(0);
+            var PlayerWalkForwardAnimation = PlayerWalkMotionSlot1.FindPropertyRelative("m_Motion");
+            var PlayerWalkForwardAnimationSpeed = PlayerWalkMotionSlot1.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkForwardMirror = PlayerWalkMotionSlot1.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkForward.AnimationSpeed != 0) PlayerWalkForwardAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkForward.AnimationSpeed;
+            PlayerWalkForwardAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkForward.AnimationClip;
+            PlayerWalkForwardMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkForward.Mirror;
+            //Walk Left
+            var PlayerWalkMotionSlot2 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(1);
+            var PlayerWalkLeftAnimation = PlayerWalkMotionSlot2.FindPropertyRelative("m_Motion");
+            var PlayerWalkLeftAnimationSpeed = PlayerWalkMotionSlot2.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkLeftMirror = PlayerWalkMotionSlot2.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkLeft.AnimationSpeed != 0) PlayerWalkLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkLeft.AnimationSpeed;
+            PlayerWalkLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkLeft.AnimationClip;
+            PlayerWalkLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkLeft.Mirror;
+            //Walk Right
+            var PlayerWalkMotionSlot3 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(2);
+            var PlayerWalkRightAnimation = PlayerWalkMotionSlot3.FindPropertyRelative("m_Motion");
+            var PlayerWalkRightAnimationSpeed = PlayerWalkMotionSlot3.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkRightMirror = PlayerWalkMotionSlot3.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkRight.AnimationSpeed != 0) PlayerWalkRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkRight.AnimationSpeed;
+            PlayerWalkRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkRight.AnimationClip;
+            PlayerWalkRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkRight.Mirror;
+            //Walk Forward Left
+            var PlayerWalkMotionSlot4 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(3);
+            var PlayerWalkForwardLeftAnimation = PlayerWalkMotionSlot4.FindPropertyRelative("m_Motion");
+            var PlayerWalkForwardLeftAnimationSpeed = PlayerWalkMotionSlot4.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkForwardLeftMirror = PlayerWalkMotionSlot4.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.AnimationSpeed != 0) PlayerWalkForwardLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.AnimationSpeed;
+            PlayerWalkForwardLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.AnimationClip;
+            PlayerWalkForwardLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkForwardLeft.Mirror;
+            //Walk Forward Right
+            var PlayerWalkMotionSlot5 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(4);
+            var PlayerWalkForwardRightAnimation = PlayerWalkMotionSlot5.FindPropertyRelative("m_Motion");
+            var PlayerWalkForwardRightAnimationSpeed = PlayerWalkMotionSlot5.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkForwardRightMirror = PlayerWalkMotionSlot5.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkForwardRight.AnimationSpeed != 0) PlayerWalkForwardRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkForwardRight.AnimationSpeed;
+            PlayerWalkForwardRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkForwardRight.AnimationClip;
+            PlayerWalkForwardRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkForwardRight.Mirror;
+            //Walk Backward Left
+            var PlayerWalkMotionSlot6 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(5);
+            var PlayerWalkBackLeftAnimation = PlayerWalkMotionSlot6.FindPropertyRelative("m_Motion");
+            var PlayerWalkBackLeftAnimationSpeed = PlayerWalkMotionSlot6.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkBackLeftMirror = PlayerWalkMotionSlot6.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkBackLeft.AnimationSpeed != 0) PlayerWalkBackLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkBackLeft.AnimationSpeed;
+            PlayerWalkBackLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkBackLeft.AnimationClip;
+            PlayerWalkBackLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkBackLeft.Mirror;
+            //Walk Backward Right
+            var PlayerWalkMotionSlot7 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(6);
+            var PlayerWalkBackRightAnimation = PlayerWalkMotionSlot7.FindPropertyRelative("m_Motion");
+            var PlayerWalkBackRightAnimationSpeed = PlayerWalkMotionSlot7.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkBackRightMirror = PlayerWalkMotionSlot7.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkBackRight.AnimationSpeed != 0) PlayerWalkBackRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkBackRight.AnimationSpeed;
+            PlayerWalkBackRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkBackRight.AnimationClip;
+            PlayerWalkBackRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkBackRight.Mirror;
+            //Walk Backward
+            var PlayerWalkMotionSlot8 = PlayerWalkingBlendTreeChildren.GetArrayElementAtIndex(7);
+            var PlayerWalkBackAnimation = PlayerWalkMotionSlot8.FindPropertyRelative("m_Motion");
+            var PlayerWalkBackAnimationSpeed = PlayerWalkMotionSlot8.FindPropertyRelative("m_TimeScale");
+            var PlayerWalkBackMirror = PlayerWalkMotionSlot8.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationSpeed != 0) PlayerWalkBackAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationSpeed;
+            PlayerWalkBackAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.WalkBack.AnimationClip;
+            PlayerWalkBackMirror.boolValue = EmeraldAnimationComponent.Type1Animations.WalkBack.Mirror;
+            
+            SerializedPlayerWalkingBlendTreeRef.ApplyModifiedProperties();
+
+            //Get and assign Player 1 Run Blend Tree animations
+            AnimatorState m_StateMachine_PlayerRunning = m_AnimatorController.layers[0].stateMachine.states.ToList().Find(x => x.state.name == "Player Running (Type 2)").state;
+            BlendTree PlayerRunningBlendTree = m_StateMachine_PlayerRunning.motion as BlendTree;
+            var SerializedPlayerRunningBlendTreeRef = new SerializedObject(PlayerRunningBlendTree);
+            var PlayerRunningBlendTreeChildren = SerializedPlayerRunningBlendTreeRef.FindProperty("m_Childs");
+            //Walk Forward
+            var PlayerRunMotionSlot1 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(0);
+            var PlayerRunForwardAnimation = PlayerRunMotionSlot1.FindPropertyRelative("m_Motion");
+            var PlayerRunForwardAnimationSpeed = PlayerRunMotionSlot1.FindPropertyRelative("m_TimeScale");
+            var PlayerRunForwardMirror = PlayerRunMotionSlot1.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunForward.AnimationSpeed != 0) PlayerRunForwardAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunForward.AnimationSpeed;
+            PlayerRunForwardAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunForward.AnimationClip;
+            PlayerRunForwardMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunForward.Mirror;
+            //Walk Left
+            var PlayerRunMotionSlot2 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(1);
+            var PlayerRunLeftAnimation = PlayerRunMotionSlot2.FindPropertyRelative("m_Motion");
+            var PlayerRunLeftAnimationSpeed = PlayerRunMotionSlot2.FindPropertyRelative("m_TimeScale");
+            var PlayerRunLeftMirror = PlayerRunMotionSlot2.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunLeft.AnimationSpeed != 0) PlayerRunLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunLeft.AnimationSpeed;
+            PlayerRunLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunLeft.AnimationClip;
+            PlayerRunLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunLeft.Mirror;
+            //Walk Right
+            var PlayerRunMotionSlot3 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(2);
+            var PlayerRunRightAnimation = PlayerRunMotionSlot3.FindPropertyRelative("m_Motion");
+            var PlayerRunRightAnimationSpeed = PlayerRunMotionSlot3.FindPropertyRelative("m_TimeScale");
+            var PlayerRunRightMirror = PlayerRunMotionSlot3.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunRight.AnimationSpeed != 0) PlayerRunRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunRight.AnimationSpeed;
+            PlayerRunRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunRight.AnimationClip;
+            PlayerRunRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunRight.Mirror;
+            //Walk Forward Left
+            var PlayerRunMotionSlot4 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(3);
+            var PlayerRunForwardLeftAnimation = PlayerRunMotionSlot4.FindPropertyRelative("m_Motion");
+            var PlayerRunForwardLeftAnimationSpeed = PlayerRunMotionSlot4.FindPropertyRelative("m_TimeScale");
+            var PlayerRunForwardLeftMirror = PlayerRunMotionSlot4.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunForwardLeft.AnimationSpeed != 0) PlayerRunForwardLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunForwardLeft.AnimationSpeed;
+            PlayerRunForwardLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunForwardLeft.AnimationClip;
+            PlayerRunForwardLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunForwardLeft.Mirror;
+            //Walk Forward Right
+            var PlayerRunMotionSlot5 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(4);
+            var PlayerRunForwardRightAnimation = PlayerRunMotionSlot5.FindPropertyRelative("m_Motion");
+            var PlayerRunForwardRightAnimationSpeed = PlayerRunMotionSlot5.FindPropertyRelative("m_TimeScale");
+            var PlayerRunForwardRightMirror = PlayerRunMotionSlot5.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunForwardRight.AnimationSpeed != 0) PlayerRunForwardRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunForwardRight.AnimationSpeed;
+            PlayerRunForwardRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunForwardRight.AnimationClip;
+            PlayerRunForwardRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunForwardRight.Mirror;
+            //Walk Backward Left
+            var PlayerRunMotionSlot6 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(5);
+            var PlayerRunBackLeftAnimation = PlayerRunMotionSlot6.FindPropertyRelative("m_Motion");
+            var PlayerRunBackLeftAnimationSpeed = PlayerRunMotionSlot6.FindPropertyRelative("m_TimeScale");
+            var PlayerRunBackLeftMirror = PlayerRunMotionSlot6.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunBackLeft.AnimationSpeed != 0) PlayerRunBackLeftAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunBackLeft.AnimationSpeed;
+            PlayerRunBackLeftAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunBackLeft.AnimationClip;
+            PlayerRunBackLeftMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunBackLeft.Mirror;
+            //Walk Backward Right
+            var PlayerRunMotionSlot7 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(6);
+            var PlayerRunBackRightAnimation = PlayerRunMotionSlot7.FindPropertyRelative("m_Motion");
+            var PlayerRunBackRightAnimationSpeed = PlayerRunMotionSlot7.FindPropertyRelative("m_TimeScale");
+            var PlayerRunBackRightMirror = PlayerRunMotionSlot7.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunBackRight.AnimationSpeed != 0) PlayerRunBackRightAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunBackRight.AnimationSpeed;
+            PlayerRunBackRightAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunBackRight.AnimationClip;
+            PlayerRunBackRightMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunBackRight.Mirror;
+            //Walk Backward
+            var PlayerRunMotionSlot8 = PlayerRunningBlendTreeChildren.GetArrayElementAtIndex(7);
+            var PlayerRunBackAnimation = PlayerRunMotionSlot8.FindPropertyRelative("m_Motion");
+            var PlayerRunBackAnimationSpeed = PlayerRunMotionSlot8.FindPropertyRelative("m_TimeScale");
+            var PlayerRunBackMirror = PlayerRunMotionSlot8.FindPropertyRelative("m_Mirror");
+            if (EmeraldAnimationComponent.Type1Animations.RunBack.AnimationSpeed != 0) PlayerRunBackAnimationSpeed.floatValue = EmeraldAnimationComponent.Type1Animations.RunBack.AnimationSpeed;
+            PlayerRunBackAnimation.objectReferenceValue = EmeraldAnimationComponent.Type1Animations.RunBack.AnimationClip;
+            PlayerRunBackMirror.boolValue = EmeraldAnimationComponent.Type1Animations.RunBack.Mirror;
+
+            SerializedPlayerRunningBlendTreeRef.ApplyModifiedProperties();
+            
         }
     }
 }

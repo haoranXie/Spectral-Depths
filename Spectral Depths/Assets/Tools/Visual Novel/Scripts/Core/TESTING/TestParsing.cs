@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TESTING
 {
-    public class NewBehaviourScript : MonoBehaviour
+    public class TestParsing : MonoBehaviour
     {
         //Drog text files in inspector to change what to parse
         [SerializeField] private TextAsset file;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fists Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: a2d769306054dd140a1a00c46dee9bc3, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 3a63282228316424d8e81722f620d1c5, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
@@ -21,11 +21,11 @@ MonoBehaviour:
   FilePath: Assets/Common/Scripts/Advanced AI/Demo/Demo Source/Animator Controllers/Fist
     Example AI.overrideController
   AnimatorCullingMode: 0
-  WalkFoldout: 1
+  WalkFoldout: 0
   RunFoldout: 0
   TurnFoldout: 0
   NonCombatDeathFoldout: 0
-  NonCombatAnimationsFoldout: 0
+  NonCombatAnimationsFoldout: 1
   NonCombatIdleFoldout: 0
   NonCombatHitFoldout: 0
   EmotesFoldout: 0
@@ -89,6 +89,22 @@ MonoBehaviour:
       AnimationSpeed: 0
       AnimationClip: {fileID: 0}
       Mirror: 0
+    WalkForwardLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForwardRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
     RunLeft:
       AnimationSpeed: 1.18
       AnimationClip: {fileID: 7400000, guid: a7e98d51bd73b0348b47acf6a9f02766, type: 3}
@@ -100,6 +116,26 @@ MonoBehaviour:
     RunRight:
       AnimationSpeed: 1.18
       AnimationClip: {fileID: 7400000, guid: a7e98d51bd73b0348b47acf6a9f02766, type: 3}
+      Mirror: 0
+    RunBack:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
       Mirror: 0
     TurnLeft:
       AnimationSpeed: 1
@@ -186,7 +222,7 @@ MonoBehaviour:
       Mirror: 0
     WalkLeft:
       AnimationSpeed: 0.75
-      AnimationClip: {fileID: 7400000, guid: f0e88901746d59a4c9d6d3670c21c12c, type: 3}
+      AnimationClip: {fileID: 7400000, guid: 34cf87f11bbc57c4b9b73fdd5fa93281, type: 3}
       Mirror: 0
     WalkForward:
       AnimationSpeed: 0.75
@@ -194,15 +230,31 @@ MonoBehaviour:
       Mirror: 0
     WalkRight:
       AnimationSpeed: 0.75
-      AnimationClip: {fileID: 7400000, guid: f0e88901746d59a4c9d6d3670c21c12c, type: 3}
+      AnimationClip: {fileID: 7400000, guid: a76b11de25f4d4e4ab91d27f3603c7e7, type: 3}
       Mirror: 0
     WalkBack:
-      AnimationSpeed: 1
-      AnimationClip: {fileID: 7400000, guid: e3ce9218d72c10841bbd95cd901792d4, type: 3}
+      AnimationSpeed: 0.75
+      AnimationClip: {fileID: 7400000, guid: 554523467ee8d4b4ea1722aed5070b8a, type: 3}
+      Mirror: 0
+    WalkForwardLeft:
+      AnimationSpeed: 0.75
+      AnimationClip: {fileID: 7400000, guid: 67e46c627b0dc094981ffd97753ea72a, type: 3}
+      Mirror: 0
+    WalkForwardRight:
+      AnimationSpeed: 0.75
+      AnimationClip: {fileID: 7400000, guid: e33349a8bcfb33d45b046fd471f11e59, type: 3}
+      Mirror: 0
+    WalkBackLeft:
+      AnimationSpeed: 0.75
+      AnimationClip: {fileID: 7400000, guid: 3ad1df7d2c4cd6546b760c44f86275e8, type: 3}
+      Mirror: 0
+    WalkBackRight:
+      AnimationSpeed: 0.75
+      AnimationClip: {fileID: 7400000, guid: c3db31be38cd2444c8b58d3cde31e70e, type: 3}
       Mirror: 0
     RunLeft:
       AnimationSpeed: 1.2
-      AnimationClip: {fileID: 7400000, guid: a7e98d51bd73b0348b47acf6a9f02766, type: 3}
+      AnimationClip: {fileID: 7400000, guid: 34cf87f11bbc57c4b9b73fdd5fa93281, type: 3}
       Mirror: 0
     RunForward:
       AnimationSpeed: 1.2
@@ -210,7 +262,27 @@ MonoBehaviour:
       Mirror: 0
     RunRight:
       AnimationSpeed: 1.2
-      AnimationClip: {fileID: 7400000, guid: a7e98d51bd73b0348b47acf6a9f02766, type: 3}
+      AnimationClip: {fileID: 7400000, guid: a76b11de25f4d4e4ab91d27f3603c7e7, type: 3}
+      Mirror: 0
+    RunBack:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 7400000, guid: 554523467ee8d4b4ea1722aed5070b8a, type: 3}
+      Mirror: 0
+    RunForwardLeft:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 7400000, guid: 67e46c627b0dc094981ffd97753ea72a, type: 3}
+      Mirror: 0
+    RunForwardRight:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 7400000, guid: e33349a8bcfb33d45b046fd471f11e59, type: 3}
+      Mirror: 0
+    RunBackLeft:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 7400000, guid: 3ad1df7d2c4cd6546b760c44f86275e8, type: 3}
+      Mirror: 0
+    RunBackRight:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 7400000, guid: c3db31be38cd2444c8b58d3cde31e70e, type: 3}
       Mirror: 0
     TurnLeft:
       AnimationSpeed: 1
@@ -329,6 +401,22 @@ MonoBehaviour:
       AnimationSpeed: 0
       AnimationClip: {fileID: 0}
       Mirror: 0
+    WalkForwardLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForwardRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
     RunLeft:
       AnimationSpeed: 0
       AnimationClip: {fileID: 0}
@@ -338,6 +426,26 @@ MonoBehaviour:
       AnimationClip: {fileID: 0}
       Mirror: 0
     RunRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBack:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackRight:
       AnimationSpeed: 0
       AnimationClip: {fileID: 0}
       Mirror: 0
