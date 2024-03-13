@@ -164,9 +164,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 36497154}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bffeef649177c4645bdbf56f4ef2e7c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b1212f2b6a84ae4ca5864eec1682d8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 03712b786d7c9ff4fabdf72c34544d1a, type: 2}
+  dialogueContainer:
+    root: {fileID: 677305568}
+    nameContainer:
+      root: {fileID: 248517095}
+      nameText: {fileID: 928459907}
+    dialogueText: {fileID: 960584349}
 --- !u!1 &78952677
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,6 +1005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b15cdbeeabbde24eaea798909a3e1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fileToRead: {fileID: 4900000, guid: c88dd6aee8dd5624aad1e5002b0883b0, type: 3}
 --- !u!1 &400572896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: eb44ea188e433e742b55cb3b5e444d7b, type: 3}
+  m_Texture: {fileID: 2800000, guid: 7c64f9a9cb2cf6b4a8d799115d2f458f, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1261,7 +1269,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 514725b8c888f594386345342fa5247f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 45df60ff7d12c1848a295e188da3c519, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2337,6 +2345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 782ee4e465aa10142a881833ac3ad2a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fileName: {fileID: 4900000, guid: fe3ec37e1bc46354e8fb7c514531fa29, type: 3}
 --- !u!1 &1377878004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,6 +2627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62de8988d141c064792c175aee67817e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  file: {fileID: 4900000, guid: fe3ec37e1bc46354e8fb7c514531fa29, type: 3}
 --- !u!1 &1409748743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2783,6 +2793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd40d720d20df04584d051b8fd66b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterpanel: {fileID: 2116884715}
 --- !u!224 &1448755295 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8852211676522487735, guid: 6ce7be681f1e4fe4a9b46b9ded5d0cd6,
@@ -3680,11 +3691,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Character - [Generic]
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246090855032464377, guid: b826b800e18c0e643bebad3381a7c54a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8321087373628533724, guid: b826b800e18c0e643bebad3381a7c54a,
         type: 3}

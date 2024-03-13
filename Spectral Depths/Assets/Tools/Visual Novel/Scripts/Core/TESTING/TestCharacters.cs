@@ -24,7 +24,6 @@ namespace TESTING
         IEnumerator Test()
         {
             //Test moving, transitioning, setting, everything
-            /**
             CharacterSprite Guard = CreateCharacter("Guard as Generic") as CharacterSprite;
             CharacterSprite Raelin = CreateCharacter("Raelin") as CharacterSprite;
             Guard.isVisible = false;
@@ -48,14 +47,15 @@ namespace TESTING
             Guard.TransitionSprite(body);
             yield return new WaitForSeconds(1);
             Guard.TransitionSprite(face);
-            **/
 
+            /**
             CharacterSprite Raelin = CreateCharacter("Raelin") as CharacterSprite;
 
             yield return new WaitForSeconds(1);
 
             yield return Raelin.TransitionSprite(Raelin.GetSprite("Raelin_7"), 1);
             Raelin.TransitionSprite(Raelin.GetSprite("Raelin_3"));
+            **/
 
             yield return null;
         }
