@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace SpectralDepths.TopDownEngine
+namespace MoreMountains.TopDownEngine
 {
     public partial class @TopDownEngineInputActions: IInputActionCollection2, IDisposable
     {

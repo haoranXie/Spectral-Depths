@@ -35,7 +35,7 @@ public class FileManager
 
     public static List<string> ReadTextAsset(string filePath, bool includeBlankLines = true)
     {
-        TextAsset asset = Resources.Load<TextAsset>(filePath);
+        TextAsset asset = Resources.Load<TextAsset>("VisualNovelResources/" + filePath); //ORIGINALLY ONLY filePath, but we moved folder
         if(asset == null)
         {
             Debug.LogError($"Asset not found: '{filePath}'");

@@ -4,6 +4,8 @@ using UnityEngine;
 using CHARACTERS;
 using DIALOGUE;
 using TMPro;
+using System.Security.AccessControl;
+using UnityEngine.ProBuilder;
 
 namespace TESTING
 {
@@ -11,62 +13,51 @@ namespace TESTING
     {
         public TMP_FontAsset tempFont;
 
+        private Character CreateCharacter(string name) => CharacterManager.instance.CreateCharacter(name);
+
         // Start is called before the first frame update
         void Start()
         {
-            //Character Generic = CharacterManager.instance.CreateCharacter("Generic");
-            //Character Michiru = CharacterManager.instance.CreateCharacter("Michiru");
-            //Character Michiru2 = CharacterManager.instance.CreateCharacter("Michiru");
-            //Character DNE = CharacterManager.instance.CreateCharacter("DNE");
             StartCoroutine(Test());
         }
 
         IEnumerator Test()
         {
-            Character Raelin = CharacterManager.instance.CreateCharacter("Raelin");
-            yield return new WaitForSeconds(1f);
-            yield return Raelin.Hide();
-            yield return new WaitForSeconds(0.5f);
-            yield return Raelin.Show();
-            yield return Raelin.Say("Hello");
-
-            //Test Character Speaking
+            //Test moving, transitioning, setting, everything
             /**
-            Character Elen = CharacterManager.instance.CreateCharacter("Elen");
-            Character Adam = CharacterManager.instance.CreateCharacter("Adam");
-            Character Ben = CharacterManager.instance.CreateCharacter("Benjamin");
+            CharacterSprite Guard = CreateCharacter("Guard as Generic") as CharacterSprite;
+            CharacterSprite Raelin = CreateCharacter("Raelin") as CharacterSprite;
+            Guard.isVisible = false;
 
-            List<string> lines = new List<string>()
-            {
-                "Hi, there!",
-                "My name is Elen.",
-                "What's your name?",
-                "Oh,{wa 1} that's very nice."
-            };
-            yield return Elen.Say(lines);
+            yield return new WaitForSeconds(1);
 
-            Elen.SetNameColor(Color.red);
-            Elen.SetDialogueColor(Color.green);
-            Elen.SetNameFont(tempFont);
-            Elen.SetDialogueFont(tempFont);
+            Sprite body = Raelin.GetSprite("Raelin_3");
+            Sprite face = Raelin.GetSprite("Raelin_7");
+            Raelin.TransitionSprite(body);
+            yield return Raelin.TransitionSprite(face, 1, 0.3f);
 
-            yield return Elen.Say(lines);
+            Raelin.MoveToPosition(Vector2.zero);
+            Guard.Show();
+            yield return Guard.MoveToPosition(new Vector2(1, 0));
 
-            Elen.ResetConfigurationData();
+            Raelin.TransitionSprite(Raelin.GetSprite("Raelin_11"), layer:1);
 
-            yield return Elen.Say(lines);
+            body = Guard.GetSprite("Man");
+            face = Guard.GetSprite("Girl");
 
-            lines = new List<string>()
-            {
-                "I am Adam.",
-                "More lines{c}Here."
-            };
-            yield return Adam.Say(lines);
-
-            yield return Ben.Say("This is a line that I want to say.{a} It is a simple line.");
-
-            Debug.Log("Finished");
+            Guard.TransitionSprite(body);
+            yield return new WaitForSeconds(1);
+            Guard.TransitionSprite(face);
             **/
+
+            CharacterSprite Raelin = CreateCharacter("Raelin") as CharacterSprite;
+
+            yield return new WaitForSeconds(1);
+
+            yield return Raelin.TransitionSprite(Raelin.GetSprite("Raelin_7"), 1);
+            Raelin.TransitionSprite(Raelin.GetSprite("Raelin_3"));
+
+            yield return null;
         }
 
         // Update is called once per frame

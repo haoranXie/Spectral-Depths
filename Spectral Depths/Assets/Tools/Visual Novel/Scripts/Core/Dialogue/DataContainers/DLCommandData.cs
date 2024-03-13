@@ -38,6 +38,7 @@ namespace DIALOGUE
                 Command command = new Command();
                 int index = cmd.IndexOf(ARGUMENTSCONTAINER_ID);
                 command.name = cmd.Substring(0, index).Trim();
+                Debug.Log("CommandName: " + command.name);
 
                 if (command.name.ToLower().StartsWith(WAITCOMMAND_ID))
                 {
