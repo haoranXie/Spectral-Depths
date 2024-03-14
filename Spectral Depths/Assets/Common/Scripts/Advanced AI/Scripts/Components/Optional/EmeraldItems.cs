@@ -10,6 +10,7 @@ namespace EmeraldAI
     {
         #region Items Variables
         public YesOrNo UseDroppableWeapon = YesOrNo.No;
+        protected EmeraldSystem EmeraldComponent;
 
         [SerializeField]
         public List<EquippableWeapons> Type1EquippableWeapons = new List<EquippableWeapons>();
@@ -53,8 +54,16 @@ namespace EmeraldAI
         protected WeaponInventoryName = "";
         void Start()
         {
-            InitializeDroppableWeapon();
+	    InitailizeItems();
         }
+
+ 
+	public void InitailizeItems()
+ 	{
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
+	    if(EmeraldComponent.CharacterComponent!=null){}
+	    InitializeDroppableWeapon();
+   	}
 
         /// <summary>
         /// Intializes the AI's droppable weapon to be used when the AI dies.
@@ -69,8 +78,7 @@ namespace EmeraldAI
         /// </summary>
         public void CreateDroppableWeapon()
         {
-            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-
+  
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {
                 for (int i = 0; i < Type1EquippableWeapons.Count; i++)
