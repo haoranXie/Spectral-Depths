@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using EmeraldAI.Utility;
 using EmeraldAI.SoundDetection;
-
+using SpectralDepths.TopDown;
 namespace EmeraldAI
 {
     /// <summary>
@@ -153,6 +153,14 @@ namespace EmeraldAI
             if(DetectionComponentOn){DetectionComponent.DetectionUpdate();} //A custom update function for the EmeraldDetection script called through the EmeraldAISystem script.
             if(CombatComponentOn){CombatComponent.CombatUpdate();} //A custom update function for the EmeraldCombat script called through the EmeraldAISystem script.
             if (DebuggerComponent) DebuggerComponent.DebuggerUpdate(); //A custom update function for the EmeraldDebugger script called through the EmeraldAISystem script.
+        }
+        
+        /// <summary>
+        /// Assigns the AI an optional character component
+        /// </summary>
+        public void AssignCharacter(Character character)
+        {
+            CharacterComponent = character;
         }
 
         /// <summary>
