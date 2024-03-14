@@ -74,6 +74,8 @@ namespace EmeraldAI
         [HideInInspector] public bool DetectionComponentOn = true;
         [HideInInspector] public bool CombatComponentOn = true;
 
+        [HideInInspector] public Character CharacterComponent;
+
         //Initialize Emerald AI and its components
         void Awake()
         {
