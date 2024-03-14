@@ -50,8 +50,8 @@ namespace EmeraldAI
         #endregion
 
         //Used to connect this inventory to character inventory
-        protected CharacterID = "";
-        protected WeaponInventoryName = "";
+        protected string CharacterID = "";
+        protected string WeaponInventoryName = "";
         void Start()
         {
 	    InitailizeItems();
@@ -60,8 +60,12 @@ namespace EmeraldAI
  
 	public void InitailizeItems()
  	{
-            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-	    if(EmeraldComponent.CharacterComponent!=null){}
+        EmeraldComponent = GetComponentInParent<EmeraldSystem>();
+	    if(EmeraldComponent.CharacterComponent!=null)
+        {
+            CharacterID = EmeraldComponent.CharacterComponent.gameObject.GetInstanceID().ToString();
+            WeaponInventoryName = CharacterID + "WeaponInventory";
+        }
 	    InitializeDroppableWeapon();
    	}
 
@@ -372,6 +376,7 @@ namespace EmeraldAI
                 }
             }
         }
+        
 		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
 		{
 			// if this event doesn't concern our inventory display, we do nothing and exit
@@ -383,6 +388,7 @@ namespace EmeraldAI
 			{
 				return;
 			}
+            /*
 			switch (inventoryEvent.InventoryEventType)
 			{
 				case PLInventoryEventType.Pick:
@@ -416,11 +422,12 @@ namespace EmeraldAI
 					DropItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
 					break;
 			}
+            */
 		}
+        
 		protected void OnEnable()
 		{
-			base.OnEnable();
-			this.PLEventStartListening<PLInventoryEvent>();
+			if(EmeraldComponent.CharacterComponent!=null){this.PLEventStartListening<PLInventoryEvent>();}
 		}
 
 		/// <summary>
@@ -428,8 +435,7 @@ namespace EmeraldAI
 		/// </summary>
 		protected void OnDisable()
 		{
-			base.OnDisable ();
-			this.PLEventStopListening<PLInventoryEvent>();
+			if(EmeraldComponent.CharacterComponent!=null){this.PLEventStopListening<PLInventoryEvent>();}
 		}
     }
 }

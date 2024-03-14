@@ -4,7 +4,7 @@ using SpectralDepths.Tools;
 using SpectralDepths.InventoryEngine;
 using System.Collections.Generic;
 using System;
-
+using EmeraldAI;
 namespace SpectralDepths.TopDown
 {
 	[System.Serializable]
