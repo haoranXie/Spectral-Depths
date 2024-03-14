@@ -83,6 +83,7 @@ namespace SpectralDepths.TopDown
 		protected const string _emptySlotWeaponName = "_EmptySlotWeaponName";
 		protected const string _initialSlotWeaponName = "_InitialSlotWeaponName";
 		protected bool _initialized = false;
+  		protected EmeraldItems _emeraldItems;
 
 		/// <summary>
 		/// On init we setup our ability
@@ -149,6 +150,11 @@ namespace SpectralDepths.TopDown
 				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, WeaponInventoryName, AutoEquipWeaponOnStart, 1, 0, CharacterID);
 				EquipWeapon(AutoEquipWeaponOnStart.ItemID);
 			}
+			
+      			if(_character.UseEmeraldAI)
+	 		{
+				_emeraldItems = _character.EmeraldComponent.GetComponentInChildren<EmeraldItems>();
+    			}
 
 
 			_initialized = true;
@@ -298,6 +304,15 @@ namespace SpectralDepths.TopDown
 				}
 			}
 		}
+  
+		/// <summary>
+		/// Assigns the players Weapon Inventory
+		/// </summary>
+		/// <param name="weaponID"></param>		
+    		public virtual void AssignEmeraldItems()
+      		{
+			
+ 		}
 
 		/// <summary>
 		/// Equips the weapon with the name passed in parameters
@@ -335,6 +350,14 @@ namespace SpectralDepths.TopDown
 				}
 			}
 		}
+		/// <summary>
+		/// Switches out the AI's inventories weapons
+		/// </summary>		
+  		protected virtual void SetAIInventory()
+    		{
+			if(_emeraldItems==null) return;
+   			
+      		}
 
 		/// <summary>
 		/// Switches to the next weapon in line

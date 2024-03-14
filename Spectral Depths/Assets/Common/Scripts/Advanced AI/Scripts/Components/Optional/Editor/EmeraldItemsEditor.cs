@@ -134,8 +134,8 @@ namespace EmeraldAI.Utility
                 EditorGUILayout.Space();
                 WeaponSettings(self);
                 EditorGUILayout.Space();
-                //ItemSettings(self);
-                //EditorGUILayout.Space();
+                ItemSettings(self);
+                EditorGUILayout.Space();
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -150,7 +150,7 @@ namespace EmeraldAI.Utility
             {
                 CustomEditorProperties.BeginFoldoutWindowBox();
 
-                CustomEditorProperties.TextTitleWithDescription("Weapon Settings", "Allows AI to enable and disable weapon objects using Animation Events (Requires AI to have Equip and Unequip Animations).", true);
+                CustomEditorProperties.TextTitleWithDescription("Weapon Settings", "Allows AI to enable and disable weapon objects using Animation Events (Requires AI to have Equip and Unequip Animations). IMPORTANT: This is should be left empty when using CharacterInventory as it will override this", true);
 
                 Type1EquippableWeaponsList.DoLayoutList();
 

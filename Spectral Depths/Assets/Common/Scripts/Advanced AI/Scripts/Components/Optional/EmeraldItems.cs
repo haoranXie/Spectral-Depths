@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EmeraldAI.Utility;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
 
 namespace EmeraldAI
 {
-    public class EmeraldItems : MonoBehaviour
+    public class EmeraldItems : MonoBehaviour, PLEventListener<PLInventoryEvent>
     {
         #region Items Variables
         public YesOrNo UseDroppableWeapon = YesOrNo.No;
+        protected EmeraldSystem EmeraldComponent;
 
         [SerializeField]
         public List<EquippableWeapons> Type1EquippableWeapons = new List<EquippableWeapons>();
@@ -46,10 +49,21 @@ namespace EmeraldAI
         
         #endregion
 
+        //Used to connect this inventory to character inventory
+        protected CharacterID = "";
+        protected WeaponInventoryName = "";
         void Start()
         {
-            InitializeDroppableWeapon();
+	    InitailizeItems();
         }
+
+ 
+	public void InitailizeItems()
+ 	{
+            EmeraldComponent = GetComponentInParent<EmeraldSystem>();
+	    if(EmeraldComponent.CharacterComponent!=null){}
+	    InitializeDroppableWeapon();
+   	}
 
         /// <summary>
         /// Intializes the AI's droppable weapon to be used when the AI dies.
@@ -64,8 +78,7 @@ namespace EmeraldAI
         /// </summary>
         public void CreateDroppableWeapon()
         {
-            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-
+  
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {
                 for (int i = 0; i < Type1EquippableWeapons.Count; i++)
@@ -359,5 +372,64 @@ namespace EmeraldAI
                 }
             }
         }
+		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
+		{
+			// if this event doesn't concern our inventory display, we do nothing and exit
+			if (inventoryEvent.TargetInventoryName != WeaponInventoryName)
+			{
+				return;
+			}
+			if (inventoryEvent.CharacterID != CharacterID)
+			{
+				return;
+			}
+			switch (inventoryEvent.InventoryEventType)
+			{
+				case PLInventoryEventType.Pick:
+					if (inventoryEvent.EventItem.ForceSlotIndex)
+					{
+						AddItemAt(inventoryEvent.EventItem, inventoryEvent.Quantity, inventoryEvent.EventItem.TargetIndex);    
+					}
+					else
+					{
+						AddItem(inventoryEvent.EventItem, inventoryEvent.Quantity);    
+					}
+					break;
+
+				case PLInventoryEventType.UseRequest:
+					UseItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.EquipRequest:
+					EquipItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.UnEquipRequest:
+					UnEquipItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.Destroy:
+					DestroyItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.Drop:
+					DropItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+			}
+		}
+		protected void OnEnable()
+		{
+			base.OnEnable();
+			this.PLEventStartListening<PLInventoryEvent>();
+		}
+
+		/// <summary>
+		/// On disable, we stop listening for PLGameEvents. You may want to extend that to stop listening to other types of events.
+		/// </summary>
+		protected void OnDisable()
+		{
+			base.OnDisable ();
+			this.PLEventStopListening<PLInventoryEvent>();
+		}
     }
 }
