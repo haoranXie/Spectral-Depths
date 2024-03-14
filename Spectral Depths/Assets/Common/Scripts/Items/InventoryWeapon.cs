@@ -40,15 +40,15 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// When dropping or unequipping a weapon, we remove it
 		/// </summary>
-		public override bool UnEquip(string CharacterID)
+		public override bool UnEquip(InventoryItem item, string CharacterID)
 		{
 			// if this is a currently equipped weapon, we unequip it
-			if (this.TargetEquipmentInventory(CharacterID) == null)
+			if (this.TargetEquipmentInventory(item, CharacterID) == null)
 			{
 				return false;
 			}
 
-			if (this.TargetEquipmentInventory(CharacterID).InventoryContains(this.ItemID).Count > 0)
+			if (this.TargetEquipmentInventory(item, CharacterID).InventoryContains(this.ItemID).Count > 0)
 			{
 				EquipWeapon(null, CharacterID);
 			}

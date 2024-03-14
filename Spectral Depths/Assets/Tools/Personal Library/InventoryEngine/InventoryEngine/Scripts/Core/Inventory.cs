@@ -127,7 +127,7 @@ namespace SpectralDepths.InventoryEngine
             
 			foreach (Inventory inventory in RegisteredInventories)
 			{
-				if ((inventory.name == inventoryName) && (inventory.CharacterID == CharacterID))
+				if ((inventory.InventoryName == inventoryName) && (inventory.CharacterID == CharacterID))
 				{
 					return inventory;
 				}
@@ -279,7 +279,7 @@ namespace SpectralDepths.InventoryEngine
 				tempQuantity = itemToAdd.MaximumStack;
 			}
             
-			Content[destinationIndex] = itemToAdd.Copy();
+			Content[destinationIndex] = itemToAdd.Copy(CharacterID);
 			Content[destinationIndex].Quantity = tempQuantity;
             
 			// if we're still here, we add the item in the first available slot
@@ -317,7 +317,7 @@ namespace SpectralDepths.InventoryEngine
 			if (InventoryItem.IsNull(Content[endIndex]))
 			{
 				// we create a copy of our item to the destination
-				Content[endIndex] = Content[startIndex].Copy();
+				Content[endIndex] = Content[startIndex].Copy(CharacterID);
 				// we remove the original
 				RemoveItemFromArray(startIndex);
 				// we mention that the content has changed and the inventory probably needs a redraw if there's a GUI attached to it
@@ -330,8 +330,8 @@ namespace SpectralDepths.InventoryEngine
 				if (swap)
 				{
 					// we swap our items
-					InventoryItem tempItem = Content[endIndex].Copy();
-					Content[endIndex] = Content[startIndex].Copy();
+					InventoryItem tempItem = Content[endIndex].Copy(CharacterID);
+					Content[endIndex] = Content[startIndex].Copy(CharacterID);
 					Content[startIndex] = tempItem;
 					PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 					return true;
@@ -366,7 +366,7 @@ namespace SpectralDepths.InventoryEngine
 				return false;
 			}
 
-			InventoryItem itemToMove = Content[startIndex].Copy();
+			InventoryItem itemToMove = Content[startIndex].Copy(CharacterID);
             
 			// if we've specified a destination index, we use it, otherwise we add normally
 			if (endIndex >= 0)
@@ -496,7 +496,7 @@ namespace SpectralDepths.InventoryEngine
 			{
 				if (InventoryItem.IsNull(Content[i]))
 				{
-					Content[i] = itemToAdd.Copy();
+					Content[i] = itemToAdd.Copy(CharacterID);
 					Content[i].Quantity = quantity;
 					return true;
 				}
@@ -672,7 +672,7 @@ namespace SpectralDepths.InventoryEngine
 					}
 					else
 					{
-						Content[i] = _loadedInventoryItem.Copy();
+						Content[i] = _loadedInventoryItem.Copy(CharacterID);
 						Content[i].Quantity = serializedInventory.ContentQuantity[i];
 					}
 				}
@@ -717,7 +717,7 @@ namespace SpectralDepths.InventoryEngine
 			if (item.Use(CharacterID))
 			{
 				// remove 1 from quantity
-				PLInventoryEvent.Trigger(PLInventoryEventType.ItemUsed, slot, InventoryName, item.Copy(), 0, index, CharacterID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.ItemUsed, slot, InventoryName, item.Copy(CharacterID), 0, index, CharacterID);
 				if (item.Consumable)
 				{
 					RemoveItem(index, item.ConsumeQuantity);    
@@ -753,7 +753,6 @@ namespace SpectralDepths.InventoryEngine
 		/// <param name="slot">Slot.</param>
 		public virtual void EquipItem(InventoryItem item, int index, InventorySlot slot = null)
 		{
-			
 			if (InventoryType == Inventory.InventoryTypes.Main)
 			{
 				InventoryItem oldItem = null;
@@ -784,7 +783,7 @@ namespace SpectralDepths.InventoryEngine
 				// if the object can't be equipped if the inventory is full, and if it indeed is, we do nothing and exit
 				if (!item.EquippableIfInventoryIsFull)
 				{
-					if (item.TargetEquipmentInventory(CharacterID).IsFull)
+					if (item.TargetEquipmentInventory(item, CharacterID).IsFull)
 					{
 						return;
 					}
@@ -795,24 +794,24 @@ namespace SpectralDepths.InventoryEngine
 					return;
 				}
 				// if this is a mono slot inventory, we prepare to swap
-				if (item.TargetEquipmentInventory(CharacterID).Content.Length == 1)
+				if (item.TargetEquipmentInventory(item, CharacterID).Content.Length == 1)
 				{
-					if (!InventoryItem.IsNull(item.TargetEquipmentInventory(CharacterID).Content[0]))
+					if (!InventoryItem.IsNull(item.TargetEquipmentInventory(item, CharacterID).Content[0]))
 					{
 						if (
 							(item.CanSwapObject)
-							&& (item.TargetEquipmentInventory(CharacterID).Content[0].CanMoveObject)
-							&& (item.TargetEquipmentInventory(CharacterID).Content[0].CanSwapObject)
+							&& (item.TargetEquipmentInventory(item, CharacterID).Content[0].CanMoveObject)
+							&& (item.TargetEquipmentInventory(item, CharacterID).Content[0].CanSwapObject)
 						)
 						{
 							// we store the item in the equipment inventory
-							oldItem = item.TargetEquipmentInventory(CharacterID).Content[0].Copy();
-							item.TargetEquipmentInventory(CharacterID).EmptyInventory();
+							oldItem = item.TargetEquipmentInventory(item, CharacterID).Content[0].Copy(CharacterID);
+							item.TargetEquipmentInventory(item, CharacterID).EmptyInventory();
 						}
 					}
 				}
 				// we add one to the target equipment inventory
-				item.TargetEquipmentInventory(CharacterID).AddItem(item.Copy(), item.Quantity);
+				item.TargetEquipmentInventory(item, CharacterID).AddItem(item.Copy(CharacterID), item.Quantity);
 				// remove 1 from quantity
 				if (item.MoveWhenEquipped)
 				{
@@ -851,7 +850,7 @@ namespace SpectralDepths.InventoryEngine
             
 			if (InventoryName == item.TargetEquipmentInventoryName)
 			{
-				if (item.UnEquip(CharacterID))
+				if (item.UnEquip(item, CharacterID))
 				{
 					DestroyItem(index);
 				}
@@ -887,7 +886,7 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 			// we trigger the unequip effect of the item
-			if (!item.UnEquip(CharacterID))
+			if (!item.UnEquip(item, CharacterID))
 			{
 				return;
 			}

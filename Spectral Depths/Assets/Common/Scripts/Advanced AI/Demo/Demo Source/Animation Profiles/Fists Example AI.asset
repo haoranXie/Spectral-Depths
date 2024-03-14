@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fists Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: db55003e0025be04a82b81a95c15c761, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 00747ff983395d444b3acad947620ad5, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0

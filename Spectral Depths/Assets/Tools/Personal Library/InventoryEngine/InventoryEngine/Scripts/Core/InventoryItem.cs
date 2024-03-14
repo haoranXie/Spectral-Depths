@@ -157,8 +157,7 @@ namespace SpectralDepths.InventoryEngine
 		/// <value>The target inventory.</value>
 		public virtual Inventory TargetInventory(string CharacterID)
 		{ 
-			Debug.Log(TargetInventoryName);
-			
+
 			if (TargetInventoryName == null)
 			{
 				return null;
@@ -171,13 +170,13 @@ namespace SpectralDepths.InventoryEngine
 		/// Gets the target equipment inventory.
 		/// </summary>
 		/// <value>The target equipment inventory.</value>
-		public virtual Inventory TargetEquipmentInventory(string CharacterID)
+		public virtual Inventory TargetEquipmentInventory(InventoryItem item, string CharacterID)
 		{ 
-			if (TargetEquipmentInventoryName == null)
+			if (item.TargetEquipmentInventoryName == null)
 			{
 				return null;
 			}
-			_targetEquipmentInventory = Inventory.FindInventory(TargetEquipmentInventoryName, CharacterID);
+			_targetEquipmentInventory = Inventory.FindInventory(item.TargetEquipmentInventoryName, CharacterID);
 			return _targetEquipmentInventory;
 		}
 
@@ -211,6 +210,19 @@ namespace SpectralDepths.InventoryEngine
 			string name = this.name;
 			InventoryItem clone = UnityEngine.Object.Instantiate(this) as InventoryItem;
 			clone.name = name;
+			return clone;
+		}
+
+		/// <summary>
+		/// Copies an item into a new one
+		/// </summary>
+		public virtual InventoryItem Copy(string ID)
+		{
+			string name = this.name;
+			InventoryItem clone = UnityEngine.Object.Instantiate(this) as InventoryItem;
+			clone.name = name;
+			if(!clone.TargetInventoryName.Contains(ID)){clone.TargetInventoryName = ID + clone.TargetInventoryName;}
+			if(!clone.TargetEquipmentInventoryName.Contains(ID)){clone.TargetEquipmentInventoryName = ID + clone.TargetEquipmentInventoryName;}
 			return clone;
 		}
 
@@ -258,7 +270,7 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the object is unequipped (called when dropped) - override this to add your own behaviors
 		/// </summary>
-		public virtual bool UnEquip(string CharacterID) { return true; }
+		public virtual bool UnEquip(InventoryItem item, string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object gets swapped for another object

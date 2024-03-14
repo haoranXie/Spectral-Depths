@@ -28,9 +28,9 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the armor is unequipped
 		/// </summary>
-		public override bool UnEquip(string CharacterID)
+		public override bool UnEquip(InventoryItem item, string CharacterID)
 		{
-			base.UnEquip(CharacterID);
+			base.UnEquip(item, CharacterID);
 			TargetInventory(CharacterID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetArmor(0);
 			return true;
 		}		

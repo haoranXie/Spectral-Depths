@@ -29,9 +29,9 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the object is used 
 		/// </summary>
-		public override bool UnEquip(string CharacterID)
+		public override bool UnEquip(InventoryItem item, string CharacterID)
 		{
-			base.UnEquip(CharacterID);
+			base.UnEquip(item, CharacterID);
 			TargetInventory(CharacterID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetWeapon(null,this);
 			return true;
 		}
