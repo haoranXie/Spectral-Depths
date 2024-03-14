@@ -215,11 +215,6 @@ namespace SpectralDepths.TopDown
 			CameraTarget.transform.localPosition = Vector3.zero;
 			CameraTarget.name = "CameraTarget";
 
-			if(UseEmeraldAI)
-			{
-				DeathMMFeedbacks?.Initialization(this.gameObject);
-			}
-
 			if (LinkedInputManager != null)
 			{
 				if (OptimizeForMobile && LinkedInputManager.IsMobile)
@@ -234,6 +229,12 @@ namespace SpectralDepths.TopDown
 			if(string.IsNullOrEmpty(CharacterID))
 			{
 				CharacterID = this.GetInstanceID().ToString();
+			}
+   			//If the Emerald AI Component is being used
+			if(UseEmeraldAI)
+			{
+				DeathMMFeedbacks?.Initialization(this.gameObject);
+    				if(EmeraldComponent!=null){EmeraldComponent.AssignCharacter(this);}
 			}
 		}
 		
