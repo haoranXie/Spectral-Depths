@@ -15,7 +15,7 @@ namespace SpectralDepths.InventoryEngine
 			"A very basic demo character controller, that makes the character move around on the xy axis. Here you can change its speed and bind sprites and equipment inventories.",
 			PLInformationAttribute.InformationType.Info, false)]
 
-		public string PlayerID = "Player1";
+		public string CharacterID = "Player1";
 		/// the character speed
 		public float CharacterSpeed = 300f;
 		/// the sprite used to show the current weapon
@@ -157,7 +157,7 @@ namespace SpectralDepths.InventoryEngine
 					{
 						if (!InventoryItem.IsNull(ArmorInventory.Content [0]))
 						{
-							ArmorInventory.Content [0].Equip (PlayerID);	
+							ArmorInventory.Content [0].Equip (CharacterID);	
 						}
 					}
 				}
@@ -167,7 +167,7 @@ namespace SpectralDepths.InventoryEngine
 					{
 						if (!InventoryItem.IsNull (WeaponInventory.Content [0]))
 						{
-							WeaponInventory.Content [0].Equip (PlayerID);
+							WeaponInventory.Content [0].Equip (CharacterID);
 						}
 					}
 				}

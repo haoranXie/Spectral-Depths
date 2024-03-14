@@ -3,6 +3,7 @@ using System.Collections;
 using SpectralDepths.Tools;
 using SpectralDepths.InventoryEngine;
 using System.Collections.Generic;
+using System;
 
 namespace SpectralDepths.TopDown
 {
@@ -24,14 +25,19 @@ namespace SpectralDepths.TopDown
 		public enum WeaponRotationModes { Normal, AddEmptySlot, AddInitialWeapon }
         
 		[Header("Inventories")]
-		/// the unique ID of this player as far as the InventoryEngine is concerned. This has to match all its Inventory and InventoryEngine UI components' PlayerID for that player. If you're not going for multiplayer here, just leave Player1.
-		[Tooltip("the unique ID of this player as far as the InventoryEngine is concerned. This has to match all its Inventory and InventoryEngine UI components' PlayerID for that player. If you're not going for multiplayer here, just leave Player1.")]
-		public string PlayerID = "Player1";
+		/// the unique ID of this player as far as the InventoryEngine is concerned. This has to match all its Inventory and InventoryEngine UI components' CharacterID for that player. If you're not going for multiplayer here, just leave Player1.
+		[Tooltip("the unique ID of this player as far as the InventoryEngine is concerned. This has to match all its Inventory and InventoryEngine UI components' CharacterID for that player. If you're not going for multiplayer here, just leave Player1.")]
+		public string CharacterID = "";
+		[Tooltip("whether or not the inventory components are on the player itself")]
+		public bool InventoryOnCharacter = true;
 		/// the name of the main inventory for this character
+		
 		[Tooltip("the name of the main inventory for this character")]
+		[PLCondition("InventoryOnCharacter", false)]
 		public string MainInventoryName;
 		/// the name of the inventory where this character stores weapons
 		[Tooltip("the name of the inventory where this character stores weapons")]
+		[PLCondition("InventoryOnCharacter", false)]
 		public string WeaponInventoryName;
 		/// the name of the hotbar inventory for this character
 		[Tooltip("the name of the hotbar inventory for this character")]
@@ -92,6 +98,10 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void Setup()
 		{
+			if(string.IsNullOrEmpty(CharacterID))
+			{
+				CharacterID = _character.CharacterID;
+			}
 			if (InventoryTransform == null)
 			{
 				InventoryTransform = this.transform;
@@ -116,21 +126,31 @@ namespace SpectralDepths.TopDown
 			bool canAutoPick = !(AutoPickOnlyIfMainInventoryIsEmpty && !mainInventoryEmpty);
 			bool canAutoEquip = !(AutoEquipOnlyIfMainInventoryIsEmpty && !mainInventoryEmpty);
 			
+			if(string.IsNullOrEmpty(MainInventoryName)){MainInventoryName=CharacterID+"MainInventory";}
+			if(string.IsNullOrEmpty(WeaponInventoryName)){WeaponInventoryName=CharacterID+"WeaponInventory";}
 			// we auto pick items if needed
 			if ((AutoPickItems.Length > 0) && !_initialized && canAutoPick)
 			{
 				foreach (AutoPickItem item in AutoPickItems)
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, item.Item.TargetInventoryName, item.Item, item.Quantity, 0, PlayerID);
+					//PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, item.Item.TargetInventoryName, item.Item, item.Quantity, 0, CharacterID);
+					//if(item.Item.ItemClass == ItemClasses.Weapon){targetInventoryName = CharacterID + "WeaponInventory";}
+					//else{targetInventoryName = CharacterID + "MainInventory";}
+					//item.Item.TargetInventoryName = CharacterID + item.Item.TargetInventoryName;
+					//item.Item.TargetEquipmentInventoryName = CharacterID + item.Item.TargetEquipmentInventoryName;
+					PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, MainInventoryName, item.Item, item.Quantity, 0, CharacterID);
 				}
 			}
 
 			// we auto equip a weapon if needed
 			if ((AutoEquipWeaponOnStart != null) && !_initialized && canAutoEquip)
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, AutoEquipWeaponOnStart.TargetInventoryName, AutoEquipWeaponOnStart, 1, 0, PlayerID);
+				//PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, AutoEquipWeaponOnStart.TargetInventoryName, AutoEquipWeaponOnStart, 1, 0, CharacterID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, WeaponInventoryName, AutoEquipWeaponOnStart, 1, 0, CharacterID);
 				EquipWeapon(AutoEquipWeaponOnStart.ItemID);
 			}
+
+
 			_initialized = true;
 		}
 
@@ -150,24 +170,46 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void GrabInventories()
 		{
-			Inventory[] inventories = FindObjectsOfType<Inventory>();
-			foreach (Inventory inventory in inventories)
+			if(InventoryOnCharacter)
 			{
-				if (inventory.PlayerID != PlayerID)
+				Inventory[] inventories = GetComponentsInChildren<Inventory>();
+				foreach (Inventory inventory in inventories)
 				{
-					continue;
-				}
-				if ((MainInventory == null) && (inventory.name == MainInventoryName))
+					if (inventory.CharacterID != CharacterID)
+					{
+						continue;
+					}
+					if ((MainInventory == null) && (inventory.InventoryType == Inventory.InventoryTypes.Main))
+					{
+						MainInventory = inventory;
+					}
+					if ((WeaponInventory == null) && (inventory.InventoryType == Inventory.InventoryTypes.Equipment))
+					{
+						WeaponInventory = inventory;
+					}
+				}			
+			}
+			else
+			{
+				Inventory[] inventories = FindObjectsOfType<Inventory>();
+				foreach (Inventory inventory in inventories)
 				{
-					MainInventory = inventory;
-				}
-				if ((WeaponInventory == null) && (inventory.name == WeaponInventoryName))
-				{
-					WeaponInventory = inventory;
-				}
-				if ((HotbarInventory == null) && (inventory.name == HotbarInventoryName))
-				{
-					HotbarInventory = inventory;
+					if (inventory.CharacterID != CharacterID)
+					{
+						continue;
+					}
+					if ((MainInventory == null) && (inventory.name == MainInventoryName))
+					{
+						MainInventory = inventory;
+					}
+					if ((WeaponInventory == null) && (inventory.name == WeaponInventoryName))
+					{
+						WeaponInventory = inventory;
+					}
+					if ((HotbarInventory == null) && (inventory.name == HotbarInventoryName))
+					{
+						HotbarInventory = inventory;
+					}
 				}
 			}
 			if (MainInventory != null) { MainInventory.SetOwner (this.gameObject); MainInventory.TargetTransform = InventoryTransform;}
@@ -265,20 +307,21 @@ namespace SpectralDepths.TopDown
 		{
 			if ((weaponID == _emptySlotWeaponName) && (CharacterHandleWeapon != null))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
+
+				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, CharacterID);
 				CharacterHandleWeapon.ChangeWeapon(null, _emptySlotWeaponName, false);
-				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventory.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventoryName, null, 0, 0, CharacterID);
 				return;
 			}
 
 			if ((weaponID == _initialSlotWeaponName) && (CharacterHandleWeapon != null))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
+
+				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, CharacterID);
 				CharacterHandleWeapon.ChangeWeapon(CharacterHandleWeapon.InitialWeapon, _initialSlotWeaponName, false);
-				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventory.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventoryName, null, 0, 0, CharacterID);
 				return;
 			}
-			
 			for (int i = 0; i < MainInventory.Content.Length ; i++)
 			{
 				if (InventoryItem.IsNull(MainInventory.Content[i]))
@@ -287,7 +330,7 @@ namespace SpectralDepths.TopDown
 				}
 				if (MainInventory.Content[i].ItemID == weaponID)
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, null, MainInventory.name, MainInventory.Content[i], 0, i, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, null, MainInventoryName, MainInventory.Content[i], 0, i, CharacterID);
 					break;
 				}
 			}
@@ -335,7 +378,7 @@ namespace SpectralDepths.TopDown
 						if (!InventoryItem.IsNull (WeaponInventory.Content [0]))
 						{
 							CharacterHandleWeapon.Setup ();
-							WeaponInventory.Content [0].Equip (PlayerID);
+							WeaponInventory.Content [0].Equip (CharacterID);
 						}
 					}
 				}
@@ -375,7 +418,7 @@ namespace SpectralDepths.TopDown
 			base.OnDeath();
 			if (WeaponInventory != null)
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, CharacterID);
 			}            
 		}
 

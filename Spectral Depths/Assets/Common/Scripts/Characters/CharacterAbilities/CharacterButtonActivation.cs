@@ -68,7 +68,7 @@ namespace SpectralDepths.TopDown
 							break;
 					#else
 						case ButtonActivated.InputTypes.Button:
-							buttonPressed = (Input.GetButtonDown(_character.PlayerID + "_" + ButtonActivatedZone.InputButton));
+							buttonPressed = (Input.GetButtonDown(_character.CharacterID + "_" + ButtonActivatedZone.InputButton));
 							break;
 						case ButtonActivated.InputTypes.Key:
 							buttonPressed = (Input.GetKeyDown(ButtonActivatedZone.InputKey));

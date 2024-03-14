@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fists Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 3a63282228316424d8e81722f620d1c5, type: 2}
+  AIAnimator: {fileID: 9100000, guid: db55003e0025be04a82b81a95c15c761, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
   Type1BlockFoldout: 0
   Type2BlockFoldout: 0
   Type1CombatWalkFoldout: 0
-  Type1CombatRunFoldout: 1
+  Type1CombatRunFoldout: 0
   Type1CombatTurnFoldout: 0
   Type2CombatWalkFoldout: 0
   Type2CombatRunFoldout: 0

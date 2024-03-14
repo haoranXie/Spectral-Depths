@@ -13,7 +13,7 @@ namespace SpectralDepths.InventoryEngine
 		/// the reference inventory from which we'll display item details
 		[PLInformation("Specify here the name of the inventory whose content's details you want to display in this Details panel. You can also decide to make it global. If you do so, it'll display the details of all items, regardless of their inventory.",PLInformationAttribute.InformationType.Info,false)]
 		public string TargetInventoryName;
-		public string PlayerID = "Player1";
+		public string CharacterID = "Player1";
 		/// if you make this panel global, it'll ignore 
 		public bool Global = false;
 		/// whether the details are currently hidden or not 
@@ -157,7 +157,7 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			if (inventoryEvent.PlayerID != PlayerID)
+			if (inventoryEvent.CharacterID != CharacterID)
 			{
 				return;
 			}

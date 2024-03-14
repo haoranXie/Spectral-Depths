@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.TextCore.Text;
 
 namespace SpectralDepths.InventoryEngine
 {
@@ -21,10 +22,12 @@ namespace SpectralDepths.InventoryEngine
 		/// The different possible inventory types, main are regular, equipment will have special behaviours (use them for slots where you put the equipped weapon/armor/etc).
 		public enum InventoryTypes { Main, Equipment }
 
-		[Header("Player ID")] 
+		[Header("ID")] 
 		/// a unique ID used to identify the owner of this inventory
 		[Tooltip("a unique ID used to identify the owner of this inventory")]
-		public string PlayerID = "Player1";
+		public string CharacterID = "";
+		[Tooltip("a unique ID used to identify the name of this inventory")]
+		public string InventoryName = "";
 
 		/// the complete list of inventory items in this inventory
 		[Tooltip("This is a realtime view of your Inventory's contents. Don't modify this list via the inspector, it's visible for control purposes only.")]
@@ -63,6 +66,8 @@ namespace SpectralDepths.InventoryEngine
 		public bool IsFull => NumberOfFreeSlots <= 0;
 
 		/// The number of filled slots 
+		
+
 		public int NumberOfFilledSlots
 		{
 			get
@@ -108,12 +113,12 @@ namespace SpectralDepths.InventoryEngine
 		public static string _saveFileExtension = ".inventory";
 
 		/// <summary>
-		/// Returns (if found) an inventory matching the searched name and playerID
+		/// Returns (if found) an inventory matching the searched name and CharacterID
 		/// </summary>
 		/// <param name="inventoryName"></param>
-		/// <param name="playerID"></param>
+		/// <param name="CharacterID"></param>
 		/// <returns></returns>
-		public static Inventory FindInventory(string inventoryName, string playerID)
+		public static Inventory FindInventory(string inventoryName, string CharacterID)
 		{
 			if (inventoryName == null)
 			{
@@ -122,7 +127,7 @@ namespace SpectralDepths.InventoryEngine
             
 			foreach (Inventory inventory in RegisteredInventories)
 			{
-				if ((inventory.name == inventoryName) && (inventory.PlayerID == playerID))
+				if ((inventory.name == inventoryName) && (inventory.CharacterID == CharacterID))
 				{
 					return inventory;
 				}
@@ -143,6 +148,20 @@ namespace SpectralDepths.InventoryEngine
 		/// </summary>
 		protected virtual void RegisterInventory()
 		{
+			if(string.IsNullOrEmpty(CharacterID)){
+				CharacterID = gameObject.GetInstanceID().ToString();
+			}
+			if(string.IsNullOrEmpty(InventoryName)){
+				switch (InventoryType){
+					case InventoryTypes.Equipment:
+						InventoryName = CharacterID+"WeaponInventory";
+						break;
+					case InventoryTypes.Main:
+						InventoryName = CharacterID+"MainInventory";
+						break;
+				}
+			}
+
 			if (RegisteredInventories == null)
 			{
 				RegisteredInventories = new List<Inventory>();
@@ -179,7 +198,7 @@ namespace SpectralDepths.InventoryEngine
 			// if the item to add is null, we do nothing and exit
 			if (itemToAdd == null)
 			{
-				Debug.LogWarning(this.name + " : The item you want to add to the inventory is null");
+				Debug.LogWarning(InventoryName + " : The item you want to add to the inventory is null");
 				return false;
 			}
 
@@ -204,7 +223,7 @@ namespace SpectralDepths.InventoryEngine
 							Content[list[i]].Quantity = Content[list[i]].MaximumStack;
 							AddItem(restToAdd, restToAddQuantity);
 						}
-						PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+						PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 						return true;
 					}
 				}
@@ -228,7 +247,7 @@ namespace SpectralDepths.InventoryEngine
 				}
 			}
 			// if we're still here, we add the item in the first available slot
-			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 			return true;
 		}
         
@@ -264,7 +283,7 @@ namespace SpectralDepths.InventoryEngine
 			Content[destinationIndex].Quantity = tempQuantity;
             
 			// if we're still here, we add the item in the first available slot
-			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 			return true;
 		}
 
@@ -302,7 +321,7 @@ namespace SpectralDepths.InventoryEngine
 				// we remove the original
 				RemoveItemFromArray(startIndex);
 				// we mention that the content has changed and the inventory probably needs a redraw if there's a GUI attached to it
-				PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 				return true;
 			}
 			else
@@ -314,7 +333,7 @@ namespace SpectralDepths.InventoryEngine
 					InventoryItem tempItem = Content[endIndex].Copy();
 					Content[endIndex] = Content[startIndex].Copy();
 					Content[startIndex] = tempItem;
-					PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 					return true;
 				}
 				else
@@ -389,12 +408,12 @@ namespace SpectralDepths.InventoryEngine
 			if (Content[i].Quantity <= 0)
 			{
 				bool suppressionSuccessful = RemoveItemFromArray(i);
-				PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 				return suppressionSuccessful;
 			}
 			else
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 				return true;
 			}
 		}
@@ -446,7 +465,7 @@ namespace SpectralDepths.InventoryEngine
 		{
 			Content[i] = null;
 
-			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 			return true;
 		}
 
@@ -457,7 +476,7 @@ namespace SpectralDepths.InventoryEngine
 		{
 			Content = new InventoryItem[Content.Length];
 
-			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, this.name, null, 0, 0, PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.ContentChanged, null, InventoryName, null, 0, 0, CharacterID);
 		}
 
 		/// <summary>
@@ -594,7 +613,7 @@ namespace SpectralDepths.InventoryEngine
 		{
 			SerializedInventory serializedInventory = (SerializedInventory)PLSaveLoadManager.Load(typeof(SerializedInventory), DetermineSaveName(), _saveFolderName);
 			ExtractSerializedInventory(serializedInventory);
-			PLInventoryEvent.Trigger(PLInventoryEventType.InventoryLoaded, null, this.name, null, 0, 0, PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.InventoryLoaded, null, InventoryName, null, 0, 0, CharacterID);
 		}
 
 		/// <summary>
@@ -666,7 +685,7 @@ namespace SpectralDepths.InventoryEngine
 
 		protected virtual string DetermineSaveName()
 		{
-			return gameObject.name + "_" + PlayerID + _saveFileExtension;
+			return gameObject.name + "_" + CharacterID + _saveFileExtension;
 		}
 
 		/// <summary>
@@ -688,17 +707,17 @@ namespace SpectralDepths.InventoryEngine
 		{
 			if (InventoryItem.IsNull(item))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 				return false;
 			}
 			if (!item.IsUsable)
 			{
 				return false;
 			}
-			if (item.Use(PlayerID))
+			if (item.Use(CharacterID))
 			{
 				// remove 1 from quantity
-				PLInventoryEvent.Trigger(PLInventoryEventType.ItemUsed, slot, this.name, item.Copy(), 0, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.ItemUsed, slot, InventoryName, item.Copy(), 0, index, CharacterID);
 				if (item.Consumable)
 				{
 					RemoveItem(index, item.ConsumeQuantity);    
@@ -734,12 +753,13 @@ namespace SpectralDepths.InventoryEngine
 		/// <param name="slot">Slot.</param>
 		public virtual void EquipItem(InventoryItem item, int index, InventorySlot slot = null)
 		{
+			
 			if (InventoryType == Inventory.InventoryTypes.Main)
 			{
 				InventoryItem oldItem = null;
 				if (InventoryItem.IsNull(item))
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 					return;
 				}
 				// if the object is not equipable, we do nothing and exit
@@ -748,49 +768,51 @@ namespace SpectralDepths.InventoryEngine
 					return;
 				}
 				// if a target equipment inventory is not set, we do nothing and exit
-				if (item.TargetEquipmentInventory(PlayerID) == null)
+				/*
+				if (item.TargetEquipmentInventory(CharacterID) == null)
 				{
 					Debug.LogWarning("InventoryEngine Warning : " + Content[index].ItemName + "'s target equipment inventory couldn't be found.");
 					return;
 				}
+				*/
 				// if the object can't be moved, we play an error sound and exit
 				if (!item.CanMoveObject)
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 					return;
 				}
 				// if the object can't be equipped if the inventory is full, and if it indeed is, we do nothing and exit
 				if (!item.EquippableIfInventoryIsFull)
 				{
-					if (item.TargetEquipmentInventory(PlayerID).IsFull)
+					if (item.TargetEquipmentInventory(CharacterID).IsFull)
 					{
 						return;
 					}
 				}
 				// call the equip method of the item
-				if (!item.Equip(PlayerID))
+				if (!item.Equip(CharacterID))
 				{
 					return;
 				}
 				// if this is a mono slot inventory, we prepare to swap
-				if (item.TargetEquipmentInventory(PlayerID).Content.Length == 1)
+				if (item.TargetEquipmentInventory(CharacterID).Content.Length == 1)
 				{
-					if (!InventoryItem.IsNull(item.TargetEquipmentInventory(PlayerID).Content[0]))
+					if (!InventoryItem.IsNull(item.TargetEquipmentInventory(CharacterID).Content[0]))
 					{
 						if (
 							(item.CanSwapObject)
-							&& (item.TargetEquipmentInventory(PlayerID).Content[0].CanMoveObject)
-							&& (item.TargetEquipmentInventory(PlayerID).Content[0].CanSwapObject)
+							&& (item.TargetEquipmentInventory(CharacterID).Content[0].CanMoveObject)
+							&& (item.TargetEquipmentInventory(CharacterID).Content[0].CanSwapObject)
 						)
 						{
 							// we store the item in the equipment inventory
-							oldItem = item.TargetEquipmentInventory(PlayerID).Content[0].Copy();
-							item.TargetEquipmentInventory(PlayerID).EmptyInventory();
+							oldItem = item.TargetEquipmentInventory(CharacterID).Content[0].Copy();
+							item.TargetEquipmentInventory(CharacterID).EmptyInventory();
 						}
 					}
 				}
 				// we add one to the target equipment inventory
-				item.TargetEquipmentInventory(PlayerID).AddItem(item.Copy(), item.Quantity);
+				item.TargetEquipmentInventory(CharacterID).AddItem(item.Copy(), item.Quantity);
 				// remove 1 from quantity
 				if (item.MoveWhenEquipped)
 				{
@@ -798,7 +820,7 @@ namespace SpectralDepths.InventoryEngine
 				}
 				if (oldItem != null)
 				{
-					oldItem.Swap(PlayerID);
+					oldItem.Swap(CharacterID);
 					if (oldItem.ForceSlotIndex)
 					{
 						AddItemAt(oldItem, oldItem.Quantity, oldItem.TargetIndex);    
@@ -808,7 +830,7 @@ namespace SpectralDepths.InventoryEngine
 						AddItem(oldItem, oldItem.Quantity);    
 					}
 				}
-				PLInventoryEvent.Trigger(PLInventoryEventType.ItemEquipped, slot, this.name, item, item.Quantity, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.ItemEquipped, slot, InventoryName, item, item.Quantity, index, CharacterID);
 			}
 		}
 
@@ -822,14 +844,14 @@ namespace SpectralDepths.InventoryEngine
 		{
 			if (InventoryItem.IsNull(item))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 				return;
 			}
-			item.SpawnPrefab(PlayerID);
+			item.SpawnPrefab(CharacterID);
             
-			if (this.name == item.TargetEquipmentInventoryName)
+			if (InventoryName == item.TargetEquipmentInventoryName)
 			{
-				if (item.UnEquip(PlayerID))
+				if (item.UnEquip(CharacterID))
 				{
 					DestroyItem(index);
 				}
@@ -844,7 +866,7 @@ namespace SpectralDepths.InventoryEngine
 		{
 			if (InventoryItem.IsNull(item))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 				return;
 			}
 			DestroyItem(index);
@@ -855,37 +877,37 @@ namespace SpectralDepths.InventoryEngine
 			// if there's no item at this slot, we trigger an error
 			if (InventoryItem.IsNull(item))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 				return;
 			}
 			// if we're not in an equipment inventory, we trigger an error
 			if (InventoryType != InventoryTypes.Equipment)
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, this.name, null, 0, index, PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Error, slot, InventoryName, null, 0, index, CharacterID);
 				return;
 			}
 			// we trigger the unequip effect of the item
-			if (!item.UnEquip(PlayerID))
+			if (!item.UnEquip(CharacterID))
 			{
 				return;
 			}
-			PLInventoryEvent.Trigger(PLInventoryEventType.ItemUnEquipped, slot, this.name, item, item.Quantity, index, PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.ItemUnEquipped, slot, InventoryName, item, item.Quantity, index, CharacterID);
 
 			// if there's a target inventory, we'll try to add the item back to it
-			if (item.TargetInventory(PlayerID) != null)
+			if (item.TargetInventory(CharacterID) != null)
 			{
 				bool itemAdded = false;
 				if (item.ForceSlotIndex)
 				{
-					itemAdded = item.TargetInventory(PlayerID).AddItemAt(item, item.Quantity, item.TargetIndex);
+					itemAdded = item.TargetInventory(CharacterID).AddItemAt(item, item.Quantity, item.TargetIndex);
 					if (!itemAdded)
 					{
-						itemAdded = item.TargetInventory(PlayerID).AddItem(item, item.Quantity);    	
+						itemAdded = item.TargetInventory(CharacterID).AddItem(item, item.Quantity);    	
 					}
 				}
 				else
 				{
-					itemAdded = item.TargetInventory(PlayerID).AddItem(item, item.Quantity);    
+					itemAdded = item.TargetInventory(CharacterID).AddItem(item, item.Quantity);    
 				}
 				
 				// if we managed to add the item
@@ -896,7 +918,7 @@ namespace SpectralDepths.InventoryEngine
 				else
 				{
 					// if we couldn't (inventory full for example), we drop it to the ground
-					PLInventoryEvent.Trigger(PLInventoryEventType.Drop, slot, this.name, item, item.Quantity, index, PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Drop, slot, InventoryName, item, item.Quantity, index, CharacterID);
 				}
 			}
 		}
@@ -908,11 +930,11 @@ namespace SpectralDepths.InventoryEngine
 		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
 		{
 			// if this event doesn't concern our inventory display, we do nothing and exit
-			if (inventoryEvent.TargetInventoryName != this.name)
+			if (inventoryEvent.TargetInventoryName != InventoryName)
 			{
 				return;
 			}
-			if (inventoryEvent.PlayerID != PlayerID)
+			if (inventoryEvent.CharacterID != CharacterID)
 			{
 				return;
 			}

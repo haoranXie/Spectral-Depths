@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using EmeraldAI.Utility;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/items-component")]
     public class EmeraldItems : MonoBehaviour
     {
         #region Items Variables
@@ -44,6 +43,7 @@ namespace EmeraldAI
         public bool HideSettingsFoldout;
         public bool WeaponsFoldout;
         public bool ItemsFoldout;
+        
         #endregion
 
         void Start()

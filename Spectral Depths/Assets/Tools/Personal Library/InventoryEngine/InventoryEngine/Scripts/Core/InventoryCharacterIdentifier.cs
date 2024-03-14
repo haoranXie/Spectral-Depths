@@ -5,11 +5,11 @@ using UnityEngine;
 namespace SpectralDepths.InventoryEngine
 {
 	/// <summary>
-	/// When working in a multiplayer context, add this class to characters that can pick items and ItemPickers will automatically send items to the right PlayerID.
+	/// When working in a multiplayer context, add this class to characters that can pick items and ItemPickers will automatically send items to the right CharacterID.
 	/// </summary>
 	public class InventoryCharacterIdentifier : MonoBehaviour
 	{
 		/// the unique ID of the player
-		public string PlayerID = "Player1";
+		public string CharacterID = "Player1";
 	}    
 }

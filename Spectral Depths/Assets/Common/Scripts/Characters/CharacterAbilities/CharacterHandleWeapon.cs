@@ -105,8 +105,7 @@ namespace SpectralDepths.TopDown
 
 		public delegate void OnWeaponChangeDelegate();
 		/// a delegate you can hook to, to be notified of weapon changes
-		public OnWeaponChangeDelegate OnWeaponChange;
-
+		public event OnWeaponChangeDelegate OnWeaponChange;
 		protected float _fireTimer = 0f;
 		protected float _secondaryHorizontalMovement;
 		protected float _secondaryVerticalMovement;
@@ -592,26 +591,26 @@ namespace SpectralDepths.TopDown
 			{
 				if (CurrentWeapon == null)
 				{
-					GUIManager.Instance.SetAmmoDisplays(false, _character.PlayerID, AmmoDisplayID);
+					GUIManager.Instance.SetAmmoDisplays(false, _character.CharacterID, AmmoDisplayID);
 					return;
 				}
 
 				if (!CurrentWeapon.MagazineBased && (CurrentWeapon.WeaponAmmo == null))
 				{
-					GUIManager.Instance.SetAmmoDisplays(false, _character.PlayerID, AmmoDisplayID);
+					GUIManager.Instance.SetAmmoDisplays(false, _character.CharacterID, AmmoDisplayID);
 					return;
 				}
 
 				if (CurrentWeapon.WeaponAmmo == null)
 				{
-					GUIManager.Instance.SetAmmoDisplays(true, _character.PlayerID, AmmoDisplayID);
-					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, 0, 0, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.PlayerID, AmmoDisplayID, false);
+					GUIManager.Instance.SetAmmoDisplays(true, _character.CharacterID, AmmoDisplayID);
+					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, 0, 0, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.CharacterID, AmmoDisplayID, false);
 					return;
 				}
 				else
 				{
-					GUIManager.Instance.SetAmmoDisplays(true, _character.PlayerID, AmmoDisplayID); 
-					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, CurrentWeapon.WeaponAmmo.CurrentAmmoAvailable + CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.WeaponAmmo.MaxAmmo, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.PlayerID, AmmoDisplayID, true);
+					GUIManager.Instance.SetAmmoDisplays(true, _character.CharacterID, AmmoDisplayID); 
+					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, CurrentWeapon.WeaponAmmo.CurrentAmmoAvailable + CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.WeaponAmmo.MaxAmmo, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.CharacterID, AmmoDisplayID, true);
 					return;
 				}
 			}

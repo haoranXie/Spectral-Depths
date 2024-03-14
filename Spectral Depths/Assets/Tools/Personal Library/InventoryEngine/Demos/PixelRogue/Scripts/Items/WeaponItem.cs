@@ -19,20 +19,20 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the object is used 
 		/// </summary>
-		public override bool Equip(string playerID)
+		public override bool Equip(string CharacterID)
 		{
-			base.Equip(playerID);
-			TargetInventory(playerID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetWeapon(WeaponSprite,this);
+			base.Equip(CharacterID);
+			TargetInventory(CharacterID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetWeapon(WeaponSprite,this);
 			return true;
 		}
 
 		/// <summary>
 		/// What happens when the object is used 
 		/// </summary>
-		public override bool UnEquip(string playerID)
+		public override bool UnEquip(string CharacterID)
 		{
-			base.UnEquip(playerID);
-			TargetInventory(playerID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetWeapon(null,this);
+			base.UnEquip(CharacterID);
+			TargetInventory(CharacterID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetWeapon(null,this);
 			return true;
 		}
 		

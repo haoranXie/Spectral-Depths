@@ -75,14 +75,14 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			string playerID = "Player1";
+			string CharacterID = "Player1";
 			InventoryCharacterIdentifier identifier = collider.GetComponent<InventoryCharacterIdentifier>();
 			if (identifier != null)
 			{
-				playerID = identifier.PlayerID;
+				CharacterID = identifier.CharacterID;
 			}
 
-			Pick(Item.TargetInventoryName, playerID);
+			Pick(Item.TargetInventoryName, CharacterID);
 		}
 
 		/// <summary>
@@ -97,14 +97,14 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			string playerID = "Player1";
+			string CharacterID = "Player1";
 			InventoryCharacterIdentifier identifier = collider.GetComponent<InventoryCharacterIdentifier>();
 			if (identifier != null)
 			{
-				playerID = identifier.PlayerID;
+				CharacterID = identifier.CharacterID;
 			}
 
-			Pick(Item.TargetInventoryName, playerID);
+			Pick(Item.TargetInventoryName, CharacterID);
 		}		
 
 		/// <summary>
@@ -119,9 +119,9 @@ namespace SpectralDepths.InventoryEngine
 		/// Picks this item and adds it to the target inventory specified as a parameter
 		/// </summary>
 		/// <param name="targetInventoryName">Target inventory name.</param>
-		public virtual void Pick(string targetInventoryName, string playerID = "Player1")
+		public virtual void Pick(string targetInventoryName, string CharacterID = "Player1")
 		{
-			FindTargetInventory(targetInventoryName, playerID);
+			FindTargetInventory(targetInventoryName, CharacterID);
 			if (_targetInventory == null)
 			{
 				return;
@@ -147,9 +147,9 @@ namespace SpectralDepths.InventoryEngine
 			}				
 			else
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, Item.TargetInventoryName, Item, _pickedQuantity, 0, playerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, Item.TargetInventoryName, Item, _pickedQuantity, 0, CharacterID);
 			}				
-			if (Item.Pick(playerID))
+			if (Item.Pick(CharacterID))
 			{
 				RemainingQuantity = RemainingQuantity - _pickedQuantity;
 				PickSuccess();
@@ -232,14 +232,14 @@ namespace SpectralDepths.InventoryEngine
 		/// Finds the target inventory based on its name
 		/// </summary>
 		/// <param name="targetInventoryName">Target inventory name.</param>
-		public virtual void FindTargetInventory(string targetInventoryName, string playerID = "Player1")
+		public virtual void FindTargetInventory(string targetInventoryName, string CharacterID = "Player1")
 		{
 			_targetInventory = null;
 			if (targetInventoryName == null)
 			{
 				return;
 			}
-			_targetInventory = Inventory.FindInventory(targetInventoryName, playerID);
+			_targetInventory = Inventory.FindInventory(targetInventoryName, CharacterID);
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// Add this class to an empty component in your scene, and it'll allow you to swap characters in your scene when pressing the SwapButton (P, by default)
-	/// Each character in your scene will need to have a CharacterSwap class on it, and the corresponding PlayerID.
+	/// Each character in your scene will need to have a CharacterSwap class on it, and the corresponding CharacterID.
 	/// You can see an example of such a setup in the MinimalCharacterSwap demo scene
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/CharacterSwapManager")]
@@ -24,9 +24,9 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the name of the axis to use to catch input and trigger a swap on press")]
 		public string SwapButtonName = "Player1_SwapCharacter";
 		#endif
-		/// the PlayerID set on the Characters you want to swap between
-		[Tooltip("the PlayerID set on the Characters you want to swap between")]
-		public string PlayerID = "Player1";
+		/// the CharacterID set on the Characters you want to swap between
+		[Tooltip("the CharacterID set on the Characters you want to swap between")]
+		public string CharacterID = "Player1";
 
 		protected CharacterSwap[] _characterSwapArray;
 		protected PLCircularList<CharacterSwap> _characterSwapList;
@@ -40,10 +40,10 @@ namespace SpectralDepths.TopDown
 			_characterSwapArray = FindObjectsOfType<CharacterSwap>();
 			_characterSwapList = new PLCircularList<CharacterSwap>();
 
-			// stores the array into the list if the PlayerID matches
+			// stores the array into the list if the CharacterID matches
 			for (int i = 0; i < _characterSwapArray.Length; i++)
 			{
-				if (_characterSwapArray[i].PlayerID == PlayerID)
+				if (_characterSwapArray[i].CharacterID == CharacterID)
 				{
 					_characterSwapList.Add(_characterSwapArray[i]);
 				}

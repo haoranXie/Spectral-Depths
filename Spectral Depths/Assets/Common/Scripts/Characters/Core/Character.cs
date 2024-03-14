@@ -33,13 +33,13 @@ namespace SpectralDepths.TopDown
 		/// the possible character types : player controller or AI (controlled by the computer)
 		public enum CharacterTypes { Player, AI }
 
-		[PLInformation("The Character script is the mandatory basis for all Character abilities. Your character can either be a Non Player Character, controlled by an AI, or a Player character, controlled by the player. In this case, you'll need to specify a PlayerID, which must match the one specified in your InputManager. Usually 'Player1', 'Player2', etc.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
+		[PLInformation("The Character script is the mandatory basis for all Character abilities. Your character can either be a Non Player Character, controlled by an AI, or a Player character, controlled by the player. In this case, you'll need to specify a CharacterID, which must match the one specified in your InputManager. Usually 'Player1', 'Player2', etc.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
 		/// Is the character player-controlled or controlled by an AI ?
 		[Tooltip("Is the character player-controlled or controlled by an AI ?")]
 		public CharacterTypes CharacterType = CharacterTypes.AI;
-		/// Only used if the character is player-controlled. The PlayerID must match an input manager's PlayerID. It's also used to match Unity's input settings. So you'll be safe if you keep to Player1, Player2, Player3 or Player4
-		[Tooltip("Only used if the character is player-controlled. The PlayerID must match an input manager's PlayerID. It's also used to match Unity's input settings. So you'll be safe if you keep to Player1, Player2, Player3 or Player4")]
-		public string PlayerID = "";
+		/// Only used if the character is player-controlled. The CharacterID must match an input manager's CharacterID. It's also used to match Unity's input settings. So you'll be safe if you keep to Player1, Player2, Player3 or Player4
+		[Tooltip("Only used if the character is player-controlled. The CharacterID must match an input manager's CharacterID. It's also used to match Unity's input settings. So you'll be safe if you keep to Player1, Player2, Player3 or Player4")]
+		public string CharacterID = "";
 		/// the various states of the character
 		public CharacterStates CharacterState { get; protected set; }
   
@@ -230,6 +230,11 @@ namespace SpectralDepths.TopDown
 					}
 				}
 			}            
+
+			if(string.IsNullOrEmpty(CharacterID))
+			{
+				CharacterID = this.GetInstanceID().ToString();
+			}
 		}
 		
 		/// <summary>
@@ -436,20 +441,23 @@ namespace SpectralDepths.TopDown
 				UpdateInputManagersInAbilities();
 				return;
 			}
-
+			/*
 			// we get the corresponding input manager
-			if (!string.IsNullOrEmpty(PlayerID))
+			if (!string.IsNullOrEmpty(CharacterID))
 			{
 				LinkedInputManager = null;
 				InputManager[] foundInputManagers = FindObjectsOfType(typeof(InputManager)) as InputManager[];
 				foreach (InputManager foundInputManager in foundInputManagers)
 				{
-					if (foundInputManager.PlayerID == PlayerID)
+					if (foundInputManager.CharacterID == CharacterID)
 					{
 						LinkedInputManager = foundInputManager;
 					}
 				}
 			}
+			*/
+			LinkedInputManager = null;
+			LinkedInputManager = FindObjectOfType(typeof(InputManager)) as InputManager;
 			UpdateInputManagersInAbilities();
 		}
 
@@ -468,7 +476,7 @@ namespace SpectralDepths.TopDown
 			CharacterType = characterType;
 			if(characterType==CharacterTypes.Player)
 			{
-				PlayerID="Player1";
+				CharacterID=gameObject.GetInstanceID().ToString();
 			}
 			SetInputManager();
 		}
@@ -519,10 +527,10 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// Sets the player ID
 		/// </summary>
-		/// <param name="newPlayerID">New player ID.</param>
-		public virtual void SetPlayerID(string newPlayerID)
+		/// <param name="newCharacterID">New player ID.</param>
+		public virtual void SetCharacterID(string newCharacterID)
 		{
-			PlayerID = newPlayerID;
+			CharacterID = newCharacterID;
 			SetInputManager();
 		}
 		

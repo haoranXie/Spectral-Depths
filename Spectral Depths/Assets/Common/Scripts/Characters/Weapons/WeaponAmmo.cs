@@ -50,7 +50,7 @@ namespace SpectralDepths.TopDown
 			Inventory[] inventories = FindObjectsOfType<Inventory>();
 			foreach (Inventory inventory in inventories)
 			{
-				if (inventory.PlayerID != _weapon.Owner.PlayerID)
+				if (inventory.CharacterID != _weapon.Owner.CharacterID)
 				{
 					continue;
 				}

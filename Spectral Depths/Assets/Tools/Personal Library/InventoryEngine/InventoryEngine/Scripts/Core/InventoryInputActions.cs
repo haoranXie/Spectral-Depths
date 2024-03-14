@@ -44,7 +44,7 @@ namespace SpectralDepths.InventoryEngine
 		/// the name of the inventory to pilot with these bindings
 		public string TargetInventoryName = "MainInventory";
 		/// the unique ID of the Player associated to this component
-		public string PlayerID = "Player1";
+		public string CharacterID = "Player1";
 		/// a list of bindings to go through when looking for input
 		public List<InventoryInputActionsBindings> InputBindings;
 
@@ -64,7 +64,7 @@ namespace SpectralDepths.InventoryEngine
 
 				if (_targetInventory == null)
 				{
-					_targetInventory = Inventory.FindInventory(TargetInventoryName, PlayerID);
+					_targetInventory = Inventory.FindInventory(TargetInventoryName, CharacterID);
 				}
 
 				return _targetInventory;
@@ -149,16 +149,16 @@ namespace SpectralDepths.InventoryEngine
 			switch (binding.Action)
 			{
 				case Actions.Equip:
-					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.CharacterID);
 					break;
 				case Actions.Use:
-					PLInventoryEvent.Trigger(PLInventoryEventType.UseRequest, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.UseRequest, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.CharacterID);
 					break;
 				case Actions.Drop:
-					PLInventoryEvent.Trigger(PLInventoryEventType.Drop, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Drop, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.CharacterID);
 					break;
 				case Actions.Unequip:
-					PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, _targetInventory.name, _targetInventory.Content[binding.SlotIndex], 0, binding.SlotIndex, _targetInventory.CharacterID);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

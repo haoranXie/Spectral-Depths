@@ -542,6 +542,7 @@ namespace SpectralDepths.TopDown
         /// <param name="gameObject"></param>
 
         public void Deselect(int id){
+            if(!SelectedTable.ContainsKey(id)){return;}
             HideIndicators(SelectedTable[id].EmeraldComponent);
             SelectedTable.Remove(id);
             RTSEvent.Trigger(RTSEventTypes.PlayerSelected, null, SelectedTable);

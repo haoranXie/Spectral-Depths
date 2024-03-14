@@ -1010,7 +1010,7 @@ namespace SpectralDepths.TopDown
 						// We update the health bar
 						if (GUIManager.HasInstance)
 						{
-							GUIManager.Instance.UpdateHealthBar(CurrentHealth, 0f, MaximumHealth, _character.PlayerID);
+							GUIManager.Instance.UpdateHealthBar(CurrentHealth, 0f, MaximumHealth, _character.CharacterID);
 						}
 					}
 				}    

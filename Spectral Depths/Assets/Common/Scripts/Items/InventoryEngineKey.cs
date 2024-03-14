@@ -16,9 +16,9 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// When the item is used, we try to grab our character's Health component, and if it exists, we add our health bonus amount of health
 		/// </summary>
-		public override bool Use(string playerID)
+		public override bool Use(string CharacterID)
 		{
-			base.Use(playerID);
+			base.Use(CharacterID);
 			return true;
 		}
 	}

@@ -345,9 +345,6 @@ namespace SpectralDepths.TopDown
 			}
 			if(_character.UseEmeraldAI)
 			{
-            	_animator.SetBool("Combat State Active", true);
-            	_animator.SetBool("Player Controls", true);
-                _animator.SetInteger("Weapon Type State", 1);
 				Vector3 speedoru = _relativeSpeed.normalized;
 				_animator.SetFloat("RemappedForwardSpeedNormalized",speedoru.z);
 				_animator.SetFloat("RemappedLateralSpeedNormalized",speedoru.x);	

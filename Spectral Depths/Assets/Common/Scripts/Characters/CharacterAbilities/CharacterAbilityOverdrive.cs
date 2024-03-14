@@ -30,6 +30,7 @@ namespace SpectralDepths.TopDown
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
 		protected CharacterHandleWeapon _characterHandleWeapon;
+		protected CharacterInventory _characterInventory;
 		protected NavMeshAgent _navMeshAgent;
 		protected override void Initialization()
 		{
@@ -39,8 +40,10 @@ namespace SpectralDepths.TopDown
 			_characterController = GetComponent<CharacterController>();
 			_characterHandleWeapon = GetComponent<CharacterHandleWeapon>();
 			_characterOrientation3D = GetComponent<CharacterOrientation3D>();
+			_characterInventory = GetComponent<CharacterInventory>();
 			_characterController = GetComponent<CharacterController>();
 			_navMeshAgent = GetComponent<NavMeshAgent>();
+			_characterHandleWeapon.OnWeaponChange+=OnWeaponChange;
 			
 			switch(_character.CharacterType)
 			{
@@ -90,9 +93,12 @@ namespace SpectralDepths.TopDown
 		private void SwitchToPlayer()
 		{
 			
-			for(int i = 0; i<_handleWeaponList.Count;i++)
+			if(_handleWeaponList[0].CurrentWeapon!=null)
 			{
-				_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
+				for(int i = 0; i<_handleWeaponList.Count;i++)
+				{
+					_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
+				}
 			}
 			/*
 			_characterMovement.SetMovement(Vector3.zero);
@@ -109,12 +115,13 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToAI()
 		{
-			
-			for(int i = 0; i<_handleWeaponList.Count;i++)
-			{
-				_handleWeaponList[i].ChangeToAIVersionOfWeapon();
+			if(_handleWeaponList[0].CurrentWeapon!=null)
+			{			
+				for(int i = 0; i<_handleWeaponList.Count;i++)
+				{
+					_handleWeaponList[i].ChangeToAIVersionOfWeapon();
+				}
 			}
-
 			/*
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
@@ -136,6 +143,8 @@ namespace SpectralDepths.TopDown
 			_controller.enabled = true;
 			_characterMovement.enabled=true;
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.enabled=true;}
+			if(_characterInventory!=null){_characterInventory.enabled=true;}
+			if(_characterSelectable!=null){_characterSelectable.DeSelected();}
 			_characterOrientation3D.enabled=true;
 			_characterController.enabled=true;
 			_controller.Reset();
@@ -150,6 +159,8 @@ namespace SpectralDepths.TopDown
 			_characterMovement.enabled=false;
 			_characterOrientation3D.enabled=false;
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.enabled=false;}
+			if(_characterInventory!=null){_characterInventory.enabled=false;}
+            _animator.SetBool("Player Controls", false);
 			_characterController.enabled=false;
 			_character.CacheAbilities();
 		}
@@ -174,6 +185,18 @@ namespace SpectralDepths.TopDown
 			_emeraldComponent.BehaviorsComponentOn = false;
 			_emeraldComponent.DetectionComponentOn = false;
 			_emeraldComponent.CombatComponentOn = false;
+		}
+		
+		protected void OnWeaponChange()
+		{
+			if(_characterHandleWeapon.CurrentWeapon==null) return;
+
+			if(_character.CharacterType == Character.CharacterTypes.Player)
+			{
+            	_animator.SetBool("Combat State Active", true);
+            	_animator.SetBool("Player Controls", true);
+                _animator.SetInteger("Weapon Type State", 1);				
+			}
 		}
 
 

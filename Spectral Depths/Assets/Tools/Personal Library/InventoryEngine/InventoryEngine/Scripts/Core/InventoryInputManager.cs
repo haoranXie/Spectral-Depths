@@ -397,9 +397,9 @@ namespace SpectralDepths.InventoryEngine
 		{
 			if (CloseList.Count > 0)
 			{
-				foreach (string playerID in CloseList)
+				foreach (string CharacterID in CloseList)
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.InventoryCloseRequest, null, "", null, 0, 0, playerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.InventoryCloseRequest, null, "", null, 0, 0, CharacterID);
 				}
 			}
             
@@ -409,7 +409,7 @@ namespace SpectralDepths.InventoryEngine
 			}
 
 			// we open our inventory
-			PLInventoryEvent.Trigger(PLInventoryEventType.InventoryOpens, null, TargetInventoryDisplay.TargetInventoryName, TargetInventoryDisplay.TargetInventory.Content[0], 0, 0, TargetInventoryDisplay.PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.InventoryOpens, null, TargetInventoryDisplay.TargetInventoryName, TargetInventoryDisplay.TargetInventory.Content[0], 0, 0, TargetInventoryDisplay.CharacterID);
 			PLGameEvent.Trigger("inventoryOpens");
 			InventoryIsOpen = true;
 
@@ -427,7 +427,7 @@ namespace SpectralDepths.InventoryEngine
 				_canvasGroup.blocksRaycasts = false;
 			}
 			// we close our inventory
-			PLInventoryEvent.Trigger(PLInventoryEventType.InventoryCloses, null, TargetInventoryDisplay.TargetInventoryName, null, 0, 0, TargetInventoryDisplay.PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.InventoryCloses, null, TargetInventoryDisplay.TargetInventoryName, null, 0, 0, TargetInventoryDisplay.CharacterID);
 			PLGameEvent.Trigger("inventoryCloses");
 			InventoryIsOpen = false;
 
@@ -641,7 +641,7 @@ namespace SpectralDepths.InventoryEngine
 		/// <param name="inventoryEvent">Inventory event.</param>
 		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
 		{
-			if (inventoryEvent.PlayerID != TargetInventoryDisplay.PlayerID)
+			if (inventoryEvent.CharacterID != TargetInventoryDisplay.CharacterID)
 			{
 				return;
 			}

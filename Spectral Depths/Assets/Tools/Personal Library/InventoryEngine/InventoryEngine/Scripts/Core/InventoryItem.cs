@@ -155,13 +155,15 @@ namespace SpectralDepths.InventoryEngine
 		/// Gets the target inventory.
 		/// </summary>
 		/// <value>The target inventory.</value>
-		public virtual Inventory TargetInventory(string playerID)
+		public virtual Inventory TargetInventory(string CharacterID)
 		{ 
+			Debug.Log(TargetInventoryName);
+			
 			if (TargetInventoryName == null)
 			{
 				return null;
 			}
-			_targetInventory = Inventory.FindInventory(TargetInventoryName, playerID);
+			_targetInventory = Inventory.FindInventory(TargetInventoryName, CharacterID);
 			return _targetInventory;
 		}
 
@@ -169,13 +171,13 @@ namespace SpectralDepths.InventoryEngine
 		/// Gets the target equipment inventory.
 		/// </summary>
 		/// <value>The target equipment inventory.</value>
-		public virtual Inventory TargetEquipmentInventory(string playerID)
+		public virtual Inventory TargetEquipmentInventory(string CharacterID)
 		{ 
 			if (TargetEquipmentInventoryName == null)
 			{
 				return null;
 			}
-			_targetEquipmentInventory = Inventory.FindInventory(TargetEquipmentInventoryName, playerID);
+			_targetEquipmentInventory = Inventory.FindInventory(TargetEquipmentInventoryName, CharacterID);
 			return _targetEquipmentInventory;
 		}
 
@@ -215,12 +217,12 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// Spawns the associated prefab
 		/// </summary>
-		public virtual void SpawnPrefab(string playerID)
+		public virtual void SpawnPrefab(string CharacterID)
 		{
-			if (TargetInventory(playerID) != null)
+			if (TargetInventory(CharacterID) != null)
 			{
 				// if there's a prefab set for the item at this slot, we instantiate it at the specified offset
-				if (Prefab!=null && TargetInventory(playerID).TargetTransform!=null)
+				if (Prefab!=null && TargetInventory(CharacterID).TargetTransform!=null)
 				{
 					GameObject droppedObject=(GameObject)Instantiate(Prefab);
 					if (droppedObject.GetComponent<ItemPicker>()!=null)
@@ -233,7 +235,7 @@ namespace SpectralDepths.InventoryEngine
 					}
 
 					PLSpawnAround.ApplySpawnAroundProperties(droppedObject, DropProperties,
-						TargetInventory(playerID).TargetTransform.position);
+						TargetInventory(CharacterID).TargetTransform.position);
 				}
 			}
 		}
@@ -241,31 +243,31 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the object is picked - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Pick(string playerID) { return true; }
+		public virtual bool Pick(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object is used - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Use(string playerID) { return true; }
+		public virtual bool Use(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object is equipped - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Equip(string playerID) { return true; }
+		public virtual bool Equip(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object is unequipped (called when dropped) - override this to add your own behaviors
 		/// </summary>
-		public virtual bool UnEquip(string playerID) { return true; }
+		public virtual bool UnEquip(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object gets swapped for another object
 		/// </summary>
-		public virtual void Swap(string playerID) {}
+		public virtual void Swap(string CharacterID) {}
 
 		/// <summary>
 		/// What happens when the object is dropped - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Drop(string playerID) { return true; }
+		public virtual bool Drop(string CharacterID) { return true; }
 	}
 }

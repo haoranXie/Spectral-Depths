@@ -44,7 +44,7 @@ namespace SpectralDepths.InventoryEngine
 		public AudioClip EquipFx;
 
 		protected string _targetInventoryName;
-		protected string _targetPlayerID;
+		protected string _targetCharacterID;
 		protected AudioSource _audioSource;
 
 		/// <summary>
@@ -55,7 +55,7 @@ namespace SpectralDepths.InventoryEngine
 			SetupInventorySoundPlayer ();
 			_audioSource = GetComponent<AudioSource> ();
 			_targetInventoryName = this.gameObject.PLGetComponentNoAlloc<InventoryDisplay> ().TargetInventoryName;
-			_targetPlayerID = this.gameObject.PLGetComponentNoAlloc<InventoryDisplay> ().PlayerID;
+			_targetCharacterID = this.gameObject.PLGetComponentNoAlloc<InventoryDisplay> ().CharacterID;
 		}
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			if (inventoryEvent.PlayerID != _targetPlayerID)
+			if (inventoryEvent.CharacterID != _targetCharacterID)
 			{
 				return;
 			}

@@ -8,13 +8,13 @@ using SpectralDepths.Tools;
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
-	/// An ability that will let the Character rotate its associated camera, using the PlayerID_CameraRotationAxis input axis
+	/// An ability that will let the Character rotate its associated camera, using the CharacterID_CameraRotationAxis input axis
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Rotate Camera")]
 	public class CharacterRotateCamera : CharacterAbility
 	{
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
-		public override string HelpBoxText() { return "An ability that will let the Character rotate its associated camera, using the PlayerID_CameraRotationAxis input axis"; }
+		public override string HelpBoxText() { return "An ability that will let the Character rotate its associated camera, using the CharacterID_CameraRotationAxis input axis"; }
 
 		[Header("Rotation axis")]
 		/// the space in which to rotate the camera (usually world)

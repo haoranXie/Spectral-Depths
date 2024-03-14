@@ -31,26 +31,26 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// When we grab the weapon, we equip it
 		/// </summary>
-		public override bool Equip(string playerID)
+		public override bool Equip(string CharacterID)
 		{
-			EquipWeapon (EquippableWeapon, playerID);
+			EquipWeapon (EquippableWeapon, CharacterID);
 			return true;
 		}
 
 		/// <summary>
 		/// When dropping or unequipping a weapon, we remove it
 		/// </summary>
-		public override bool UnEquip(string playerID)
+		public override bool UnEquip(string CharacterID)
 		{
 			// if this is a currently equipped weapon, we unequip it
-			if (this.TargetEquipmentInventory(playerID) == null)
+			if (this.TargetEquipmentInventory(CharacterID) == null)
 			{
 				return false;
 			}
 
-			if (this.TargetEquipmentInventory(playerID).InventoryContains(this.ItemID).Count > 0)
+			if (this.TargetEquipmentInventory(CharacterID).InventoryContains(this.ItemID).Count > 0)
 			{
-				EquipWeapon(null, playerID);
+				EquipWeapon(null, CharacterID);
 			}
 
 			return true;
@@ -60,18 +60,18 @@ namespace SpectralDepths.TopDown
 		/// Grabs the CharacterHandleWeapon component and sets the weapon
 		/// </summary>
 		/// <param name="newWeapon">New weapon.</param>
-		protected virtual void EquipWeapon(Weapon newWeapon, string playerID)
+		protected virtual void EquipWeapon(Weapon newWeapon, string CharacterID)
 		{
 			if (EquippableWeapon == null)
 			{
 				return;
 			}
-			if (TargetInventory(playerID).Owner == null)
+			if (TargetInventory(CharacterID).Owner == null)
 			{
 				return;
 			}
 
-			Character character = TargetInventory(playerID).Owner.GetComponentInParent<Character>();
+			Character character = TargetInventory(CharacterID).Owner.GetComponentInParent<Character>();
 
 			if (character == null)
 			{

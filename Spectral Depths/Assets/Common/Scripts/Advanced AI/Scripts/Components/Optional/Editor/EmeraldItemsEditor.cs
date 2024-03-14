@@ -134,8 +134,8 @@ namespace EmeraldAI.Utility
                 EditorGUILayout.Space();
                 WeaponSettings(self);
                 EditorGUILayout.Space();
-                ItemSettings(self);
-                EditorGUILayout.Space();
+                //ItemSettings(self);
+                //EditorGUILayout.Space();
             }
 
             serializedObject.ApplyModifiedProperties();
