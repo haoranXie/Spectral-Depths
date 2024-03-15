@@ -427,7 +427,7 @@ namespace EmeraldAI
         
 		protected void OnEnable()
 		{
-			if(EmeraldComponent.CharacterComponent!=null){this.PLEventStartListening<PLInventoryEvent>();}
+			this.PLEventStartListening<PLInventoryEvent>();
 		}
 
 		/// <summary>
@@ -435,7 +435,7 @@ namespace EmeraldAI
 		/// </summary>
 		protected void OnDisable()
 		{
-			if(EmeraldComponent.CharacterComponent!=null){this.PLEventStopListening<PLInventoryEvent>();}
+			this.PLEventStopListening<PLInventoryEvent>();
 		}
     }
 }

@@ -43,7 +43,7 @@ namespace SpectralDepths.TopDown
 			_characterInventory = GetComponent<CharacterInventory>();
 			_characterController = GetComponent<CharacterController>();
 			_navMeshAgent = GetComponent<NavMeshAgent>();
-			_characterHandleWeapon.OnWeaponChange+=OnWeaponChange;
+			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChange+=OnWeaponChange;}
 			
 			switch(_character.CharacterType)
 			{

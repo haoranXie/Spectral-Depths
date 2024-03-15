@@ -6,7 +6,6 @@ using EmeraldAI.Utility;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/ui-component")]
     public class EmeraldUI : MonoBehaviour
     {
         #region Variables
@@ -20,6 +19,10 @@ namespace EmeraldAI
         public bool NameTextFoldout;
         public bool LevelTextFoldout;
         public YesOrNo UseCustomHealthBar = YesOrNo.No;
+        public YesOrNo DisplayUIInCombat = YesOrNo.No;
+        public YesOrNo DisplayUIWhenTakingDamage = YesOrNo.No;
+        public YesOrNo DisplayUIByPlayerProximity = YesOrNo.No;
+
         public YesOrNo DisplayAIName = YesOrNo.No;
         public YesOrNo DisplayAITitle = YesOrNo.No;
         public YesOrNo DisplayAILevel = YesOrNo.No;
@@ -36,6 +39,8 @@ namespace EmeraldAI
         public string UITag = "Player";
         public LayerMask UILayerMask = 0;
         public int MaxUIScaleSize = 16;
+        public int DisplayUIInCombatHideDelay = 0;
+        public int DisplayUIWhenTakingDamageHideDelay = 0;
         public Text AINameUI;
         public Font AINameFont;
         public float AINameLineSpacing = 0.75f;
@@ -60,6 +65,7 @@ namespace EmeraldAI
         public Vector3 AINamePos = new Vector3(0, 3, 0);
         public Vector3 AILevelPos = new Vector3(1.5f, 0, 0);
         EmeraldSystem EmeraldComponent;
+        Coroutine coroutine;
         #endregion
 
         void Start()
@@ -73,7 +79,10 @@ namespace EmeraldAI
         void InitializeUI ()
         {
             EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-            EmeraldComponent.DetectionComponent.OnDetectionUpdate += UpdateAIUI; //Subscribe to the OnDetectionUpdate event for updating the UI's state.
+            EmeraldComponent.DetectionComponent.OnDetectionUpdate += UpdateAIUIByProximity; //Subscribe to the OnDetectionUpdate event for updating the UI's state.
+            EmeraldComponent.HealthComponent.OnTakeAnyDamage += UpdateAIUIByDamage;
+            EmeraldComponent.CombatComponent.OnExitCombat += CombatExited;
+
 
             if (AutoCreateHealthBars == YesOrNo.Yes && HealthBarCanvas == null || DisplayAIName == YesOrNo.Yes && HealthBarCanvas == null)
             {
@@ -194,13 +203,39 @@ namespace EmeraldAI
                 }
             }
         }
+		void HideUI(float delay)
+		{
+            if(coroutine != null){StopCoroutine(coroutine);}
+            coroutine = StartCoroutine(HideUICoroutine(delay));
+		}
+		IEnumerator HideUICoroutine(float delay)
+		{
+			yield return new WaitForSeconds(delay);
+            SetUI(false);
+		}
+
+        void UpdateAIUIByDamage()
+        {
+        
+            if(DisplayUIWhenTakingDamage == YesOrNo.No) return;
+            SetUI(true);
+            HideUI(DisplayUIWhenTakingDamageHideDelay);
+        }
 
         /// <summary>
         /// Updates the AI's UI state, if it's enabled.
         /// </summary>
-        void UpdateAIUI()
+        void UpdateAIUIByProximity()
         {
-            if (AutoCreateHealthBars == YesOrNo.Yes || DisplayAIName == YesOrNo.Yes)
+
+            if(DisplayUIByPlayerProximity == YesOrNo.No) return;
+            
+            if(DisplayUIInCombat == YesOrNo.Yes)
+            {
+                if(EmeraldComponent.CombatComponent.CombatState){SetUI(true);}
+            }
+
+            if (DisplayUIByPlayerProximity == YesOrNo.Yes)
             {
                 Collider[] CurrentlyDetectedTargets = Physics.OverlapSphere(transform.position, EmeraldComponent.DetectionComponent.DetectionRadius, UILayerMask);
                 if (CurrentlyDetectedTargets.Length > 0)
@@ -228,12 +263,25 @@ namespace EmeraldAI
                     SetUI(false);
                 }
             }
+            
+        }
+
+        public void CombatEntered()
+        {
+            if(DisplayUIInCombat == YesOrNo.No) return;
+            SetUI(true);
+        }
+        void CombatExited()
+        {
+            if(DisplayUIInCombat == YesOrNo.No) return;
+            HideUI(DisplayUIInCombatHideDelay);
         }
 
         public void SetUI(bool Enabled)
         {
-            if (EmeraldComponent.AnimationComponent.IsDead || HealthBarCanvas == null) return;
 
+            if (EmeraldComponent.AnimationComponent.IsDead || HealthBarCanvas == null) return;
+            if (DisplayUIInCombat == YesOrNo.Yes && EmeraldComponent.CombatComponent.CombatState && Enabled == false) return;
             m_HealthBarComponent.CalculateUI();
             HealthBarCanvasRef.enabled = Enabled;
             if (AutoCreateHealthBars == YesOrNo.Yes)
@@ -250,6 +298,7 @@ namespace EmeraldAI
             {
                 AINameUI.gameObject.SetActive(Enabled);
             }
+            
         }
     }
 }

@@ -208,6 +208,7 @@ namespace EmeraldAI.Utility
             EmeraldComponent.CombatComponent.CombatState = true;
             EmeraldComponent.AIAnimator.SetBool("Idle Active", false);
             EmeraldComponent.AIAnimator.SetBool("Combat State Active", true);
+            if(EmeraldComponent.UIComponent!=null){EmeraldComponent.UIComponent.CombatEntered();}
             EmeraldComponent.MovementComponent.CurrentMovementState = EmeraldMovement.MovementStates.Run;
         }
 

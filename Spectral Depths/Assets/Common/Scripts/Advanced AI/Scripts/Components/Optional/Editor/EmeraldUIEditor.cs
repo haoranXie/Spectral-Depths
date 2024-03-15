@@ -15,10 +15,10 @@ namespace EmeraldAI.Utility
 
         #region SerializedProperties
         //Ints
-        SerializedProperty MaxUIScaleSizeProp;
+        SerializedProperty MaxUIScaleSizeProp, DisplayUIInCombatHideDelayProp, DisplayUIWhenTakingDamageHideDelayProp;
 
         //Enums
-        SerializedProperty CreateHealthBarsProp, UseCustomFontAINameProp, UseCustomFontAILevelProp, CustomizeHealthBarProp, DisplayAINameProp, DisplayAITitleProp, DisplayAILevelProp, UseAINameUIOutlineEffectProp, UseAILevelUIOutlineEffectProp;
+        SerializedProperty CreateHealthBarsProp, UseCustomFontAINameProp, UseCustomFontAILevelProp, CustomizeHealthBarProp, DisplayAINameProp, DisplayAITitleProp, DisplayAILevelProp, UseAINameUIOutlineEffectProp, UseAILevelUIOutlineEffectProp, DisplayUIInCombatProp, DisplayUIWhenTakingDamageProp, DisplayUIByPlayerProximityProp;
 
         //Bools
         SerializedProperty HideSettingsFoldout, UISettingsFoldoutProp, HealthBarsFoldoutProp, CombatTextFoldoutProp, NameTextFoldoutProp, LevelTextFoldoutProp;
@@ -52,6 +52,8 @@ namespace EmeraldAI.Utility
         {
             //Int
             MaxUIScaleSizeProp = serializedObject.FindProperty("MaxUIScaleSize");
+            DisplayUIInCombatHideDelayProp = serializedObject.FindProperty("DisplayUIInCombatHideDelay");
+            DisplayUIWhenTakingDamageHideDelayProp = serializedObject.FindProperty("DisplayUIWhenTakingDamageHideDelay");
 
             //Floats
             AINameLineSpacingProp = serializedObject.FindProperty("AINameLineSpacing");
@@ -61,6 +63,9 @@ namespace EmeraldAI.Utility
             UseAILevelUIOutlineEffectProp = serializedObject.FindProperty("UseAILevelUIOutlineEffect");
             CreateHealthBarsProp = serializedObject.FindProperty("AutoCreateHealthBars");
             CustomizeHealthBarProp = serializedObject.FindProperty("UseCustomHealthBar");
+            DisplayUIInCombatProp = serializedObject.FindProperty("DisplayUIInCombat");
+            DisplayUIWhenTakingDamageProp = serializedObject.FindProperty("DisplayUIWhenTakingDamage");
+            DisplayUIByPlayerProximityProp = serializedObject.FindProperty("DisplayUIByPlayerProximity");
             DisplayAINameProp = serializedObject.FindProperty("DisplayAIName");
             DisplayAITitleProp = serializedObject.FindProperty("DisplayAITitle");
             DisplayAILevelProp = serializedObject.FindProperty("DisplayAILevel");
@@ -143,37 +148,74 @@ namespace EmeraldAI.Utility
 
             if (UISettingsFoldoutProp.boolValue)
             {
-                 CustomEditorProperties.BeginFoldoutWindowBox();
+                CustomEditorProperties.BeginFoldoutWindowBox();
 
-                CustomEditorProperties.TextTitleWithDescription("UI Setup", "Controls the use and setup of Emerald's built-in UI. In order for the UI to be visible, a player of the appropriate tag must enter an AI's trigger radius. " +
-                "You can set an AI's UI Tag under the Detection and Tag tab.", true);
+                CustomEditorProperties.TextTitleWithDescription("UI Setup", "Controls the use and setup of Emerald's built-in UI." +
+                "You have three options regarding how the UI can be displayed", true);
 
+                EditorGUILayout.PropertyField(DisplayUIByPlayerProximityProp, new GUIContent("Display UI by Player Proximity"));
+                CustomEditorProperties.CustomHelpLabelField("Enables or disables the display of the AI's depending on the player's proximity", true);
                 GUI.backgroundColor = new Color(1f, 1, 0.25f, 0.25f);
-                EditorGUILayout.LabelField("In order for the UI system to work correctly, you will need to assign a Tag and Layer. This is typically your Player's Tag and Layer. " +
-                    "This is used to make the UI system more efficient by only running when the appropriate objects are detected. You will also need to apply your player's camera Tag so the UI can be properly positioned.", EditorStyles.helpBox);
                 GUI.backgroundColor = Color.white;
 
-                EditorGUILayout.Space();
-                CustomEditorProperties.CustomTagField(new Rect(), new GUIContent(), CameraTagProp, "Camera Tag");
-                CustomEditorProperties.CustomHelpLabelField("The Camera Tag is the Unity Tag that your player uses. The Camera is needed to properly position the UI.", true);
-
-                CustomEditorProperties.CustomTagField(new Rect(), new GUIContent(), UITagProp, "UI Tag");
-                CustomEditorProperties.CustomHelpLabelField("The UI Tag is the Unity Tag that will trigger the AI's UI, when enabled.", true);
-
-                EditorGUILayout.PropertyField(UILayerMaskProp, new GUIContent("UI Layers"));
-                CustomEditorProperties.CustomHelpLabelField("The UI Layers controls what layers this AI will detect to enable the their UI, if the object also has the appropriate UI Tag. This is typically used for players.", false);
-
-                if (UILayerMaskProp.intValue == 0 || UILayerMaskProp.intValue == 1)
+                if (self.DisplayUIByPlayerProximity == YesOrNo.Yes)
                 {
-                    GUI.backgroundColor = new Color(10f, 0.0f, 0.0f, 0.25f);
-                    EditorGUILayout.LabelField("The UI Layers cannot contain Nothing, Default, or Everything.", EditorStyles.helpBox);
-                    GUI.backgroundColor = Color.white;
-                }
+                    CustomEditorProperties.BeginIndent();
+                    EditorGUILayout.LabelField("For the player proximity trigger, you will need to assign a Tag and Layer. This is typically your Player's Tag and Layer. " +
+                        "This is used to make the UI system more efficient by only running when the appropriate objects are detected. You will also need to apply your player's camera Tag so the UI can be properly positioned.", EditorStyles.helpBox);
 
+                    EditorGUILayout.Space();
+                    CustomEditorProperties.CustomTagField(new Rect(), new GUIContent(), CameraTagProp, "Camera Tag");
+                    CustomEditorProperties.CustomHelpLabelField("The Camera Tag is the Unity Tag that your player uses. The Camera is needed to properly position the UI.", true);
+
+                    CustomEditorProperties.CustomTagField(new Rect(), new GUIContent(), UITagProp, "UI Tag");
+                    CustomEditorProperties.CustomHelpLabelField("The UI Tag is the Unity Tag that will trigger the AI's UI, when enabled.", true);
+
+                    EditorGUILayout.PropertyField(UILayerMaskProp, new GUIContent("UI Layers"));
+                    CustomEditorProperties.CustomHelpLabelField("The UI Layers controls what layers this AI will detect to enable the their UI, if the object also has the appropriate UI Tag. This is typically used for players.", false);
+
+                    if (UILayerMaskProp.intValue == 0 || UILayerMaskProp.intValue == 1)
+                    {
+                        GUI.backgroundColor = new Color(10f, 0.0f, 0.0f, 0.25f);
+                        EditorGUILayout.LabelField("The UI Layers cannot contain Nothing, Default, or Everything.", EditorStyles.helpBox);
+                        GUI.backgroundColor = Color.white;
+                    }
+                    EditorGUILayout.Space();
+                    CustomEditorProperties.EndIndent();
+                }
+                EditorGUILayout.PropertyField(DisplayUIInCombatProp, new GUIContent("Display UI by Combat"));
+                CustomEditorProperties.CustomHelpLabelField("Enables or disables the display of the AI's depending on whether the character is in combat", true);
+
+                if (self.DisplayUIInCombat == YesOrNo.Yes)
+                {
+                    CustomEditorProperties.BeginIndent();
+                    
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(DisplayUIInCombatHideDelayProp, new GUIContent("Combat Hide Delay"));
+                    CustomEditorProperties.CustomHelpLabelField("Controls how long after combat ends before the AI's UI is hidden", true);
+
+                    EditorGUILayout.Space();
+                    CustomEditorProperties.EndIndent();
+                }
+                EditorGUILayout.PropertyField(DisplayUIWhenTakingDamageProp, new GUIContent("Display UI by Damage"));
+                CustomEditorProperties.CustomHelpLabelField("Enables or disables the display of the AI's depending on whether the character has just recieved damage", true);
+
+                if (self.DisplayUIWhenTakingDamage == YesOrNo.Yes)
+                {
+                    CustomEditorProperties.BeginIndent();
+                    
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(DisplayUIWhenTakingDamageHideDelayProp, new GUIContent("Damage UI Delay"));
+                    CustomEditorProperties.CustomHelpLabelField("Controls how long after getting hit before the AI's UI is hidden", true);
+
+                    EditorGUILayout.Space();
+                    CustomEditorProperties.EndIndent();
+                }
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(MaxUIScaleSizeProp, new GUIContent("Max UI Scale"));
                 CustomEditorProperties.CustomHelpLabelField("Controls the max size the UI will be scaled when the player is getting further away from an AI's UI.", true);
                 CustomEditorProperties.EndFoldoutWindowBox();
+
             }
         }
 

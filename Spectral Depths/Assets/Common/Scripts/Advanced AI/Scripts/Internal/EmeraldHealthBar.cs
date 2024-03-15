@@ -36,7 +36,8 @@ namespace EmeraldAI.Utility
             EmeraldUI = transform.parent.parent.GetComponent<EmeraldUI>();
             EmeraldHeath = transform.parent.parent.GetComponent<EmeraldHealth>();
             EmeraldComponent = transform.parent.parent.GetComponentInParent<EmeraldSystem>();
-            if (m_Camera == null) m_Camera = GameObject.FindGameObjectWithTag(EmeraldUI.CameraTag).GetComponent<Camera>(); //Get a reference to the camera via the EmeraldUI.CameraTag.
+            //if (m_Camera == null) m_Camera = GameObject.FindGameObjectWithTag(EmeraldUI.CameraTag).GetComponent<Camera>(); //Get a reference to the camera via the EmeraldUI.CameraTag.
+            if(m_Camera==null) m_Camera = Camera.main;
 
             CG = GetComponent<CanvasGroup>();
             HealthBar = transform.Find("AI Health Bar Background/AI Health Bar").GetComponent<Image>();
@@ -89,6 +90,8 @@ namespace EmeraldAI.Utility
                 C = StartCoroutine(FadeOutUIInternal(0.0f, 1.5f));
             }
         }
+
+
 
         void OnDisable()
         {
@@ -195,5 +198,6 @@ namespace EmeraldAI.Utility
                 HealthBarDamage.fillAmount = 1;
             }
         }
+
     }
 }
