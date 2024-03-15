@@ -228,7 +228,7 @@ namespace SpectralDepths.TopDown
 
 			if(string.IsNullOrEmpty(CharacterID))
 			{
-				CharacterID = this.GetInstanceID().ToString();
+				CharacterID = this.gameObject.GetInstanceID().ToString();
 			}
    			//If the Emerald AI Component is being used
 			if(UseEmeraldAI)

@@ -8,7 +8,7 @@ namespace SpectralDepths.InventoryEngine
 	/// <summary>
 	/// The possible inventory related events
 	/// </summary>
-	public enum PLInventoryEventType { Pick, Select, Click, Move, UseRequest, ItemUsed, EquipRequest, ItemEquipped, UnEquipRequest, ItemUnEquipped, Drop, Destroy, Error, Redraw, ContentChanged, InventoryOpens, InventoryCloseRequest, InventoryCloses, InventoryLoaded }
+	public enum PLInventoryEventType { Pick, Select, Click, Move, UseRequest, ItemUsed, EquipRequest, ItemEquipped, UnEquipRequest, ItemUnEquipped, Drop, Destroy, Error, Redraw, ContentChanged, InventoryOpens, InventoryCloseRequest, InventoryCloses, InventoryLoaded, WeaponInventoryChanged }
 
 	/// <summary>
 	/// Inventory events are used throughout the Inventory Engine to let other interested classes know that something happened to an inventory.  

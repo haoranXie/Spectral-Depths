@@ -273,7 +273,7 @@ namespace EmeraldAI
         }
         void CombatExited()
         {
-            if(DisplayUIInCombat == YesOrNo.No) return;
+            if(DisplayUIInCombat == YesOrNo.No || EmeraldComponent.BehaviorsComponent.IsOrdered) return;
             HideUI(DisplayUIInCombatHideDelay);
         }
 

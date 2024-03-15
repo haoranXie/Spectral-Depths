@@ -27,18 +27,18 @@ namespace SpectralDepths.TopDown
 		[Header("Inventories")]
 		/// the unique ID of this player as far as the InventoryEngine is concerned. This has to match all its Inventory and InventoryEngine UI components' CharacterID for that player. If you're not going for multiplayer here, just leave Player1.
 		[Tooltip("the unique ID of this player as far as the InventoryEngine is concerned. This has to match all its Inventory and InventoryEngine UI components' CharacterID for that player. If you're not going for multiplayer here, just leave Player1.")]
-		public string CharacterID = "";
+		[HideInInspector] public string CharacterID = "";
 		[Tooltip("whether or not the inventory components are on the player itself")]
 		public bool InventoryOnCharacter = true;
 		/// the name of the main inventory for this character
 		
 		[Tooltip("the name of the main inventory for this character")]
 		[PLCondition("InventoryOnCharacter", false)]
-		public string MainInventoryName;
+		[HideInInspector] public string MainInventoryName;
 		/// the name of the inventory where this character stores weapons
 		[Tooltip("the name of the inventory where this character stores weapons")]
 		[PLCondition("InventoryOnCharacter", false)]
-		public string WeaponInventoryName;
+		[HideInInspector] public string WeaponInventoryName;
 		/// the name of the hotbar inventory for this character
 		[Tooltip("the name of the hotbar inventory for this character")]
 		public string HotbarInventoryName;
@@ -147,8 +147,10 @@ namespace SpectralDepths.TopDown
 			if ((AutoEquipWeaponOnStart != null) && !_initialized && canAutoEquip)
 			{
 				//PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, AutoEquipWeaponOnStart.TargetInventoryName, AutoEquipWeaponOnStart, 1, 0, CharacterID);
-				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, WeaponInventoryName, AutoEquipWeaponOnStart, 1, 0, CharacterID);
-				EquipWeapon(AutoEquipWeaponOnStart.ItemID);
+				InventoryItem autoEquipedWeaponOnStart = AutoEquipWeaponOnStart.Copy(CharacterID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Pick, null, WeaponInventoryName, autoEquipedWeaponOnStart, 1, 0, CharacterID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.WeaponInventoryChanged, null, WeaponInventoryName, autoEquipedWeaponOnStart, 1, 0, CharacterID);
+				EquipWeapon(autoEquipedWeaponOnStart.ItemID);
 			}
 			
       			if(_character.UseEmeraldAI)
@@ -322,7 +324,6 @@ namespace SpectralDepths.TopDown
 		{
 			if ((weaponID == _emptySlotWeaponName) && (CharacterHandleWeapon != null))
 			{
-
 				PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, null, WeaponInventoryName, WeaponInventory.Content[0], 0, 0, CharacterID);
 				CharacterHandleWeapon.ChangeWeapon(null, _emptySlotWeaponName, false);
 				PLInventoryEvent.Trigger(PLInventoryEventType.Redraw, null, WeaponInventoryName, null, 0, 0, CharacterID);

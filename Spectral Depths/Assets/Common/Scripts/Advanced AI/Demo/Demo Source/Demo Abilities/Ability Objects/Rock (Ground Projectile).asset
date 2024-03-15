@@ -38,7 +38,8 @@ MonoBehaviour:
     SpawnProjectileEffect: {fileID: 0}
     SpawnProjectileTimeoutSeconds: 2
     SpawnProjectileSoundsList: []
-    ProjectileEffect: {fileID: 2247413300283348944, guid: 58a67966a82f64242a63f0d57d4e33bf, type: 3}
+    ProjectileEffect: {fileID: 2247413300283348944, guid: 58a67966a82f64242a63f0d57d4e33bf,
+      type: 3}
     ProjectileTimeoutSeconds: 8
     TravelSound: {fileID: 0}
     EffectsToDisable:
@@ -47,7 +48,8 @@ MonoBehaviour:
     LaunchProjectileTimeoutSeconds: 2
     LaunchProjectileDelay: 0
     LaunchProjectileSoundsList: []
-    ImpactEffect: {fileID: 8695401051225182231, guid: 027d240d08555784dae7e5db281ab173, type: 3}
+    ImpactEffect: {fileID: 8695401051225182231, guid: 027d240d08555784dae7e5db281ab173,
+      type: 3}
     ImpactTimeoutSeconds: 6
     ImpactSoundsList:
     - {fileID: 8300000, guid: e1d8e0db26d00c84e94ba0e5945a708e, type: 3}
@@ -89,7 +91,7 @@ MonoBehaviour:
     OddsToStun: 100
     StunLength: 3
   DamageSettings:
-    Foldout: 1
+    Foldout: 0
     Enabled: 1
     UseCriticalHits: 0
     UseDamageOverTime: 0

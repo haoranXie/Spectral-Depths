@@ -5,6 +5,7 @@ using SpectralDepths.Tools;
 using SpectralDepths.Feedbacks;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using EmeraldAI.Utility;
 
 namespace SpectralDepths.TopDown
 {
@@ -142,9 +143,17 @@ namespace SpectralDepths.TopDown
 		{
 			_controller.enabled = true;
 			_characterMovement.enabled=true;
-			if(_characterHandleWeapon!=null){_characterHandleWeapon.enabled=true;}
+			if(_characterHandleWeapon!=null){
+				_characterHandleWeapon.enabled=true;
+				if(_characterHandleWeapon.CurrentWeapon!=null)
+				{
+					EmeraldCombatManager.ActivateCombatState(_character.EmeraldComponent);
+					_animator.SetInteger("Weapon Type State", 1);
+				}
+			}
 			if(_characterInventory!=null){_characterInventory.enabled=true;}
 			if(_characterSelectable!=null){_characterSelectable.DeSelected();}
+			
 			_characterOrientation3D.enabled=true;
 			_characterController.enabled=true;
 			_controller.Reset();

@@ -25,13 +25,13 @@ MonoBehaviour:
   RunFoldout: 0
   TurnFoldout: 0
   NonCombatDeathFoldout: 0
-  NonCombatAnimationsFoldout: 1
+  NonCombatAnimationsFoldout: 0
   NonCombatIdleFoldout: 0
-  NonCombatHitFoldout: 1
+  NonCombatHitFoldout: 0
   EmotesFoldout: 0
   Type1IdleFoldout: 0
   Type2IdleFoldout: 0
-  Type1AttacksFoldout: 0
+  Type1AttacksFoldout: 1
   Type2AttacksFoldout: 0
   Type1EquipsFoldout: 0
   Type2EquipsFoldout: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   Type2HitFoldout: 0
   Type1BlockFoldout: 0
   Type2BlockFoldout: 0
-  Type1CombatWalkFoldout: 1
+  Type1CombatWalkFoldout: 0
   Type1CombatRunFoldout: 0
   Type1CombatTurnFoldout: 0
   Type2CombatWalkFoldout: 0

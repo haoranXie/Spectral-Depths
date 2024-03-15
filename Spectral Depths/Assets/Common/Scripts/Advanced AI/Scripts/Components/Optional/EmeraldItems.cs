@@ -3,6 +3,7 @@ using UnityEngine;
 using EmeraldAI.Utility;
 using SpectralDepths.Tools;
 using SpectralDepths.InventoryEngine;
+using SpectralDepths.TopDown;
 
 namespace EmeraldAI
 {
@@ -52,22 +53,18 @@ namespace EmeraldAI
         //Used to connect this inventory to character inventory
         protected string CharacterID = "";
         protected string WeaponInventoryName = "";
-        void Start()
+        void Awake()
         {
-	    InitailizeItems();
+            InitailizeItems();
         }
 
- 
-	public void InitailizeItems()
- 	{
-        EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-	    if(EmeraldComponent.CharacterComponent!=null)
+        public void InitailizeItems()
         {
-            CharacterID = EmeraldComponent.CharacterComponent.gameObject.GetInstanceID().ToString();
+            EmeraldComponent = GetComponent<EmeraldSystem>();
+            CharacterID = EmeraldComponent.gameObject.GetInstanceID().ToString();
             WeaponInventoryName = CharacterID + "WeaponInventory";
+            //InitializeDroppableWeapon();
         }
-	    InitializeDroppableWeapon();
-   	}
 
         /// <summary>
         /// Intializes the AI's droppable weapon to be used when the AI dies.
@@ -388,9 +385,13 @@ namespace EmeraldAI
 			{
 				return;
 			}
-            /*
+            
 			switch (inventoryEvent.InventoryEventType)
 			{
+                case PLInventoryEventType.WeaponInventoryChanged:
+                    ChangeType1Weapons(inventoryEvent.EventItem.TargetEquipmentInventory(inventoryEvent.EventItem, CharacterID).Content);
+                    break;
+                /*
 				case PLInventoryEventType.Pick:
 					if (inventoryEvent.EventItem.ForceSlotIndex)
 					{
@@ -421,10 +422,24 @@ namespace EmeraldAI
 				case PLInventoryEventType.Drop:
 					DropItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
 					break;
+                */
 			}
-            */
+            
 		}
-        
+
+        //Meant to override with a scriptable item type from Inventory
+        protected void ChangeType1Weapons(InventoryItem[] inventoryItems)
+        {
+            Type1EquippableWeapons.Clear();
+            foreach(InventoryItem inventoryItem in inventoryItems)
+            {
+                EquippableWeapons equippableWeapon = new EquippableWeapons();
+                InventoryWeapon inventoryWeapon = (InventoryWeapon) inventoryItem;
+                equippableWeapon.HeldObject = inventoryWeapon.EquippableWeapon.gameObject;
+                Type1EquippableWeapons.Add(equippableWeapon);
+            }
+        }
+    
 		protected void OnEnable()
 		{
 			this.PLEventStartListening<PLInventoryEvent>();

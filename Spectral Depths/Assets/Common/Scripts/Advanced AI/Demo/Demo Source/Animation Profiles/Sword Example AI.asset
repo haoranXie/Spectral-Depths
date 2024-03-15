@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: a61a7403cbf54d34abb7270c17de0bef, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 47b0d429077f5874a830d01c1c11e4ff, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0

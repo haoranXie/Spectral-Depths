@@ -830,6 +830,7 @@ namespace SpectralDepths.InventoryEngine
 					}
 				}
 				PLInventoryEvent.Trigger(PLInventoryEventType.ItemEquipped, slot, InventoryName, item, item.Quantity, index, CharacterID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.WeaponInventoryChanged, null, item.TargetEquipmentInventoryName, item, item.Quantity, index, CharacterID);
 			}
 		}
 

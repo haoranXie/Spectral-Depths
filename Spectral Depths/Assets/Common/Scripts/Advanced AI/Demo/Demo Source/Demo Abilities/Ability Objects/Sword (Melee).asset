@@ -15,7 +15,7 @@ MonoBehaviour:
   AbilityName: Melee Attack
   AbilityDescription: A general melee attack.
   AbilityIcon: {fileID: 2800000, guid: 225c0664134d17744b824ae6e345d539, type: 3}
-  InfoSettingsFoldout: 0
+  InfoSettingsFoldout: 1
   DerivedSettingsFoldout: 1
   ModularSettingsFoldout: 0
   HideSettingsFoldout: 0
