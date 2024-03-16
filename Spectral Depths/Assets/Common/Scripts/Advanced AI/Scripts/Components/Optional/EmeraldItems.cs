@@ -391,10 +391,10 @@ namespace EmeraldAI
 			{
 				return;
 			}
-            
 			switch (inventoryEvent.InventoryEventType)
 			{
                 case PLInventoryEventType.WeaponInventoryChanged:
+                
                     ChangeType1Weapons(inventoryEvent.EventItem.TargetEquipmentInventory(inventoryEvent.EventItem, CharacterID).Content);
                     break;
                 /*
@@ -440,7 +440,7 @@ namespace EmeraldAI
             if(_characterHandleWeapon.CurrentWeapon==null) return;
             for(int i = 0; i<Type1EquippableWeapons.Count; i++)
             {
-                if(string.Equals(_characterHandleWeapon.CurrentWeapon.gameObject.name, Type1EquippableWeapons[i].HeldObject.gameObject.name) || string.Equals(_characterHandleWeapon.CurrentWeapon.GetComponent<Weapon>().WeaponName, Type1EquippableWeapons[i].HeldObject.GetComponent<Weapon>().WeaponName))
+                if(string.Equals(_characterHandleWeapon.CurrentWeapon.gameObject.name, Type1EquippableWeapons[i].HeldObject.gameObject.name)  || string.Equals(_characterHandleWeapon.CurrentWeapon.GetComponent<Weapon>().WeaponName, Type1EquippableWeapons[i].HeldObject.GetComponent<Weapon>().WeaponName))
                 {
                     EquippableWeapons equippableWeapon = new EquippableWeapons();
                     equippableWeapon.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;

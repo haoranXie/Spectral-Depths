@@ -18,7 +18,6 @@ namespace SpectralDepths.TopDown
 		/// if this is true, aim will be unrestricted to angles, and will aim freely in all 3 axis, useful when dealing with AI and elevation
 		[Tooltip("if this is true, aim will be unrestricted to angles, and will aim freely in all 3 axis, useful when dealing with AI and elevation")]
 		public bool Unrestricted3DAim = false;
-	    
 		[Header("Reticle and slopes")]
 		/// whether or not the reticle should move vertically to stay above slopes
 		[PLEnumCondition("ReticleType", (int)ReticleTypes.Scene, (int)ReticleTypes.UI)]
@@ -349,13 +348,13 @@ namespace SpectralDepths.TopDown
 
 					_lookRotation = Quaternion.Euler (CurrentAngle * Vector3.up);
                     
-					RotateWeapon(_lookRotation);
+					if(RotateModel){RotateWeapon(_lookRotation);}
 				}
 			}
 			else
 			{
 				CurrentAngle = 0f;
-				RotateWeapon(_initialRotation);	
+				if(RotateModel){RotateWeapon(_initialRotation);}
 			}
 		}
 

@@ -21,13 +21,15 @@ namespace SpectralDepths.InventoryEngine
         
 		/// The different possible inventory types, main are regular, equipment will have special behaviours (use them for slots where you put the equipped weapon/armor/etc).
 		public enum InventoryTypes { Main, Equipment }
-
-		[Header("ID")] 
+	
+		/// <summary>
+		/// [Header("ID")] 
+		/// </summary>
 		/// a unique ID used to identify the owner of this inventory
-		[Tooltip("a unique ID used to identify the owner of this inventory")]
-		public string CharacterID = "";
-		[Tooltip("a unique ID used to identify the name of this inventory")]
-		public string InventoryName = "";
+		//[Tooltip("a unique ID used to identify the owner of this inventory")]
+		[HideInInspector] public string CharacterID = "";
+		//[Tooltip("a unique ID used to identify the name of this inventory")]
+		[HideInInspector] public string InventoryName = "";
 
 		/// the complete list of inventory items in this inventory
 		[Tooltip("This is a realtime view of your Inventory's contents. Don't modify this list via the inspector, it's visible for control purposes only.")]
@@ -66,7 +68,7 @@ namespace SpectralDepths.InventoryEngine
 		public bool IsFull => NumberOfFreeSlots <= 0;
 
 		/// The number of filled slots 
-		
+
 
 		public int NumberOfFilledSlots
 		{

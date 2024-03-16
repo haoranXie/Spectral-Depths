@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using EmeraldAI.Utility;
 using EmeraldAI;
+using System;
 
 namespace SpectralDepths.TopDown
 {
@@ -45,7 +46,7 @@ namespace SpectralDepths.TopDown
 			_characterInventory = GetComponent<CharacterInventory>();
 			_characterController = GetComponent<CharacterController>();
 			_navMeshAgent = GetComponent<NavMeshAgent>();
-			
+			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged+=OnWeaponChanged;}
 			switch(_character.CharacterType)
 			{
 				//If the Character is under Player controls
@@ -59,8 +60,6 @@ namespace SpectralDepths.TopDown
 					CharacterModeOff();
 					break;
 			}
-			
-
 		}
         
 		public override void EarlyProcessAbility()
@@ -108,6 +107,7 @@ namespace SpectralDepths.TopDown
 			EmeraldModeOff();
 			Overdrive();
 			TurnOffRTSMode();
+			OnWeaponChanged();
 			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();}
 		}
 
@@ -129,7 +129,27 @@ namespace SpectralDepths.TopDown
 			EmeraldModeOn();
 			UnderDrive();
 			TurnOnRTSMode();
+			TurnOffPlayerWeapon();
 		}
+
+		/// <summary>
+		/// Turns off the player's version of their weapon
+		/// </summary>
+		protected void TurnOffPlayerWeapon()
+		{
+			_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
+			_animator.SetBool("Player Controls", false);
+			_emeraldComponent.CombatComponent.ExitCombat();
+			if(_characterHandleWeapon.CurrentWeapon!=null)
+			{
+				if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+				{
+					_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
+					Cursor.visible = true;
+				}
+			}
+		}
+
 
 		/// <summary>
 		/// Activates RTS Manager and triggers components like camera back into RTS control mode
@@ -190,17 +210,62 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void Overdrive()
 		{
-			EmeraldCombatManager.ActivateCombatState(_character.EmeraldComponent);
-			_animator.SetInteger("Weapon Type State", 1);
-			_animator.SetBool("Player Controls", true);
 		}
 		/// <summary>
 		/// Reverses the effects of Overdrive and switches animations to AI controls
 		/// </summary>
 		protected void UnderDrive()
 		{
-			_animator.SetBool("Player Controls", false);
-			_emeraldComponent.CombatComponent.ExitCombat();
+		}
+
+		/// <summary>
+		/// Called when the equipped weapon changes
+		/// </summary>
+		void OnWeaponChanged()
+		{
+			if(_characterHandleWeapon==null) return;
+			switch(_character.CharacterType)
+			{
+				//If the Character is under Player controls
+				case Character.CharacterTypes.Player:
+					//When the character has a weapon equipped under player controls
+					if(_characterHandleWeapon.CurrentWeapon != null)
+					{
+						_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.WeaponDirection;
+						EmeraldCombatManager.ActivateCombatState(_character.EmeraldComponent);
+						_animator.SetInteger("Weapon Type State", 1);
+						_animator.SetBool("Player Controls", true);
+						if(_characterHandleWeapon.CurrentWeapon!=null)
+						{
+							if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+							{
+								_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = true;
+							}
+						}
+					}
+					//When the character doesn't have a weapon equipped under player controls
+					else
+					{
+						_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
+						_animator.SetBool("Player Controls", false);
+						_emeraldComponent.CombatComponent.ExitCombat();
+					}
+				break;
+				//If the Character is under AI controls
+				case Character.CharacterTypes.AI:
+					//If the Character has a weapon equipped under AI controls
+					if(_characterHandleWeapon.CurrentWeapon != null)
+					{
+						if(_characterHandleWeapon.CurrentWeapon!=null)
+						{
+							if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+							{
+								_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
+							}
+						}
+					}
+				break;
+			}
 		}
 		/// <summary>
 		/// Switches out components to work with Emerald based controls
@@ -243,12 +308,14 @@ namespace SpectralDepths.TopDown
         protected override void OnEnable()
         {
             base.OnEnable();
+			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged+=OnWeaponChanged;}
 
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged-=OnWeaponChanged;}
         }
 
     }
