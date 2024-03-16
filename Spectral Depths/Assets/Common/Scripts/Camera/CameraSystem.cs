@@ -9,7 +9,7 @@ namespace SpectralDepths.TopDown{
     /// <summary>
     /// Used for RTS camera movement
     /// </summary>
-    public class CameraSystem : PLSingleton<CameraSystem>
+    public class CameraSystem : PLSingleton<CameraSystem>, PLEventListener<TopDownEngineEvent>
     {
 		[Tooltip("Enable/Disable Use of this camera")]
         public bool UseRTSCamera = true;
@@ -91,6 +91,7 @@ namespace SpectralDepths.TopDown{
 		protected Vector3 _movementVector;
 		protected float _movementSpeed;
         protected Vector2 _currentInput;
+        protected bool _canInput = true;
 
 
         protected override void Awake(){
@@ -127,6 +128,7 @@ namespace SpectralDepths.TopDown{
 
 		protected virtual void HandleInput()
 		{
+            if(!_canInput) return;
             if(UseKeyboardHorizontal){InputHorizontalMoveCamera();}
             if(UseDragPanning){InputDragCamera();}
             if(UseZoomingFOV){InputCameraZoomFOV();}
@@ -354,6 +356,41 @@ namespace SpectralDepths.TopDown{
             _linkedInputManager = null;
             InputManager foundInputManagers = FindObjectOfType(typeof(InputManager)) as InputManager;
             _linkedInputManager = foundInputManagers;
+        }
+        public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+        {
+            switch (engineEvent.EventType)
+            {
+                case TopDownEngineEventTypes.Pause:
+                    _canInput = false;
+                    break;
+                case TopDownEngineEventTypes.UnPause:
+                    _canInput = true;
+                    break;
+                case TopDownEngineEventTypes.RTSOn:
+                    _canInput = true;
+                    break;
+                case TopDownEngineEventTypes.RTSOff:
+                    _canInput = false;
+                    break;
+            }
+                    
+        }
+		/// <summary>
+		/// OnDisable, we start listening to events.
+		/// </summary>
+		protected virtual void OnEnable()
+		{
+			this.PLEventStartListening<TopDownEngineEvent> ();
+
+		}
+
+		/// <summary>
+		/// OnDisable, we stop listening to events.
+		/// </summary>
+		protected virtual void OnDisable()
+		{
+			this.PLEventStopListening<TopDownEngineEvent> ();
         }
     }
 }

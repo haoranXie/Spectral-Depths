@@ -14,8 +14,8 @@ namespace SpectralDepths.TopDown
 	public class Weapon : PLMonoBehaviour 
 	{
 		[PLInspectorGroup("ID", true, 7)]
-		/// the name of the weapon, only used for debugging
-		[Tooltip("the name of the weapon, only used for debugging")]
+		/// the name of the weapon, used for identfying it
+		[Tooltip("the name of the weapon, used for identfying it")]
 		public string WeaponName;
 		/// the possible use modes for the trigger (semi auto : the Player needs to release the trigger to fire again, auto : the Player can hold the trigger to fire repeatedly
 		public enum TriggerModes { SemiAuto, Auto }

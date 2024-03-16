@@ -416,13 +416,13 @@ namespace SpectralDepths.TopDown
             {
                 foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
                 {
-                    gameObject.SetActive(true);
+                    foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=true;}
                 }
             } 
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
             {
-                emeraldSystem.MovementComponent.MovementEdgeIndicator.SetActive(true);
-            } 
+                emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.GetComponent<Renderer>().enabled = true;
+            }
         }
         /// <summary>
         /// Hides MovementEdge and MovementVertex indicators for specific character
@@ -432,13 +432,13 @@ namespace SpectralDepths.TopDown
             if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
             {
                 foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
-                {
-                    gameObject.SetActive(false);
+                {   
+                    foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=false;}
                 }
             } 
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
             {
-                emeraldSystem.MovementComponent.MovementEdgeIndicator.SetActive(false);
+                emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.GetComponent<Renderer>().enabled = false;
             } 
         }
         public void RemoveIndicators(EmeraldSystem emeraldSystem)
@@ -448,12 +448,14 @@ namespace SpectralDepths.TopDown
                 foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
                 {
                     gameObject.SetActive(false);
+                    foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=true;}
                 }
                 emeraldSystem.MovementComponent.MovementVertexIndicatorList = null;
             } 
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
             {
                 emeraldSystem.MovementComponent.MovementEdgeIndicator.SetActive(false);
+                emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.GetComponent<Renderer>().enabled = true;
                 emeraldSystem.MovementComponent.MovementLineIndicator = null;
                 emeraldSystem.MovementComponent.MovementEdgeIndicator = null;
             } 

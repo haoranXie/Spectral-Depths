@@ -884,7 +884,13 @@ namespace SpectralDepths.TopDown
 					_controller.enabled = false;
 				}
 
-			} 
+			}
+
+			foreach(CharacterAbility characterAbility in _characterAbilities)
+			{
+				characterAbility.enabled = false;
+			}
+
       
 		}
 

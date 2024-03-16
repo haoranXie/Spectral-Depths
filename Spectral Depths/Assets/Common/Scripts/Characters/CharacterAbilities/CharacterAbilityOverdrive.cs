@@ -6,6 +6,7 @@ using SpectralDepths.Feedbacks;
 using System.Collections.Generic;
 using UnityEngine.AI;
 using EmeraldAI.Utility;
+using EmeraldAI;
 
 namespace SpectralDepths.TopDown
 {
@@ -36,7 +37,7 @@ namespace SpectralDepths.TopDown
 		protected override void Initialization()
 		{
 			base.Initialization();
-			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+2; }
+			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+1; }
 			_characterSelectable = GetComponent<CharacterSelectable>();
 			_characterController = GetComponent<CharacterController>();
 			_characterHandleWeapon = GetComponent<CharacterHandleWeapon>();
@@ -44,7 +45,6 @@ namespace SpectralDepths.TopDown
 			_characterInventory = GetComponent<CharacterInventory>();
 			_characterController = GetComponent<CharacterController>();
 			_navMeshAgent = GetComponent<NavMeshAgent>();
-			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChange+=OnWeaponChange;}
 			
 			switch(_character.CharacterType)
 			{
@@ -93,7 +93,7 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToPlayer()
 		{
-			
+			/*
 			if(_handleWeaponList[0].CurrentWeapon!=null)
 			{
 				for(int i = 0; i<_handleWeaponList.Count;i++)
@@ -104,18 +104,16 @@ namespace SpectralDepths.TopDown
 			/*
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
-			_character.SetCharacterType(Character.CharacterTypes.Player);
 			CharacterModeOn();
 			EmeraldModeOff();
+			Overdrive();
+			TurnOffRTSMode();
 			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();}
-			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
-			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
-			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
-			CameraSystem.Instance.SwapToPlayerCamera(_character);
 		}
 
 		private void SwitchToAI()
 		{
+			/*
 			if(_handleWeaponList[0].CurrentWeapon!=null)
 			{			
 				for(int i = 0; i<_handleWeaponList.Count;i++)
@@ -126,34 +124,47 @@ namespace SpectralDepths.TopDown
 			/*
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
-			_character.SetCharacterType(Character.CharacterTypes.AI);
+			_emeraldComponent.MovementComponent.StartingDestination = transform.position;
 			CharacterModeOff();
 			EmeraldModeOn();
+			UnderDrive();
+			TurnOnRTSMode();
+		}
+
+		/// <summary>
+		/// Activates RTS Manager and triggers components like camera back into RTS control mode
+		/// </summary>
+		protected void TurnOnRTSMode()
+		{
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
 			RTSEvent.Trigger(RTSEventTypes.SwitchToRTS,_character,null);
 			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			CameraSystem.Instance.SwapToRTSCamera(this.transform);
-
 		}
+		/// <summary>
+		/// Deactivates RTS Manager and triggers components like camera to be off RTS control mode
+		/// </summary>
 
+		protected void TurnOffRTSMode()
+		{
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
+			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
+			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
+			CameraSystem.Instance.SwapToPlayerCamera(_character);
+		}
 		/// <summary>
 		/// Switches out components to work with Character based controls
 		/// </summary>
 		protected void CharacterModeOn()
 		{
+			_character.SetCharacterType(Character.CharacterTypes.Player);
 			_controller.enabled = true;
 			_characterMovement.enabled=true;
 			if(_characterHandleWeapon!=null){
 				_characterHandleWeapon.enabled=true;
-				if(_characterHandleWeapon.CurrentWeapon!=null)
-				{
-					EmeraldCombatManager.ActivateCombatState(_character.EmeraldComponent);
-					_animator.SetInteger("Weapon Type State", 1);
-				}
 			}
-			if(_characterInventory!=null){_characterInventory.enabled=true;}
+			if(_characterInventory!=null){_characterInventory.ProcessInventory=true;}
 			if(_characterSelectable!=null){_characterSelectable.DeSelected();}
-			
 			_characterOrientation3D.enabled=true;
 			_characterController.enabled=true;
 			_controller.Reset();
@@ -164,14 +175,32 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void CharacterModeOff()
 		{
+			_character.SetCharacterType(Character.CharacterTypes.AI);
 			_controller.enabled = false;
 			_characterMovement.enabled=false;
 			_characterOrientation3D.enabled=false;
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.enabled=false;}
-			if(_characterInventory!=null){_characterInventory.enabled=false;}
+			if(_characterInventory!=null){_characterInventory.ProcessInventory=false;}
             _animator.SetBool("Player Controls", false);
 			_characterController.enabled=false;
 			_character.CacheAbilities();
+		}
+		/// <summary>
+		/// Activates player animations and overdrives the player in various ways
+		/// </summary>
+		protected void Overdrive()
+		{
+			EmeraldCombatManager.ActivateCombatState(_character.EmeraldComponent);
+			_animator.SetInteger("Weapon Type State", 1);
+			_animator.SetBool("Player Controls", true);
+		}
+		/// <summary>
+		/// Reverses the effects of Overdrive and switches animations to AI controls
+		/// </summary>
+		protected void UnderDrive()
+		{
+			_animator.SetBool("Player Controls", false);
+			_emeraldComponent.CombatComponent.ExitCombat();
 		}
 		/// <summary>
 		/// Switches out components to work with Emerald based controls
@@ -196,19 +225,6 @@ namespace SpectralDepths.TopDown
 			_emeraldComponent.CombatComponentOn = false;
 		}
 		
-		protected void OnWeaponChange()
-		{
-			if(_characterHandleWeapon.CurrentWeapon==null) return;
-
-			if(_character.CharacterType == Character.CharacterTypes.Player)
-			{
-            	_animator.SetBool("Combat State Active", true);
-            	_animator.SetBool("Player Controls", true);
-                _animator.SetInteger("Weapon Type State", 1);				
-			}
-		}
-
-
 		protected override void OnDeath()
 		{
 			base.OnDeath();

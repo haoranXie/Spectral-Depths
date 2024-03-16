@@ -26,7 +26,7 @@ namespace SpectralDepths.TopDown
             
 			if (TargetHandleWeaponAbility != null)
 			{
-				TargetHandleWeaponAbility.OnWeaponChange += OnWeaponChange;
+				TargetHandleWeaponAbility.OnWeaponChanged += OnWeaponChange;
 			}
 		}
         
@@ -57,7 +57,7 @@ namespace SpectralDepths.TopDown
 		{
 			if (TargetHandleWeaponAbility != null)
 			{
-				TargetHandleWeaponAbility.OnWeaponChange -= OnWeaponChange;
+				TargetHandleWeaponAbility.OnWeaponChanged -= OnWeaponChange;
 			}
 		}
 	}

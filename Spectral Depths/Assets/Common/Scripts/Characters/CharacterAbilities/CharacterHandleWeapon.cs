@@ -105,7 +105,7 @@ namespace SpectralDepths.TopDown
 
 		public delegate void OnWeaponChangeDelegate();
 		/// a delegate you can hook to, to be notified of weapon changes
-		public event OnWeaponChangeDelegate OnWeaponChange;
+		public event OnWeaponChangeDelegate OnWeaponChanged;
 
 		protected float _fireTimer = 0f;
 		protected float _secondaryHorizontalMovement;
@@ -459,9 +459,9 @@ namespace SpectralDepths.TopDown
 				CurrentWeapon = null;
 			}
 
-			if (OnWeaponChange != null)
+			if (OnWeaponChanged != null)
 			{
-				OnWeaponChange();
+				OnWeaponChanged();
 			}
 		}
 

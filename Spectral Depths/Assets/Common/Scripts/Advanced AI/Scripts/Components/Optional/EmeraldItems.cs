@@ -50,6 +50,8 @@ namespace EmeraldAI
         
         #endregion
 
+        protected CharacterHandleWeapon _characterHandleWeapon;
+
         //Used to connect this inventory to character inventory
         protected string CharacterID = "";
         protected string WeaponInventoryName = "";
@@ -63,8 +65,12 @@ namespace EmeraldAI
             EmeraldComponent = GetComponent<EmeraldSystem>();
             CharacterID = EmeraldComponent.gameObject.GetInstanceID().ToString();
             WeaponInventoryName = CharacterID + "WeaponInventory";
+            _characterHandleWeapon = GetComponent<CharacterHandleWeapon>();    
+            if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged+=WeaponChanged;}        
             //InitializeDroppableWeapon();
         }
+
+ 
 
         /// <summary>
         /// Intializes the AI's droppable weapon to be used when the AI dies.
@@ -426,6 +432,27 @@ namespace EmeraldAI
 			}
             
 		}
+        /// <summary>
+        /// Sets the active weapon's respective slot up
+        /// </summary>
+        protected void WeaponChanged()
+        {
+            if(_characterHandleWeapon.CurrentWeapon==null) return;
+            for(int i = 0; i<Type1EquippableWeapons.Count; i++)
+            {
+                if(string.Equals(_characterHandleWeapon.CurrentWeapon.gameObject.name, Type1EquippableWeapons[i].HeldObject.gameObject.name) || string.Equals(_characterHandleWeapon.CurrentWeapon.GetComponent<Weapon>().WeaponName, Type1EquippableWeapons[i].HeldObject.GetComponent<Weapon>().WeaponName))
+                {
+                    EquippableWeapons equippableWeapon = new EquippableWeapons();
+                    equippableWeapon.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;
+                    Type1EquippableWeapons[i] = equippableWeapon;
+                    /*
+                    Debug.Log(_characterHandleWeapon.CurrentWeapon.gameObject.GetComponentInParent<ConfigurableJoint>());
+                    equippableWeapons.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;
+                    Debug.Log(equippableWeapons.HeldObject.GetComponentInParent<ConfigurableJoint>());
+                    */
+                }  
+            }
+        }
 
         //Meant to override with a scriptable item type from Inventory
         protected void ChangeType1Weapons(InventoryItem[] inventoryItems)
@@ -438,6 +465,7 @@ namespace EmeraldAI
                 equippableWeapon.HeldObject = inventoryWeapon.EquippableWeapon.gameObject;
                 Type1EquippableWeapons.Add(equippableWeapon);
             }
+            WeaponChanged();
         }
     
 		protected void OnEnable()

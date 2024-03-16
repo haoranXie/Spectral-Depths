@@ -43,6 +43,8 @@ GameObject:
   - component: {fileID: 6082515786030590076}
   - component: {fileID: 85632560201252260}
   - component: {fileID: -5500126058552615531}
+  - component: {fileID: 633452854318295614}
+  - component: {fileID: 3776071035529770530}
   m_Layer: 0
   m_Name: Greatsword
   m_TagString: Untagged
@@ -58,14 +60,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5808858935742533760}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.000061044644, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 405732268004672468}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6082515786030590076
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -128,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a557e2b93323f4831a62221b200348c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WeaponName: 
+  WeaponName: Greatsword
   WeaponCurrentlyActive: 1
   PlayerWeaponVersion: {fileID: 0}
   AIWeaponVersion: {fileID: 0}
@@ -212,3 +214,43 @@ MonoBehaviour:
   KnockbackDirection: 0
   InvincibilityDuration: 0.5
   CanDamageOwner: 0
+--- !u!65 &633452854318295614
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5808858935742533760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6486218, y: 0.57958066, z: 2.3313508}
+  m_Center: {x: -0.21325803, y: -0.076167464, z: 1.2621677}
+--- !u!114 &3776071035529770530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5808858935742533760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4684f27df27199d40a99e1fd0dcec69b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HideSettingsFoldout: 0
+  WeaponCollisionFoldout: 1
+  WeaponCollider: {fileID: 633452854318295614}
+  CollisionBoxColor: {r: 1, g: 0.85, b: 0, a: 0.25}
+  HitTargets: []
+  OnCollision: 0
+  EmeraldComponent: {fileID: 0}

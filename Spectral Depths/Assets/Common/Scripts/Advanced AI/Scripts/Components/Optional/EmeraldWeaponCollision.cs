@@ -1,11 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using SpectralDepths.TopDown;
 
 namespace EmeraldAI
 {
     [RequireComponent(typeof(BoxCollider))]
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/weapon-collisions-component")]
     public class EmeraldWeaponCollision : MonoBehaviour
     {
         public bool HideSettingsFoldout;
@@ -16,7 +16,7 @@ namespace EmeraldAI
         public List<Transform> HitTargets = new List<Transform>();
 
         public bool OnCollision;
-        EmeraldSystem EmeraldComponent;
+        public EmeraldSystem EmeraldComponent;
         Rigidbody m_Rigidbody;
 
         private void Start()
@@ -50,7 +50,6 @@ namespace EmeraldAI
             {
                 if (gameObject.GetComponent<Collider>() == null)
                     return;
-
                 WeaponCollider.enabled = false;
                 EmeraldComponent.CombatComponent.CurrentWeaponCollision = null;
                 HitTargets.Clear();
@@ -68,6 +67,7 @@ namespace EmeraldAI
 
         private void OnTriggerEnter(Collider collision)
         {
+
             if (collision.gameObject != EmeraldComponent.gameObject)
             {
                 if (collision.gameObject.GetComponent<LocationBasedDamageArea>() != null || collision.gameObject.GetComponent<IDamageable>() != null)

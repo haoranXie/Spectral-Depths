@@ -84,6 +84,7 @@ namespace SpectralDepths.TopDown
 		protected const string _initialSlotWeaponName = "_InitialSlotWeaponName";
 		protected bool _initialized = false;
   		protected EmeraldItems _emeraldItems;
+		public bool ProcessInventory = true;
 
 		/// <summary>
 		/// On init we setup our ability
@@ -165,7 +166,8 @@ namespace SpectralDepths.TopDown
 		public override void ProcessAbility()
 		{
 			base.ProcessAbility();
-            
+            if(ProcessInventory==false) return;
+
 			if (_nextFrameWeapon)
 			{
 				EquipWeapon(_nextFrameWeaponName);
@@ -231,7 +233,7 @@ namespace SpectralDepths.TopDown
 		protected override void HandleInput()
 		{
 			if (!AbilityAuthorized
-			    || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal))
+			    || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal || ProcessInventory == false))
 			{
 				return;
 			}
