@@ -42,8 +42,8 @@ GameObject:
   - component: {fileID: 6045436665202084468}
   - component: {fileID: 6082515786030590076}
   - component: {fileID: 85632560201252260}
-  - component: {fileID: -5500126058552615531}
-  - component: {fileID: 5080580926843477025}
+  - component: {fileID: 2002453474110576193}
+  - component: {fileID: 8699268422651592727}
   - component: {fileID: 633452854318295614}
   - component: {fileID: 3776071035529770530}
   m_Layer: 0
@@ -119,7 +119,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-5500126058552615531
+--- !u!114 &2002453474110576193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5808858935742533760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a557e2b93323f4831a62221b200348c4, type: 3}
+  m_Script: {fileID: 11500000, guid: e8392d75dc5cc4174adffea150b3dae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponName: Greatsword
@@ -195,27 +195,7 @@ MonoBehaviour:
   Interruptable: 0
   Flipped: 0
   _reloading: 0
-  MeleeDamageAreaMode: 0
-  DamageAreaShape: 0
-  AreaOffset: {x: 1, y: 0, z: 0}
-  AreaSize: {x: 1, y: 1, z: 0}
-  TriggerFilter: -1
-  HitDamageableFeedback: {fileID: 0}
-  HitNonDamageableFeedback: {fileID: 0}
-  ExistingDamageArea: {fileID: 0}
-  InitialDelay: 0
-  ActiveDuration: 1
-  TargetLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  MinDamageCaused: 10
-  MaxDamageCaused: 10
-  Knockback: 0
-  KnockbackForce: {x: 10, y: 2, z: 0}
-  KnockbackDirection: 0
-  InvincibilityDuration: 0.5
-  CanDamageOwner: 0
---- !u!114 &5080580926843477025
+--- !u!114 &8699268422651592727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -427,7 +427,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
-			_reticle.gameObject.SetActive(false);
+			if(_reticle!=null){_reticle.gameObject.SetActive(false);}
 			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}

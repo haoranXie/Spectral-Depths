@@ -481,7 +481,7 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 6
     m_ConditionEvent: Weapon Type State
-    m_EventTreshold: 0
+    m_EventTreshold: 1
   m_DstStateMachine: {fileID: 379080773518781499}
   m_DstState: {fileID: 0}
   m_Solo: 0

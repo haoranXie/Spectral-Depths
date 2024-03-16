@@ -318,7 +318,6 @@ namespace EmeraldAI
                 EmeraldComponent.AnimationComponent.PlayAttackAnimation();
                 AttackTimer = 0;
             }
-
             //Cancel the attack if it's triggered and the target is out of range
             if (AttackTimer >= EmeraldComponent.CombatComponent.CurrentAttackCooldown)
             {
@@ -329,7 +328,38 @@ namespace EmeraldAI
                 }
             }
         }
+        /// <summary>
+        /// Continuously check to see if the conditions are right to trigger an attack, given the AI is in the Aggressive State. This is a priority state.
+        /// </summary>
+        public virtual void PlayerAttack()
+        {
+            var EnterConditions = EmeraldComponent.AnimationComponent.IsIdling || EmeraldComponent.AnimationComponent.IsMoving;
+            var CooldownConditions = EmeraldComponent.AnimationComponent.IsIdling || EmeraldComponent.AnimationComponent.IsMoving || EmeraldComponent.AnimationComponent.IsBackingUp ||
+                EmeraldComponent.AnimationComponent.IsTurningLeft || EmeraldComponent.AnimationComponent.IsTurningRight || EmeraldComponent.AnimationComponent.IsGettingHit;
 
+            if (CooldownConditions) AttackTimer += Time.deltaTime;
+
+            bool notAllowedToAttack = EmeraldComponent.AIAnimator.GetBool("Hit") || EmeraldComponent.AIAnimator.GetBool("Strafe Active") || EmeraldComponent.AIAnimator.GetBool("Dodge Triggered") || EmeraldComponent.AIAnimator.GetBool("Blocking") || EmeraldComponent.AnimationComponent.IsBackingUp || EmeraldComponent.AnimationComponent.IsBlocking || EmeraldComponent.AnimationComponent.IsAttacking || EmeraldComponent.AnimationComponent.IsRecoiling || EmeraldComponent.AnimationComponent.IsStrafing || EmeraldComponent.AnimationComponent.IsDodging || EmeraldComponent.AnimationComponent.IsGettingHit;
+
+            if (!notAllowedToAttack && EnterConditions && !IsAiming)
+            {
+                EmeraldComponent.AnimationComponent.IsMoving = false;
+                EmeraldComponent.CombatComponent.AdjustCooldowns();
+                EmeraldComponent.AnimationComponent.PlayAttackAnimation();
+                AttackTimer = 0;
+            }
+            /*
+            //Cancel the attack if it's triggered and the target is out of range
+            if (AttackTimer >= EmeraldComponent.CombatComponent.CurrentAttackCooldown)
+            {
+                if (EmeraldComponent.m_NavMeshAgent.remainingDistance > EmeraldComponent.m_NavMeshAgent.stoppingDistance && EmeraldComponent.AIAnimator.GetBool("Attack"))
+                {
+                    EmeraldComponent.AIAnimator.ResetTrigger("Attack");
+                    AttackTimer = 0;
+                }
+            }
+            */
+        }
         /// <summary>
         /// Stops the AI from fighting and chasing, or fleeing from, its current target.
         /// </summary>

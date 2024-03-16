@@ -135,12 +135,23 @@ namespace EmeraldAI
             {
                 IsIdling = CurrentStateInfo.IsName("Combat Movement (Type 1)") && AIAnimator.GetFloat("Speed") < 0.1f;
                 IsMoving = CurrentStateInfo.IsName("Combat Movement (Type 1)") && AIAnimator.GetFloat("Speed") >= 0.1f && !IsBackingUp && !IsAttacking;
+                if(AIAnimator.GetBool("Player Controls"))
+                {
+                    IsIdling = CurrentStateInfo.IsName("Player Idle (Type 1)") && AIAnimator.GetFloat("Speed") < 0.1f;
+                    IsMoving = (CurrentStateInfo.IsName("Player Walking (Type 1)") ||CurrentStateInfo.IsName("Player Running (Type 1)")) && AIAnimator.GetFloat("Speed") >= 0.1f && !IsBackingUp && !IsAttacking;
+                }
             }
             else if (EmeraldComponent.CombatComponent.CombatState && EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type2)
             {
                 IsIdling = CurrentStateInfo.IsName("Combat Movement (Type 2)") && AIAnimator.GetFloat("Speed") < 0.1f;
                 IsMoving = CurrentStateInfo.IsName("Combat Movement (Type 2)") && AIAnimator.GetFloat("Speed") >= 0.1f && !IsBackingUp && !IsAttacking;
+                if(AIAnimator.GetBool("Player Controls"))
+                {
+                    IsIdling = CurrentStateInfo.IsName("Player Idle (Type 2)") && AIAnimator.GetFloat("Speed") < 0.1f;
+                    IsMoving = (CurrentStateInfo.IsName("Player Walking (Type 2)") ||CurrentStateInfo.IsName("Player Running (Type 2)")) && AIAnimator.GetFloat("Speed") >= 0.1f && !IsBackingUp && !IsAttacking;
+                }
             }
+
 
             IsEquipping = CurrentStateInfo.IsTag("Equip");
             IsBlocking = CurrentStateInfo.IsTag("Block");
@@ -426,7 +437,7 @@ namespace EmeraldAI
         public void PlayAttackAnimation ()
         {
             if (!EmeraldComponent.CombatComponent.CurrentAttackData.CooldownIgnored) EmeraldComponent.CombatComponent.CurrentAttackData.CooldownTimeStamp = Time.time;
-
+            Debug.Log("yo");
             AIAnimator.SetInteger("Attack Index", EmeraldComponent.CombatComponent.CurrentAnimationIndex + 1);
             AIAnimator.SetTrigger("Attack");
         }

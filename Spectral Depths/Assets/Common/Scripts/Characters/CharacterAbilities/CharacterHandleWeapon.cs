@@ -19,7 +19,9 @@ namespace SpectralDepths.TopDown
 		public override string HelpBoxText() { return "This component will allow your character to pickup and use weapons. What the weapon will do is defined in the Weapon classes. This just describes the behaviour of the 'hand' holding the weapon, not the weapon itself. Here you can set an initial weapon for your character to start with, allow weapon pickup, and specify a weapon attachment (a transform inside of your character, could be just an empty child gameobject, or a subpart of your model."; }
 
 		[Header("Weapon")]
-
+		/// if this is true the controls will be based on the assumption it works off of the Emerald Combat Component, Turned on by default if EmeraldComponent is being used
+		[Tooltip(" if this is true the controls will be based on the assumption it works off of the Emerald Combat Component, Turned on by default if EmeraldComponent is being used")]
+		public bool EmeraldWeaponControls = false;
 		/// the initial weapon owned by the character
 		[Tooltip("the initial weapon owned by the character")]
 		public Weapon InitialWeapon;
@@ -181,6 +183,10 @@ namespace SpectralDepths.TopDown
 					ChangeWeapon(InitialWeapon, InitialWeapon.WeaponName, false);    
 				}
 			}
+			if(_character.UseEmeraldAI)
+			{
+				EmeraldWeaponControls = true;
+			}
 		}
 
 		/// <summary>
@@ -237,12 +243,21 @@ namespace SpectralDepths.TopDown
 			{
 				inputAuthorized = CurrentWeapon.InputAuthorized;
 			}
+			if(EmeraldWeaponControls)
+			{
+				if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonDown)))
+				{
+					_character.EmeraldComponent.BehaviorsComponent.PlayerAttack();
+				}
+				return;
+			}
+			
 
 			if (ForceAlwaysShoot)
 			{
 				ShootStart();
 			}
-			
+
 			if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonDown)))
 			{
 				ShootStart();
