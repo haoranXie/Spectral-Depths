@@ -10,22 +10,35 @@ namespace CHARACTERS
     public class Character
     {
         public const bool ENABLE_ON_START = true;//WHETHER TO SHOW CHARACTERS ON START OR NOT (use for testing so you dont have to .show() every time)
+        private const float UNHIGHLIGHTED_DARKEN_STRENGTH = 0.65f; //CHANGE TO CUSTOMIZE HOW DARK WHEN CHARACTERS ARE NOT HIGHLIGHTED
 
         public string name = "";
         public string displayName = "";
         public RectTransform root = null;
         public CharacterConfigData config;
         public Animator animator;
+        public Color color { get; private set; } = Color.white;
+        protected Color displayColor => highlighted ? highlightedColor : unhighlightedColor;
+        protected Color highlightedColor => color;
+        protected Color unhighlightedColor => new Color(color.r * UNHIGHLIGHTED_DARKEN_STRENGTH, color.g * UNHIGHLIGHTED_DARKEN_STRENGTH, color.b * UNHIGHLIGHTED_DARKEN_STRENGTH, color.a);
 
-        protected CharacterManager manager => CharacterManager.instance;
+
+        public bool highlighted { get; protected set; } = true;
+
+        protected CharacterManager characterManager => CharacterManager.instance;
         public DialogueSystem dialogueSystem => DialogueSystem.instance;
 
         //Coroutines
         protected Coroutine co_revealing, co_hiding;
         protected Coroutine co_moving;
+        protected Coroutine co_changingColor;
+        protected Coroutine co_highlighting;
         public bool isRevealing => co_revealing != null;
         public bool isHiding => co_hiding != null;
         public bool isMoving => co_moving != null;
+        public bool isChangingColor => co_changingColor != null;
+        public bool isHighlighting => (highlighted && co_highlighting != null);
+        public bool isUnHighlighting => (!highlighted && co_highlighting != null);
         public virtual bool isVisible { get; set; }
 
         //When creating a new character
@@ -37,8 +50,8 @@ namespace CHARACTERS
 
             if (prefab != null)
             {
-                GameObject ob = Object.Instantiate(prefab, manager.characterPanel);
-                ob.name = manager.FormatCharacterPath(manager.characterPrefabNameFormat, name);
+                GameObject ob = Object.Instantiate(prefab, characterManager.characterPanel);
+                ob.name = characterManager.FormatCharacterPath(characterManager.characterPrefabNameFormat, name);
                 ob.SetActive(true);
                 root = ob.GetComponent<RectTransform>();
                 animator = root.GetComponentInChildren<Animator>();
@@ -73,9 +86,9 @@ namespace CHARACTERS
                 return co_revealing;
 
             if (isHiding)
-                manager.StopCoroutine(co_hiding);
+                characterManager.StopCoroutine(co_hiding);
 
-            co_revealing = manager.StartCoroutine(ShowingOrHiding(true));
+            co_revealing = characterManager.StartCoroutine(ShowingOrHiding(true));
 
             return co_revealing;
         }
@@ -87,9 +100,9 @@ namespace CHARACTERS
                 return co_hiding;
 
             if (isRevealing)
-                manager.StopCoroutine(co_revealing);
+                characterManager.StopCoroutine(co_revealing);
 
-            co_hiding = manager.StartCoroutine(ShowingOrHiding(false));
+            co_hiding = characterManager.StartCoroutine(ShowingOrHiding(false));
 
             return co_hiding;
         }
@@ -119,9 +132,9 @@ namespace CHARACTERS
                 return null;
 
             if (isMoving)
-                manager.StopCoroutine(co_moving);
+                characterManager.StopCoroutine(co_moving);
 
-            co_moving = manager.StartCoroutine(MovingToPosition(position, speed, teleport));
+            co_moving = characterManager.StartCoroutine(MovingToPosition(position, speed, teleport));
 
             return co_moving;
         }
@@ -181,6 +194,63 @@ namespace CHARACTERS
             Vector2 maxAnchorTarget = minAnchorTarget + padding;
 
             return (minAnchorTarget, maxAnchorTarget);
+        }
+
+        public virtual void SetColor(Color color)
+        {
+            this.color = color;
+        }
+
+        public Coroutine TransitionColor(Color color, float speed = 1f)
+        {
+            this.color = color;
+
+            if (isChangingColor)
+                characterManager.StopCoroutine(co_changingColor);
+
+            co_changingColor = characterManager.StartCoroutine(ChangingColor(displayColor, speed));
+
+            return co_changingColor;
+        }
+
+        public virtual IEnumerator ChangingColor(Color color, float seed)
+        {
+            Debug.Log("Color changing is not aplicable on this character type!");
+            yield return null;
+        }
+
+        public Coroutine Highlight(float speed = 1f)
+        {
+            if (isHighlighting)
+                return co_highlighting;
+
+            if (isUnHighlighting)
+                characterManager.StopCoroutine(co_highlighting);
+
+            highlighted = true;
+            co_highlighting = characterManager.StartCoroutine(Highlighting(highlighted, speed));
+
+            return co_highlighting;
+        }
+
+        public Coroutine UnHighlight(float speed = 1f)
+        {
+            if (isUnHighlighting)
+                return co_highlighting;
+
+            if (isHighlighting)
+                characterManager.StopCoroutine(co_highlighting);
+
+            highlighted = false;
+            co_highlighting = characterManager.StartCoroutine(Highlighting(highlighted, speed));
+
+            return co_highlighting;
+        }
+
+        public virtual IEnumerator Highlighting(bool highlight, float speedMultiplier)
+        {
+            Debug.Log("Highlighting is not available on this character type!");
+            yield return null;
         }
 
         //Determining what kind of character

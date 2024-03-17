@@ -33,7 +33,7 @@ namespace TESTING
             Sprite body = Raelin.GetSprite("Raelin_3");
             Sprite face = Raelin.GetSprite("Raelin_7");
             Raelin.TransitionSprite(body);
-            yield return Raelin.TransitionSprite(face, 1, 0.3f);
+            yield return Raelin.TransitionSprite(face, 1);
 
             Raelin.MoveToPosition(Vector2.zero);
             Guard.Show();
@@ -48,6 +48,10 @@ namespace TESTING
             yield return new WaitForSeconds(1);
             Guard.TransitionSprite(face);
 
+            Raelin.Say("Hi, Haoran Sucks");
+            yield return new WaitForSeconds(2);
+            Guard.Say("I agree");
+
             /**
             CharacterSprite Raelin = CreateCharacter("Raelin") as CharacterSprite;
 
@@ -57,7 +61,28 @@ namespace TESTING
             Raelin.TransitionSprite(Raelin.GetSprite("Raelin_3"));
             **/
 
+            /**
+            CharacterSprite Raelin = CreateCharacter("Raelin") as CharacterSprite;
+
+            yield return new WaitForSeconds(1);
+
+            yield return Raelin.TransitionColor(Color.red);
+            yield return Raelin.TransitionColor(Color.blue);
+            yield return Raelin.TransitionColor(Color.yellow);
+            yield return Raelin.TransitionColor(Color.white);
+
+            yield return Raelin.UnHighlight();
+            yield return new WaitForSeconds(1);
+            yield return Raelin.TransitionColor(Color.red);
+
+            yield return new WaitForSeconds(1);
+
+            yield return Raelin.Highlight();
+
+            yield return Raelin.TransitionColor(Color.white);
+
             yield return null;
+            **/
         }
 
         // Update is called once per frame

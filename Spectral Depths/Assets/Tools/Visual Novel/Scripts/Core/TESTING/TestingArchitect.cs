@@ -24,7 +24,7 @@ namespace TESTING
         {
             ds = DialogueSystem.instance;
             architect = new TextArchitect(ds.dialogueContainer.dialogueText);
-            architect.buildMethod = TextArchitect.BuildMethod.typewriter;
+            architect.buildMethod = TextArchitect.BuildMethod.fade;
         }
 
         // Update is called once per frame

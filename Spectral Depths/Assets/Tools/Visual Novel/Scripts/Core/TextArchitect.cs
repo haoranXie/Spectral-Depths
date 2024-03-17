@@ -25,9 +25,9 @@ public class TextArchitect
     public string fullTargetText => preText + targetText;
 
     //Controls what method to build text
-    public enum BuildMethod{instant, typewriter}
+    public enum BuildMethod{instant, typewriter, fade}
     //Basically sets typewriter as default BuildMethod
-    public BuildMethod buildMethod = BuildMethod.typewriter;
+    public BuildMethod buildMethod = BuildMethod.fade;
     
     //Text color changer
     //textColor variable gets color of tmpro text and sets value as color for tmpro text
@@ -108,6 +108,9 @@ public class TextArchitect
             case BuildMethod.typewriter:
                 yield return Build_Typewriter();
                 break;
+            case BuildMethod.fade:
+                yield return Build_Fade();
+                break;
         }
         OnComplete();
     }
@@ -125,6 +128,9 @@ public class TextArchitect
             case BuildMethod.typewriter:
                 tmpro.maxVisibleCharacters = tmpro.textInfo.characterCount;
                 break;
+            case BuildMethod.fade:
+                tmpro.ForceMeshUpdate();
+                break;
         }
 
         Stop();
@@ -141,6 +147,9 @@ public class TextArchitect
                 break;
             case BuildMethod.typewriter:
                 Prepare_Typewriter();
+                break;
+            case BuildMethod.fade:
+                Prepare_Fade();
                 break;
         }
     }
@@ -169,6 +178,50 @@ public class TextArchitect
         tmpro.ForceMeshUpdate();
     }
 
+    private void Prepare_Fade()
+    {
+        tmpro.text = preText;
+        if (preText != "")
+        {
+            tmpro.ForceMeshUpdate();
+            preTextLength = tmpro.textInfo.characterCount;
+        }
+        else
+            preTextLength = 0;
+
+        tmpro.text += targetText;
+        tmpro.maxVisibleCharacters = int.MaxValue;
+        tmpro.ForceMeshUpdate();
+
+        TMP_TextInfo textInfo = tmpro.textInfo;
+
+        Color colorVisable = new Color(textColor.r, textColor.g, textColor.b, 1);
+        Color colorHidden = new Color(textColor.r, textColor.g, textColor.b, 0);
+
+        Color32[] vertexColors = textInfo.meshInfo[textInfo.characterInfo[0].materialReferenceIndex].colors32;
+
+        for(int i = 0; i < textInfo.characterCount; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+
+            if (!charInfo.isVisible)
+                continue;
+
+            if (i < preTextLength)
+            {
+                for (int v = 0; v < 4; v++)
+                    vertexColors[charInfo.vertexIndex + v] = colorVisable;
+            }
+            else
+            {
+                for (int v = 0; v < 4; v++)
+                    vertexColors[charInfo.vertexIndex + v] = colorHidden;
+            }
+        }
+
+        tmpro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+    }
+
     //Builds the text typewriter mode
     private IEnumerator Build_Typewriter()
     {
@@ -177,6 +230,54 @@ public class TextArchitect
             tmpro.maxVisibleCharacters += hurryUp ? charactersPerCycle * 5: charactersPerCycle;
 
             yield return new WaitForSeconds(0.015f / speed);
+        }
+    }
+
+    private IEnumerator Build_Fade()
+    {
+        int minRange = preTextLength;
+        int maxRange = minRange + 1;
+
+        byte alphaThreshold = 15;
+
+        TMP_TextInfo textInfo = tmpro.textInfo;
+
+        Color32[] vertexColors = textInfo.meshInfo[textInfo.characterInfo[0].materialReferenceIndex].colors32;
+        float[] alphas = new float[textInfo.characterCount];
+
+        while(true)
+        {
+            float fadeSpeed = ((hurryUp ? charactersPerCycle * 5 : charactersPerCycle) * speed) * 3f; //Change this to change fade speed
+
+            for(int i = minRange; i < maxRange; i++)
+            {
+                TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+
+                if (!charInfo.isVisible)
+                    continue;
+
+                int vertexIndex = textInfo.characterInfo[i].vertexIndex;
+                alphas[i] = Mathf.MoveTowards(alphas[i], 255, fadeSpeed);
+
+                for (int v = 0; v < 4; v++)
+                    vertexColors[charInfo.vertexIndex + v].a = (byte)alphas[i];
+
+                if (alphas[i] >= 255)
+                    minRange++;
+            }
+
+            tmpro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+            bool lastCharacterIsInvisible = !textInfo.characterInfo[maxRange - 1].isVisible;
+            if (alphas[maxRange - 1] > alphaThreshold || lastCharacterIsInvisible)
+            {
+                if (maxRange < textInfo.characterCount)
+                    maxRange++;
+                else if (alphas[maxRange - 1] >= 255 || lastCharacterIsInvisible)
+                    break;
+            }
+
+            yield return new WaitForEndOfFrame();
         }
     }
 }
