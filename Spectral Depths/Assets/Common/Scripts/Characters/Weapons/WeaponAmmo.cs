@@ -47,18 +47,22 @@ namespace SpectralDepths.TopDown
 		protected virtual void Start()
 		{
 			_weapon = GetComponent<Weapon> ();
-			Inventory[] inventories = FindObjectsOfType<Inventory>();
+			if(!AmmoInventoryName.Contains(_weapon.Owner.CharacterID)){AmmoInventoryName = _weapon.Owner.CharacterID + AmmoInventoryName;}
+			//Inventory[] inventories = FindObjectsOfType<Inventory>();
+			
+			Inventory[] inventories = _weapon.Owner.GetComponentsInChildren<Inventory>();
 			foreach (Inventory inventory in inventories)
 			{
-				if (inventory.PlayerID != _weapon.Owner.PlayerID)
+				if (inventory.CharacterID != _weapon.Owner.CharacterID)
 				{
 					continue;
 				}
-				if ((AmmoInventory == null) && (inventory.name == AmmoInventoryName))
+				if ((AmmoInventory == null) && (inventory.InventoryName == AmmoInventoryName))
 				{
 					AmmoInventory = inventory;
 				}
 			}
+			
 			if (ShouldLoadOnStart)
 			{
 				LoadOnStart ();	

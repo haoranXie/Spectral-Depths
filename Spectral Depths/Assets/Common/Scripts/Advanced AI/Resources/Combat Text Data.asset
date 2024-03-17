@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2943de7d50114ee4fb0f4f1e41d19ed6, type: 3}
   m_Name: Combat Text Data
   m_EditorClassIdentifier: 
-  CombatTextState: 1
+  CombatTextState: 0
   PlayerTextColor: {r: 0.875, g: 0.8086207, b: 0.59191173, a: 1}
   PlayerCritTextColor: {r: 1, g: 0, b: 0, a: 1}
   PlayerTakeDamageTextColor: {r: 1, g: 0.8482759, b: 0, a: 1}

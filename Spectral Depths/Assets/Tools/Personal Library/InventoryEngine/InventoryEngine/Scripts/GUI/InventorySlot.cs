@@ -103,7 +103,7 @@ namespace SpectralDepths.InventoryEngine
 			if (ParentInventoryDisplay != null)
 			{
 				InventoryItem item = ParentInventoryDisplay.TargetInventory.Content[Index];
-				PLInventoryEvent.Trigger(PLInventoryEventType.Select, this, ParentInventoryDisplay.TargetInventoryName, item, 0, Index, ParentInventoryDisplay.PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Select, this, ParentInventoryDisplay.TargetInventoryName, item, 0, Index, ParentInventoryDisplay.CharacterID);
 			}
 		}
 
@@ -117,9 +117,9 @@ namespace SpectralDepths.InventoryEngine
 				InventoryItem item = ParentInventoryDisplay.TargetInventory.Content[Index];
 				if (ParentInventoryDisplay.InEquipSelection)
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.CharacterID);
 				}
-				PLInventoryEvent.Trigger(PLInventoryEventType.Click, this, ParentInventoryDisplay.TargetInventoryName, item, 0, Index, ParentInventoryDisplay.PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Click, this, ParentInventoryDisplay.TargetInventoryName, item, 0, Index, ParentInventoryDisplay.CharacterID);
 				// if we're currently moving an object
 				if (InventoryDisplay.CurrentlyBeingMovedItemIndex != -1)
 				{
@@ -142,7 +142,7 @@ namespace SpectralDepths.InventoryEngine
 				// if the slot we're on is empty, we do nothing
 				if (InventoryItem.IsNull(ParentInventoryDisplay.TargetInventory.Content[Index]))
 				{
-					PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.CharacterID);
 					return;
 				}
 				if (ParentInventoryDisplay.TargetInventory.Content[Index].CanMoveObject)
@@ -163,7 +163,7 @@ namespace SpectralDepths.InventoryEngine
 					if (!ParentInventoryDisplay.TargetInventory.MoveItem(InventoryDisplay.CurrentlyBeingMovedItemIndex, Index))
 					{
 						// if the move couldn't be made (non empty destination slot for example), we play a sound
-						PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.PlayerID);
+						PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.CharacterID);
 						moveSuccessful = false;
 					}
 					else
@@ -182,7 +182,7 @@ namespace SpectralDepths.InventoryEngine
 						if (!InventoryDisplay.CurrentlyBeingMovedFromInventoryDisplay.TargetInventory.MoveItemToInventory(InventoryDisplay.CurrentlyBeingMovedItemIndex, ParentInventoryDisplay.TargetInventory, Index))
 						{
 							// if the move couldn't be made (non empty destination slot for example), we play a sound
-							PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.PlayerID);
+							PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.CharacterID);
 							moveSuccessful = false;
 						}
 						else
@@ -197,7 +197,7 @@ namespace SpectralDepths.InventoryEngine
 					// if the move could be made, we reset our currentlyBeingMoved pointer
 					InventoryDisplay.CurrentlyBeingMovedItemIndex = -1;
 					InventoryDisplay.CurrentlyBeingMovedFromInventoryDisplay = null;
-					PLInventoryEvent.Trigger(PLInventoryEventType.Move, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.PlayerID);
+					PLInventoryEvent.Trigger(PLInventoryEventType.Move, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.CharacterID);
 				}
 			}
 		}
@@ -208,7 +208,7 @@ namespace SpectralDepths.InventoryEngine
 		public virtual void Use()
 		{
 			if (!SlotEnabled) { return; }
-			PLInventoryEvent.Trigger(PLInventoryEventType.UseRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.UseRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.CharacterID);
 		}
 
 		/// <summary>
@@ -217,7 +217,7 @@ namespace SpectralDepths.InventoryEngine
 		public virtual void Equip()
 		{
 			if (!SlotEnabled) { return; }
-			PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.EquipRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.CharacterID);
 		}
 
 		/// <summary>
@@ -226,7 +226,7 @@ namespace SpectralDepths.InventoryEngine
 		public virtual void UnEquip()
 		{
 			if (!SlotEnabled) { return; }
-			PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.PlayerID);
+			PLInventoryEvent.Trigger(PLInventoryEventType.UnEquipRequest, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.CharacterID);
 		}
 
 		/// <summary>
@@ -237,18 +237,18 @@ namespace SpectralDepths.InventoryEngine
 			if (!SlotEnabled) { return; }
 			if (InventoryItem.IsNull(ParentInventoryDisplay.TargetInventory.Content[Index]))
 			{
-				PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Error, this, ParentInventoryDisplay.TargetInventoryName, null, 0, Index, ParentInventoryDisplay.CharacterID);
 				return;
 			}
 			if (!ParentInventoryDisplay.TargetInventory.Content[Index].Droppable)
 			{
 				return;
 			}
-			if (ParentInventoryDisplay.TargetInventory.Content[Index].Drop(ParentInventoryDisplay.PlayerID))
+			if (ParentInventoryDisplay.TargetInventory.Content[Index].Drop(ParentInventoryDisplay.CharacterID))
 			{
 				InventoryDisplay.CurrentlyBeingMovedItemIndex = -1;
 				InventoryDisplay.CurrentlyBeingMovedFromInventoryDisplay = null;
-				PLInventoryEvent.Trigger(PLInventoryEventType.Drop, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.PlayerID);
+				PLInventoryEvent.Trigger(PLInventoryEventType.Drop, this, ParentInventoryDisplay.TargetInventoryName, ParentInventoryDisplay.TargetInventory.Content[Index], 0, Index, ParentInventoryDisplay.CharacterID);
 			}            
 		}
 

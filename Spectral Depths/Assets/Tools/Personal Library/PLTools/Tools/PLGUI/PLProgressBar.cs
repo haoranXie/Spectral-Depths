@@ -32,7 +32,7 @@ namespace SpectralDepths.Tools
 		[PLInspectorGroup("Bindings", true, 10)]
 		/// optional - the ID of the player associated to this bar
 		[Tooltip("optional - the ID of the player associated to this bar")]
-		public string PlayerID;
+		public string CharacterID;
 		/// the main, foreground bar
 		[Tooltip("the main, foreground bar")]
 		public Transform ForegroundBar;

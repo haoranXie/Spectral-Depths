@@ -95,9 +95,9 @@ namespace SpectralDepths.TopDown
 		protected float _movementSpeed;
 		protected float _horizontalMovement;
 		protected float _verticalMovement;
-		protected Vector3 _movementVector;
+		public Vector3 _movementVector;
 		protected Vector2 _currentInput = Vector2.zero;
-		protected Vector2 _normalizedInput;
+		public Vector2 _normalizedInput;
 		protected Vector2 _lerpedInput = Vector2.zero;
 		protected float _acceleration = 0f;
 		protected bool _walkParticlesPlaying = false;
@@ -469,7 +469,6 @@ namespace SpectralDepths.TopDown
 			{
 				_movementVector = Vector3.zero;
 			}
-
 			_controller.SetMovement(_movementVector);
 			if(MovementType==MovementTypes.RootMotion){MoveCharacterRootMotion(_movementVector);}
 		} 

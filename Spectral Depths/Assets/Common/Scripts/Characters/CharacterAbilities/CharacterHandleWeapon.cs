@@ -19,7 +19,9 @@ namespace SpectralDepths.TopDown
 		public override string HelpBoxText() { return "This component will allow your character to pickup and use weapons. What the weapon will do is defined in the Weapon classes. This just describes the behaviour of the 'hand' holding the weapon, not the weapon itself. Here you can set an initial weapon for your character to start with, allow weapon pickup, and specify a weapon attachment (a transform inside of your character, could be just an empty child gameobject, or a subpart of your model."; }
 
 		[Header("Weapon")]
-
+		/// if this is true the controls will be based on the assumption it works off of the Emerald Combat Component, Turned on by default if EmeraldComponent is being used
+		[Tooltip(" if this is true the controls will be based on the assumption it works off of the Emerald Combat Component, Turned on by default if EmeraldComponent is being used")]
+		public bool EmeraldWeaponControls = false;
 		/// the initial weapon owned by the character
 		[Tooltip("the initial weapon owned by the character")]
 		public Weapon InitialWeapon;
@@ -105,7 +107,7 @@ namespace SpectralDepths.TopDown
 
 		public delegate void OnWeaponChangeDelegate();
 		/// a delegate you can hook to, to be notified of weapon changes
-		public OnWeaponChangeDelegate OnWeaponChange;
+		public event OnWeaponChangeDelegate OnWeaponChanged;
 
 		protected float _fireTimer = 0f;
 		protected float _secondaryHorizontalMovement;
@@ -181,6 +183,10 @@ namespace SpectralDepths.TopDown
 					ChangeWeapon(InitialWeapon, InitialWeapon.WeaponName, false);    
 				}
 			}
+			if(_character.UseEmeraldAI)
+			{
+				EmeraldWeaponControls = true;
+			}
 		}
 
 		/// <summary>
@@ -237,12 +243,21 @@ namespace SpectralDepths.TopDown
 			{
 				inputAuthorized = CurrentWeapon.InputAuthorized;
 			}
+			if(EmeraldWeaponControls)
+			{
+				if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonDown)))
+				{
+					_character.EmeraldComponent.BehaviorsComponent.PlayerAttack();
+				}
+				return;
+			}
+			
 
 			if (ForceAlwaysShoot)
 			{
 				ShootStart();
 			}
-			
+
 			if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonDown)))
 			{
 				ShootStart();
@@ -458,10 +473,9 @@ namespace SpectralDepths.TopDown
 			{
 				CurrentWeapon = null;
 			}
-
-			if (OnWeaponChange != null)
+			if (OnWeaponChanged != null)
 			{
-				OnWeaponChange();
+				OnWeaponChanged();
 			}
 		}
 
@@ -475,7 +489,8 @@ namespace SpectralDepths.TopDown
 		{
 			if (!combo)
 			{
-				CurrentWeapon = (Weapon)Instantiate(newWeapon, WeaponAttachment.transform.position + newWeapon.WeaponAttachmentOffset, WeaponAttachment.transform.rotation);
+				
+				CurrentWeapon = (Weapon)Instantiate(newWeapon, WeaponAttachment.transform.position + newWeapon.WeaponAttachmentOffset, WeaponAttachment.transform.rotation * Quaternion.Euler(newWeapon.AttachmentRotationOffset));
 			}
 
 			CurrentWeapon.name = newWeapon.name;
@@ -592,26 +607,26 @@ namespace SpectralDepths.TopDown
 			{
 				if (CurrentWeapon == null)
 				{
-					GUIManager.Instance.SetAmmoDisplays(false, _character.PlayerID, AmmoDisplayID);
+					GUIManager.Instance.SetAmmoDisplays(false, _character.CharacterID, AmmoDisplayID);
 					return;
 				}
 
 				if (!CurrentWeapon.MagazineBased && (CurrentWeapon.WeaponAmmo == null))
 				{
-					GUIManager.Instance.SetAmmoDisplays(false, _character.PlayerID, AmmoDisplayID);
+					GUIManager.Instance.SetAmmoDisplays(false, _character.CharacterID, AmmoDisplayID);
 					return;
 				}
 
 				if (CurrentWeapon.WeaponAmmo == null)
 				{
-					GUIManager.Instance.SetAmmoDisplays(true, _character.PlayerID, AmmoDisplayID);
-					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, 0, 0, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.PlayerID, AmmoDisplayID, false);
+					GUIManager.Instance.SetAmmoDisplays(true, _character.CharacterID, AmmoDisplayID);
+					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, 0, 0, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.CharacterID, AmmoDisplayID, false);
 					return;
 				}
 				else
 				{
-					GUIManager.Instance.SetAmmoDisplays(true, _character.PlayerID, AmmoDisplayID); 
-					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, CurrentWeapon.WeaponAmmo.CurrentAmmoAvailable + CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.WeaponAmmo.MaxAmmo, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.PlayerID, AmmoDisplayID, true);
+					GUIManager.Instance.SetAmmoDisplays(true, _character.CharacterID, AmmoDisplayID); 
+					GUIManager.Instance.UpdateAmmoDisplays(CurrentWeapon.MagazineBased, CurrentWeapon.WeaponAmmo.CurrentAmmoAvailable + CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.WeaponAmmo.MaxAmmo, CurrentWeapon.CurrentAmmoLoaded, CurrentWeapon.MagazineSize, _character.CharacterID, AmmoDisplayID, true);
 					return;
 				}
 			}

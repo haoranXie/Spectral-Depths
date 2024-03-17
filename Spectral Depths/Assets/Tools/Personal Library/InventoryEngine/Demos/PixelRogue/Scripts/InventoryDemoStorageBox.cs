@@ -13,12 +13,12 @@ namespace SpectralDepths.InventoryEngine
 	{
 		public CanvasGroup TargetCanvasGroup;
 
-		public virtual void OpenStorage(string playerID)
+		public virtual void OpenStorage(string CharacterID)
 		{
 			TargetCanvasGroup.alpha = 1;
 		}
 
-		public virtual void CloseStorage(string playerID)
+		public virtual void CloseStorage(string CharacterID)
 		{
 			TargetCanvasGroup.alpha = 0;
 		}
@@ -41,14 +41,14 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			string playerID = "Player1";
+			string CharacterID = "Player1";
 			InventoryCharacterIdentifier identifier = collider.GetComponent<InventoryCharacterIdentifier>();
 			if (identifier != null)
 			{
-				playerID = identifier.PlayerID;
+				CharacterID = identifier.CharacterID;
 			}
 
-			OpenStorage(playerID);
+			OpenStorage(CharacterID);
 		}
 
 		public void OnTriggerExit(Collider collider)
@@ -69,14 +69,14 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			string playerID = "Player1";
+			string CharacterID = "Player1";
 			InventoryCharacterIdentifier identifier = collider.GetComponent<InventoryCharacterIdentifier>();
 			if (identifier != null)
 			{
-				playerID = identifier.PlayerID;
+				CharacterID = identifier.CharacterID;
 			}
 
-			CloseStorage(playerID);
+			CloseStorage(CharacterID);
 		}
 	}	
 }

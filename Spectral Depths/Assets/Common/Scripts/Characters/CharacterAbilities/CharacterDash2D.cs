@@ -89,7 +89,7 @@ namespace SpectralDepths.TopDown
 
 			if (GUIManager.HasInstance && _character.CharacterType == Character.CharacterTypes.Player)
 			{
-				GUIManager.Instance.SetDashBar(true, _character.PlayerID);
+				GUIManager.Instance.SetDashBar(true, _character.CharacterID);
 				UpdateDashBar();
 			}
 		}
@@ -225,7 +225,7 @@ namespace SpectralDepths.TopDown
 		{
 			if ((GUIManager.HasInstance) && (_character.CharacterType == Character.CharacterTypes.Player))
 			{
-				GUIManager.Instance.UpdateDashBars(Cooldown.CurrentDurationLeft, 0f, Cooldown.ConsumptionDuration, _character.PlayerID);
+				GUIManager.Instance.UpdateDashBars(Cooldown.CurrentDurationLeft, 0f, Cooldown.ConsumptionDuration, _character.CharacterID);
 			}
 		}
 

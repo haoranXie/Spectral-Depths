@@ -99,7 +99,7 @@ namespace EmeraldAI
 
             RaycastHit hit;
             //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 60, Color.yellow, 1);
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 60))
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 60, ~(1 << 23 | 1 << 24)))
             {
                 Impact(hit.collider.gameObject, hit.point, hit.normal);
             }
@@ -173,7 +173,10 @@ namespace EmeraldAI
         void DamageTarget(GameObject Target)
         {
             LocationBasedDamageArea m_LocationBasedDamageArea = Target.GetComponent<LocationBasedDamageArea>();
-
+            if(m_LocationBasedDamageArea == null){
+                GameObject characterTarget = Target.GetComponentInParent<EmeraldSystem>().gameObject;
+                if(characterTarget!=null){Target = characterTarget;}
+            }
             //Only damage layers that are in the AI's DetectionLayerMask or if the target has a LBD component on it.
             if (!m_LocationBasedDamageArea && ((1 << Target.layer) & EmeraldComponent.DetectionComponent.DetectionLayerMask) == 0) return;
 
@@ -193,7 +196,7 @@ namespace EmeraldAI
 
             if (m_LocationBasedDamageArea == null)
             {
-                var m_IDamageable = Target.GetComponent<IDamageable>();
+                var m_IDamageable = Target.GetComponentInParent<IDamageable>();
                 if (m_IDamageable != null)
                 {
                     bool IsCritHit = CurrentAbilityData.DamageSettings.GenerateCritHit();

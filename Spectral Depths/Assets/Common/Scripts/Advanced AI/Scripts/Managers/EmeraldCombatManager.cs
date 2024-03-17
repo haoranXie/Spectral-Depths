@@ -26,7 +26,6 @@ namespace EmeraldAI.Utility
 
                     float CooldownTime = 0;
                     if (SentAttackClass.AttackDataList[i].AbilityObject != null) CooldownTime = (SentAttackClass.AttackDataList[i].CooldownTimeStamp + SentAttackClass.AttackDataList[i].AbilityObject.CooldownSettings.CooldownLength);
-
                     if (Time.time >= CooldownTime || SentAttackClass.AttackDataList[i].CooldownTimeStamp == 0 || SentAttackClass.AttackDataList[i].AbilityObject != null && !SentAttackClass.AttackDataList[i].AbilityObject.CooldownSettings.Enabled)
                     {
                         if (!AvailableAttacks.Contains(SentAttackClass.AttackDataList[i]))
@@ -208,6 +207,7 @@ namespace EmeraldAI.Utility
             EmeraldComponent.CombatComponent.CombatState = true;
             EmeraldComponent.AIAnimator.SetBool("Idle Active", false);
             EmeraldComponent.AIAnimator.SetBool("Combat State Active", true);
+            if(EmeraldComponent.UIComponent!=null){EmeraldComponent.UIComponent.CombatEntered();}
             EmeraldComponent.MovementComponent.CurrentMovementState = EmeraldMovement.MovementStates.Run;
         }
 

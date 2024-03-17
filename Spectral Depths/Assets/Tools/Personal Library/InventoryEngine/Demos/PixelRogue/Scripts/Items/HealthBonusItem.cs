@@ -19,14 +19,14 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the object is used 
 		/// </summary>
-		public override bool Use(string playerID)
+		public override bool Use(string CharacterID)
 		{
-			base.Use(playerID);
+			base.Use(CharacterID);
 			// This is where you would increase your character's health,
 			// with something like : 
 			// Player.Life += HealthValue;
 			// of course this all depends on your game codebase.
-			Debug.LogFormat("increase character "+playerID+"'s health by "+HealthBonus);
+			Debug.LogFormat("increase character "+CharacterID+"'s health by "+HealthBonus);
 			return true;
 		}
 		

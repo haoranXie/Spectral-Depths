@@ -51,12 +51,12 @@ namespace SpectralDepths.TopDown{
             }
         }
 
-        private void Selected(){
+        public void Selected(){
             selected=true;
             SelectedVisual.gameObject.SetActive(true);
         }
 
-        private void DeSelected(){
+        public void DeSelected(){
             selected=false;
             OnlySelected=false;
             SelectedVisual.gameObject.SetActive(false);

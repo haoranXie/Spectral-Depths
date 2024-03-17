@@ -18,20 +18,20 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the armor is equipped
 		/// </summary>
-		public override bool Equip(string playerID)
+		public override bool Equip(string CharacterID)
 		{
-			base.Equip(playerID);
-			TargetInventory(playerID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetArmor(ArmorIndex);
+			base.Equip(CharacterID);
+			TargetInventory(CharacterID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetArmor(ArmorIndex);
 			return true;
 		}	
 
 		/// <summary>
 		/// What happens when the armor is unequipped
 		/// </summary>
-		public override bool UnEquip(string playerID)
+		public override bool UnEquip(InventoryItem item, string CharacterID)
 		{
-			base.UnEquip(playerID);
-			TargetInventory(playerID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetArmor(0);
+			base.UnEquip(item, CharacterID);
+			TargetInventory(CharacterID).TargetTransform.GetComponent<InventoryDemoCharacter>().SetArmor(0);
 			return true;
 		}		
 	}

@@ -16,26 +16,27 @@ namespace SpectralDepths.TopDown
 		/// the order in which this character should be picked 
 		[Tooltip("the order in which this character should be picked ")]
 		public int Order = 0;
-		/// the playerID to put back in the Character class once this character gets swapped
-		[Tooltip("the playerID to put back in the Character class once this character gets swapped")]
-		public string PlayerID = "Player1";
+		/// the CharacterID to put back in the Character class once this character gets swapped
+		[Tooltip("the CharacterID to put back in the Character class once this character gets swapped")]
+		public string CharacterID = "";
 
 		[Header("AI")] 
 		/// if this is true, the AI Brain (if there's one on this character) will reset on swap
 		[Tooltip("if this is true, the AI Brain (if there's one on this character) will reset on swap")]
 		public bool ResetAIBrainOnSwap = true;
 
-		protected string _savedPlayerID;
+		protected string _savedCharacterID;
 		protected Character.CharacterTypes _savedCharacterType;
 
 		/// <summary>
-		/// On init, we grab our character type and playerID and store them for later
+		/// On init, we grab our character type and CharacterID and store them for later
 		/// </summary>
 		protected override void Initialization()
 		{
 			base.Initialization();
+			if(string.IsNullOrEmpty(CharacterID)){CharacterID = _character.CharacterID;}
 			_savedCharacterType = _character.CharacterType;
-			_savedPlayerID = _character.PlayerID;
+			_savedCharacterID = _character.CharacterID;
 		}
 
 		/// <summary>
@@ -48,7 +49,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 			PlayAbilityStartFeedbacks();
-			_character.PlayerID = PlayerID;
+			_character.CharacterID = CharacterID;
 			_character.CharacterType = Character.CharacterTypes.Player;
 			_character.SetInputManager();
 			if (_character.CharacterBrain != null)
@@ -63,7 +64,7 @@ namespace SpectralDepths.TopDown
 		public virtual void ResetCharacterSwap()
 		{
 			_character.CharacterType = Character.CharacterTypes.AI;
-			_character.PlayerID = _savedPlayerID;
+			_character.CharacterID = _savedCharacterID;
 			_character.SetInputManager(null);
 			_characterMovement.SetHorizontalMovement(0f);
 			_characterMovement.SetVerticalMovement(0f);

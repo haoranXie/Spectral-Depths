@@ -637,14 +637,7 @@ namespace EmeraldAI
                     OrderedWaypointIndex++;
                     if(OrderedWaypointIndex>=OrderedWaypointsList.Count)
                     {
-                        if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1];}
-                        OrderedWaypointsList.Clear();
-                        ReachedDestination = true;
-                        LockTurning = false;
-                        if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
-                        if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
-                        OnReachedDestination?.Invoke();
-                        OnReachedOrderedWaypoint?.Invoke();
+                        ReachedOrderedWaypoint();
                     }
                     if (m_NavMeshAgent.enabled && OrderedWaypointIndex<OrderedWaypointsList.Count)
                     {
@@ -654,6 +647,21 @@ namespace EmeraldAI
             }
             CheckPath(m_NavMeshAgent.destination);             
         }
+        /// <summary>
+        /// Used when reaching ordered waypoint
+        /// </summary>
+        public void ReachedOrderedWaypoint()
+        {
+            if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1];}
+            OrderedWaypointsList.Clear();
+            ReachedDestination = true;
+            LockTurning = false;
+            if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
+            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
+            OnReachedDestination?.Invoke();
+            OnReachedOrderedWaypoint?.Invoke();
+        }
+
         /// <summary>
         /// Handles our AI's waypoints when using the Waypoint Wander Type
         /// </summary>
@@ -1126,8 +1134,8 @@ namespace EmeraldAI
         /// Returns whether or not a walk footstep sound can be played.
         /// </summary>
         public bool CanPlayWalkFootstepSound ()
-        {
-            return MovementType == MovementTypes.RootMotion && AIAnimator.GetFloat("Speed") > 0.05f && AIAnimator.GetFloat("Speed") <= 0.5f || 
+        {            
+            return MovementType == MovementTypes.RootMotion && AIAnimator.GetFloat("Speed") > 0.05f && AIAnimator.GetFloat("Speed") <= 0.6f || 
                 MovementType == MovementTypes.NavMeshDriven && EmeraldComponent.m_NavMeshAgent.velocity.magnitude > 0.05f && EmeraldComponent.m_NavMeshAgent.velocity.magnitude <= WalkSpeed + 0.25f || 
                 AnimationComponent.IsTurning || AnimationComponent.IsStrafing || AnimationComponent.IsBackingUp || AnimationComponent.IsDodging || AnimationComponent.IsRecoiling || AnimationComponent.IsGettingHit;
         }

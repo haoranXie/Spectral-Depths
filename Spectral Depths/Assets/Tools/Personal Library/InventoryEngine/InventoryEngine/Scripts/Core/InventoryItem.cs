@@ -155,13 +155,14 @@ namespace SpectralDepths.InventoryEngine
 		/// Gets the target inventory.
 		/// </summary>
 		/// <value>The target inventory.</value>
-		public virtual Inventory TargetInventory(string playerID)
+		public virtual Inventory TargetInventory(string CharacterID)
 		{ 
+
 			if (TargetInventoryName == null)
 			{
 				return null;
 			}
-			_targetInventory = Inventory.FindInventory(TargetInventoryName, playerID);
+			_targetInventory = Inventory.FindInventory(TargetInventoryName, CharacterID);
 			return _targetInventory;
 		}
 
@@ -169,13 +170,13 @@ namespace SpectralDepths.InventoryEngine
 		/// Gets the target equipment inventory.
 		/// </summary>
 		/// <value>The target equipment inventory.</value>
-		public virtual Inventory TargetEquipmentInventory(string playerID)
+		public virtual Inventory TargetEquipmentInventory(InventoryItem item, string CharacterID)
 		{ 
-			if (TargetEquipmentInventoryName == null)
+			if (item.TargetEquipmentInventoryName == null)
 			{
 				return null;
 			}
-			_targetEquipmentInventory = Inventory.FindInventory(TargetEquipmentInventoryName, playerID);
+			_targetEquipmentInventory = Inventory.FindInventory(item.TargetEquipmentInventoryName, CharacterID);
 			return _targetEquipmentInventory;
 		}
 
@@ -213,14 +214,27 @@ namespace SpectralDepths.InventoryEngine
 		}
 
 		/// <summary>
+		/// Copies an item into a new one
+		/// </summary>
+		public virtual InventoryItem Copy(string ID)
+		{
+			string name = this.name;
+			InventoryItem clone = UnityEngine.Object.Instantiate(this) as InventoryItem;
+			clone.name = name;
+			if(!clone.TargetInventoryName.Contains(ID)){clone.TargetInventoryName = ID + clone.TargetInventoryName;}
+			if(!clone.TargetEquipmentInventoryName.Contains(ID)){clone.TargetEquipmentInventoryName = ID + clone.TargetEquipmentInventoryName;}
+			return clone;
+		}
+
+		/// <summary>
 		/// Spawns the associated prefab
 		/// </summary>
-		public virtual void SpawnPrefab(string playerID)
+		public virtual void SpawnPrefab(string CharacterID)
 		{
-			if (TargetInventory(playerID) != null)
+			if (TargetInventory(CharacterID) != null)
 			{
 				// if there's a prefab set for the item at this slot, we instantiate it at the specified offset
-				if (Prefab!=null && TargetInventory(playerID).TargetTransform!=null)
+				if (Prefab!=null && TargetInventory(CharacterID).TargetTransform!=null)
 				{
 					GameObject droppedObject=(GameObject)Instantiate(Prefab);
 					if (droppedObject.GetComponent<ItemPicker>()!=null)
@@ -233,7 +247,7 @@ namespace SpectralDepths.InventoryEngine
 					}
 
 					PLSpawnAround.ApplySpawnAroundProperties(droppedObject, DropProperties,
-						TargetInventory(playerID).TargetTransform.position);
+						TargetInventory(CharacterID).TargetTransform.position);
 				}
 			}
 		}
@@ -241,31 +255,31 @@ namespace SpectralDepths.InventoryEngine
 		/// <summary>
 		/// What happens when the object is picked - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Pick(string playerID) { return true; }
+		public virtual bool Pick(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object is used - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Use(string playerID) { return true; }
+		public virtual bool Use(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object is equipped - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Equip(string playerID) { return true; }
+		public virtual bool Equip(string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object is unequipped (called when dropped) - override this to add your own behaviors
 		/// </summary>
-		public virtual bool UnEquip(string playerID) { return true; }
+		public virtual bool UnEquip(InventoryItem item, string CharacterID) { return true; }
 
 		/// <summary>
 		/// What happens when the object gets swapped for another object
 		/// </summary>
-		public virtual void Swap(string playerID) {}
+		public virtual void Swap(string CharacterID) {}
 
 		/// <summary>
 		/// What happens when the object is dropped - override this to add your own behaviors
 		/// </summary>
-		public virtual bool Drop(string playerID) { return true; }
+		public virtual bool Drop(string CharacterID) { return true; }
 	}
 }

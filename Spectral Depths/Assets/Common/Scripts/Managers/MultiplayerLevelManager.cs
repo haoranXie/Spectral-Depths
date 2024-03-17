@@ -83,9 +83,9 @@ namespace SpectralDepths.TopDown
 			for (int i = 0; i < Players.Count; i++)
 			{
 				SpawnPoints[i].SpawnPlayer(Players[i]);
-				if (AutoAttributePlayerIDs)
+				if (AutoAttributeCharacterIDs)
 				{
-					Players[i].SetPlayerID("Player" + (i + 1));
+					Players[i].SetCharacterID("Player" + (i + 1));
 				}                
 			}
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.SpawnComplete, null);

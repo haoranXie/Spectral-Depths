@@ -38,7 +38,8 @@ MonoBehaviour:
     SpawnProjectileTimeoutSeconds: 1.5
     SpawnProjectileSoundsList:
     - {fileID: 8300000, guid: b6a15c3505177de4e8e8b1e159e205dc, type: 3}
-    ProjectileEffect: {fileID: 6904698915816178563, guid: f31b8a23852639941a6c5aee847b6976, type: 3}
+    ProjectileEffect: {fileID: 6904698915816178563, guid: f31b8a23852639941a6c5aee847b6976,
+      type: 3}
     ProjectileTimeoutSeconds: 6
     TravelSound: {fileID: 0}
     EffectsToDisable:
@@ -61,7 +62,8 @@ MonoBehaviour:
     HomingSpeed: 2
   AerialProjectileSettings:
     Enabled: 1
-    AerialEffect: {fileID: 4694803240454653336, guid: f71d54aaf66c621468001053bd2db31d, type: 3}
+    AerialEffect: {fileID: 4694803240454653336, guid: f71d54aaf66c621468001053bd2db31d,
+      type: 3}
     AerialEffectTimeoutSeconds: 6
     SpawnSource: 1
     AimSource: 1

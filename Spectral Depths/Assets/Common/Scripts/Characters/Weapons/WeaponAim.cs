@@ -24,6 +24,8 @@ namespace SpectralDepths.TopDown
 		/// if this is true, this script will be able to read input from its specified AimControl mode
 		[Tooltip("if this is true, this script will be able to read input from its specified AimControl mode")]
 		public bool AimControlActive = true;
+		[Tooltip("if this isn't true, weapon itself won't rotate but instead rely on movement of its parent")]
+		public bool RotateModel = true;
 
 		[Header("Weapon Rotation")]
 		[PLInformation("Here you can define whether the rotation is free, strict in 4 directions (top, bottom, left, right), or 8 directions (same + diagonals). You can also define a rotation speed, and a min and max angle. For example, if you don't want your character to be able to aim in its back, set min angle to -90 and max angle to 90.", SpectralDepths.Tools.PLInformationAttribute.InformationType.Info, false)]
@@ -425,6 +427,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void OnDisable()
 		{
+			if(_reticle!=null){_reticle.gameObject.SetActive(false);}
 			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}

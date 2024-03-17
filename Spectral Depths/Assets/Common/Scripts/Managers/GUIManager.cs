@@ -203,7 +203,7 @@ namespace SpectralDepths.TopDown
 		/// Sets the jetpackbar active or not.
 		/// </summary>
 		/// <param name="state">If set to <c>true</c>, sets the pause.</param>
-		public virtual void SetDashBar(bool state, string playerID)
+		public virtual void SetDashBar(bool state, string CharacterID)
 		{
 			if (DashBars == null)
 			{
@@ -214,7 +214,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (jetpackBar != null)
 				{ 
-					if (jetpackBar.PlayerID == playerID)
+					if (jetpackBar.CharacterID == CharacterID)
 					{
 						jetpackBar.gameObject.SetActive(state);
 					}					
@@ -226,8 +226,8 @@ namespace SpectralDepths.TopDown
 		/// Sets the ammo displays active or not
 		/// </summary>
 		/// <param name="state">If set to <c>true</c> state.</param>
-		/// <param name="playerID">Player I.</param>
-		public virtual void SetAmmoDisplays(bool state, string playerID, int ammoDisplayID)
+		/// <param name="CharacterID">Player I.</param>
+		public virtual void SetAmmoDisplays(bool state, string CharacterID, int ammoDisplayID)
 		{
 			if (AmmoDisplays == null)
 			{
@@ -238,7 +238,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (ammoDisplay != null)
 				{ 
-					if ((ammoDisplay.PlayerID == playerID) && (ammoDisplayID == ammoDisplay.AmmoDisplayID))
+					if ((ammoDisplay.CharacterID == CharacterID) && (ammoDisplayID == ammoDisplay.AmmoDisplayID))
 					{
 						ammoDisplay.gameObject.SetActive(state);
 					}					
@@ -263,8 +263,8 @@ namespace SpectralDepths.TopDown
 		/// <param name="currentHealth">Current health.</param>
 		/// <param name="minHealth">Minimum health.</param>
 		/// <param name="maxHealth">Max health.</param>
-		/// <param name="playerID">Player I.</param>
-		public virtual void UpdateHealthBar(float currentHealth,float minHealth,float maxHealth,string playerID)
+		/// <param name="CharacterID">Player I.</param>
+		public virtual void UpdateHealthBar(float currentHealth,float minHealth,float maxHealth,string CharacterID)
 		{
 			if (HealthBars == null) { return; }
 			if (HealthBars.Length <= 0)	{ return; }
@@ -272,7 +272,7 @@ namespace SpectralDepths.TopDown
 			foreach (PLProgressBar healthBar in HealthBars)
 			{
 				if (healthBar == null) { continue; }
-				if (healthBar.PlayerID == playerID)
+				if (healthBar.CharacterID == CharacterID)
 				{
 					healthBar.UpdateBar(currentHealth,minHealth,maxHealth);
 				}
@@ -286,8 +286,8 @@ namespace SpectralDepths.TopDown
 		/// <param name="currentFuel">Current fuel.</param>
 		/// <param name="minFuel">Minimum fuel.</param>
 		/// <param name="maxFuel">Max fuel.</param>
-		/// <param name="playerID">Player I.</param>
-		public virtual void UpdateDashBars(float currentFuel, float minFuel, float maxFuel,string playerID)
+		/// <param name="CharacterID">Player I.</param>
+		public virtual void UpdateDashBars(float currentFuel, float minFuel, float maxFuel,string CharacterID)
 		{
 			if (DashBars == null)
 			{
@@ -297,7 +297,7 @@ namespace SpectralDepths.TopDown
 			foreach (PLRadialProgressBar dashbar in DashBars)
 			{
 				if (dashbar == null) { return; }
-				if (dashbar.PlayerID == playerID)
+				if (dashbar.CharacterID == CharacterID)
 				{
 					dashbar.UpdateBar(currentFuel,minFuel,maxFuel);	
 				}    
@@ -312,9 +312,9 @@ namespace SpectralDepths.TopDown
 		/// <param name="maxAmmo">Max ammo.</param>
 		/// <param name="ammoInMagazine">Ammo in magazine.</param>
 		/// <param name="magazineSize">Magazine size.</param>
-		/// <param name="playerID">Player I.</param>
+		/// <param name="CharacterID">Player I.</param>
 		/// <param name="displayTotal">If set to <c>true</c> display total.</param>
-		public virtual void UpdateAmmoDisplays(bool magazineBased, int totalAmmo, int maxAmmo, int ammoInMagazine, int magazineSize, string playerID, int ammoDisplayID, bool displayTotal)
+		public virtual void UpdateAmmoDisplays(bool magazineBased, int totalAmmo, int maxAmmo, int ammoInMagazine, int magazineSize, string CharacterID, int ammoDisplayID, bool displayTotal)
 		{
 			if (AmmoDisplays == null)
 			{
@@ -324,7 +324,7 @@ namespace SpectralDepths.TopDown
 			foreach (AmmoDisplay ammoDisplay in AmmoDisplays)
 			{
 				if (ammoDisplay == null) { return; }
-				if ((ammoDisplay.PlayerID == playerID) && (ammoDisplayID == ammoDisplay.AmmoDisplayID))
+				if ((ammoDisplay.CharacterID == CharacterID) && (ammoDisplayID == ammoDisplay.AmmoDisplayID))
 				{
 					ammoDisplay.UpdateAmmoDisplays (magazineBased, totalAmmo, maxAmmo, ammoInMagazine, magazineSize, displayTotal);
 				}    

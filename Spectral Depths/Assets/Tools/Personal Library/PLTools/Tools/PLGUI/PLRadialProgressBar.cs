@@ -21,7 +21,7 @@ namespace SpectralDepths.Tools
 		/// the distance to the start or end value at which the class should start lerping
 		public float Tolerance = 0.01f;
 		/// optional - the ID of the player associated to this bar
-		public string PlayerID;
+		public string CharacterID;
 
 		protected Image _radialImage;
 		protected float _newPercent;

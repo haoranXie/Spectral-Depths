@@ -388,15 +388,22 @@ namespace EmeraldAI.Utility
                 CustomEditorProperties.BeginFoldoutWindowBox();
                 //Combat Walk Forward
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkForward, "Combat Walk Forward", "The walk animation that plays when your AI is walking forward when in combat.", 2, false, true);
-
+                //Combat Walk Forward Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkForwardLeft, "Combat Walk Forward Left", "The walk animation that plays when your AI is walking forward left when in combat.", 2, true, true);
+                //Combat Walk Forward Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkForwardRight, "Combat Walk Forward Right", "The walk animation that plays when your AI is walking forward right when in combat.", 2, true, true);
                 //Combat Walk Left
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkLeft, "Combat Walk Left", "The walk animation that plays when your AI is walking left when in combat. If you do not have a Walk Left animation, the Walk Forward animation can be used instead.", 2, true, true);
-
                 //Combat Walk Right
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkRight, "Combat Walk Right", "The walk animation that plays when your AI is walking right when in combat. If you do not have a Walk Right animation, the Walk Forward animation can be used instead.", 2, true, true);
-
                 //Walk Back
-                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkBack, "Combat Walk Back", "The walk animation that plays when your AI is walking backwards when in combat.", 1, true, true, true);
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkBack, "Combat Walk Back", "The walk animation that plays when your AI is walking backwards when in combat.", 2, true, true, true);
+                 //Walk Back
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkBackLeft, "Combat Walk Back Left", "The walk animation that plays when your AI is walking left backwards when in combat.", 2, true, true, true);
+                //Walk Back
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.WalkBackRight, "Combat Walk Back Right", "The walk animation that plays when your AI is walking right backwards when in combat.", 1, true, true, true);
+ 
+ 
                 CustomEditorProperties.EndFoldoutWindowBox();
             }
 
@@ -409,12 +416,20 @@ namespace EmeraldAI.Utility
                 CustomEditorProperties.BeginFoldoutWindowBox();
                 //Combat Run Forward
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunForward, "Combat Run Forward ", "The run animation that plays when your AI is running forward when in combat.", 2, false, true);
-
+                //Combat Run Forward Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunForwardLeft, "Combat Run Forward Left", "The run animation that plays when your AI is running forward left when in combat.", 2, true, true);
+                //Combat Run Forward Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunForwardRight, "Combat Run Forward Right", "The run animation that plays when your AI is running forward right when in combat.", 2, true, true);
                 //Combat Run Left
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunLeft, "Combat Run Left ", "The run animation that plays when your AI is running left when in combat. If you do not have a Run Left animation, the Run Forward animation can be used instead.", 2, true, true);
-
                 //Combat Run Right
-                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunRight, "Combat Run Right ", "The run animation that plays when your AI is running right when in combat. If you do not have a Run Right animation, the Run Forward animation can be used instead.", 1, true, true);
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunRight, "Combat Run Right ", "The run animation that plays when your AI is running right when in combat. If you do not have a Run Right animation, the Run Forward animation can be used instead.", 2, true, true);
+                //Combat Run Back
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunBack, "Combat Run Back", "The run animation that plays when your AI is running left backwards when in combat.", 2, true, true, true);
+                //Combat Run Back Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunBackLeft, "Combat Run Back Left", "The run animation that plays when your AI is running left backwards when in combat.", 2, true, true, true);
+                //Ccombat Run Back Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type1Animations.RunBackRight, "Combat Run Back Right", "The run animation that plays when your AI is running right backwards when in combat.", 1, true, true, true);
                 CustomEditorProperties.EndFoldoutWindowBox();
             }
 
@@ -434,6 +449,7 @@ namespace EmeraldAI.Utility
             }
         }
 
+
         void Type2CombatMovement()
         {
             AnimationProfile self = (AnimationProfile)target;
@@ -446,15 +462,20 @@ namespace EmeraldAI.Utility
                 CustomEditorProperties.BeginFoldoutWindowBox();
                 //Type 2 Combat Walk Forward
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkForward, "Combat Walk Forward", "The walk animation that plays when your AI is walking forward when in combat.", 2, false, true);
-
+                //Type 2 Combat Walk Forward Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkForwardLeft, "Combat Walk Forward Left", "The walk animation that plays when your AI is walking forward left when in combat.", 2, true, true);
+                //Type 2 Combat Walk Forward Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkForwardRight, "Combat Walk Forward Right", "The walk animation that plays when your AI is walking forward right when in combat.", 2, true, true);
                 //Type 2 Combat Walk Left
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkLeft, "Combat Walk Left", "The walk animation that plays when your AI is walking left when in combat. If you do not have a Walk Left animation, the Walk Forward animation can be used instead.", 2, true, true);
-
                 //Type 2 Combat Walk Right
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkRight, "Combat Walk Right", "The walk animation that plays when your AI is walking right when in combat. If you do not have a Walk Right animation, the Walk Forward animation can be used instead.", 2, true, true);
-
                 //Type 2 Walk Back
-                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkBack, "Combat Walk Back", "The walk animation that plays when your AI is walking backwards when in combat.", 1, true, true, true);
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkBack, "Combat Walk Back", "The walk animation that plays when your AI is walking backwards when in combat.", 2, true, true, true);
+                //Type 2 Walk Back Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkBackLeft, "Combat Walk Back Left", "The walk animation that plays when your AI is walking left backwards when in combat.", 2, true, true, true);
+                //Type 2 Walk Back Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.WalkBackRight, "Combat Walk Back Right", "The walk animation that plays when your AI is walking right backwards when in combat.", 1, true, true, true);
                 CustomEditorProperties.EndFoldoutWindowBox();
             }
 
@@ -467,12 +488,20 @@ namespace EmeraldAI.Utility
                 CustomEditorProperties.BeginFoldoutWindowBox();
                 //Type 2 Combat Run Forward
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunForward, "Combat Run Forward", "The run animation that plays when your AI is running forward when in combat.", 2, false, true);
-
+                //Type 2 Combat Run Forward Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunForwardLeft, "Combat Run Forward Left", "The run animation that plays when your AI is running forward left when in combat.", 2, true, true);
+                //Type 2 Combat Run Forward Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunForwardRight, "Combat Run Forward Right", "The run animation that plays when your AI is running forward right when in combat.", 2, true, true);
                 //Type 2 Combat Run Left
                 CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunLeft, "Combat Run Left", "The run animation that plays when your AI is running left when in combat. If you do not have a Run Left animation, the Run Forward animation can be used instead.", 2, true, true);
-
                 //Type 2 Combat Run Right
-                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunRight, "Combat Run Right", "The run animation that plays when your AI is running right when in combat. If you do not have a Run Right animation, the Run Forward animation can be used instead.", 1, true, true);
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunRight, "Combat Run Right", "The run animation that plays when your AI is running right when in combat. If you do not have a Run Right animation, the Run Forward animation can be used instead.", 2, true, true);
+                //Type 2 Combat Run Back
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunBack, "Combat Run Back", "The run animation that plays when your AI is running left backwards when in combat.", 2, true, true, true);
+                //Type 2 Combat Run Back Left
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunBackLeft, "Combat Run Back Left", "The run animation that plays when your AI is running left backwards when in combat.", 2, true, true, true);
+                //Type 2 Combat Run Back Right
+                CustomEditorProperties.DrawAnimationClassVariables(self, self.Type2Animations.RunBackRight, "Combat Run Back Right", "The run animation that plays when your AI is running right backwards when in combat.", 1, true, true, true);
                 CustomEditorProperties.EndFoldoutWindowBox();
             }
 

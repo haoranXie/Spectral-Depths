@@ -16,9 +16,9 @@ namespace SpectralDepths.InventoryEngine
 		/// When the bomb gets used, we display a debug message just to show it worked
 		/// In a real game you'd probably spawn it
 		/// </summary>
-		public override bool Use(string playerID)
+		public override bool Use(string CharacterID)
 		{
-			base.Use(playerID);
+			base.Use(CharacterID);
 			Debug.LogFormat("bomb explosion");
 			return true;
 		}		

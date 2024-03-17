@@ -5227,7 +5227,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d4cd643376433c14a89d978020e035ec, type: 2}
-  - {fileID: 2100000, guid: d4cd643376433c14a89d978020e035ec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10289,9 +10288,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sparks
       objectReference: {fileID: 0}
+    - target: {fileID: 3036081855788999947, guid: 8c6c4b46f25c8674c836660af8f3582d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3278317191066349497, guid: 8c6c4b46f25c8674c836660af8f3582d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4392642776950485622, guid: 8c6c4b46f25c8674c836660af8f3582d,
         type: 3}
       propertyPath: lengthInSec
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028473799459125803, guid: 8c6c4b46f25c8674c836660af8f3582d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6015340367056428161, guid: 8c6c4b46f25c8674c836660af8f3582d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6702227914809282779, guid: 8c6c4b46f25c8674c836660af8f3582d,
@@ -10328,6 +10347,16 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.angle
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8513209184108671709, guid: 8c6c4b46f25c8674c836660af8f3582d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9002853466149593111, guid: 8c6c4b46f25c8674c836660af8f3582d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

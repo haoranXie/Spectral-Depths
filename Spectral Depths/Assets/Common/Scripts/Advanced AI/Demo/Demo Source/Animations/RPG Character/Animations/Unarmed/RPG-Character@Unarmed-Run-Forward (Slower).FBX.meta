@@ -686,7 +686,7 @@ ModelImporter:
     second: RPG-Character-Mesh
   - first:
       74: 7400000
-    second: Unarmed-Run-Forward
+    second: Unarmed-Run-Forward-Slower
   - first:
       95: 9500000
     second: //RootNode
@@ -746,7 +746,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Unarmed-Run-Forward
+      name: Unarmed-Run-Forward-Slower
       takeName: Take 001
       internalID: 7400000
       firstFrame: 0
@@ -777,7 +777,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.8434459
+      - time: 0.84344566
         functionName: WalkFootstepSound
         data: 
         objectReferenceParameter: {instanceID: 0}

@@ -56,11 +56,11 @@ namespace SpectralDepths.TopDown
 				DrawDefaultInspector();
 			}
 
-			// in AI mode draws everything but the PlayerID field
+			// in AI mode draws everything but the CharacterID field
 			if (character.CharacterType == Character.CharacterTypes.AI)
 			{
-				character.PlayerID = "";
-				Editor.DrawPropertiesExcluding(serializedObject, new string[] { "PlayerID" });
+				character.CharacterID = "";
+				Editor.DrawPropertiesExcluding(serializedObject, new string[] { "CharacterID" });
 			}
 
 			EditorGUILayout.Space();
@@ -103,7 +103,7 @@ namespace SpectralDepths.TopDown
 				// sets the tag
 				character.gameObject.tag = "Player";
 				// sets the player ID
-				character.PlayerID = "Player1";
+				character.CharacterID = "Player1";
 			}
 
 			if (type == Character.CharacterTypes.AI)

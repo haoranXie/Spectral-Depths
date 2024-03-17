@@ -30,12 +30,12 @@ namespace EmeraldAI
         /// <summary>
         /// Walk Animations
         /// </summary>
-        public AnimationClass WalkLeft, WalkForward, WalkRight, WalkBack;
+        public AnimationClass WalkLeft, WalkForward, WalkRight, WalkBack, WalkForwardLeft, WalkForwardRight, WalkBackLeft, WalkBackRight;
 
         /// <summary>
         /// Run Animations
         /// </summary>
-        public AnimationClass RunLeft, RunForward, RunRight;
+        public AnimationClass RunLeft, RunForward, RunRight, RunBack, RunForwardLeft, RunForwardRight, RunBackLeft, RunBackRight;
 
         /// <summary>
         /// Turn Animations

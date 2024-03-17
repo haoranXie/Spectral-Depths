@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using EmeraldAI.Utility;
+using SpectralDepths.Tools;
+using SpectralDepths.InventoryEngine;
+using SpectralDepths.TopDown;
+using System.Linq;
 
 namespace EmeraldAI
 {
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/emerald-components-optional/items-component")]
-    public class EmeraldItems : MonoBehaviour
+    public class EmeraldItems : MonoBehaviour, PLEventListener<PLInventoryEvent>
     {
         #region Items Variables
         public YesOrNo UseDroppableWeapon = YesOrNo.No;
+        protected EmeraldSystem EmeraldComponent;
 
         [SerializeField]
         public List<EquippableWeapons> Type1EquippableWeapons = new List<EquippableWeapons>();
@@ -44,12 +48,30 @@ namespace EmeraldAI
         public bool HideSettingsFoldout;
         public bool WeaponsFoldout;
         public bool ItemsFoldout;
+        
         #endregion
 
-        void Start()
+        protected CharacterHandleWeapon _characterHandleWeapon;
+
+        //Used to connect this inventory to character inventory
+        protected string CharacterID = "";
+        protected string WeaponInventoryName = "";
+        void Awake()
         {
-            InitializeDroppableWeapon();
+            InitailizeItems();
         }
+
+        public void InitailizeItems()
+        {
+            EmeraldComponent = GetComponent<EmeraldSystem>();
+            CharacterID = EmeraldComponent.gameObject.GetInstanceID().ToString();
+            WeaponInventoryName = CharacterID + "WeaponInventory";
+            _characterHandleWeapon = GetComponent<CharacterHandleWeapon>();    
+            if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged+=WeaponChanged;}        
+            //InitializeDroppableWeapon();
+        }
+
+ 
 
         /// <summary>
         /// Intializes the AI's droppable weapon to be used when the AI dies.
@@ -64,8 +86,7 @@ namespace EmeraldAI
         /// </summary>
         public void CreateDroppableWeapon()
         {
-            EmeraldSystem EmeraldComponent = GetComponentInParent<EmeraldSystem>();
-
+  
             if (EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1)
             {
                 for (int i = 0; i < Type1EquippableWeapons.Count; i++)
@@ -359,5 +380,114 @@ namespace EmeraldAI
                 }
             }
         }
+        
+		public virtual void OnMMEvent(PLInventoryEvent inventoryEvent)
+		{
+			// if this event doesn't concern our inventory display, we do nothing and exit
+			if (inventoryEvent.TargetInventoryName != WeaponInventoryName)
+			{
+				return;
+			}
+			if (inventoryEvent.CharacterID != CharacterID)
+			{
+				return;
+			}
+			switch (inventoryEvent.InventoryEventType)
+			{
+                case PLInventoryEventType.WeaponInventoryChanged:
+                
+                    ChangeType1Weapons(inventoryEvent.EventItem.TargetEquipmentInventory(inventoryEvent.EventItem, CharacterID).Content);
+                    break;
+                /*
+				case PLInventoryEventType.Pick:
+					if (inventoryEvent.EventItem.ForceSlotIndex)
+					{
+						AddItemAt(inventoryEvent.EventItem, inventoryEvent.Quantity, inventoryEvent.EventItem.TargetIndex);    
+					}
+					else
+					{
+						AddItem(inventoryEvent.EventItem, inventoryEvent.Quantity);    
+					}
+					break;
+
+				case PLInventoryEventType.UseRequest:
+					UseItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.EquipRequest:
+					EquipItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.UnEquipRequest:
+					UnEquipItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.Destroy:
+					DestroyItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+
+				case PLInventoryEventType.Drop:
+					DropItem(inventoryEvent.EventItem, inventoryEvent.Index, inventoryEvent.Slot);
+					break;
+                */
+			}
+            
+		}
+        /// <summary>
+        /// Sets the active weapon's respective slot up
+        /// </summary>
+        protected void WeaponChanged()
+        {
+            if(_characterHandleWeapon.CurrentWeapon==null) return;
+            for(int i = 0; i<Type1EquippableWeapons.Count; i++)
+            {
+                if(string.Equals(_characterHandleWeapon.CurrentWeapon.gameObject.name, Type1EquippableWeapons[i].HeldObject.gameObject.name)  || string.Equals(_characterHandleWeapon.CurrentWeapon.GetComponent<Weapon>().WeaponName, Type1EquippableWeapons[i].HeldObject.GetComponent<Weapon>().WeaponName))
+                {
+                    EquippableWeapons equippableWeapon = new EquippableWeapons();
+                    equippableWeapon.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;
+                    Type1EquippableWeapons[i] = equippableWeapon;
+                    if(_characterHandleWeapon.CurrentWeapon.SpawnPoints.Count !=0)
+                    {
+                        EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Clear();
+                        foreach(Transform transform in _characterHandleWeapon.CurrentWeapon.SpawnPoints)
+                        {
+                            EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Add(transform);
+                        }
+                    }
+                    /*
+                    Debug.Log(_characterHandleWeapon.CurrentWeapon.gameObject.GetComponentInParent<ConfigurableJoint>());
+                    equippableWeapons.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;
+                    Debug.Log(equippableWeapons.HeldObject.GetComponentInParent<ConfigurableJoint>());
+                    */
+                }  
+            }
+        }
+
+        //Meant to override with a scriptable item type from Inventory
+        protected void ChangeType1Weapons(InventoryItem[] inventoryItems)
+        {
+            Type1EquippableWeapons.Clear();
+            foreach(InventoryItem inventoryItem in inventoryItems)
+            {
+                EquippableWeapons equippableWeapon = new EquippableWeapons();
+                InventoryWeapon inventoryWeapon = (InventoryWeapon) inventoryItem;
+                equippableWeapon.HeldObject = inventoryWeapon.EquippableWeapon.gameObject;
+                Type1EquippableWeapons.Add(equippableWeapon);
+            }
+            WeaponChanged();
+        }
+    
+		protected void OnEnable()
+		{
+			this.PLEventStartListening<PLInventoryEvent>();
+		}
+
+		/// <summary>
+		/// On disable, we stop listening for PLGameEvents. You may want to extend that to stop listening to other types of events.
+		/// </summary>
+		protected void OnDisable()
+		{
+			this.PLEventStopListening<PLInventoryEvent>();
+		}
     }
 }

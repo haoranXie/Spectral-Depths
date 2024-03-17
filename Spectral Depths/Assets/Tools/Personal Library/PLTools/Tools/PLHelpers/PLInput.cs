@@ -85,9 +85,9 @@ namespace SpectralDepths.Tools
 			protected float _lastButtonDownAt;
 			protected float _lastButtonUpAt;
 
-			public IMButton(string playerID, string buttonID, ButtonDownMethodDelegate btnDown = null, ButtonPressedMethodDelegate btnPressed = null, ButtonUpMethodDelegate btnUp = null) 
+			public IMButton(string CharacterID, string buttonID, ButtonDownMethodDelegate btnDown = null, ButtonPressedMethodDelegate btnPressed = null, ButtonUpMethodDelegate btnUp = null) 
 			{
-				ButtonID = playerID + "_" + buttonID;
+				ButtonID = CharacterID + "_" + buttonID;
 				ButtonDownMethod = btnDown;
 				ButtonUpMethod = btnUp;
 				ButtonPressedMethod = btnPressed;

@@ -21,7 +21,7 @@ namespace SpectralDepths.TopDown
 		[PLInformation("The LevelManager is responsible for handling spawn/respawn, checkpoints management and level bounds. Here you can define one or more playable characters for your level..",PLInformationAttribute.InformationType.Info,false)]
 		/// should the player IDs be auto attributed (usually yes)
 		[Tooltip("should the player IDs be auto attributed (usually yes)")]
-		public bool AutoAttributePlayerIDs = true;
+		public bool AutoAttributeCharacterIDs = true;
 		/// the list of player prefabs to instantiate
 		[Tooltip("The list of player prefabs this level manager will instantiate on Start")]
 		public Character[] PlayerPrefabs ;

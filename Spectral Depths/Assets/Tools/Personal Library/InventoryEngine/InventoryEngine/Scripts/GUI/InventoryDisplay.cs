@@ -23,7 +23,7 @@ namespace SpectralDepths.InventoryEngine
 		/// the name of the inventory to display
 		[PLInformation("An InventoryDisplay is a component that will handle the visualization of the data contained in an Inventory. Start by specifying the name of the inventory you want to display.",PLInformationAttribute.InformationType.Info,false)]
 		public string TargetInventoryName = "MainInventory";
-		public string PlayerID = "Player1";
+		public string CharacterID = "Player1";
 
 		protected Inventory _targetInventory = null;
 
@@ -43,7 +43,7 @@ namespace SpectralDepths.InventoryEngine
 				{
 					foreach (Inventory inventory in UnityEngine.Object.FindObjectsOfType<Inventory>())
 					{
-						if ((inventory.name == TargetInventoryName) && (inventory.PlayerID == PlayerID))
+						if ((inventory.name == TargetInventoryName) && (inventory.CharacterID == CharacterID))
 						{
 							_targetInventory = inventory;
 						}
@@ -827,7 +827,7 @@ namespace SpectralDepths.InventoryEngine
 				return;
 			}
 
-			if (inventoryEvent.PlayerID != this.PlayerID)
+			if (inventoryEvent.CharacterID != this.CharacterID)
 			{
 				return;
 			}

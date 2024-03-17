@@ -22,10 +22,10 @@ namespace SpectralDepths.TopDown
 		public bool ResetButtonStatesOnFocusLoss = true;
         
 		[Header("Player binding")]
-		[PLInformation("The first thing you need to set on your InputManager is the PlayerID. This ID will be used to bind the input manager to your character(s). You'll want to go with Player1, Player2, Player3 or Player4.",PLInformationAttribute.InformationType.Info,false)]
+		[PLInformation("The first thing you need to set on your InputManager is the CharacterID. This ID will be used to bind the input manager to your character(s). You'll want to go with Player1, Player2, Player3 or Player4.",PLInformationAttribute.InformationType.Info,false)]
 		/// a string identifying the target player(s). You'll need to set this exact same string on your Character, and set its type to Player
 		[Tooltip("a string identifying the target player(s). You'll need to set this exact same string on your Character, and set its type to Player")]
-		public string PlayerID = "Player1";
+		public string CharacterID = "Player1";
 		/// the possible modes for this input manager
 		public enum InputForcedModes { None, Mobile, Desktop }
 		/// the possible kinds of control used for movement
@@ -207,21 +207,21 @@ namespace SpectralDepths.TopDown
 		protected virtual void InitializeButtons()
 		{
 			ButtonList = new List<PLInput.IMButton> ();
-			ButtonList.Add(JumpButton = new PLInput.IMButton (PlayerID, "Jump", JumpButtonDown, JumpButtonPressed, JumpButtonUp));
-			ButtonList.Add(RunButton  = new PLInput.IMButton (PlayerID, "Run", RunButtonDown, RunButtonPressed, RunButtonUp));
-			ButtonList.Add(InteractButton = new PLInput.IMButton(PlayerID, "Interact", InteractButtonDown, InteractButtonPressed, InteractButtonUp));
-			ButtonList.Add(DashButton  = new PLInput.IMButton (PlayerID, "Dash", DashButtonDown, DashButtonPressed, DashButtonUp));
-			ButtonList.Add(CrouchButton  = new PLInput.IMButton (PlayerID, "Crouch", CrouchButtonDown, CrouchButtonPressed, CrouchButtonUp));
-			ButtonList.Add(SecondaryShootButton = new PLInput.IMButton(PlayerID, "SecondaryShoot", SecondaryShootButtonDown, SecondaryShootButtonPressed, SecondaryShootButtonUp));
-			ButtonList.Add(ShootButton = new PLInput.IMButton (PlayerID, "Shoot", ShootButtonDown, ShootButtonPressed, ShootButtonUp)); 
-			ButtonList.Add(ReloadButton = new PLInput.IMButton (PlayerID, "Reload", ReloadButtonDown, ReloadButtonPressed, ReloadButtonUp));
-			ButtonList.Add(SwitchWeaponButton = new PLInput.IMButton (PlayerID, "SwitchWeapon", SwitchWeaponButtonDown, SwitchWeaponButtonPressed, SwitchWeaponButtonUp));
-			ButtonList.Add(PauseButton = new PLInput.IMButton(PlayerID, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
-			ButtonList.Add(TimeControlButton = new PLInput.IMButton(PlayerID, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
-			ButtonList.Add(SwitchCharacterButton = new PLInput.IMButton(PlayerID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
-			ButtonList.Add(RotateCameraLeftButton = new PLInput.IMButton(PlayerID, "RotateCameraLeft", RotateCameraLeftButtonDown, RotateCameraLeftButtonPressed, RotateCameraLeftButtonUp));
-			ButtonList.Add(RotateCameraRightButton = new PLInput.IMButton(PlayerID, "RotateCameraRight", RotateCameraRightButtonDown, RotateCameraRightButtonPressed, RotateCameraRightButtonUp));
-			ButtonList.Add(CommandAttackMoveButton = new PLInput.IMButton(PlayerID, "CommandAttackMove", CommandAttackMoveButtonDown, CommandAttackMoveButtonPressed, CommandAttackMoveButtonUp));
+			ButtonList.Add(JumpButton = new PLInput.IMButton (CharacterID, "Jump", JumpButtonDown, JumpButtonPressed, JumpButtonUp));
+			ButtonList.Add(RunButton  = new PLInput.IMButton (CharacterID, "Run", RunButtonDown, RunButtonPressed, RunButtonUp));
+			ButtonList.Add(InteractButton = new PLInput.IMButton(CharacterID, "Interact", InteractButtonDown, InteractButtonPressed, InteractButtonUp));
+			ButtonList.Add(DashButton  = new PLInput.IMButton (CharacterID, "Dash", DashButtonDown, DashButtonPressed, DashButtonUp));
+			ButtonList.Add(CrouchButton  = new PLInput.IMButton (CharacterID, "Crouch", CrouchButtonDown, CrouchButtonPressed, CrouchButtonUp));
+			ButtonList.Add(SecondaryShootButton = new PLInput.IMButton(CharacterID, "SecondaryShoot", SecondaryShootButtonDown, SecondaryShootButtonPressed, SecondaryShootButtonUp));
+			ButtonList.Add(ShootButton = new PLInput.IMButton (CharacterID, "Shoot", ShootButtonDown, ShootButtonPressed, ShootButtonUp)); 
+			ButtonList.Add(ReloadButton = new PLInput.IMButton (CharacterID, "Reload", ReloadButtonDown, ReloadButtonPressed, ReloadButtonUp));
+			ButtonList.Add(SwitchWeaponButton = new PLInput.IMButton (CharacterID, "SwitchWeapon", SwitchWeaponButtonDown, SwitchWeaponButtonPressed, SwitchWeaponButtonUp));
+			ButtonList.Add(PauseButton = new PLInput.IMButton(CharacterID, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
+			ButtonList.Add(TimeControlButton = new PLInput.IMButton(CharacterID, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
+			ButtonList.Add(SwitchCharacterButton = new PLInput.IMButton(CharacterID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
+			ButtonList.Add(RotateCameraLeftButton = new PLInput.IMButton(CharacterID, "RotateCameraLeft", RotateCameraLeftButtonDown, RotateCameraLeftButtonPressed, RotateCameraLeftButtonUp));
+			ButtonList.Add(RotateCameraRightButton = new PLInput.IMButton(CharacterID, "RotateCameraRight", RotateCameraRightButtonDown, RotateCameraRightButtonPressed, RotateCameraRightButtonUp));
+			ButtonList.Add(CommandAttackMoveButton = new PLInput.IMButton(CharacterID, "CommandAttackMove", CommandAttackMoveButtonDown, CommandAttackMoveButtonPressed, CommandAttackMoveButtonUp));
 
 		}
 
@@ -230,13 +230,13 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected virtual void InitializeAxis()
 		{
-			_axisHorizontal = PlayerID+"_Horizontal";
-			_axisVertical = PlayerID+"_Vertical";
-			_axisSecondaryHorizontal = PlayerID+"_SecondaryHorizontal";
-			_axisSecondaryVertical = PlayerID+"_SecondaryVertical";
-			_axisShoot = PlayerID+"_ShootAxis";
-			_axisShootSecondary = PlayerID + "_SecondaryShootAxis";
-			_axisCamera = PlayerID + "_CameraRotationAxis";
+			_axisHorizontal = CharacterID+"_Horizontal";
+			_axisVertical = CharacterID+"_Vertical";
+			_axisSecondaryHorizontal = CharacterID+"_SecondaryHorizontal";
+			_axisSecondaryVertical = CharacterID+"_SecondaryVertical";
+			_axisShoot = CharacterID+"_ShootAxis";
+			_axisShootSecondary = CharacterID + "_SecondaryShootAxis";
+			_axisCamera = CharacterID + "_CameraRotationAxis";
 		}
 
 		/// <summary>

@@ -173,7 +173,7 @@ namespace SpectralDepths.TopDown
 		protected RaycastHit _canGoBackHeadCheck;
 		protected bool _tooSteepLastFrame;
 		protected CharacterMovement _characterMovement;
-		protected bool _moveController = true;
+		public bool _moveController = true;
 		/// <summary>
 		/// On awake we store our various components for future use
 		/// </summary>
