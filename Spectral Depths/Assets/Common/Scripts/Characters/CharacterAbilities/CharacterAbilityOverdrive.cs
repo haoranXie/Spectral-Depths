@@ -108,6 +108,7 @@ namespace SpectralDepths.TopDown
 			Overdrive();
 			TurnOffRTSMode();
 			OnWeaponChanged();
+			_emeraldComponent.CombatComponent.ClearTarget();
 			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();}
 		}
 
@@ -256,12 +257,9 @@ namespace SpectralDepths.TopDown
 					//If the Character has a weapon equipped under AI controls
 					if(_characterHandleWeapon.CurrentWeapon != null)
 					{
-						if(_characterHandleWeapon.CurrentWeapon!=null)
+						if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
 						{
-							if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
-							{
-								_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
-							}
+							_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
 						}
 					}
 				break;

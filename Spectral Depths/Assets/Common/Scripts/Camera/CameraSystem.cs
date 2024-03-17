@@ -217,6 +217,8 @@ namespace SpectralDepths.TopDown{
                     return;
                 }
             }
+            // Rotates the object
+            transform.eulerAngles += new Vector3 (0,_rotateDir*RotateSpeed*Time.deltaTime,0);
             // Update the position of the object
             transform.position = targetPosition;
 		} 

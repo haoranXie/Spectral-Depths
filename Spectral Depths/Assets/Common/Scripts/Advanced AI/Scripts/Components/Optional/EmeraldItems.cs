@@ -4,6 +4,7 @@ using EmeraldAI.Utility;
 using SpectralDepths.Tools;
 using SpectralDepths.InventoryEngine;
 using SpectralDepths.TopDown;
+using System.Linq;
 
 namespace EmeraldAI
 {
@@ -445,6 +446,14 @@ namespace EmeraldAI
                     EquippableWeapons equippableWeapon = new EquippableWeapons();
                     equippableWeapon.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;
                     Type1EquippableWeapons[i] = equippableWeapon;
+                    if(_characterHandleWeapon.CurrentWeapon.SpawnPoints.Count !=0)
+                    {
+                        EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Clear();
+                        foreach(Transform transform in _characterHandleWeapon.CurrentWeapon.SpawnPoints)
+                        {
+                            EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Add(transform);
+                        }
+                    }
                     /*
                     Debug.Log(_characterHandleWeapon.CurrentWeapon.gameObject.GetComponentInParent<ConfigurableJoint>());
                     equippableWeapons.HeldObject = _characterHandleWeapon.CurrentWeapon.gameObject;

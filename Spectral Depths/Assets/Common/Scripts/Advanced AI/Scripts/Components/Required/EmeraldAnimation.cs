@@ -437,7 +437,6 @@ namespace EmeraldAI
         public void PlayAttackAnimation ()
         {
             if (!EmeraldComponent.CombatComponent.CurrentAttackData.CooldownIgnored) EmeraldComponent.CombatComponent.CurrentAttackData.CooldownTimeStamp = Time.time;
-            Debug.Log("yo");
             AIAnimator.SetInteger("Attack Index", EmeraldComponent.CombatComponent.CurrentAnimationIndex + 1);
             AIAnimator.SetTrigger("Attack");
         }

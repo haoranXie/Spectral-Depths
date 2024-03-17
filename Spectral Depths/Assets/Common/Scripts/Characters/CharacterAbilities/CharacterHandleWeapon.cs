@@ -473,7 +473,6 @@ namespace SpectralDepths.TopDown
 			{
 				CurrentWeapon = null;
 			}
-
 			if (OnWeaponChanged != null)
 			{
 				OnWeaponChanged();
@@ -490,7 +489,8 @@ namespace SpectralDepths.TopDown
 		{
 			if (!combo)
 			{
-				CurrentWeapon = (Weapon)Instantiate(newWeapon, WeaponAttachment.transform.position + newWeapon.WeaponAttachmentOffset, WeaponAttachment.transform.rotation);
+				
+				CurrentWeapon = (Weapon)Instantiate(newWeapon, WeaponAttachment.transform.position + newWeapon.WeaponAttachmentOffset, WeaponAttachment.transform.rotation * Quaternion.Euler(newWeapon.AttachmentRotationOffset));
 			}
 
 			CurrentWeapon.name = newWeapon.name;

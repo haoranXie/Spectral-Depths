@@ -15,7 +15,7 @@ MonoBehaviour:
   AbilityName: Bullet
   AbilityDescription: Ability Description
   AbilityIcon: {fileID: 2800000, guid: 225c0664134d17744b824ae6e345d539, type: 3}
-  InfoSettingsFoldout: 0
+  InfoSettingsFoldout: 1
   DerivedSettingsFoldout: 1
   ModularSettingsFoldout: 0
   HideSettingsFoldout: 0
@@ -65,10 +65,10 @@ MonoBehaviour:
       - {fileID: 8300000, guid: e1d8e0db26d00c84e94ba0e5945a708e, type: 3}
   StunnedSettings:
     Enabled: 0
-    OddsToStun: 50
-    StunLength: 3
+    OddsToStun: 0
+    StunLength: 1
   DamageSettings:
-    Foldout: 1
+    Foldout: 0
     Enabled: 1
     UseCriticalHits: 0
     UseDamageOverTime: 0

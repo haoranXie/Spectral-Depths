@@ -33,8 +33,11 @@ namespace SpectralDepths.TopDown
 		public Weapon PlayerWeaponVersion;
 		[Tooltip("reference to AI Used Variant of weapon")]
 		public Weapon AIWeaponVersion;
+		[PLInspectorGroup("Spawner Transforms", true, 7)]
+		//All the transforms used for spawning things like projectiles
+		[Tooltip("All the transforms used for spawning things like projectiles")]
+		public List<Transform> SpawnPoints;
 		
-
 		[PLInspectorGroup("Use", true, 10)]
 		/// if this is true, this weapon will be able to read input (usually via the CharacterHandleWeapon ability), otherwise player input will be disabled
 		[Tooltip("if this is true, this weapon will be able to read input (usually via the CharacterHandleWeapon ability), otherwise player input will be disabled")]
@@ -103,6 +106,9 @@ namespace SpectralDepths.TopDown
 		/// an offset that will be applied to the weapon once attached to the center of the WeaponAttachment transform.
 		[Tooltip("an offset that will be applied to the weapon once attached to the center of the WeaponAttachment transform.")]
 		public Vector3 WeaponAttachmentOffset = Vector3.zero;
+		/// an offset that will be applied to the weapon once attached to the center of the WeaponAttachment transform.
+		[Tooltip("an offset that will be applied to the weapon once attached to the center of the WeaponAttachment transform.")]
+		public Vector3 AttachmentRotationOffset = Vector3.zero;
 		/// should that weapon be flipped when the character flips?
 		[Tooltip("should that weapon be flipped when the character flips?")]
 		public bool FlipWeaponOnCharacterFlip = true;
@@ -446,7 +452,7 @@ namespace SpectralDepths.TopDown
 		protected virtual void Update()
 		{
 			FlipWeapon();
-			ApplyOffset();       
+			//ApplyOffset();       
 		}
 
 		/// <summary>

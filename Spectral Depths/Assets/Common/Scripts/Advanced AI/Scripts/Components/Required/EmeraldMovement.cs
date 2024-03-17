@@ -1134,8 +1134,8 @@ namespace EmeraldAI
         /// Returns whether or not a walk footstep sound can be played.
         /// </summary>
         public bool CanPlayWalkFootstepSound ()
-        {
-            return MovementType == MovementTypes.RootMotion && AIAnimator.GetFloat("Speed") > 0.05f && AIAnimator.GetFloat("Speed") <= 0.5f || 
+        {            
+            return MovementType == MovementTypes.RootMotion && AIAnimator.GetFloat("Speed") > 0.05f && AIAnimator.GetFloat("Speed") <= 0.6f || 
                 MovementType == MovementTypes.NavMeshDriven && EmeraldComponent.m_NavMeshAgent.velocity.magnitude > 0.05f && EmeraldComponent.m_NavMeshAgent.velocity.magnitude <= WalkSpeed + 0.25f || 
                 AnimationComponent.IsTurning || AnimationComponent.IsStrafing || AnimationComponent.IsBackingUp || AnimationComponent.IsDodging || AnimationComponent.IsRecoiling || AnimationComponent.IsGettingHit;
         }
