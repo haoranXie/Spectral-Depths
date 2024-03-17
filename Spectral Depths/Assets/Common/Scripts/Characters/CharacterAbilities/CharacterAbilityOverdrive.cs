@@ -15,14 +15,14 @@ namespace SpectralDepths.TopDown
 	/// Intermediatary between AI and Character Controls. Intended to be used with EmeraldAI. Otherwise use CharacterAbilityNodeSwap
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Ability Overdrive")]
-	public class CharacterAbilityOverdrive : CharacterAbility
+	public class CharacterAbilityOverdrive : CharacterAbility, PLEventListener<TopDownEngineEvent>
 	{
 		//Index of Character as represented in LevelManager and UI
 		[Header("Settings")]
 
-		[Tooltip("Character Index usually represented in UI and Squad Management. Key for selection")]
-		public int CharacterIndex = -1;
-		[Tooltip("Whether or not the character is instantly swapped into when clicking on CharacterIndex")]
+		[Tooltip("Key used for instantly taking over a character")]
+		public int CharacterKey = -1;
+		[Tooltip("Whether or not the character is instantly swapped into when clicking on CharacterKey")]
 		public bool QuickSwapOn = true;
 		[Tooltip("Whether player should change to RTS mode on Death")]
 		public bool DeathSwitch = true;
@@ -35,10 +35,11 @@ namespace SpectralDepths.TopDown
 		protected CharacterHandleWeapon _characterHandleWeapon;
 		protected CharacterInventory _characterInventory;
 		protected NavMeshAgent _navMeshAgent;
+		public bool Overdrived;
 		protected override void Initialization()
 		{
 			base.Initialization();
-			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+1; }
+			if (CharacterKey==-1){ CharacterKey= LevelManager.Instance.Players.IndexOf(_character)+1; }
 			_characterSelectable = GetComponent<CharacterSelectable>();
 			_characterController = GetComponent<CharacterController>();
 			_characterHandleWeapon = GetComponent<CharacterHandleWeapon>();
@@ -74,8 +75,10 @@ namespace SpectralDepths.TopDown
 
 		protected void QuickSwap()
 		{
-			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterIndex))
+			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterKey))
 			{
+				//Turns off the overdrive for all other overdriven characters
+				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
 				switch(_character.CharacterType)
 				{
 					//If the Character is under Player controls
@@ -211,12 +214,14 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void Overdrive()
 		{
+			Overdrived = true;
 		}
 		/// <summary>
 		/// Reverses the effects of Overdrive and switches animations to AI controls
 		/// </summary>
 		protected void UnderDrive()
 		{
+			Overdrived = false;
 		}
 
 		/// <summary>
@@ -302,10 +307,36 @@ namespace SpectralDepths.TopDown
 				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			}
 		}
-
+        public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+        {
+            switch (engineEvent.EventType)
+            {
+                case TopDownEngineEventTypes.TurnOffOverdrive:
+					if(engineEvent.OriginCharacter!=_character && Overdrived)
+					{
+						_emeraldComponent.MovementComponent.StartingDestination = transform.position;
+						CharacterModeOff();
+						EmeraldModeOn();
+						UnderDrive();
+						_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
+						_animator.SetBool("Player Controls", false);
+						_emeraldComponent.CombatComponent.ExitCombat();
+						if(_characterHandleWeapon.CurrentWeapon!=null)
+						{
+							if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+							{
+								_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
+							}
+						}
+					}
+					break;
+            }
+                    
+        }
         protected override void OnEnable()
         {
             base.OnEnable();
+			this.PLEventStartListening<TopDownEngineEvent> ();
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged+=OnWeaponChanged;}
 
         }
@@ -313,9 +344,9 @@ namespace SpectralDepths.TopDown
         protected override void OnDisable()
         {
             base.OnDisable();
+			this.PLEventStopListening<TopDownEngineEvent> ();
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged-=OnWeaponChanged;}
         }
-
     }
 
 }

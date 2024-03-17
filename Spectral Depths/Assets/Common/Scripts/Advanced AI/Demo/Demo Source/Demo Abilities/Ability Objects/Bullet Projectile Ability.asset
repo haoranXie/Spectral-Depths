@@ -68,7 +68,7 @@ MonoBehaviour:
     OddsToStun: 0
     StunLength: 1
   DamageSettings:
-    Foldout: 0
+    Foldout: 1
     Enabled: 1
     UseCriticalHits: 0
     UseDamageOverTime: 0
