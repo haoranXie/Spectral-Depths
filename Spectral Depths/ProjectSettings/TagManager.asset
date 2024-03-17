@@ -17,14 +17,14 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - Character
-  - Obstacles
-  - Ground
   - Player
-  - ObstaclesDoors
+  - Enemy
+  - Character
+  - Ground
+  - Obstacles
+  - 
   - NoPathfinding
-  - Enemies
+  - 
   - NoCollisions
   - Hole
   - MovingPlatform

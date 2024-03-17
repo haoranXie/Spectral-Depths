@@ -733,6 +733,9 @@ namespace SpectralDepths.TopDown
                 case RTSEventTypes.SwitchToPlayer:
                     //_charSwitchSound.Play();
                     break;
+                case RTSEventTypes.UnselectedEveryone:
+                    DeselectAll();
+                    break;
             }
         }
 

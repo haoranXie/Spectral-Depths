@@ -18,6 +18,9 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Grid Layout of the Squad Display where all the slots are inserted")]
 		public GameObject SquadLayout;
         //All the slots containing squad info
+		[Tooltip("Character Slot Pool")]
+		public PLSimpleObjectPooler CharacterSlotPool;
+        //All the slots containing squad info
         public List<CharacterSlot> CharacterSlots;
         //The gameobject that each slot is based off of
         private GameObject _characterSlotPrefab;
@@ -31,7 +34,8 @@ namespace SpectralDepths.TopDown
         {
             for(int i = 0 ; i<characters.Count; i++)
             {
-                GameObject newCharacterSlot = Instantiate(_characterSlotPrefab);
+                //GameObject newCharacterSlot = Instantiate(_characterSlotPrefab);
+                GameObject newCharacterSlot = CharacterSlotPool.GetPooledGameObject();
                 CharacterSlot characterSlot = newCharacterSlot.GetComponent<CharacterSlot>();
                 newCharacterSlot.transform.SetParent(SquadLayout.transform);
 
@@ -57,10 +61,12 @@ namespace SpectralDepths.TopDown
                 newPosition.z = 0;
                 newCharacterSlot.GetComponent<RectTransform>().localPosition = newPosition;
                 newCharacterSlot.transform.localScale = new Vector3(1f,1f,1f);
-
+                newCharacterSlot.transform.SetAsLastSibling();
+                
                 //Initializes the CharacterSlot component
                 characterSlot.CharacterComponent = characters[i];
                 characterSlot.InitializeSlot();
+                
 
                 CharacterSlots.Add(characterSlot);
             }

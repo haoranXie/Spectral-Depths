@@ -79,6 +79,8 @@ namespace SpectralDepths.TopDown
 			{
 				//Turns off the overdrive for all other overdriven characters
 				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
+				//Unselects all characters
+				RTSEvent.Trigger(RTSEventTypes.UnselectedEveryone, null, null);
 				switch(_character.CharacterType)
 				{
 					//If the Character is under Player controls

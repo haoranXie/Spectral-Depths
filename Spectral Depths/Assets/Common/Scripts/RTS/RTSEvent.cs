@@ -19,7 +19,8 @@ namespace SpectralDepths.TopDown
 		SwitchToPlayer,
 		CommandForceMove,
 		CommandForceAttack,
-		FinalWaypointReached
+		FinalWaypointReached,
+		UnselectedEveryone
 	}
 	public struct RTSEvent
 	{

@@ -36,6 +36,7 @@ namespace SpectralDepths.TopDown
 
 		public void InitializeSlot()
 		{
+			gameObject.SetActive(true);
 			if(CharacterComponent.UseEmeraldAI){EmeraldComponent = CharacterComponent.EmeraldComponent;}
 			HealthProgressBar = HealthBar.GetComponent<PLProgressBar>();
 			CG = GetComponent<CanvasGroup>();
@@ -69,7 +70,6 @@ namespace SpectralDepths.TopDown
             }
 
             gameObject.SetActive(false);
-			Destroy(this);
         }
 
 		void UpdateHealthOnUi()

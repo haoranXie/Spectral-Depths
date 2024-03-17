@@ -27,10 +27,10 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// A public method to open the chest, usually called by the associated key operated zone
 		/// </summary>
-		public virtual void OpenChest()
+		public virtual void OpenChest(CharacterInventory targetCharacterInventory)
 		{
 			TriggerOpeningAnimation ();
-			PickChestContents ();
+			PickChestContents (targetCharacterInventory);
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// Puts all the items in the associated pickers into the player's inventories
 		/// </summary>
-		protected virtual void PickChestContents()
+		protected virtual void PickChestContents(CharacterInventory targetCharacterInventory)
 		{
 			if (_itemPickerList.Length == 0)
 			{
@@ -56,7 +56,7 @@ namespace SpectralDepths.TopDown
 			}
 			foreach (ItemPicker picker in _itemPickerList)
 			{
-				picker.Pick ();
+				picker.Pick (targetCharacterInventory.MainInventoryName, targetCharacterInventory.GetComponentInParent<Character>().CharacterID);
 			}
 		}
 			
