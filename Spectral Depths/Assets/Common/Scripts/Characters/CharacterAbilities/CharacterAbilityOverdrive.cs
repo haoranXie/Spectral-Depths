@@ -28,6 +28,10 @@ namespace SpectralDepths.TopDown
 		public bool DeathSwitch = true;
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
+		[Header("Overdrive")]
+
+		[Tooltip("Multiplier to all player Action Speeds")]
+		public float OverdriveMultiplier = 1.3f;
 
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
@@ -217,6 +221,7 @@ namespace SpectralDepths.TopDown
 		protected void Overdrive()
 		{
 			Overdrived = true;
+			_animator.SetFloat("Overdrive Multiplier", OverdriveMultiplier);
 		}
 		/// <summary>
 		/// Reverses the effects of Overdrive and switches animations to AI controls
@@ -224,6 +229,7 @@ namespace SpectralDepths.TopDown
 		protected void UnderDrive()
 		{
 			Overdrived = false;
+			_animator.SetFloat("Overdrive Multiplier", 1f);
 		}
 
 		/// <summary>
@@ -277,6 +283,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void EmeraldModeOn()
 		{
+			_emeraldComponent.AnimationComponent.ResetTriggers(0);
 			_navMeshAgent.enabled=true;
 			_emeraldComponent.MovementComponentOn = true;
 			_emeraldComponent.BehaviorsComponentOn = true;
@@ -288,6 +295,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void EmeraldModeOff()
 		{
+			_emeraldComponent.AnimationComponent.ResetTriggers(0);
 			_navMeshAgent.enabled=false;
 			_emeraldComponent.MovementComponentOn = false;
 			_emeraldComponent.BehaviorsComponentOn = false;
