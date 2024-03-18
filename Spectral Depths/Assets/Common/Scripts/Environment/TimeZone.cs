@@ -79,6 +79,8 @@ namespace SpectralDepths.TopDown
 			}
 			else
 			{
+				Debug.Log("ho");
+
 				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, Duration, LerpTimeScale, LerpSpeed, false);
 			}
 		}
