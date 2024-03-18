@@ -134,8 +134,26 @@ namespace SpectralDepths.InventoryEngine
             
 			foreach (Inventory inventory in RegisteredInventories)
 			{
-				//(inventory.InventoryName == inventoryName) &&
-				if ( (inventory.CharacterID == CharacterID))
+				//
+				if ((inventory.InventoryName == inventoryName) && (inventory.CharacterID == CharacterID))
+				{
+					return inventory;
+				}
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Returns (if found) an inventory matching the searched name and CharacterID
+		/// </summary>
+		/// <param name="inventoryName"></param>
+		/// <param name="CharacterID"></param>
+		/// <returns></returns>
+		public static Inventory FindInventoryWithoutName(string CharacterID)
+		{            
+			foreach (Inventory inventory in RegisteredInventories)
+			{
+				if ((inventory.CharacterID == CharacterID))
 				{
 					return inventory;
 				}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6a473ea27e9224f846cf5871a97c19, type: 3}
   m_Name: Index 1
   m_EditorClassIdentifier: 
-  CharacterName: Index 1
+  CharacterName: Index One
   Class: 
-  MaxHealth: 80
-  Icon: {fileID: 21300000, guid: 5a6986a10fa46dc499f7eb5faad20987, type: 3}
+  MaxHealth: 150
+  Icon: {fileID: 21300000, guid: 4d0d06a0260dc1d45b71864ac4798810, type: 3}

@@ -157,12 +157,21 @@ namespace SpectralDepths.InventoryEngine
 		/// <value>The target inventory.</value>
 		public virtual Inventory TargetInventory(string CharacterID)
 		{ 
-
 			if (TargetInventoryName == null)
 			{
 				return null;
 			}
 			_targetInventory = Inventory.FindInventory(TargetInventoryName, CharacterID);
+			return _targetInventory;
+		}
+
+		/// <summary>
+		/// Gets the target inventory without target inventory name
+		/// </summary>
+		/// <value>The target inventory.</value>
+		public virtual Inventory TargetInventoryWithoutName(string CharacterID)
+		{ 
+			_targetInventory = Inventory.FindInventoryWithoutName(CharacterID);
 			return _targetInventory;
 		}
 
@@ -231,13 +240,13 @@ namespace SpectralDepths.InventoryEngine
 		/// </summary>
 		public virtual void SpawnPrefab(string CharacterID)
 		{
-			if (TargetInventory(CharacterID) != null)
+			if (TargetInventoryWithoutName(CharacterID) != null)
 			{
 				// if there's a prefab set for the item at this slot, we instantiate it at the specified offset
-				if (Prefab!=null && TargetInventory(CharacterID).TargetTransform!=null)
+				if (Prefab!=null && TargetInventoryWithoutName(CharacterID).TargetTransform!=null)
 				{
 					GameObject droppedObject=(GameObject)Instantiate(Prefab);
-					Vector3 newPosition = TargetInventory(CharacterID).TargetTransform.position;
+					Vector3 newPosition = TargetInventoryWithoutName(CharacterID).TargetTransform.position;
 					if (droppedObject.GetComponentInChildren<ItemPicker>()!=null)
 					{
 						if (ForcePrefabDropQuantity)

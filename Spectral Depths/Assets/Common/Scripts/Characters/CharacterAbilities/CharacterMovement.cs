@@ -3,7 +3,6 @@ using System.Collections;
 using SpectralDepths.Tools;
 using System.Collections.Generic;
 using UnityEngine.AI;
-using Codice.CM.Client.Differences;
 
 namespace SpectralDepths.TopDown
 {	

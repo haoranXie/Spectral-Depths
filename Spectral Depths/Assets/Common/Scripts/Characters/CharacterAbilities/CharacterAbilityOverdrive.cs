@@ -101,6 +101,7 @@ namespace SpectralDepths.TopDown
 				case Character.CharacterTypes.AI:
 					EmeraldModeOn();
 					CharacterModeOff();
+					ResetPlayerWeapon();
 					break;
 			}
 		}
@@ -205,6 +206,22 @@ namespace SpectralDepths.TopDown
 			_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
 			_animator.SetBool("Player Controls", false);
 			_emeraldComponent.CombatComponent.ExitCombat();
+			if(_characterHandleWeapon.CurrentWeapon!=null)
+			{
+				if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+				{
+					_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
+					Cursor.visible = true;
+				}
+			}
+		}
+		/// <summary>
+		/// Resets the player weapon during initliazation if under AI control
+		/// </summary>
+
+		protected void ResetPlayerWeapon()
+		{
+			_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
 			if(_characterHandleWeapon.CurrentWeapon!=null)
 			{
 				if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
