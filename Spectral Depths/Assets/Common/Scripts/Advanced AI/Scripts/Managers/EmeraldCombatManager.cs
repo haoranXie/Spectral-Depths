@@ -226,6 +226,7 @@ namespace EmeraldAI.Utility
             EmeraldComponent.CombatComponent.enabled = false;
             EmeraldComponent.MovementComponent.enabled = false;
             EmeraldComponent.BehaviorsComponent.enabled = false;
+            EmeraldComponent.m_NavMeshAgent.enabled = true;
             EmeraldComponent.m_NavMeshAgent.ResetPath();
             EmeraldComponent.m_NavMeshAgent.enabled = false;
         }

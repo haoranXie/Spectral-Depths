@@ -76,6 +76,7 @@ namespace SpectralDepths.TopDown
 		private int _voranoiIntensity = Shader.PropertyToID("_VoranoiIntensity");
 		private int _vignetteItensity = Shader.PropertyToID("_VignetteItensity");
 		private bool _playerControlled;
+		private bool _overdrived = false;
 		protected override void Initialization()
 		{
 			base.Initialization();
@@ -276,6 +277,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void Overdrive()
 		{
+			_overdrived = true;
 			StartCoroutine(OverdriveEffect());
 		}
 		/// <summary>
@@ -283,6 +285,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void UnderDrive()
 		{
+			_overdrived = false;
 			_animator.SetFloat("Overdrive Multiplier", 1f);
 			if(FullScreenOverdrive.isActive&& _playerControlled){FullScreenOverdrive.SetActive(false);}
 			if(_playerControlled){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
@@ -374,6 +377,7 @@ namespace SpectralDepths.TopDown
 				}
 				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			}
+			if(_overdrived){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
 		}
         public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
         {
@@ -400,7 +404,6 @@ namespace SpectralDepths.TopDown
 					}
 					break;
             }
-                    
         }
         protected override void OnEnable()
         {
@@ -416,6 +419,8 @@ namespace SpectralDepths.TopDown
 			this.PLEventStopListening<TopDownEngineEvent> ();
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged-=OnWeaponChanged;}
         }
+
+
     }
 
 }

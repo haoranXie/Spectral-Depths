@@ -1,8 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EmeraldAI;
 using EmeraldAI.Utility;
+using SpectralDepths.Tools;
+using UnityEngine.PlayerLoop;
 
 [RequireComponent(typeof(AudioSource))]
 public class DamageAIByExplosion : MonoBehaviour
@@ -14,11 +16,27 @@ public class DamageAIByExplosion : MonoBehaviour
     public GameObject ExplosionEffect;
     public AudioClip ExplosionSound;
     GameObject ExplosionSoundObject;
-
+    EmeraldGeneralTargetBridge _emeraldGeneralTargetBridge;
+    PLHealthBar _healthBar;
     private void Start()
     {
+        //Setup the health tracker to explode on death
+        _emeraldGeneralTargetBridge = GetComponent<EmeraldGeneralTargetBridge>();
+        if(_emeraldGeneralTargetBridge!=null)
+        {
+            _emeraldGeneralTargetBridge.OnDeath.AddListener(Explode);
+        }
+
+        //Setup the health bar to update health
+        _healthBar = GetComponent<PLHealthBar>();
+        if (_healthBar != null)
+        {
+            _healthBar.Initialization();
+            _emeraldGeneralTargetBridge.OnTakeDamage.AddListener(UpdateHealthBar);
+        }
+
         ExplosionSoundObject = Resources.Load("Emerald Sound") as GameObject;
-        Invoke(nameof(Explode), 1.75f);
+
     }
 
     /// <summary>
@@ -49,5 +67,13 @@ public class DamageAIByExplosion : MonoBehaviour
         SpawnedExplosionSound.transform.SetParent(EmeraldSystem.ObjectPool.transform);
         AudioSource ExplosionAudioSource = SpawnedExplosionSound.GetComponent<AudioSource>();
         if (ExplosionSound != null) ExplosionAudioSource.PlayOneShot(ExplosionSound);
+    }
+
+    void UpdateHealthBar()
+    {
+        if(_emeraldGeneralTargetBridge!=null)
+        {
+            _healthBar.UpdateBar(_emeraldGeneralTargetBridge.Health, 0f, _emeraldGeneralTargetBridge.StartHealth, true);
+        }
     }
 }

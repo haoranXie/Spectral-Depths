@@ -67,7 +67,6 @@ namespace EmeraldAI
 
         private void OnTriggerEnter(Collider collision)
         {
-
             if (collision.gameObject != EmeraldComponent.gameObject)
             {
                 if (collision.gameObject.GetComponent<LocationBasedDamageArea>() != null || collision.gameObject.GetComponent<IDamageable>() != null)

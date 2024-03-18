@@ -505,14 +505,12 @@ namespace SpectralDepths.TopDown
 					}
 				}
 			}
-
 			// at this point the object is colliding and authorized, we add it to our list
 			_collidingObjects.Add(collider.gameObject);
 			if (!TestForLastObject(collider))
 			{
 				return;
 			}
-            
 			EnterFeedback?.PlayFeedbacks(this.transform.position);
 
 			if (ShouldUpdateState)
@@ -647,13 +645,13 @@ namespace SpectralDepths.TopDown
 		/// <param name="characterButtonActivation">Character button activation.</param>
 		protected virtual bool CheckConditions(GameObject collider)
 		{
-			
 			if (!PLLayers.LayerInLayerMask(collider.layer, TargetLayerMask))
 			{
 				return false;
 			}
 			
 			Character character = collider.gameObject.GetComponentInParent<Character>();
+
 			switch (ButtonActivatedRequirement)
 			{
 				case ButtonActivatedRequirements.Character:
@@ -677,6 +675,7 @@ namespace SpectralDepths.TopDown
 					}
 					break;
 			}
+
 			if (RequiresPlayerType)
 			{
 				if (character == null)
@@ -688,6 +687,7 @@ namespace SpectralDepths.TopDown
 					return false;
 				}
 			}
+
 			if (RequiresButtonActivationAbility)
 			{
 				CharacterButtonActivation characterButtonActivation = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
