@@ -46,7 +46,8 @@ namespace SpectralDepths.TopDown
 		SelectionChanged,
 		RTSOff,
 		RTSOn,
-		LoadNextScene
+		LoadNextScene,
+		TurnOffOverdrive
 	}
 
 	/// <summary>

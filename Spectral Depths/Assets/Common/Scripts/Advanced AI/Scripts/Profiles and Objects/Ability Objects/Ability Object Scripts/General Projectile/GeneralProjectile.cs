@@ -252,7 +252,6 @@ namespace EmeraldAI
         /// </summary>
         void OnTriggerEnter(Collider other)
         {
-            Debug.Log("wat");
             if (!this.enabled) return; //Only allow trigger collisions to work if the script is active
             if (((1 << other.gameObject.layer) & CurrentAbilityData.ColliderSettings.CollidableLayers) != 0 && other.gameObject != Owner && !IgnoredColliders.Contains(other)) Impact(other.gameObject);
         }

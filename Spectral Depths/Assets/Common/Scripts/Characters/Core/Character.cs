@@ -34,6 +34,8 @@ namespace SpectralDepths.TopDown
 		public enum CharacterTypes { Player, AI }
 
 		[PLInformation("The Character script is the mandatory basis for all Character abilities. Your character can either be a Non Player Character, controlled by an AI, or a Player character, controlled by the player. In this case, you'll need to specify a CharacterID, which must match the one specified in your InputManager. Usually 'Player1', 'Player2', etc.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
+		[Tooltip("Scriptable Object that distributes various character data into components")]
+		public CharacterData CharacterComponentData;
 		/// Is the character player-controlled or controlled by an AI ?
 		[Tooltip("Is the character player-controlled or controlled by an AI ?")]
 		public CharacterTypes CharacterType = CharacterTypes.AI;
@@ -151,6 +153,7 @@ namespace SpectralDepths.TopDown
 		protected bool _onReviveRegistered;
 		protected Coroutine _conditionChangeCoroutine;
 		protected CharacterStates.CharacterConditions _lastState;
+		public String CharacterName;
 
 
 		/// <summary>
@@ -159,6 +162,7 @@ namespace SpectralDepths.TopDown
 		protected virtual void Awake()
 		{		
 			Initialization();
+			SetupCharacter();
 		}
 
 		/// <summary>
@@ -236,6 +240,22 @@ namespace SpectralDepths.TopDown
 				DeathMMFeedbacks?.Initialization(this.gameObject);
     				if(EmeraldComponent!=null){EmeraldComponent.AssignCharacter(this);}
 			}
+		}
+		/// <summary>
+		/// Sets up the character depending on CharacterData given in
+		/// </summary>
+
+		protected void SetupCharacter()
+		{
+			if(CharacterComponentData == null) return;
+		
+			CharacterName = CharacterComponentData.name;
+			
+			//If the character is using emeraldAI 
+			if(EmeraldComponent == null) return;
+
+			EmeraldComponent.GetComponent<EmeraldHealth>().StartHealth = CharacterComponentData.MaxHealth;
+
 		}
 		
 		/// <summary>

@@ -10,13 +10,13 @@ namespace SpectralDepths.TopDown
 	/// </summary>
 	public static class LayerManager
 	{
-		private static int ObstaclesLayer = 8;
+		private static int ObstaclesLayer = 10;
 		private static int GroundLayer = 9;
-		private static int PlayerLayer = 10;
+		private static int PlayerLayer = 6;
 		private static int PlayerSelectionLayer = 23;
 		private static int EnemySelectionLayer = 24;
 
-		private static int EnemiesLayer = 13;
+		private static int EnemiesLayer = 7;
 		private static int HoleLayer = 15;
 		private static int MovingPlatformLayer = 16;
 		private static int FallingPlatformLayer = 17;

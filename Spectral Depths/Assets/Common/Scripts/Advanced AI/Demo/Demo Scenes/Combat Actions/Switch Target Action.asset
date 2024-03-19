@@ -20,7 +20,7 @@ MonoBehaviour:
   HideSettingsFoldout: 0
   DefaultSettingsFoldout: 0
   CustomSettingsFoldout: 1
-  InfoSettingsFoldout: 0
+  InfoSettingsFoldout: 1
   ActionName: Switch Target
   ActionDescription: Gives AI the ability to switch targets after every time the
     Cooldown Length has been met.

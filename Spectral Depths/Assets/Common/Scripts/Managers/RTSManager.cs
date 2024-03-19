@@ -64,7 +64,6 @@ namespace SpectralDepths.TopDown
         public PLSimpleObjectPooler MovementVertexIndicatorPool;
         public PLSimpleObjectPooler MovementEdgeIndicatorPool;
 
-
         //Holdes all the selected Game Objects
         public Dictionary<int,Character> SelectedTable = new Dictionary<int, Character>();
 
@@ -93,9 +92,7 @@ namespace SpectralDepths.TopDown
         private Vector3[] verts;
         private Vector3[] vecs;
         private Vector3 target;
-
         private Commands _curretCommand = Commands.Default;
-
         private bool dragSelect;
 
         private void Start()
@@ -735,6 +732,9 @@ namespace SpectralDepths.TopDown
                     break;
                 case RTSEventTypes.SwitchToPlayer:
                     //_charSwitchSound.Play();
+                    break;
+                case RTSEventTypes.UnselectedEveryone:
+                    DeselectAll();
                     break;
             }
         }

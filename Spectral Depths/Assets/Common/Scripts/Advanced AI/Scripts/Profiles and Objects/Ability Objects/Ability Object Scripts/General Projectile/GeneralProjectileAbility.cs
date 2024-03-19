@@ -75,7 +75,6 @@ namespace EmeraldAI
                         SpawnedProjectile.transform.eulerAngles = SpawnedProjectile.transform.eulerAngles + AimDir;
                     }
                 }
-
                 AssignScript(SpawnedProjectile).Initialize(Owner, Target, this);
 
                 if (Delay > 0) yield return new WaitForSeconds(Delay);

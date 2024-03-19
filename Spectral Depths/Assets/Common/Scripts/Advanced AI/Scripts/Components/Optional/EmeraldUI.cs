@@ -134,7 +134,6 @@ namespace EmeraldAI
                 if (DisplayAIName == YesOrNo.Yes)
                 {
                     AINameUI = HealthBar.transform.Find("AI Name Text").gameObject.GetComponent<Text>();
-
                     if (UseAINameUIOutlineEffect == YesOrNo.Yes)
                     {
                         Outline AINameOutline = AINameUI.GetComponent<Outline>();
@@ -158,6 +157,7 @@ namespace EmeraldAI
 
                     AINameUI.transform.localPosition = new Vector3(AINamePos.x, AINamePos.y - HealthBarPos.y, AINamePos.z);
                     AINameUI.text = AIName;
+                    if(string.IsNullOrEmpty(AINameUI.text)){AINameUI.text = EmeraldComponent.CharacterComponent.CharacterComponentData.CharacterName;}
                     AINameUI.fontSize = NameTextFontSize;
                     AINameUI.color = NameTextColor;
 

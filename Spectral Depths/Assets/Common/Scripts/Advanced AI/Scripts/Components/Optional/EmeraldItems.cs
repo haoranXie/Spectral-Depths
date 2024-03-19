@@ -395,7 +395,8 @@ namespace EmeraldAI
 			switch (inventoryEvent.InventoryEventType)
 			{
                 case PLInventoryEventType.WeaponInventoryChanged:
-                
+
+
                     ChangeType1Weapons(inventoryEvent.EventItem.TargetEquipmentInventory(inventoryEvent.EventItem, CharacterID).Content);
                     break;
                 /*

@@ -505,14 +505,12 @@ namespace SpectralDepths.TopDown
 					}
 				}
 			}
-
 			// at this point the object is colliding and authorized, we add it to our list
 			_collidingObjects.Add(collider.gameObject);
 			if (!TestForLastObject(collider))
 			{
 				return;
 			}
-            
 			EnterFeedback?.PlayFeedbacks(this.transform.position);
 
 			if (ShouldUpdateState)
@@ -652,7 +650,7 @@ namespace SpectralDepths.TopDown
 				return false;
 			}
 			
-			Character character = collider.gameObject.PLGetComponentNoAlloc<Character>();
+			Character character = collider.gameObject.GetComponentInParent<Character>();
 
 			switch (ButtonActivatedRequirement)
 			{

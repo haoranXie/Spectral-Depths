@@ -8,37 +8,80 @@ using UnityEngine.AI;
 using EmeraldAI.Utility;
 using EmeraldAI;
 using System;
-
+using UnityEngine.Rendering.Universal;
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// Intermediatary between AI and Character Controls. Intended to be used with EmeraldAI. Otherwise use CharacterAbilityNodeSwap
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Character/Abilities/Character Ability Overdrive")]
-	public class CharacterAbilityOverdrive : CharacterAbility
+	public class CharacterAbilityOverdrive : CharacterAbility, PLEventListener<TopDownEngineEvent>
 	{
 		//Index of Character as represented in LevelManager and UI
 		[Header("Settings")]
 
-		[Tooltip("Character Index usually represented in UI and Squad Management. Key for selection")]
-		public int CharacterIndex = -1;
-		[Tooltip("Whether or not the character is instantly swapped into when clicking on CharacterIndex")]
+		[Tooltip("Key used for instantly taking over a character")]
+		public int CharacterKey = -1;
+		[Tooltip("Whether or not the character is instantly swapped into when clicking on CharacterKey")]
 		public bool QuickSwapOn = true;
 		[Tooltip("Whether player should change to RTS mode on Death")]
 		public bool DeathSwitch = true;
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
-
+		[Header("Overdrive")]
+		[Tooltip("How long overdrive lasts")]
+		public float OverdriveLength = 5f;
+		/// whether or not to speed up the character during overdrive
+		[Tooltip("whether or not to speed up the character during overdrive")]
+		public bool SpeedUp = false;
+		[Tooltip("Multiplier to all player Action Speeds")]
+		[PLCondition("SpeedUp", true)]
+		public float OverdriveMultiplier = 1.3f;
+		/// whether or not to slow time during overdrive
+		[Tooltip("whether or not to slow time during overdrive")]
+		public bool SlowTime = false;
+		/// the new timescale to apply
+		[PLCondition("SlowTime", true)]
+		[Tooltip("the new timescale to apply")]
+		public float TimeScale = 0.5f;
+		/// the duration to apply the new timescale for
+		[PLCondition("SlowTime", true)]
+		[Tooltip("the duration to apply the new timescale for")]
+		public float Duration = 5f;
+		/// whether or not the timescale should be lerped
+		[Tooltip("whether or not the timescale should be lerped")]
+		[PLCondition("SlowTime", true)]
+		public bool LerpTimeScale = true;
+		/// the speed at which to lerp the timescale
+		[Tooltip("the speed at which to lerp the timescale")]
+		[PLCondition("SlowTime", true)]
+		public float LerpSpeed = 5f;
+		[Header("Overdrive VFX")]
+		[Tooltip("The Fullscreen effect")]
+		public ScriptableRendererFeature FullScreenOverdrive;
+		[Tooltip("The Fullscreen effect material")]
+		public Material FullScreenOverdriveMaterial;
+		[Tooltip("Start Itensity of the voranoi")]
+		public float VoranoiItensityStartAmount = 2.5f;
+		[Tooltip("Start Itensity of the vignette")]
+		public float VignetteItensityStartAmount = 1.25f;
+		[Tooltip("How long until overdrive fades out")]
+		public float OverdriveFadeOutTime = 1.5f;
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
 		protected CharacterHandleWeapon _characterHandleWeapon;
 		protected CharacterInventory _characterInventory;
 		protected NavMeshAgent _navMeshAgent;
+		private int _voranoiIntensity = Shader.PropertyToID("_VoranoiIntensity");
+		private int _vignetteItensity = Shader.PropertyToID("_VignetteItensity");
+		private bool _playerControlled;
+		private bool _overdrived = false;
 		protected override void Initialization()
 		{
 			base.Initialization();
-			if (CharacterIndex==-1){ CharacterIndex= LevelManager.Instance.Players.IndexOf(_character)+1; }
+			FullScreenOverdrive.SetActive(false);
+			if (CharacterKey==-1){ CharacterKey= LevelManager.Instance.Players.IndexOf(_character)+1; }
 			_characterSelectable = GetComponent<CharacterSelectable>();
 			_characterController = GetComponent<CharacterController>();
 			_characterHandleWeapon = GetComponent<CharacterHandleWeapon>();
@@ -58,8 +101,26 @@ namespace SpectralDepths.TopDown
 				case Character.CharacterTypes.AI:
 					EmeraldModeOn();
 					CharacterModeOff();
+					ResetPlayerWeapon();
 					break;
 			}
+		}
+
+		private IEnumerator OverdriveEffect()
+		{
+			if(SpeedUp){_animator.SetFloat("Overdrive Multiplier", OverdriveMultiplier);}
+			if(SlowTime){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, Duration, LerpTimeScale, LerpSpeed, true);}
+			FullScreenOverdrive.SetActive(true);
+			FullScreenOverdriveMaterial.SetFloat(_voranoiIntensity, VoranoiItensityStartAmount);
+			FullScreenOverdriveMaterial.SetFloat(_vignetteItensity, VignetteItensityStartAmount);
+			//We wait for the overdrive to finish
+			float elapsedTime = 0f;
+			while(elapsedTime <= OverdriveLength)
+			{
+				elapsedTime += Time.unscaledDeltaTime;
+				yield return null;
+			}
+			UnderDrive();
 		}
         
 		public override void EarlyProcessAbility()
@@ -74,8 +135,12 @@ namespace SpectralDepths.TopDown
 
 		protected void QuickSwap()
 		{
-			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterIndex))
+			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterKey))
 			{
+				//Turns off the overdrive for all other overdriven characters
+				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
+				//Unselects all characters
+				RTSEvent.Trigger(RTSEventTypes.UnselectedEveryone, null, null);
 				switch(_character.CharacterType)
 				{
 					//If the Character is under Player controls
@@ -126,9 +191,9 @@ namespace SpectralDepths.TopDown
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
 			_emeraldComponent.MovementComponent.StartingDestination = transform.position;
+			UnderDrive();
 			CharacterModeOff();
 			EmeraldModeOn();
-			UnderDrive();
 			TurnOnRTSMode();
 			TurnOffPlayerWeapon();
 		}
@@ -141,6 +206,22 @@ namespace SpectralDepths.TopDown
 			_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
 			_animator.SetBool("Player Controls", false);
 			_emeraldComponent.CombatComponent.ExitCombat();
+			if(_characterHandleWeapon.CurrentWeapon!=null)
+			{
+				if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+				{
+					_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
+					Cursor.visible = true;
+				}
+			}
+		}
+		/// <summary>
+		/// Resets the player weapon during initliazation if under AI control
+		/// </summary>
+
+		protected void ResetPlayerWeapon()
+		{
+			_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
 			if(_characterHandleWeapon.CurrentWeapon!=null)
 			{
 				if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
@@ -178,6 +259,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void CharacterModeOn()
 		{
+			_playerControlled = true;
 			_character.SetCharacterType(Character.CharacterTypes.Player);
 			_controller.enabled = true;
 			_characterMovement.enabled=true;
@@ -196,6 +278,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void CharacterModeOff()
 		{
+			_playerControlled = false;
 			_character.SetCharacterType(Character.CharacterTypes.AI);
 			_controller.enabled = false;
 			_characterMovement.enabled=false;
@@ -211,13 +294,21 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void Overdrive()
 		{
+			_overdrived = true;
+			StartCoroutine(OverdriveEffect());
 		}
 		/// <summary>
 		/// Reverses the effects of Overdrive and switches animations to AI controls
 		/// </summary>
 		protected void UnderDrive()
 		{
+			_overdrived = false;
+			_animator.SetFloat("Overdrive Multiplier", 1f);
+			if(FullScreenOverdrive.isActive&& _playerControlled){FullScreenOverdrive.SetActive(false);}
+			if(_playerControlled){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
 		}
+
+		
 
 		/// <summary>
 		/// Called when the equipped weapon changes
@@ -270,6 +361,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void EmeraldModeOn()
 		{
+			_emeraldComponent.AnimationComponent.ResetTriggers(0);
 			_navMeshAgent.enabled=true;
 			_emeraldComponent.MovementComponentOn = true;
 			_emeraldComponent.BehaviorsComponentOn = true;
@@ -281,6 +373,7 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		protected void EmeraldModeOff()
 		{
+			_emeraldComponent.AnimationComponent.ResetTriggers(0);
 			_navMeshAgent.enabled=false;
 			_emeraldComponent.MovementComponentOn = false;
 			_emeraldComponent.BehaviorsComponentOn = false;
@@ -301,11 +394,38 @@ namespace SpectralDepths.TopDown
 				}
 				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			}
+			if(_overdrived){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
 		}
-
+        public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+        {
+            switch (engineEvent.EventType)
+            {
+                case TopDownEngineEventTypes.TurnOffOverdrive:
+					if(engineEvent.OriginCharacter!=_character && _playerControlled)
+					{
+						StopCoroutine(OverdriveEffect());
+						_emeraldComponent.MovementComponent.StartingDestination = transform.position;
+						CharacterModeOff();
+						EmeraldModeOn();
+						UnderDrive();
+						_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
+						_animator.SetBool("Player Controls", false);
+						_emeraldComponent.CombatComponent.ExitCombat();
+						if(_characterHandleWeapon.CurrentWeapon!=null)
+						{
+							if(_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>() !=null)
+							{
+								_characterHandleWeapon.CurrentWeapon.GetComponent<WeaponAim3D>().enabled = false;
+							}
+						}
+					}
+					break;
+            }
+        }
         protected override void OnEnable()
         {
             base.OnEnable();
+			this.PLEventStartListening<TopDownEngineEvent> ();
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged+=OnWeaponChanged;}
 
         }
@@ -313,8 +433,10 @@ namespace SpectralDepths.TopDown
         protected override void OnDisable()
         {
             base.OnDisable();
+			this.PLEventStopListening<TopDownEngineEvent> ();
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged-=OnWeaponChanged;}
         }
+
 
     }
 

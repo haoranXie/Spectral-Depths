@@ -76,8 +76,14 @@ namespace SpectralDepths.TopDown
 		public bool RequireCharacterComponent = true;
 		/// if this is true, this pickable item will only be pickable by objects with a Character component of type player
 		[Tooltip("if this is true, this pickable item will only be pickable by objects with a Character component of type player")]
-		public bool RequirePlayerType = true;
-
+		public bool RequirePlayerType = false;
+		/// if this is true, this pickable item will only be pickable by objects with the right layer masks
+		[Tooltip("if this is true, this pickable item will only be pickable by objects with the right layer masks ")]
+		public bool RequireLayerMask = false;
+		/// what layer masks are required for it to be picked up
+		[Tooltip("what layer masks are required for it to be picked up")]
+		[PLCondition("RequireLayerMask", true)] 
+		public LayerMask PickableLayerMasks;
 		protected Collider _collider;
 		protected Collider2D _collider2D;
 		protected GameObject _collidingObject;
@@ -187,7 +193,7 @@ namespace SpectralDepths.TopDown
 		protected virtual bool CheckIfPickable()
 		{
 			// if what's colliding with the coin ain't a characterBehavior, we do nothing and exit
-			_character = _collidingObject.GetComponent<Character>();
+			_character = _collidingObject.GetComponentInParent<Character>();
 			if (RequireCharacterComponent)
 			{
 				if (_character == null)
@@ -200,6 +206,14 @@ namespace SpectralDepths.TopDown
 					return false;
 				}
 			}
+			if(RequireLayerMask)
+			{
+				if (( PickableLayerMasks & (1 << _character.gameObject.layer)) == 0)
+				{
+					return false;
+				}
+			}
+			/*
 			if (_itemPicker != null)
 			{
 				if  (!_itemPicker.Pickable())
@@ -207,6 +221,7 @@ namespace SpectralDepths.TopDown
 					return false;	
 				}
 			}
+			*/
 
 			return true;
 		}
