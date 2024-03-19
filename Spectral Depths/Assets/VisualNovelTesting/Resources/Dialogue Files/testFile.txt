@@ -1,0 +1,64 @@
+SetLayerMedia(background Nebula), SetLayerMedia(background 1 SpaceshipInterior)
+
+CreateCharacter("Female Student 2" -e true -i true)
+
+Female Student 2 "Welcome!"
+
+ClearLayerMedia(background 1)
+
+Female Student 2 "Did we clear the background?"
+
+SetLayerMedia(cinematic -m "~/Graphics/Gallery/flower")
+
+Female Student 2 "Have a look at the Cinematic Layer, huh?"
+
+ClearLayerMedia(cinematic -i true)
+
+Female Student 2 "The cinematic layer should be cleared!"
+
+
+wait(1)
+
+SetLayerMedia(background "Fantasy Landscape" -aud true -spd 0.7 -blend hurricane -i true)
+
+Female Student 2 "Welcome!"
+
+SetLayerMedia(cinematic -m "~/Graphics/Gallery/flower")
+
+Female Student 2 "Have a look at the Cinematic Layer, huh?"
+
+
+
+CreateCharacter(Raelin -e true -i true), CreateCharacter("Guard1 as Generic" -e false)
+
+Raelin.SetPosition(1), Female Student 2.SetPosition(0)
+
+wait(1)
+
+Raelin.SetSprite(A2 -l 0 -spd 0.75), Raelin.SetSprite(A_Scared -l 1 -spd 0.75)
+
+wait(1)
+
+[wait]MoveCharacter(Female Student 2 1 -2.5 -spd 0.5)
+
+[wait]Female Student 2.Hide(), [wait]Female Student 2.Show()
+
+[wait]Female Student 2.Move(0 1 -spd 0.5)
+
+Hide("Female Student 2" Guard1 Raelin -spd 0.1)
+
+Female Student 2 "Now we are invisible"
+
+Show("Female Student 2" Guard1 Raelin -spd 0.1)
+
+Female Student 2 "Thank you for joining me!"
+
+MoveCharacter(Guard1 0 -spd 0.1), MoveCharacter(Raelin 0.1 -spd 0.1), Hide("Female Student 2")
+
+Guard1 "Where did she go?"
+
+Raelin "I don't know!"
+
+Guard1 "Did we miss her?"
+
+Raelin "I said, I don't know."
