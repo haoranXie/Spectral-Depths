@@ -22,7 +22,7 @@ TagManager:
   - Character
   - Ground
   - Obstacles
-  - 
+  - Doors
   - NoPathfinding
   - 
   - NoCollisions

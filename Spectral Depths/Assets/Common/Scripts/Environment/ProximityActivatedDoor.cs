@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Media;
 using SpectralDepths.Feedbacks;
 using UnityEngine;
 
@@ -13,10 +14,12 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Acceptable Layers")]
         public LayerMask AcceptableLayers;    
         private int charactersInside;
-		[Tooltip("Open Door Feedback")]
-        public PLF_Player DoorOpenFeedback;    
-		[Tooltip("Door Close Feedback")]
-        public PLF_Player DoorCloseFeedback;   
+		[Tooltip("Audio player ")]
+        public AudioSource AudioSource;  
+		[Tooltip("Open Door Sound")]
+        public AudioClip DoorOpenSound;    
+		[Tooltip("Door Close Sound")]
+        public AudioClip DoorCloseSound;   
         private BoxCollider _boxCollider;
         private void Awake()
         {
@@ -50,13 +53,13 @@ namespace SpectralDepths.TopDown
         private void OpenDoor()
         {
             DoorAnimator.SetTrigger("OpenDoor");
-            if(DoorOpenFeedback!=null){DoorOpenFeedback.PlayFeedbacks();}
+            if(DoorOpenSound!=null){AudioSource.PlayOneShot(DoorOpenSound);}
         }
 
         private void CloseDoor()
         {
             DoorAnimator.SetTrigger("CloseDoor");
-            if(DoorCloseFeedback!=null){DoorCloseFeedback.PlayFeedbacks();}
+            if(DoorCloseSound!=null){AudioSource.PlayOneShot(DoorCloseSound);}
         }
     }
 }
