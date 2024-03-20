@@ -763,6 +763,56 @@ Transform:
   - {fileID: 2126194897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &455483158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 455483159}
+  - component: {fileID: 455483160}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &455483159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455483158}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 862690223}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &455483160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455483158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473b7d97d46e3e041a42ab403a2baa14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicMixer: {fileID: -5257845747237450206, guid: b7dd65ba085149741883b6a887e48ef9,
+    type: 2}
+  sfxMixer: {fileID: 4256367258953762680, guid: b7dd65ba085149741883b6a887e48ef9,
+    type: 2}
+  voicesMixer: {fileID: -6761656098738823062, guid: b7dd65ba085149741883b6a887e48ef9,
+    type: 2}
 --- !u!1 &486376266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,6 +1648,7 @@ Transform:
   - {fileID: 1567911497}
   - {fileID: 45333963}
   - {fileID: 1955990563}
+  - {fileID: 455483159}
   m_Father: {fileID: 1790011653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &867341798
@@ -3478,6 +3529,7 @@ GameObject:
   - component: {fileID: 2126194898}
   - component: {fileID: 2126194899}
   - component: {fileID: 2126194900}
+  - component: {fileID: 2126194901}
   m_Layer: 0
   m_Name: Character Testing
   m_TagString: Untagged
@@ -3538,6 +3590,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileToRead: {fileID: 4900000, guid: 2ab926769b7d603409973fc24b0b2b1f, type: 3}
+--- !u!114 &2126194901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126194896}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3713c271937a06c4a82182e5041f15d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &242463506662739782
 PrefabInstance:
   m_ObjectHideFlags: 0

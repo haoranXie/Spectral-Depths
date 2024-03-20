@@ -72,13 +72,12 @@ namespace COMMANDS
             parameters.TryGetValue(PARAM_USEVIDEOAUDIO, out useAudio, defaultValue: false);
 
             //Now run the logic
-            pathToGraphic = GetPathToGraphic(FilePaths.resources_backgroundImages, mediaName);
+            pathToGraphic = FilePaths.GetPathToResource(FilePaths.resources_backgroundImages, mediaName);
             graphic = Resources.Load<Texture>(pathToGraphic);
 
             if (graphic == null)
             {
-                pathToGraphic = GetPathToGraphic(FilePaths.resources_backgroundVideos, mediaName);
-                Debug.Log(pathToGraphic);
+                pathToGraphic = FilePaths.GetPathToResource(FilePaths.resources_backgroundVideos, mediaName);
                 graphic = Resources.Load<VideoClip>(pathToGraphic);
             }
 
@@ -156,14 +155,6 @@ namespace COMMANDS
 
                 graphicLayer.Clear(transitionSpeed, blendTex, immediate);
             }
-        }
-
-        private static string GetPathToGraphic(string defaultPath, string graphicName)
-        {
-            if (graphicName.StartsWith(HOME_DIRECTORY_SYMBOL))
-                return graphicName.Substring(HOME_DIRECTORY_SYMBOL.Length);
-
-            return defaultPath + graphicName;
         }
     }
 }
