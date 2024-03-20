@@ -24,3 +24,4 @@ Did you learn an...{a} Nevermind.
 It's Time.{a} If we leave now we'll be able to get there with fifteen minutes to spare"
 
 Alice "Alright, let's go"
+StopSong("Calm2")
