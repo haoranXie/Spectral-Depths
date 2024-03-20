@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEditorInternal;
 
 namespace EmeraldAI.Utility
@@ -170,3 +171,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

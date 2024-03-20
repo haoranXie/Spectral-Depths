@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.UI;
 using System.Collections;
@@ -57,3 +58,4 @@ namespace SpectralDepths.InventoryEngine
 		}
 	}    
 }
+#endif

@@ -12,11 +12,20 @@ EditorBuildSettings:
     path: Assets/Tools/Personal Library/PLTools/Tools/PLSceneLoading/LoadingScreens/LoadingScreen.unity
     guid: 888394d52616e5e42b3b54c3f2bbd3eb
   - enabled: 1
+    path: Assets/Tools/Personal Library/PLTools/Tools/PLSceneLoading/LoadingScreens/PLAdditiveLoadingScreenFastFade.unity
+    guid: 8101c376367d6e44f84e602722e5ac10
+  - enabled: 1
     path: Assets/Tools/Personal Library/PLTools/Tools/PLSceneLoading/LoadingScreens/PLAdditiveLoadingScreen.unity
     guid: d89b77a7a68c1844280c6ff2e49f95b8
   - enabled: 1
     path: Assets/Scenes/City/Training Simulation.unity
     guid: 010107a17f0bd3b478bbd8676a8a31e1
+  - enabled: 1
+    path: Assets/VisualNovel/Scenes/TempGameIntro.unity
+    guid: 43fca708b04745f4e8891da3ae5edaa4
+  - enabled: 1
+    path: Assets/VisualNovel/Scenes/TempGameIntro2.unity
+    guid: 065b211a2daf1954ea1871bcdf1c971c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: be9e408e4c37d3a46bbdfbaf7c2a25e5,
       type: 2}

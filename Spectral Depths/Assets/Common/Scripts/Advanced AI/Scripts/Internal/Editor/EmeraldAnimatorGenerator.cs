@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Animations;
 using System.Linq;
@@ -838,3 +839,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

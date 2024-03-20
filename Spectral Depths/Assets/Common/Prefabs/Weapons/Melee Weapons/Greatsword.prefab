@@ -135,6 +135,7 @@ MonoBehaviour:
   WeaponCurrentlyActive: 1
   PlayerWeaponVersion: {fileID: 0}
   AIWeaponVersion: {fileID: 0}
+  SpawnPoints: []
   InputAuthorized: 1
   TriggerMode: 1
   DelayBeforeUse: 0
@@ -155,6 +156,7 @@ MonoBehaviour:
   PreventReloadIfAmmoEmpty: 0
   CurrentAmmoLoaded: 0
   WeaponAttachmentOffset: {x: 0, y: 0, z: 0}
+  AttachmentRotationOffset: {x: 0, y: 0, z: 0}
   FlipWeaponOnCharacterFlip: 1
   RightFacingFlipValue: {x: 1, y: 1, z: 1}
   LeftFacingFlipValue: {x: -1, y: 1, z: 1}

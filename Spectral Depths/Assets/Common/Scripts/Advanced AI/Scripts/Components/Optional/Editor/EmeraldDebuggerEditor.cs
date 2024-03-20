@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 
 namespace EmeraldAI.Utility
@@ -118,3 +119,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

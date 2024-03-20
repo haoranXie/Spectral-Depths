@@ -15248,7 +15248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dfe1fe9961f5a4aaf470818d4c6400, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextLevel: Training Simulation
+  NextLevel: TempGameIntro
   LoadingSceneName: 
   AutoSkipDelay: 0
   FadeInDuration: 1

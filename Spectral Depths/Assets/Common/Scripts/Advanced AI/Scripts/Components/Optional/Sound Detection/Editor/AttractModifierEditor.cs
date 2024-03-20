@@ -1,4 +1,5 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
 using EmeraldAI.Utility;
@@ -162,3 +163,4 @@ namespace EmeraldAI.SoundDetection.Utility
         }
     }
 }
+#endif

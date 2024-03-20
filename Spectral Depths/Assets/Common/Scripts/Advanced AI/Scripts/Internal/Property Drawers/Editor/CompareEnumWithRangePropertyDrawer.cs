@@ -1,4 +1,5 @@
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEngine;
 using System.Linq;
 
@@ -89,3 +90,4 @@ public class CompareEnumWithRangePropertyDrawer : PropertyDrawer
         }
     }
 }
+#endif

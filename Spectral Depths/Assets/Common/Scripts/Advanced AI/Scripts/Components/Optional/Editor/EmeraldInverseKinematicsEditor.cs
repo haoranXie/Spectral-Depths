@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEditorInternal;
 using System.Linq;
 using UnityEngine.Animations.Rigging;
@@ -191,3 +192,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

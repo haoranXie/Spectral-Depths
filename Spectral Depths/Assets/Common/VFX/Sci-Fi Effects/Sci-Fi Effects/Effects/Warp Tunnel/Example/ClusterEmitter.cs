@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using FORGE3D;
 using UnityEngine;
@@ -82,3 +83,4 @@ public class ClusterEmitter : MonoBehaviour
         }
     }
 }
+#endif

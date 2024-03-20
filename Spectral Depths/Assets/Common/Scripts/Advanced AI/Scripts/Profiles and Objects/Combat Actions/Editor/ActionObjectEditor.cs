@@ -1,8 +1,8 @@
 using System.Collections;
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal;
 using System.Reflection;
 
 namespace EmeraldAI.Utility
@@ -10,11 +10,12 @@ namespace EmeraldAI.Utility
     [CustomEditor(typeof(EmeraldAction), true)]
     public class ActionObjectEditor : Editor
     {
+        #if UNITY_EDITOR
         GUIStyle FoldoutStyle;
         Texture ActionEditorIcon;
         FieldInfo[] CustomFields;
         SerializedProperty HideSettingsFoldout, DefaultSettingsFoldout, CustomSettingsFoldout, InfoSettingsFoldout, EnterConditions, ExitConditions, CooldownConditions, CooldownLength, UseCooldown, ActionName;
-
+        #endif
         void OnEnable()
         {
             if (ActionEditorIcon == null) ActionEditorIcon = Resources.Load("Editor Icons/EmeraldBehaviors") as Texture;
@@ -165,3 +166,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif
