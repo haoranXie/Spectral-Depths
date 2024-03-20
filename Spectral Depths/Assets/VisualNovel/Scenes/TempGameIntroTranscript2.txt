@@ -20,7 +20,7 @@ Alice "Come in" wait(1), Alice.Move(-x 0.1), Cheshire.setPosition(0.7), Cheshire
 A familiar face shows itself
 
 Cheshire "..."
-"Did you learn an...{a} Nevermind.
-It's Time.{a} If we leave now we'll be able to get their with fifteen minutes to spare"
+Did you learn an...{a} Nevermind.
+It's Time.{a} If we leave now we'll be able to get there with fifteen minutes to spare"
 
 Alice "Alright, let's go"
