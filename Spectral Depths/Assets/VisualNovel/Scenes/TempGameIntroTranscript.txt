@@ -1,6 +1,6 @@
 SetLayerMedia(foreground EarthGoldenAge -i true), SetLayerMedia(foreground 1 SpaceshipInterior -i true)
-PlayAmbience(SpaceHangar -v 0.5)
-PlaySong(SpectralDepthsTheme -v 0.5)
+PlayAmbience(SpaceHangar -v 0.3)
+PlaySong(SpectralDepthsTheme -v 0.)
 wait(2)
 
 SetLayerMedia(background "EarthGoldenAge" -i true), SetLayerMedia(background 1 SpaceshipInterior -i true)

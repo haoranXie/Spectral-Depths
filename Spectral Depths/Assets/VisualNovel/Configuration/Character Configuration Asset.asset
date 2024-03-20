@@ -83,3 +83,17 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - name: Alice
+    alias: Alice
+    characterType: 1
+    nameColor: {r: 1, g: 1, b: 1, a: 1}
+    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+  - name: Cheshire
+    alias: Cheshire
+    characterType: 1
+    nameColor: {r: 0.9339623, g: 0.4840108, b: 0.118948035, a: 1}
+    dialogueColor: {r: 0.9333334, g: 0.48235297, b: 0.11764707, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
