@@ -38,7 +38,7 @@ namespace EmeraldAI
             {
                 if (gameObject.GetComponent<Collider>() == null)
                     return;
-
+                
                 WeaponCollider.enabled = true;
                 EmeraldComponent.CombatComponent.CurrentWeaponCollision = this;
             }

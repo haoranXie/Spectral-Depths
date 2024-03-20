@@ -98,6 +98,10 @@ namespace SpectralDepths.TopDown
 		/// Whether to optimize this character for mobile. Will disable its cone of vision on mobile
 		[Tooltip("Whether to optimize this character for mobile. Will disable its cone of vision on mobile")]
 		public bool OptimizeForMobile = true;
+		[Header("Drops")]
+		/// Object To Drop on Death
+		[Tooltip("Object To Drop on Death")]
+		public GameObject ObjectToDropOnDeath;
 
 		/// State Machines
 		public PLStateMachine<CharacterStates.MovementStates> MovementState;
@@ -911,7 +915,8 @@ namespace SpectralDepths.TopDown
 				characterAbility.enabled = false;
 			}
 
-      
+			Vector3 spawnPosition = transform.position + Vector3.up * 0.5f;
+			if(ObjectToDropOnDeath!=null) Instantiate(ObjectToDropOnDeath, spawnPosition, Quaternion.identity);
 		}
 
 

@@ -47,7 +47,9 @@ namespace SpectralDepths.TopDown
 		RTSOff,
 		RTSOn,
 		LoadNextScene,
-		TurnOffOverdrive
+		TurnOffOverdrive,
+		NewControlledCharacter,
+		NotControlledCharacter
 	}
 
 	/// <summary>

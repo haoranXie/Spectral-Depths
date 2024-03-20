@@ -29,6 +29,8 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
 		[Header("Overdrive")]
+		[Tooltip("How much energy the Overdrive costs")]
+		public int OverdriveCost = 20;
 		[Tooltip("How long overdrive lasts")]
 		public float OverdriveLength = 5f;
 		/// whether or not to speed up the character during overdrive
@@ -56,31 +58,18 @@ namespace SpectralDepths.TopDown
 		[Tooltip("the speed at which to lerp the timescale")]
 		[PLCondition("SlowTime", true)]
 		public float LerpSpeed = 5f;
-		[Header("Overdrive VFX")]
-		[Tooltip("The Fullscreen effect")]
-		public ScriptableRendererFeature FullScreenOverdrive;
-		[Tooltip("The Fullscreen effect material")]
-		public Material FullScreenOverdriveMaterial;
-		[Tooltip("Start Itensity of the voranoi")]
-		public float VoranoiItensityStartAmount = 2.5f;
-		[Tooltip("Start Itensity of the vignette")]
-		public float VignetteItensityStartAmount = 1.25f;
-		[Tooltip("How long until overdrive fades out")]
-		public float OverdriveFadeOutTime = 1.5f;
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
 		protected CharacterHandleWeapon _characterHandleWeapon;
 		protected CharacterInventory _characterInventory;
 		protected NavMeshAgent _navMeshAgent;
-		private int _voranoiIntensity = Shader.PropertyToID("_VoranoiIntensity");
-		private int _vignetteItensity = Shader.PropertyToID("_VignetteItensity");
 		private bool _playerControlled;
-		private bool _overdrived = false;
+		[HideInInspector] public bool _overdrived = false;
+		Coroutine coroutine;
 		protected override void Initialization()
 		{
 			base.Initialization();
-			FullScreenOverdrive.SetActive(false);
 			if (CharacterKey==-1){ CharacterKey= LevelManager.Instance.Players.IndexOf(_character)+1; }
 			_characterSelectable = GetComponent<CharacterSelectable>();
 			_characterController = GetComponent<CharacterController>();
@@ -109,10 +98,10 @@ namespace SpectralDepths.TopDown
 		private IEnumerator OverdriveEffect()
 		{
 			if(SpeedUp){_animator.SetFloat("Overdrive Multiplier", OverdriveMultiplier);}
-			if(SlowTime){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, Duration, LerpTimeScale, LerpSpeed, true);}
-			FullScreenOverdrive.SetActive(true);
-			FullScreenOverdriveMaterial.SetFloat(_voranoiIntensity, VoranoiItensityStartAmount);
-			FullScreenOverdriveMaterial.SetFloat(_vignetteItensity, VignetteItensityStartAmount);
+			if(SlowTime){
+				if(Time.timeScale!=1){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
+				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, Duration, LerpTimeScale, LerpSpeed, true);
+			}
 			//We wait for the overdrive to finish
 			float elapsedTime = 0f;
 			while(elapsedTime <= OverdriveLength)
@@ -140,6 +129,7 @@ namespace SpectralDepths.TopDown
 				//Turns off the overdrive for all other overdriven characters
 				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
 				//Unselects all characters
+				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.NotControlledCharacter, null);
 				RTSEvent.Trigger(RTSEventTypes.UnselectedEveryone, null, null);
 				switch(_character.CharacterType)
 				{
@@ -170,7 +160,6 @@ namespace SpectralDepths.TopDown
 			*/
 			CharacterModeOn();
 			EmeraldModeOff();
-			Overdrive();
 			TurnOffRTSMode();
 			OnWeaponChanged();
 			_emeraldComponent.CombatComponent.ClearTarget();
@@ -191,10 +180,10 @@ namespace SpectralDepths.TopDown
 			_characterMovement.SetMovement(Vector3.zero);
 			*/
 			_emeraldComponent.MovementComponent.StartingDestination = transform.position;
-			UnderDrive();
 			CharacterModeOff();
 			EmeraldModeOn();
 			TurnOnRTSMode();
+			UnderDrive();
 			TurnOffPlayerWeapon();
 		}
 
@@ -272,6 +261,7 @@ namespace SpectralDepths.TopDown
 			_characterController.enabled=true;
 			_controller.Reset();
 			_character.CacheAbilities();
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.NewControlledCharacter, _character);
 		}
 		/// <summary>
 		/// Disables Character based controls
@@ -292,21 +282,24 @@ namespace SpectralDepths.TopDown
 		/// <summary>
 		/// Activates player animations and overdrives the player in various ways
 		/// </summary>
-		protected void Overdrive()
+		public void Overdrive()
 		{
 			_overdrived = true;
-			StartCoroutine(OverdriveEffect());
+            if(coroutine != null){StopCoroutine(coroutine);}
+            coroutine = StartCoroutine(OverdriveEffect());
 		}
 		/// <summary>
 		/// Reverses the effects of Overdrive and switches animations to AI controls
 		/// </summary>
-		protected void UnderDrive()
-		{
+		public void UnderDrive()
+		{			
 			_overdrived = false;
 			_animator.SetFloat("Overdrive Multiplier", 1f);
-			if(FullScreenOverdrive.isActive&& _playerControlled){FullScreenOverdrive.SetActive(false);}
+			EnergyManager.Instance.ResetOverdrive();
 			if(_playerControlled){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
 		}
+
+
 
 		
 
@@ -384,6 +377,7 @@ namespace SpectralDepths.TopDown
 		protected override void OnDeath()
 		{
 			base.OnDeath();
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
 			if(DeathSwitch)
 			{	
 				//If under player control
@@ -394,7 +388,6 @@ namespace SpectralDepths.TopDown
 				}
 				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			}
-			if(_overdrived){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
 		}
         public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
         {

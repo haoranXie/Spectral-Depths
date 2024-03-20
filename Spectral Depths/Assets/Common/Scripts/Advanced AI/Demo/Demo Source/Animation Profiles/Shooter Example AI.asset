@@ -43,7 +43,7 @@ MonoBehaviour:
   Type2HitFoldout: 0
   Type1BlockFoldout: 0
   Type2BlockFoldout: 0
-  Type1CombatWalkFoldout: 1
+  Type1CombatWalkFoldout: 0
   Type1CombatRunFoldout: 1
   Type1CombatTurnFoldout: 0
   Type2CombatWalkFoldout: 0

@@ -819,7 +819,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.29913515
+      - time: 0.53327054
         functionName: DisableWeaponCollider
         data: Greatsword
         objectReferenceParameter: {instanceID: 0}

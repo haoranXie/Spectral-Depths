@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fac9bd89dcafc049b19f543ccf8fd57, type: 3}
+  m_Script: {fileID: 11500000, guid: 463caac38d5d77f4790242b45704bc9c, type: 3}
   m_Name: Tech Core
   m_EditorClassIdentifier: 
   ItemID: Tech Core
   TargetInventoryName: SquadMainInventory
   ForceSlotIndex: 0
   TargetIndex: 0
-  Usable: 0
+  Usable: 1
   Consumable: 1
-  ConsumeQuantity: 1
+  ConsumeQuantity: 10
   Equippable: 0
   EquippableIfInventoryIsFull: 1
   MoveWhenEquipped: 1
@@ -86,7 +86,8 @@ MonoBehaviour:
   ItemClass: 0
   TargetEquipmentInventoryName: 
   EquippedSound: {fileID: 0}
-  UsedSound: {fileID: 0}
+  UsedSound: {fileID: 8300000, guid: 40686fa15159ce642901deb76799d02d, type: 3}
   MovedSound: {fileID: 0}
   DroppedSound: {fileID: 0}
   UseDefaultSoundsIfNull: 1
+  EnergyAmount: 10

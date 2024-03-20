@@ -81,8 +81,8 @@ MonoBehaviour:
     Enabled: 1
     CollidableLayers:
       serializedVersion: 2
-      m_Bits: 3222265779
-    ProjectileLayer: 2
+      m_Bits: 3221229504
+    ProjectileLayer: 18
     CollisionTimeout: 10
     ColliderRadius: 0.2
     ZOffet: 1.5

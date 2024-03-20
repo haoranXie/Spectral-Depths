@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -176,7 +176,7 @@ namespace EmeraldAI
             //Update the AI's OverlapShere function based on the DetectionFrequency
             if (EmeraldComponent.CombatComponent.TargetDetectionActive && !EmeraldComponent.MovementComponent.ReturningToStartInProgress)
             {
-                DetectionTimer += Time.deltaTime;
+                DetectionTimer += Time.unscaledDeltaTime;
 
                 if (DetectionTimer >= DetectionFrequency)
                 {
@@ -293,6 +293,7 @@ namespace EmeraldAI
                 {
                     if(!(collider is CharacterController))
                     {
+
                         if (!LineOfSightTargets.Contains(collider))
                             LineOfSightTargets.Add(collider);
                         break;
@@ -331,8 +332,17 @@ namespace EmeraldAI
                             //Use a special layer mask that also includes the layers of internal colliders (from the LDB component) as these can block the AI's line of sight.
                             if (Physics.Raycast(HeadTransform.position, direction, out hit, DetectionRadius, ~InternalObstructionLayerMask))
                             {
+                                Collider checkCollider = hit.collider;
+                                if(hit.collider is CharacterController)
+                                {
+                                    checkCollider = hit.collider.GetComponent<BoxCollider>();
+                                    if(checkCollider==null)
+                                    {
+                                        checkCollider = hit.collider.GetComponent<BoxCollider>();
+                                    }
+                                }
 
-                                if (hit.collider != null && LineOfSightTargets.Contains(hit.collider))
+                                if (checkCollider != null && LineOfSightTargets.Contains(checkCollider))
                                 {
                                     SearchForTarget(PickTargetType);
                                     break;
@@ -362,11 +372,21 @@ namespace EmeraldAI
                 
                 if (Physics.Raycast(HeadTransform.position, direction, out hit, DetectionRadius, ~ObstructionDetectionLayerMask))
                 {
-                    if (hit.collider != null && LineOfSightTargets.Contains(hit.collider))
+                    Collider checkCollider = hit.collider;
+                    if(hit.collider is CharacterController)
                     {
-                        if (!VisibleTargets.Contains(hit.collider.transform) && EmeraldComponent.CombatTarget != hit.collider.transform || hit.collider.CompareTag("Player"))
+                        checkCollider = hit.collider.GetComponent<BoxCollider>();
+                        if(checkCollider==null)
                         {
-                            VisibleTargets.Add(hit.collider.transform);
+                            checkCollider = hit.collider.GetComponent<BoxCollider>();
+                        }
+                    }
+  
+                    if (checkCollider != null && LineOfSightTargets.Contains(checkCollider))
+                    {
+                        if (!VisibleTargets.Contains(checkCollider.transform) && EmeraldComponent.CombatTarget != checkCollider.transform || checkCollider.CompareTag("Player"))
+                        {
+                            VisibleTargets.Add(checkCollider.transform);
                         }
                     }
                 }
@@ -382,7 +402,6 @@ namespace EmeraldAI
         {
             List<Transform> VisibleTargets = GetVisibleTargets();
             if (EmeraldComponent.CombatTarget != null) VisibleTargets.Remove(EmeraldComponent.CombatTarget); //Remove the current target so it isn't picked again
-
             if (VisibleTargets.Count > 0)
             {
                 if (pickTargetType == PickTargetTypes.Closest)
@@ -458,7 +477,6 @@ namespace EmeraldAI
         {
             //Don't assign the newly detected target if it's the same as the current target. 
             if (EmeraldComponent.CombatTarget == DetectedTarget) return;
-
             EmeraldAI.Utility.EmeraldCombatManager.ActivateCombatState(EmeraldComponent); //Active the Combat State
             ResetDetectionValues(); //Once a target has been found, reset some of its settings back to their defaults.
             GetTargetInfo(DetectedTarget);

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterName: Index One
   Class: 
-  MaxHealth: 200
+  MaxHealth: 250
   Icon: {fileID: 21300000, guid: 4d0d06a0260dc1d45b71864ac4798810, type: 3}

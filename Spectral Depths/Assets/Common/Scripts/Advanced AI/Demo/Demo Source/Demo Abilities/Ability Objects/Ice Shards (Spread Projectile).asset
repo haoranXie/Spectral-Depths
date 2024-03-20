@@ -25,7 +25,8 @@ MonoBehaviour:
     CooldownLength: 1
   ChargeSettings:
     Enabled: 0
-    ChargeEffect: {fileID: 6390081730807346873, guid: 2317dd4e70f3f2647b48bd8a302b5979, type: 3}
+    ChargeEffect: {fileID: 6390081730807346873, guid: 2317dd4e70f3f2647b48bd8a302b5979,
+      type: 3}
     ChargeLength: 1
     ChargeSoundsList: []
   CreateSettings:
@@ -38,9 +39,9 @@ MonoBehaviour:
     SpawnProjectileEffect: {fileID: 0}
     SpawnProjectileTimeoutSeconds: 6
     SpawnProjectileSoundsList:
-    - {fileID: 8300000, guid: e1d8e0db26d00c84e94ba0e5945a708e, type: 3}
-    ProjectileEffect: {fileID: 2736825120591149807, guid: 90956b104efbc4c449fef1a90a19f9fc, type: 3}
-    ProjectileTimeoutSeconds: 6
+    - {fileID: 8300000, guid: 5e7267259efb77e46bc911d5b5646cd6, type: 3}
+    ProjectileEffect: {fileID: 152452, guid: 0c2a6e40b93f06d42a85754510a17c59, type: 3}
+    ProjectileTimeoutSeconds: 1
     TravelSound: {fileID: 0}
     EffectsToDisable:
     - Demo Trail
@@ -49,18 +50,16 @@ MonoBehaviour:
     LaunchProjectileTimeoutSeconds: 2
     LaunchProjectileDelay: 0.5
     LaunchProjectileSoundsList: []
-    ImpactEffect: {fileID: 8695401051225182231, guid: ee14becc80c7bf540b78670d4e7009e0, type: 3}
+    ImpactEffect: {fileID: 100002, guid: a1019cea5f836db4d811e29442cad418, type: 3}
     ImpactTimeoutSeconds: 6
     ImpactSoundsList:
-    - {fileID: 8300000, guid: e1d8e0db26d00c84e94ba0e5945a708e, type: 3}
-    - {fileID: 8300000, guid: b064c73b1ce3e184e8a81c0597eb1958, type: 3}
-    - {fileID: 8300000, guid: 6e975d277c5a14d42ace12b59d53e997, type: 3}
+    - {fileID: 8300000, guid: b3e7097c79eb54b418998a270c5af04c, type: 3}
   GeneralProjectileSettings:
     Enabled: 1
-    ProjectileSpeed: 10
+    ProjectileSpeed: 15
     ProjectileMaxLaunchAngle: 180
     TotalProjectiles: 4
-    TimeBetweenProjectiles: 0.1
+    TimeBetweenProjectiles: 0
     AttachToTarget: 0
   HomingSettings:
     Enabled: 1
@@ -84,8 +83,8 @@ MonoBehaviour:
     Enabled: 1
     CollidableLayers:
       serializedVersion: 2
-      m_Bits: 3222265779
-    ProjectileLayer: 2
+      m_Bits: 3221226816
+    ProjectileLayer: 18
     CollisionTimeout: 0.75
     ColliderRadius: 0.1
     ZOffet: 0
@@ -100,7 +99,7 @@ MonoBehaviour:
     UseDamageOverTime: 0
     BaseDamageSettings:
       UseRandomAmounts: 0
-      BaseAmount: 5
+      BaseAmount: 40
       MinAmount: 5
       MaxAmount: 10
       RagdollForce: 25

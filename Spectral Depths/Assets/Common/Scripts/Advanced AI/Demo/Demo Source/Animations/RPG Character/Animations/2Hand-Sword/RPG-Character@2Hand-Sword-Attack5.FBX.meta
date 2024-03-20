@@ -786,21 +786,21 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.33414602
+      - time: 0.17878513
         functionName: PlayAttackSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.33416852
+      - time: 0.17878513
         functionName: EnableWeaponCollider
         data: Greatsword
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.41510877
+      - time: 0.72583055
         functionName: DisableWeaponCollider
         data: Greatsword
         objectReferenceParameter: {instanceID: 0}
