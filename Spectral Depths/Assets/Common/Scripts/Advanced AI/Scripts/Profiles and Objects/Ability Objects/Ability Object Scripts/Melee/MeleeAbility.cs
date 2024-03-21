@@ -69,6 +69,17 @@ namespace EmeraldAI
             LocationBasedDamageArea m_LocationBasedDamageArea = Target.GetComponent<LocationBasedDamageArea>();
             ICombat m_ICombat = TargetRoot.GetComponent<ICombat>();
 
+            //Check whether we should friendly fire based off faction relations
+            if (MeleeSettings.FriendlyFire == false)
+            {
+                //We first try to get the target faction
+                int TargetFaction = -1;
+                if(TargetRoot.GetComponentInParent<EmeraldDetection>()!=null){TargetFaction = TargetRoot.GetComponentInParent<EmeraldDetection>().CurrentFaction;}
+                else if(TargetRoot.GetComponentInParent<FactionExtension>()!=null){TargetFaction = TargetRoot.GetComponentInParent<FactionExtension>().CurrentFaction;}
+                //If they are friendly, we don't damage
+                if(EmeraldComponent.DetectionComponent.FactionRelations[EmeraldComponent.DetectionComponent.AIFactionsList.IndexOf(TargetFaction)] == 2) return;
+            }
+
             //If stuns are enabled, roll for a stun
             if (StunnedSettings.Enabled && StunnedSettings.RollForStun())
             {

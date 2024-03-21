@@ -29,6 +29,8 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
 		[Header("Overdrive")]
+		[Tooltip("Overdrive Effect")]
+		public PLF_Player OverdrivePlayer;
 		[Tooltip("How much energy the Overdrive costs")]
 		public int OverdriveCost = 20;
 		[Tooltip("How long overdrive lasts")]
@@ -65,6 +67,7 @@ namespace SpectralDepths.TopDown
 		protected CharacterInventory _characterInventory;
 		protected NavMeshAgent _navMeshAgent;
 		private bool _playerControlled;
+		private bool _companionsFollowing = false;
 		[HideInInspector] public bool _overdrived = false;
 		Coroutine coroutine;
 		protected override void Initialization()
@@ -120,6 +123,15 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 			if(QuickSwapOn){QuickSwap();}
+
+			if(_playerControlled)
+			{
+				if(Input.GetKeyDown(KeyCode.Tab))
+				{
+					if(!_companionsFollowing){SetCompanionAI();}
+					else{ResetCompanionAI();}
+				}
+			}
         }
 
 		protected void QuickSwap()
@@ -185,6 +197,7 @@ namespace SpectralDepths.TopDown
 			TurnOnRTSMode();
 			UnderDrive();
 			TurnOffPlayerWeapon();
+			ResetCompanionAI();
 		}
 
 		/// <summary>
@@ -286,6 +299,7 @@ namespace SpectralDepths.TopDown
 		{
 			_overdrived = true;
             if(coroutine != null){StopCoroutine(coroutine);}
+			OverdrivePlayer?.PlayFeedbacks();
             coroutine = StartCoroutine(OverdriveEffect());
 		}
 		/// <summary>
@@ -293,9 +307,11 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public void UnderDrive()
 		{			
+            if(coroutine != null){StopCoroutine(coroutine);}
 			_overdrived = false;
 			_animator.SetFloat("Overdrive Multiplier", 1f);
 			EnergyManager.Instance.ResetOverdrive();
+			OverdrivePlayer?.StopFeedbacks();
 			if(_playerControlled){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
 		}
 
@@ -394,8 +410,10 @@ namespace SpectralDepths.TopDown
             switch (engineEvent.EventType)
             {
                 case TopDownEngineEventTypes.TurnOffOverdrive:
+					//This only runs if the player WAS just under control or during an interswap
 					if(engineEvent.OriginCharacter!=_character && _playerControlled)
 					{
+						
 						StopCoroutine(OverdriveEffect());
 						_emeraldComponent.MovementComponent.StartingDestination = transform.position;
 						CharacterModeOff();
@@ -415,6 +433,24 @@ namespace SpectralDepths.TopDown
 					break;
             }
         }
+
+		public void ResetCompanionAI()
+		{
+			_companionsFollowing = false;
+			foreach(Character character in LevelManager.Instance.Players)
+			{
+				EmeraldAPI.Detection.ClearTargetToFollow(character.EmeraldComponent);
+			}
+		}
+
+		public void SetCompanionAI()
+		{
+			_companionsFollowing = true;
+			foreach(Character character in LevelManager.Instance.Players)
+			{
+				if(character!=_character){EmeraldAPI.Detection.SetTargetToFollow(character.EmeraldComponent, _character.transform, true);}
+			}
+		}
         protected override void OnEnable()
         {
             base.OnEnable();

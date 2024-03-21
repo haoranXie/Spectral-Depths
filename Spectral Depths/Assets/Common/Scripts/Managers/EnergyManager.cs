@@ -55,6 +55,7 @@ namespace SpectralDepths.TopDown
         private bool _isPaused = false;
         private Character _controlledCharacter;
         public float elapsedTime;
+        Coroutine SoundCoroutine;
         protected override void Awake ()
         {
             base.Awake();
@@ -72,7 +73,16 @@ namespace SpectralDepths.TopDown
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if(_controlledCharacter.GetComponent<CharacterAbilityOverdrive>().OverdriveCost<=CurrentEnergy)
+                CharacterAbilityOverdrive characterAbilityOverdrive = _controlledCharacter.GetComponent<CharacterAbilityOverdrive>();
+                //First check if they're overdrived and if so, we turn off overdrive
+                if(characterAbilityOverdrive._overdrived)
+                {
+                    ResetOverdrive();
+                    characterAbilityOverdrive.UnderDrive();
+                    return;
+                }
+                //If the character is not overdrived, we try overdriving them
+                if(characterAbilityOverdrive.OverdriveCost<=CurrentEnergy )
                 {
                     OverdriveCharachter();
                 }
@@ -112,6 +122,7 @@ namespace SpectralDepths.TopDown
 		private IEnumerator OverdriveEffect(float OverdriveLength)
         {
             if(FullScreenEffectCoroutine!=null){StopCoroutine(FullScreenEffectCoroutine);}
+            if(SoundCoroutine!=null){StopCoroutine(SoundCoroutine);}
             PlayWithFadeIn(MidOverDriveClip,1f);
 			FullScreenOverdriveMaterial.SetFloat(_voranoiIntensity, 0);
 			FullScreenOverdriveMaterial.SetFloat(_vignetteItensity, 0);
@@ -220,11 +231,13 @@ namespace SpectralDepths.TopDown
 
         public void PlayWithFadeIn(AudioClip clip, float fadeInDuration)
         {
-            StartCoroutine(FadeIn(clip, fadeInDuration));
+            if(SoundCoroutine!=null){StopCoroutine(SoundCoroutine);}
+            SoundCoroutine = StartCoroutine(FadeIn(clip, fadeInDuration));
         }
         public void StopWithFadeOut(AudioClip clip, float fadeOutDuration)
         {
-            StartCoroutine(FadeOut(clip, fadeOutDuration));
+            if(SoundCoroutine!=null){StopCoroutine(SoundCoroutine);}
+            SoundCoroutine = StartCoroutine(FadeOut(clip, fadeOutDuration));
         }
         IEnumerator FadeIn(AudioClip clip, float fadeInDuration)
         {

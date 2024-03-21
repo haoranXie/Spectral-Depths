@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6a473ea27e9224f846cf5871a97c19, type: 3}
   m_Name: Index 4
   m_EditorClassIdentifier: 
-  CharacterName: Index 4
+  CharacterName: EZ Death
   Class: 
-  MaxHealth: 80
+  MaxHealth: 1
   Icon: {fileID: 21300000, guid: f6c27fe8d0ab4fe43bfe0db93e3ec1a2, type: 3}

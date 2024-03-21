@@ -449,7 +449,7 @@ namespace EmeraldAI
                     Type1EquippableWeapons[i] = equippableWeapon;
                     if(_characterHandleWeapon.CurrentWeapon.SpawnPoints.Count !=0)
                     {
-                        EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Clear();
+                        //EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Clear();
                         foreach(Transform transform in _characterHandleWeapon.CurrentWeapon.SpawnPoints)
                         {
                             EmeraldComponent.CombatComponent.WeaponType1AttackTransforms.Add(transform);

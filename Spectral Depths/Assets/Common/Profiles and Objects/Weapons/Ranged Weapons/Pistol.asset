@@ -33,7 +33,7 @@ MonoBehaviour:
     DisplayUseButton: 1
     DisplayUnequipButton: 1
   Quantity: 1
-  ItemName: Greatsword
+  ItemName: Pistol
   ShortDescription: 
   Description: 
   Icon: {fileID: 21300002, guid: febaf98c9e2e16b4693de2178a533b43, type: 3}
