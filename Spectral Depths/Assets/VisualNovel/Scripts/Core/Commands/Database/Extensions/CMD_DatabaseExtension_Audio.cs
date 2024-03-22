@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
+using SpectralDepths.TopDown;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
+using SpectralDepths.Tools;
 
 namespace COMMANDS
 {
@@ -186,10 +188,17 @@ namespace COMMANDS
 
         private static void StopTrack(string data)
         {
+            Debug.Log("ho");
             if (int.TryParse(data, out int channel))
                 AudioManager.instance.StopTrack(channel);
             else
                 AudioManager.instance.StopTrack(data);
+            GameObject gameObject = GameObject.Find("LevelLoader");
+            Debug.Log("hi");
+            if(gameObject!=null){
+                Debug.Log("hi");
+                PLAdditiveSceneLoadingManager.LoadScene(gameObject.GetComponent<LevelSelector>().LevelName);  
+            }
         }
     }
 }

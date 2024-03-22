@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
 using System.Threading;
@@ -1200,3 +1201,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

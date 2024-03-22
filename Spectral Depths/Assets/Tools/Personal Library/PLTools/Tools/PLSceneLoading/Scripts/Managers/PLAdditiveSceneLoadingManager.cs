@@ -179,7 +179,7 @@ namespace SpectralDepths.Tools
 		/// Call this static method to load a scene from anywhere
 		/// </summary>
 		/// <param name="sceneToLoadName">Level name.</param>
-		public static void LoadScene(string sceneToLoadName, string loadingSceneName = "PLAdditiveLoadingScreen", 
+		public static void LoadScene(string sceneToLoadName, string loadingSceneName = "PLAdditiveLoadingScreenFastFade", 
 			ThreadPriority threadPriority = ThreadPriority.High, bool secureLoad = true,
 			bool interpolateProgress = true,
 			float beforeEntryFadeDelay = 0f,

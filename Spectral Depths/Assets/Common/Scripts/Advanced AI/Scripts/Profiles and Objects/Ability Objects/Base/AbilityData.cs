@@ -111,6 +111,8 @@ namespace EmeraldAI
         public class MeleeData
         {
             [HideInInspector] public bool Enabled;
+            [Tooltip("Wether or not collisions with ally factions will deal damage or not")]
+            public bool FriendlyFire = false;
             [Tooltip("Controls the effect that happens when the ability hits a target.")]
             public GameObject ImpactEffect;
             [Range(0.5f, 10)]

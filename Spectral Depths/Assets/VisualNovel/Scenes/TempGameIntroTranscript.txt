@@ -1,12 +1,12 @@
 SetLayerMedia(foreground EarthGoldenAge -i true), SetLayerMedia(foreground 1 SpaceshipInterior -i true)
-PlayAmbience(SpaceHangar -v 0.3)
+PlayAmbience(SpaceHangar -v 0.2)
 PlaySong(SpectralDepthsTheme -v 0.5)
 wait(2)
 
 SetLayerMedia(background "EarthGoldenAge" -i true), SetLayerMedia(background 1 SpaceshipInterior -i true)
 ClearLayerMedia(foreground 1 -i), ClearLayerMedia(foreground -spd 10)
 
-In times long past, Earth had seen the rise and fall of many great empires.{a} Long ages of prosperity and peace were common under these empires{a}, but none were as long or as prosperous as The Golden Age brough to humanity by the Haoran Empire.{a} Under the leadership of three geniuses, a new Energy Source was discovered and The Spire was built to harvest the resource.{a} The Spire was the cumulation of humanity's understanding of the world.{a} In just a few centuries, the energy became an essential part of everyday life.{a} Powerful corporations recognized this fact and sought to replicate The Spire for profit.{a} Having only known prosperity, they were blind to the consequences of their own recklessness.{a} Their imperfect creations became unstable and caused series of energy waves to ripple across Earth.
+In times long past, Earth had seen the rise and fall of many great empires.{a} Long ages of prosperity and peace were common under these empires{a}, but none were as long or as prosperous as The Golden Age brough to humanity by the ⍓︎□︎◆︎❒︎ Empire.{a} Under the leadership of three geniuses, a new Energy Source was discovered and The Spire was built to harvest the resource.{a} The Spire was the cumulation of humanity's understanding of the world.{a} In just a few centuries, the energy became an essential part of everyday life.{a} Powerful corporations recognized this fact and sought to replicate The Spire for profit.{a} Having only known prosperity, they were blind to the consequences of their own recklessness.{a} Their imperfect creations became unstable and caused series of energy waves to ripple across Earth.
 SetLayerMedia(background "Spiraling Stars")
 wait(1)
 SetLayerMedia(background "Dystopian Earth")

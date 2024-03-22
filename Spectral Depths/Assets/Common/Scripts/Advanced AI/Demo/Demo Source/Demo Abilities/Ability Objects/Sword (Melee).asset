@@ -34,6 +34,7 @@ MonoBehaviour:
     CreateSoundsList: []
   MeleeSettings:
     Enabled: 1
+    FriendlyFire: 0
     ImpactEffect: {fileID: 0}
     ImpactEffectTimeoutSeconds: 2
     ImpactSoundsList:

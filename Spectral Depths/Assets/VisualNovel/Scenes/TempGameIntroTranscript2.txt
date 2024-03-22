@@ -6,11 +6,11 @@ Alice.Show()
 PlaySFX(Static -loop true)
 Narrator "I wake up to feel a numbing pain in my head.{a} My hand unconciously reaches for the radio in an attempt to subside the pain in my head"
 StopSFX(static)
-PlaySong("Calm2" -v 0.6)
+PlaySong("BaldrSky" -v 0.6)
 
 Alice "What a weird dream...{c}"
 As I start to become aware of my surroundings, I start piecing together the fragments of my dream, hoping to find a clue that could aid us on our mission.{a} I take out my device and start writting down everything I remember.
-The Haoran Empire{a}, The Golden Age{a}, The Spire,...{a} Some of the things I remembered were familiar to me, but most were not.{a} Who were the three geniuses?{a} What's The Golden Age?"
+The ⍓︎□︎◆︎❒︎ Empire{a}, The Golden Age{a}, The Spire,...{a} Some of the things I remembered were familiar to me, but most were not.{a} Who were the three geniuses?{a} What's The Golden Age?"
 My train of thoughts gets interrupted by the sound of the door knocking
 
 PlaySFX("DoorKnock" -v 1.5)
@@ -24,4 +24,5 @@ Did you learn an...{a} Nevermind.
 It's Time.{a} If we leave now we'll be able to get there with fifteen minutes to spare"
 
 Alice "Alright, let's go"
-StopSong("Calm2")
+StopSong()
+StopAmbience()

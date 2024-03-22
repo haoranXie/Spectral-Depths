@@ -1,10 +1,10 @@
 ﻿using System.Collections;
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
-using UnityEditorInternal;
 
 namespace EmeraldAI.Utility
 {
@@ -89,3 +89,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

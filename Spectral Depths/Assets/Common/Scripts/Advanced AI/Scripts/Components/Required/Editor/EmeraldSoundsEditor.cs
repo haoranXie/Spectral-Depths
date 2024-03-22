@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal;
 using System.Reflection;
 
 namespace EmeraldAI.Utility
@@ -31,7 +31,7 @@ namespace EmeraldAI.Utility
             SoundProfileFoldout = serializedObject.FindProperty("SoundProfileFoldout");
             SoundProfileProp = serializedObject.FindProperty("SoundProfile");
         }
-
+#if UNITY_EDITOR
         public override void OnInspectorGUI()
         {
             FoldoutStyle = CustomEditorProperties.UpdateEditorStyles();
@@ -52,7 +52,7 @@ namespace EmeraldAI.Utility
             serializedObject.ApplyModifiedProperties();
             CustomEditorProperties.EndScriptHeader();
         }
-
+#endif
         /// <summary>
         /// Displays a missing Sound Profile message within the EmeraldAISoundsEditor.
         /// </summary>
@@ -172,3 +172,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif

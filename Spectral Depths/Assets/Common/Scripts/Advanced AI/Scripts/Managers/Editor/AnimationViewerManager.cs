@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -949,3 +950,4 @@ namespace EmeraldAI.Utility
         }
     }
 }
+#endif
