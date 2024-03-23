@@ -195,7 +195,7 @@ namespace SpectralDepths.Tools
 		{
 			if (_loadingInProgress)
 			{
-				Debug.LogError("PLLoadingSceneManagerAdditive : a request to load a new scene was emitted while a scene load was already in progress");  
+				Debug.LogError("PLLoadingSceneManagerAdditive : a request to load a new scene was emitted while a scene load was already in progress");
 				return;
 			}
 
