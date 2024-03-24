@@ -1,0 +1,340 @@
+
+/* カスタムプロパティ */
+:root {
+	--scroll-width: 8px;
+	--scroll-track-col: #000000;
+	--scroll-thumb-col: #747480;
+	--save-date-col: #45BDE5;
+	--save-text-col: #DADAE5;
+	--log-text-col: #DADAE5;
+}
+
+
+/* Menu
+-------------------------------------*/
+.menu_item {
+	position: relative;
+	margin: 0;
+	cursor: pointer;
+}
+
+.menu_item img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+/* セーブ */
+.menu_save {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 190px;
+	left: 940px;
+}
+
+/* ロード */
+.menu_load {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 300px;
+	left: 940px;
+}
+
+/* コンフィグ */
+.menu_config {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top: 410px;
+	left: 1004px;
+}
+
+/* タイトルに戻る */
+.menu_back_title {
+	display: inline-block;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	top:  520px;
+	left: 890px;
+}
+
+
+/* バックログ画面の設定
+--------------------------------------*/
+.log_body {
+	position: absolute;
+	top: 240px;
+	left: 180px;
+	width: 940px;
+	height: 360px;
+	margin: 0;
+	padding: 0 100px 0 60px;
+	border: none;
+	border-radius: none;
+	color: var(--log-text-col);
+	background: none;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: left;
+	line-height: 1.8em;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	box-sizing: border-box;
+}
+
+/* スクロールバー */
+.log_body::-webkit-scrollbar {
+	width: var(--scroll-width);
+}
+.log_body::-webkit-scrollbar-thumb {
+	background: var(--scroll-thumb-col);
+}
+
+.log_body::-webkit-scrollbar-track {
+	background: var(--scroll-track-col);
+}
+
+
+/* セーブ・ロード画面の設定
+--------------------------------------*/
+.area_save_list {
+	display: block;
+	width: 920px;
+	height: 440px;
+	margin: 200px 0 0 40px;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+}
+
+/* スクロールバー */
+.area_save_list::-webkit-scrollbar {
+	width: var(--scroll-width);
+}
+
+.area_save_list::-webkit-scrollbar-thumb {
+	background: var(--scroll-thumb-col);
+}
+
+.area_save_list::-webkit-scrollbar-track {
+	background: var(--scroll-track-col);
+}
+
+
+/* セーブデータリスト全体の設定 */
+.save_list {
+	display: table;
+	table-layout: fixed;
+	position: absolute;
+	width: 840px;
+	height: 124px;
+	margin: 0;
+	padding: 0;
+	font-size: 17px;
+	font-weight: normal;
+	background-color: none;
+	border: none;
+	border-collapse: separate;
+	border-spacing: 0 10px;
+	box-sizing: border-box;
+}
+
+/* セーブデータの設定 */
+.save_list_item {
+	display:table-row;
+	width: 840px;
+	height: 124px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.save_list_item:hover > .save_list_item_thumb{
+	background: url('image/system/saveslot2.png');
+	background-repeat: y-repeat;
+	background-position: left top;
+	background-color: none;
+}
+
+.save_list_item:hover > .save_list_item_area{
+	background: url('image/system/saveslot2.png');
+	background-repeat: y-repeat;
+	background-position: right top;
+	background-color: none;
+}
+
+.save_list_item:hover {
+	background: none;
+}
+
+/* セーブデータのサムネイル部分の設定 */
+.save_list_item_thumb {
+	display: table-cell;
+	width: 220px;
+	height: 124px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: url('image/system/saveslot.png');
+	background-repeat: y-repeat;
+	background-position: left top;
+}
+
+/* サムネイル画像の設定 */
+.save_list_item_thumb img {
+	width: 160px;
+	height: 90px;
+	margin: 0;
+	padding: 14px 0 0 16px;
+	border: none;
+	border-radius: 0px;
+}
+
+/* セーブデータのテキスト部文の設定 */
+.save_list_item_area {
+	display: table-cell;
+	width: 620px;
+	height: 124px;
+	padding: 0 0 0 20px;
+	border-radius: none;
+	border: none;
+	background: url('image/system/saveslot.png');
+	background-repeat: y-repeat;
+	background-position: right top;
+	text-align: left;
+	vertical-align: top;
+}
+
+/* セーブデータの日付の設定 */
+.save_list_item_date {
+	display: block;
+	margin: 0;
+	padding: 24px 0 0 0;
+	height: 24px;
+	line-height: 1;
+	color: var(--save-date-col);
+	font-size: 16px;
+	font-weight: normal;
+}
+
+/* セーブデータのテキストの設定 */
+.save_list_item_text {
+	display: block;
+	height: 75px;
+	margin: 0;
+	padding: 26px 48px 16px 0;
+	line-height: 1.5;
+	color: var(--save-text-col);
+	overflow: hidden;
+}
+
+.layer_event_click{
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.layer{
+	background-size: 100% 100%;
+}
+
+.button_menu{
+	position: absolute;
+	z-index: 99999;
+	cursor: pointer;
+}
+
+
+/*glink
+--------------------------------------------- */
+/* normal */
+.bth10 {
+	position: relative;
+	display: inline-block;
+	padding: .55em 1em;
+	background: none;
+	background-color: none;
+	background-image: linear-gradient(to right, rgba(23, 23, 26, 0) 0%, rgba(23, 23, 26, .8) 50%, rgba(23, 23, 26, 0) 100%);
+	color: #FFFFFF;
+	text-shadow: 0 2px 0 #000;
+	border-radius: 0px;
+	border-bottom: 2px solid #8A8A99;
+	border-image: linear-gradient(to right, rgba(138, 138, 153, 0) 0%, rgba(138, 138, 153, 1) 50%, rgba(138, 138, 153, 0) 100%);
+	border-image-slice: 1;
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+
+/* hover */
+.bth10:hover {
+	background-color: none;
+	background-image: linear-gradient(to right, rgba(44, 44, 64, 0) 0%, rgba(44, 44, 64, 1) 50%, rgba(44, 44, 64, 0) 100%);
+	color: #55CBF2;
+	border-bottom: 2px solid #00D5FF;
+	border-image: linear-gradient(to right, rgba(0, 213, 255, 0) 0%, rgba(0, 213, 255, 1) 50%, rgba(0, 213, 255, 0) 100%);
+	border-image-slice: 1;
+	transform: scale(1.02);
+}
+
+
+/* active */
+.bth10:active {
+	background-color: none;
+	background-image: linear-gradient(to right, rgba(15, 15, 26, 0) 0%, rgba(15, 15, 26, 1) 50%, rgba(15, 15, 26, 0) 100%);
+	color: #9779F2;
+	border-bottom: 2px solid #6A3DF2;
+	border-image: linear-gradient(to right, rgba(106, 61, 242, 0) 0%, rgba(106, 61, 242, 1) 50%, rgba(106, 61, 242, 0) 100%);
+	border-image-slice: 1;
+	transform: translateY(4px);
+}
+
+
+/* modalwindow-color
+--------------------------------------------- */
+/* base */
+.remodal {
+	color: #F5F5F5;
+	background: #1D1D22;
+	border: 1px solid #000000;
+}
+
+
+/* button-OK */
+.remodal-confirm {
+  color: #F5F5F5;
+  background: #0A86BF;
+	border: none;
+}
+
+.remodal-confirm:hover,
+.remodal-confirm:focus {
+	color: #FFFFFF;
+	background: #0BA5D9;
+	border: none;
+}
+
+/* button-cancel */
+.remodal-cancel {
+  color: #F5F5F5;
+  background: #565859;
+	border: none;
+}
+
+.remodal-cancel:hover,
+.remodal-cancel:focus {
+	color: #FFFFFF;
+  background: #6D7173;
+	border: none;
+}
