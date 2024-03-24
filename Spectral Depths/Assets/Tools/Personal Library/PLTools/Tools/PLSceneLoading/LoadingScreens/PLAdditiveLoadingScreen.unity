@@ -244,8 +244,8 @@ MonoBehaviour:
   FadeOutDirection: 2
   DefaultDuration: 0.2
   DefaultTween:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 17
+    PLTweenDefinitionType: 0
+    PLTweenCurve: 0
     Curve:
       serializedVersion: 2
       m_Curve:

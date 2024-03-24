@@ -26,3 +26,4 @@ It's Time.{a} If we leave now we'll be able to get there with fifteen minutes to
 Alice "Alright, let's go"
 StopSong()
 StopAmbience()
+LoadScene(-n "Training Simulation" -l "PLAdditiveLoadingScreenFastFade")

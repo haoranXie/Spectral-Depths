@@ -15,3 +15,4 @@ The world is cruel{wa 2} and someone's going to need to change this.{c}
 ClearLayerMedia(background 1 -i), ClearLayerMedia(background -spd 10)
 StopSong()
 StopAmbience()
+LoadScene(-n "TempGameIntro2" -l "PLAdditiveLoadingScreenFastFade")
