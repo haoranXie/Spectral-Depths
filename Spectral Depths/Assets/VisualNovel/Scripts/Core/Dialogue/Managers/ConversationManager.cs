@@ -81,6 +81,10 @@ namespace DIALOGUE
             if (line.hasSpeaker)
                 HandleSpeakerLogic(line.speakerData);
 
+            //If the dialogue box is not visible - make sure it becomes visible automatically
+            if (!dialogueSystem.dialogueContainer.isVisible)
+                dialogueSystem.dialogueContainer.Show();
+
             //Build dialogue
             yield return BuildLineSegments(line.dialogueData);
         }

@@ -52,8 +52,8 @@ MonoBehaviour:
   - name: Raelin
     alias: r
     characterType: 2
-    nameColor: {r: 0.7735849, g: 0.28826985, b: 0.28826985, a: 1}
-    dialogueColor: {r: 0.8018868, g: 0.26855645, b: 0.26855645, a: 1}
+    nameColor: {r: 0.990566, g: 0.7921986, b: 0.6868548, a: 1}
+    dialogueColor: {r: 0.9921569, g: 0.79215693, b: 0.6862745, a: 1}
     nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     nameFontSize: 22
@@ -115,7 +115,7 @@ MonoBehaviour:
   - name: Cheshire
     alias: Cheshire
     characterType: 1
-    nameColor: {r: 0.9339623, g: 0.4840108, b: 0.118948035, a: 1}
+    nameColor: {r: 1, g: 0.787515, b: 0.5235849, a: 1}
     dialogueColor: {r: 0.9333334, g: 0.48235297, b: 0.11764707, a: 1}
     nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
