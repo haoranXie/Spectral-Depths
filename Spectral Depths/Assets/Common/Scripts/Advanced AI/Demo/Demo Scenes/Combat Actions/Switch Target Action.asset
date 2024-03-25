@@ -15,10 +15,10 @@ MonoBehaviour:
   EnterConditions: 822
   ExitConditions: 0
   CooldownConditions: 6074
-  CooldownLength: 0.5
+  CooldownLength: 2.5
   UseCooldown: 1
   HideSettingsFoldout: 0
-  DefaultSettingsFoldout: 1
+  DefaultSettingsFoldout: 0
   CustomSettingsFoldout: 1
   InfoSettingsFoldout: 1
   ActionName: Switch Target

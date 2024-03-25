@@ -247,7 +247,7 @@ namespace SpectralDepths.TopDown
 			{
 				if (inputAuthorized && ((_inputManager.ShootButton.State.CurrentState == PLInput.ButtonStates.ButtonDown) || (_inputManager.ShootAxis == PLInput.ButtonStates.ButtonDown)))
 				{
-					_character.EmeraldComponent.BehaviorsComponent.PlayerSingleAttack();
+					_character.EmeraldComponent.BehaviorsComponent.PlayerAttack();
 				}
 				return;
 			}

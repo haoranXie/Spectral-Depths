@@ -21,17 +21,17 @@ MonoBehaviour:
   FilePath: Assets/Common/Scripts/Advanced AI/Demo/Demo Source/Animator Controllers/Sword
     Example AI.overrideController
   AnimatorCullingMode: 0
-  WalkFoldout: 0
-  RunFoldout: 0
-  TurnFoldout: 1
+  WalkFoldout: 1
+  RunFoldout: 1
+  TurnFoldout: 0
   NonCombatDeathFoldout: 0
-  NonCombatAnimationsFoldout: 1
+  NonCombatAnimationsFoldout: 0
   NonCombatIdleFoldout: 0
   NonCombatHitFoldout: 0
   EmotesFoldout: 0
   Type1IdleFoldout: 0
   Type2IdleFoldout: 0
-  Type1AttacksFoldout: 0
+  Type1AttacksFoldout: 1
   Type2AttacksFoldout: 0
   Type1EquipsFoldout: 0
   Type2EquipsFoldout: 0
@@ -139,11 +139,11 @@ MonoBehaviour:
       Mirror: 0
     TurnLeft:
       AnimationSpeed: 0.8
-      AnimationClip: {fileID: 7400000, guid: 0000872662c8fb241bf2ab6cc00dd461, type: 3}
+      AnimationClip: {fileID: 7400000, guid: 1ed5f7f6808b6e04b8b12bc89198a33d, type: 2}
       Mirror: 0
     TurnRight:
       AnimationSpeed: 0.8
-      AnimationClip: {fileID: 7400000, guid: 0000872662c8fb241bf2ab6cc00dd461, type: 3}
+      AnimationClip: {fileID: 7400000, guid: c0142f1701545f742a4a931f58feab40, type: 2}
       Mirror: 0
     HitList:
     - AnimationSpeed: 1

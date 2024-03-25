@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using EmeraldAI.Utility;
 using System;
-using System.Threading;
 
 namespace EmeraldAI
 {
@@ -58,10 +57,7 @@ namespace EmeraldAI
         /// A string used for tracking an AI's current behavior state. This is a string so it can be customized as needed, given that a behvaior has multiple stages or states.
         /// </summary>
         public string BehaviorState = "Non Combat";
-        protected float CooldownTimer = 0f;
         #endregion
-
-        Coroutine AttackCooldown;
 
         #region Editor Variables
         [HideInInspector] public bool HideSettingsFoldout;
@@ -332,26 +328,25 @@ namespace EmeraldAI
                 }
             }
         }
-
-
         /// <summary>
         /// Continuously check to see if the conditions are right to trigger an attack, given the AI is in the Aggressive State. This is a priority state.
         /// </summary>
-        public virtual void PlayerSingleAttack()
+        public virtual void PlayerAttack()
         {
-            float AttackCooldownLength = 0.3f;
             var EnterConditions = EmeraldComponent.AnimationComponent.IsIdling || EmeraldComponent.AnimationComponent.IsMoving;
             var CooldownConditions = EmeraldComponent.AnimationComponent.IsIdling || EmeraldComponent.AnimationComponent.IsMoving || EmeraldComponent.AnimationComponent.IsBackingUp ||
                 EmeraldComponent.AnimationComponent.IsTurningLeft || EmeraldComponent.AnimationComponent.IsTurningRight || EmeraldComponent.AnimationComponent.IsGettingHit;
 
+            if (CooldownConditions) AttackTimer += Time.deltaTime;
 
             bool notAllowedToAttack = EmeraldComponent.AIAnimator.GetBool("Hit") || EmeraldComponent.AIAnimator.GetBool("Strafe Active") || EmeraldComponent.AIAnimator.GetBool("Dodge Triggered") || EmeraldComponent.AIAnimator.GetBool("Blocking") || EmeraldComponent.AnimationComponent.IsBackingUp || EmeraldComponent.AnimationComponent.IsBlocking || EmeraldComponent.AnimationComponent.IsAttacking || EmeraldComponent.AnimationComponent.IsRecoiling || EmeraldComponent.AnimationComponent.IsStrafing || EmeraldComponent.AnimationComponent.IsDodging || EmeraldComponent.AnimationComponent.IsGettingHit;
-            if (!notAllowedToAttack && EnterConditions && !IsAiming && CooldownTimer <= 0)
+
+            if (!notAllowedToAttack && EnterConditions && !IsAiming)
             {
                 EmeraldComponent.AnimationComponent.IsMoving = false;
                 EmeraldComponent.CombatComponent.AdjustCooldowns();
                 EmeraldComponent.AnimationComponent.PlayAttackAnimation();
-                if (CooldownConditions){if(AttackCooldown==null) {AttackCooldown = StartCoroutine(AttackCooldownTimer(AttackCooldownLength));}}
+                AttackTimer = 0;
             }
             /*
             //Cancel the attack if it's triggered and the target is out of range
@@ -365,18 +360,6 @@ namespace EmeraldAI
             }
             */
         }
-
-        IEnumerator AttackCooldownTimer(float CooldownLength)
-        {
-            CooldownTimer = CooldownLength;
-            while(CooldownTimer >= 0)
-            {
-                CooldownTimer -= Time.deltaTime;
-                yield return null;
-            }
-            AttackCooldown = null;
-        }
-
         /// <summary>
         /// Stops the AI from fighting and chasing, or fleeing from, its current target.
         /// </summary>
