@@ -27,6 +27,8 @@ namespace SpectralDepths.TopDown
         public TextMeshProUGUI Class;
 		[Tooltip("Image for character icon")]
         public Image Icon;
+		[Tooltip("Image for key icon")]
+        public Image Key;
 
 		public EmeraldSystem EmeraldComponent;
 		public Character CharacterComponent;
@@ -74,7 +76,7 @@ namespace SpectralDepths.TopDown
 
 		void UpdateHealthOnUi()
 		{
-            HealthNumber.text = EmeraldComponent.HealthComponent.CurrentHealth.ToString() + "/" + EmeraldComponent.HealthComponent.StartingHealth.ToString();
+            HealthNumber.text = EmeraldComponent.HealthComponent.CurrentHealth.ToString(); // + "/" + EmeraldComponent.HealthComponent.StartingHealth.ToString();
 			HealthProgressBar.UpdateBar(EmeraldComponent.HealthComponent.CurrentHealth, 0, EmeraldComponent.HealthComponent.StartHealth);
 		}
     }
