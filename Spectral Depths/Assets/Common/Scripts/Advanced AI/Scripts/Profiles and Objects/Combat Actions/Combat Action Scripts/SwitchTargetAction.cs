@@ -28,7 +28,6 @@ namespace EmeraldAI
         {
             var Conditions = (((int)EnterConditions) & ((int)EmeraldComponent.AnimationComponent.CurrentAnimationState)) != 0;
             return ActionClass.CooldownLengthTimer >= CooldownLength && Conditions && EmeraldComponent.transform.localScale != Vector3.one * 0.003f;
-
         }
 
         /// <summary>
@@ -36,9 +35,10 @@ namespace EmeraldAI
         /// </summary>
         void SwitchTarget (EmeraldSystem EmeraldComponent, ActionsClass ActionClass)
         {
+            Debug.Log("hmm");
             if (EmeraldComponent.AnimationComponent.IsAttacking || EmeraldComponent.AIAnimator.GetBool("Attack"))
                 return;
-
+            Debug.Log("ok");
             EmeraldComponent.DetectionComponent.SearchForTarget(PickTargetType);
             ActionClass.CooldownLengthTimer = 0;
         }
