@@ -20,7 +20,7 @@ namespace COMMANDS
 
         new public static void Extend(CommandDatabase database)
         {
-            database.AddCommand("setlayermedia", new Func<string[], IEnumerator>(SetLayerMedia));
+            database.AddCommand("setLayerMedia", new Func<string[], IEnumerator>(SetLayerMedia));
             database.AddCommand("clearlayermedia", new Func<string[], IEnumerator>(ClearLayerMedia));
         }
 

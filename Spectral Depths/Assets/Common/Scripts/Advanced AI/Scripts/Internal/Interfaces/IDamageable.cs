@@ -11,7 +11,7 @@ namespace EmeraldAI
         /// <summary>
         /// Used for passing damage to any script that has an IDamageable component.
         /// </summary>
-        void Damage(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 100, bool CriticalHit = false);
+        void Damage(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 100, bool CriticalHit = false, float PoiseDamage = 50);
 
         int Health { get; set; }
 

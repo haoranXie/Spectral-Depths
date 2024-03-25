@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using CHARACTERS;
+using UnityEngine.UI;
 
 namespace DIALOGUE
 {

@@ -1,0 +1,52 @@
+<div id="menu_load_wrapper">
+
+	<!-- 閉じるボタン -->
+	<div class='menu_item menu_close' style='position: absolute; top: 24px; left: 1192px;'>
+	<a title="ゲームに戻る" href="javascript:void(0)"><img src="data/others/plugin/theme_kopanda_bth_10/image/system/menu_btn_close.png" /></a>
+	</div>
+
+	<!-- スクロールボタン タッチデバイス用 -->
+	<img class="button_smart button_arrow_up"   src='data/others/plugin/theme_kopanda_bth_10/image/system/arrow_up.png'   style='cursor:pointer;left: 60px; top: 320px; position: absolute;'>
+	<img class="button_smart button_arrow_down" src='data/others/plugin/theme_kopanda_bth_10/image/system/arrow_down.png' style='cursor:pointer;left: 60px; top: 480px; position: absolute;'>
+	<div style="clear:both"></div>
+
+	<!-- セーブリスト -->
+	<div class="area_save_list">
+		<ul class='save_list'>
+			{{for array_save}}
+				<li class='save_display_area save_list_item' data-num='{{:num}}'>
+					<span class='save_list_item_thumb'>
+					{{if img_data != ""}}
+						<img src="{{:img_data}}">
+					{{/if}}
+					</span>
+					<span class='save_list_item_area'>
+						<span class='save_list_item_date'>{{:save_date}}</span>
+						<span class='save_list_item_text'>{{:title}}</span>
+					</span>
+				</li>
+			{{/for}}
+		</ul>
+	</div>
+
+<!-- 背景画像 -->
+<img src='data/others/plugin/theme_kopanda_bth_10/image/system/menu_load_bg.png' style='z-index:-1;left:0;top:0;width:100%;height:100%;position:absolute;'>
+
+<!-- ボタンホバー時に画像を変更する -->
+<script>
+		$("#menu_load_wrapper .menu_item img").each((i, elm) => {
+				const j_elm = $(elm);
+				const original_src = j_elm.attr("src");
+				const hover_src = original_src.replace(".png", "2.png");
+				j_elm.hover(
+						() => {
+								j_elm.attr("src", hover_src);
+						},
+						() => {
+								j_elm.attr("src", original_src);
+						},
+				);
+		});
+</script>
+
+</div>

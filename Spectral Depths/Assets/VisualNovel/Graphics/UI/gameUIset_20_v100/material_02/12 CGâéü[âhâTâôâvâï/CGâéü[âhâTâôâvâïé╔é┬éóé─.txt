@@ -1,0 +1,5 @@
+
+■CGモードサンプルの導入手順
+
+①append_themeフォルダを data > imageフォルダ内に配置
+②cg.ksを上書き

@@ -40,10 +40,20 @@ namespace EmeraldAI
         public delegate void HealthChangeHandler();
         public event HealthChangeHandler OnHealthChange;
         EmeraldSystem EmeraldComponent;
+        Coroutine PoiseResetCoroutine;
 
         public List<string> ActiveEffects { get => CurrentActiveEffects; set => CurrentActiveEffects = value; }
         public int Health { get => CurrentHealth; set => CurrentHealth = value; }
         public int StartHealth { get => StartingHealth; set => StartingHealth = value; }
+        //Current amount of poise. When Poise reaches 0, the characters plays a hit animation
+        public float Poise;
+        //Starting amount of poise
+        public float StartPoise;
+        //the amount of time before a character's current poise resets to starting poise
+        public float PoiseResetTime;
+        //multiplier for the amount of poise damage recived
+        public float PoiseResistance;
+        
         #endregion
 
         #region Editor Variables
@@ -54,9 +64,11 @@ namespace EmeraldAI
         void Start ()
         {
             CurrentHealth = StartingHealth;
+            Poise = StartPoise;
             EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.CombatComponent.OnExitCombat += StartHealing; //Subscribe to the OnExitCombat event for StartHealing
             EmeraldComponent.MovementComponent.OnReachedOrderedWaypoint += OnReachedOrderedWaypoint;
+            EmeraldComponent.AnimationComponent.OnGetHit += ResetPoise;
         }
 
         /// <summary>
@@ -66,7 +78,7 @@ namespace EmeraldAI
         /// <param name="DamageAmount">Amount of damage caused during attack.</param>
         /// <param name="AttackerTransform">The transform of the current attacker.</param>
         /// <param name="RagdollForce">The amount of force to apply to this AI when they die. (Use Ragdoll must be enabled on this AI)</param>
-        public void Damage(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 100, bool CriticalHit = false)
+        public void Damage(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 100, bool CriticalHit = false, float PoiseDamage = 50)
         {
             if (EmeraldComponent.AnimationComponent.IsDead || transform.localScale == Vector3.one * 0.003f || AttackerTransform == EmeraldComponent.TargetToFollow || AttackerTransform == null || EmeraldComponent.DetectionComponent.GetTargetFactionRelation(AttackerTransform) == "Friendly") return;
             
@@ -90,7 +102,15 @@ namespace EmeraldAI
 
             if (Blocked) CalculatedDamage = Mathf.FloorToInt(Mathf.Abs((DamageAmount * ((EmeraldComponent.CombatComponent.MitigationAmount - 1) * 0.01f)) - DamageAmount)); //Mitigate the damage from blocking
             if (Dodged) CalculatedDamage = Mathf.FloorToInt(Mathf.Abs((DamageAmount * ((EmeraldComponent.CombatComponent.MitigationAmount - 1) * 0.01f)) - DamageAmount)); //Mitigate the damage from dodging 
-
+            //We take poise damage under these conditions
+            if (!Blocked && !Dodged && !Immortal)
+            {
+                Debug.Log("hi");
+                Poise = Poise - (PoiseDamage * PoiseResistance);
+                //Reset Poise after a certain amount of time without taking damage
+                if(PoiseResetCoroutine != null ) StopCoroutine(PoiseResetCoroutine);
+                PoiseResetCoroutine = StartCoroutine(PoiseResetTimer());
+            }
             //Don't reduce an AI's health if Immortal is enabled
             if (!Immortal)
                 Health -= CalculatedDamage;
@@ -246,7 +266,27 @@ namespace EmeraldAI
                 }
             }
         }
+
+        void ResetPoise()
+        {
+            Poise = StartPoise;
+        }
         
+        /// <summary>
+        /// Resets the amount of Poise after a the poise reset time is reached
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator PoiseResetTimer()
+        {
+            float timer = 0f;
+            while (timer < PoiseResetTime)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            Poise = StartPoise;
+        }
         void OnReachedOrderedWaypoint()
         {
             IgnoreGettingHit=false;

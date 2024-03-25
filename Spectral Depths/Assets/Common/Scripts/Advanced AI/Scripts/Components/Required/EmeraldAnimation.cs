@@ -367,7 +367,7 @@ namespace EmeraldAI
             float CurrentHitAnimationCooldown = EmeraldComponent.CombatComponent.CurrentWeaponType == EmeraldCombat.WeaponTypes.Type1 ? m_AnimationProfile.Type1HitAnimationCooldown : m_AnimationProfile.Type2HitAnimationCooldown;
 
             //Don't play a hit animation if an AI is dead or if the CurrentHitAnimationCooldown hasn't passed.
-            if (EmeraldComponent.HealthComponent.CurrentHealth <= 0 || Time.time < (LastHitTime + CurrentHitAnimationCooldown))
+            if (EmeraldComponent.HealthComponent.CurrentHealth <= 0 || Time.time < (LastHitTime + CurrentHitAnimationCooldown) || EmeraldComponent.HealthComponent.Poise>=0)
                 return;
 
             LastHitTime = Time.time;
@@ -426,6 +426,7 @@ namespace EmeraldAI
                     AIAnimator.SetTrigger("Hit");
                     OnGetHit?.Invoke();
                 }
+
             }
 
             AIAnimator.ResetTrigger("Attack");
