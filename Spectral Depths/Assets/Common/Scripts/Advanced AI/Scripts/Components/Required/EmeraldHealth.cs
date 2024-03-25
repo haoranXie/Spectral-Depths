@@ -105,6 +105,7 @@ namespace EmeraldAI
             //We take poise damage under these conditions
             if (!Blocked && !Dodged && !Immortal)
             {
+                Debug.Log("hi");
                 Poise = Poise - (PoiseDamage * PoiseResistance);
                 //Reset Poise after a certain amount of time without taking damage
                 if(PoiseResetCoroutine != null ) StopCoroutine(PoiseResetCoroutine);

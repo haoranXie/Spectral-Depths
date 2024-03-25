@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using CHARACTERS;
-using UnityEngine.UI;
 
 namespace DIALOGUE
 {
@@ -40,7 +38,7 @@ namespace DIALOGUE
             TMP_CharacterInfo finalCharacter = tmpro.textInfo.characterInfo[tmpro.textInfo.characterCount - 1];
             Vector3 targetPos = finalCharacter.bottomRight;
             float characterWidth = finalCharacter.pointSize * 0.5f;
-            targetPos = new Vector3(targetPos.x + characterWidth, targetPos.y + 4, 0); //Change this to change where continue prompt is
+            targetPos = new Vector3(targetPos.x + characterWidth, targetPos.y + 4, 0);
 
             root.localPosition = targetPos;
         }

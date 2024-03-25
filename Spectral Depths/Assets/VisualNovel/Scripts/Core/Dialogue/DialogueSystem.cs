@@ -41,7 +41,7 @@ namespace DIALOGUE
             if (_initialized)
                 return;
 
-            architect = new TextArchitect(dialogueContainer.dialogueText, TABuilder.BuilderTypes.Typewriter);
+            architect = new TextArchitect(dialogueContainer.dialogueText, TABuilder.BuilderTypes.Fade);
             conversationManager = new ConversationManager(architect);
         }
 

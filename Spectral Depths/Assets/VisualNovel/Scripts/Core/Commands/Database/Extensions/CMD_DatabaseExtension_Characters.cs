@@ -37,6 +37,8 @@ namespace COMMANDS
             baseCommands.AddCommand("setColor", new Func<string[], IEnumerator>(SetColor));
             baseCommands.AddCommand("highlight", new Func<string[], IEnumerator>(Highlight));
             baseCommands.AddCommand("unhighlight", new Func<string[], IEnumerator>(Unhighlight));
+            baseCommands.AddCommand("faceleft", new Func<string[], IEnumerator>(FaceLeft));
+            baseCommands.AddCommand("faceright", new Func<string[], IEnumerator>(FaceRight));
 
             //Add character specific databases
             CommandDatabase spriteCommands = CommandManager.instance.CreateSubDatabase(CommandManager.DATABASE_CHARACTERS_SPRITE);
@@ -321,6 +323,49 @@ namespace COMMANDS
             }
         }
         #endregion
+
+        private static IEnumerator FaceLeft(string[] data)
+        {
+            yield return FaceDirection(left: true, data);
+        }
+
+        private static IEnumerator FaceRight(string[] data)
+        {
+            yield return FaceDirection(left: false, data);
+        }
+
+        private static IEnumerator FaceDirection(bool left, string[] data)
+        {
+            string characterName = data[0];
+            Character character = CharacterManager.instance.GetCharacter(characterName);
+
+            if (character == null)
+                yield break;
+
+            float speed = 1;
+            bool immediate = false;
+
+            var parameters = ConvertDataToParameters(data);
+
+            //Try to get the speed of the flip
+            parameters.TryGetValue(PARAM_SPEED, out speed, defaultValue: 1f);
+
+            //Try to see if this is an immediate effect or not.
+            parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, defaultValue: false);
+
+            if (left)
+            {
+                CommandManager.instance.AddTerminationActionToCurrentProcess(() => { character?.FaceLeft(immediate: true); });
+                yield return character.FaceLeft(speed, immediate);
+            }
+            else
+            {
+                CommandManager.instance.AddTerminationActionToCurrentProcess(() => { character?.FaceRight(immediate: true); });
+                yield return character.FaceRight(speed, immediate);
+            }
+
+        }
+
 
         #region BASE CHARACTER COMMANDS
         private static IEnumerator Show(string[] data)
