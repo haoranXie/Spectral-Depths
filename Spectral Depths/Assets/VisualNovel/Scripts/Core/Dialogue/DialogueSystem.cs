@@ -22,6 +22,8 @@ namespace DIALOGUE
 
         public bool isRunningConversation => conversationManager.isRunning;
 
+        public DialogueContinuePrompt prompt;
+
         private void Awake()
         {
             if (instance == null)
@@ -60,8 +62,10 @@ namespace DIALOGUE
         {
             dialogueContainer.SetDialogueColor(config.dialogueColor);
             dialogueContainer.SetDialogueFont(config.dialogueFont);
+            dialogueContainer.SetDialogueFontSize(config.dialogueFontSize);
             dialogueContainer.nameContainer.SetNameColor(config.nameColor);
             dialogueContainer.nameContainer.SetnameFont(config.nameFont);
+            dialogueContainer.nameContainer.SetNameFontSize(config.nameFontSize);
         }
 
         public void ShowSpeakerName(string speakerName = "")
