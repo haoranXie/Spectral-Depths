@@ -337,7 +337,10 @@ namespace SpectralDepths.TopDown
                 {
                     EmeraldAPI.Health.IgnoreGettingHit(character.Value.EmeraldComponent);
                     RemoveIndicators(character.Value.EmeraldComponent);
-                    EmeraldAPI.Movement.OrderSetCustomDestination(character.Value.EmeraldComponent, target);
+                    if(character.Value.EmeraldComponent.m_NavMeshAgent.isActiveAndEnabled)
+                    {
+                        EmeraldAPI.Movement.OrderSetCustomDestination(character.Value.EmeraldComponent, target);
+                    }
                 }
                 //character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
                 //EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
