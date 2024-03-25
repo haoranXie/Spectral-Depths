@@ -33,7 +33,7 @@ namespace EmeraldAI
             m_Collider = GetComponent<Collider>();
         }
 
-        public void Damage(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 100, bool CriticalHit = false)
+        public void Damage(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 100, bool CriticalHit = false, float PoiseDamage = 50f)
         {
             DefaultDamage(DamageAmount, AttackerTransform);
 

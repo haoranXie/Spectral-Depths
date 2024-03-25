@@ -51,7 +51,7 @@ namespace SpectralDepths.TopDown
                 {
                     characterSlot.CharacterName.text = characters[i].CharacterName;
                     characterSlot.ModelName.text = characters[i].CharacterComponentData.Class;
-                    characterSlot.Icon.sprite = characters[i].CharacterComponentData.Icon;
+                    characterSlot.Icon.sprite = characters[i].CharacterIcon;
                     EmeraldHealth health = characters[i].EmeraldComponent.GetComponent<EmeraldHealth>();
                     if(health!=null){characterSlot.HealthNumber.text = health.CurrentHealth.ToString() + "/" + health.StartingHealth.ToString();}
                 }

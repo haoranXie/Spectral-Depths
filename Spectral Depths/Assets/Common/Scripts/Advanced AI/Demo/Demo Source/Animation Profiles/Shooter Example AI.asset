@@ -27,7 +27,7 @@ MonoBehaviour:
   NonCombatDeathFoldout: 0
   NonCombatAnimationsFoldout: 1
   NonCombatIdleFoldout: 0
-  NonCombatHitFoldout: 0
+  NonCombatHitFoldout: 1
   EmotesFoldout: 0
   Type1IdleFoldout: 0
   Type2IdleFoldout: 0
@@ -39,12 +39,12 @@ MonoBehaviour:
   Type2CombatAnimationsFoldout: 0
   Type1DeathFoldout: 0
   Type2DeathFoldout: 0
-  Type1HitFoldout: 0
+  Type1HitFoldout: 1
   Type2HitFoldout: 0
   Type1BlockFoldout: 0
   Type2BlockFoldout: 0
   Type1CombatWalkFoldout: 0
-  Type1CombatRunFoldout: 1
+  Type1CombatRunFoldout: 0
   Type1CombatTurnFoldout: 0
   Type2CombatWalkFoldout: 0
   Type2CombatRunFoldout: 0
