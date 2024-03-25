@@ -52,8 +52,9 @@ namespace SpectralDepths.TopDown
                     characterSlot.CharacterName.text = characters[i].CharacterName;
                     characterSlot.ModelName.text = characters[i].CharacterComponentData.Class;
                     characterSlot.Icon.sprite = characters[i].CharacterIcon;
+                    characterSlot.Key.sprite = Resources.Load<Sprite>("UI/btn_number_"+((i+1).ToString()));
                     EmeraldHealth health = characters[i].EmeraldComponent.GetComponent<EmeraldHealth>();
-                    if(health!=null){characterSlot.HealthNumber.text = health.CurrentHealth.ToString() + "/" + health.StartingHealth.ToString();}
+                    if(health!=null){characterSlot.HealthNumber.text = health.CurrentHealth.ToString();}//  + "/" + health.StartingHealth.ToString();}
                 }
 
                 //Sets the popsition up correctly
