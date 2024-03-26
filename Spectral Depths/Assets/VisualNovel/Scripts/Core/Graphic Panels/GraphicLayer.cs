@@ -15,11 +15,13 @@ public class GraphicLayer
     public Coroutine SetTexture(string filePath, float transitionSpeed = 1f, Texture blendingTexture = null, bool immediate = false)
     {
         Texture tex = Resources.Load<Texture2D>(filePath);
+
         if (tex == null)
         {
             Debug.LogError($"Could not load graphic texture from path '{filePath}.' Please ensure it exists within Resources!");
             return null;
         }
+
         return SetTexture(tex, transitionSpeed, blendingTexture, filePath);
     }
 

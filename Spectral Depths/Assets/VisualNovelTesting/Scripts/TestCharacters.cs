@@ -17,11 +17,12 @@ namespace TESTING
         // Start is called before the first frame update
         void Start()
         {
-            
+
             //Character Raelin = CharacterManager.instance.CreateCharacter("Raelin");
             //Character Stella2 = CharacterManager.instance.CreateCharacter("Stella");
             //Character Adam = CharacterManager.instance.CreateCharacter("Adam");
-            StartCoroutine(Test());
+            //StartCoroutine(Test());
+            StartCoroutine(Test2());
         }
 
         IEnumerator Test()
@@ -54,6 +55,22 @@ namespace TESTING
             yield return new WaitForSeconds(1);
 
             yield return null;
+        }
+
+        IEnumerator Test2()
+        {
+            Character Monk = CreateCharacter("Monk as Generic");
+
+            yield return Monk.Say("Normal dialogue configuration");
+
+            Monk.SetDialogueColor(Color.red);
+            Monk.SetNameColor(Color.blue);
+
+            yield return Monk.Say("Customized dialogue here");
+
+            Monk.ResetConfigurationData();
+
+            yield return Monk.Say("I should be back to normal");
         }
 
         // Update is called once per frame

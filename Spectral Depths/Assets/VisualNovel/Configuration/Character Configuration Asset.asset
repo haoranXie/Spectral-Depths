@@ -65,8 +65,8 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    nameFontSize: 0
-    dialogueFontSize: 0
+    nameFontSize: 22
+    dialogueFontSize: 18
   - name: Mao
     alias: ma
     characterType: 3

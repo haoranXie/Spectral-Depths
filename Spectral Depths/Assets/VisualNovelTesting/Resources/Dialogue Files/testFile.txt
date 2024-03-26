@@ -15,7 +15,7 @@ Raelin.Move(0.6 -spd 0.5), Raelin.SetSprite(A_Scold -l 1 -spd 1)
 "We're going to get sick out here"
 
 Raelin "It's a lodge! Let's go!"
-HideDB()
+[wait]HideDB(-spd 0.1)
 
 Female Student 2.Move(1.5 -spd 2), Raelin.Move(1.5 - spd 2), Raelin.FaceRight(), Female Student 2.Hide(), Raelin.Hide()
 wait(0.75)
@@ -32,10 +32,24 @@ wait(1)
 Female Student 2.FaceLeft(), Raelin.FaceRight()
 wait(1)
 
+show(DB -i true)
+
 Raelin "Finally, out of that storm!{c} Now let's just hope they have a room here."
 Female Student 2 "Let's find out.{c}Hello?{a} Is anyone here?"
 
 narrator "Coming out from a room in the far back of the lodge, a wild Haoran appears!"
+
+CreateCharacter("Innkeeper as Generic" -e true), Innkeeper.SetSprite(Man), Innkeeper.SetPosition(0.7)
+
+Innkeeper "That's a nasty storm out there."
+
+[wait]HideUI(-spd 0.5)
+
+wait(1)
+
+[wait]ShowUI(-i true)
+
+"Done"
 
 StopSong()
 StopAmbience()
