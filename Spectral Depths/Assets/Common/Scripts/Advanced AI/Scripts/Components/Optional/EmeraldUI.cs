@@ -157,7 +157,6 @@ namespace EmeraldAI
 
                     AINameUI.transform.localPosition = new Vector3(AINamePos.x, AINamePos.y - HealthBarPos.y, AINamePos.z);
                     AINameUI.text = AIName;
-                    if(string.IsNullOrEmpty(AINameUI.text)){AINameUI.text = EmeraldComponent.CharacterComponent.CharacterName;}
                     AINameUI.fontSize = NameTextFontSize;
                     AINameUI.color = NameTextColor;
 

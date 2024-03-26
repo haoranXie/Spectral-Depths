@@ -108,7 +108,6 @@ namespace SpectralDepths.TopDown
 				_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
 			}
 			_characterMovement.SetMovement(Vector3.zero);
-			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
 			CameraSystem.Instance.SwapToPlayerCamera(_character);
 		}
 
@@ -122,7 +121,6 @@ namespace SpectralDepths.TopDown
 				_handleWeaponList[i].ChangeToAIVersionOfWeapon();
 			}
 			_characterMovement.SetMovement(Vector3.zero);
-			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			CameraSystem.Instance.SwapToRTSCamera(this.transform);
 		}
 		public virtual void SwapBrain()
@@ -136,7 +134,6 @@ namespace SpectralDepths.TopDown
 			if(DeathSwitch)
 			{
 				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
-				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 				CameraSystem.Instance.SwapToRTSCamera(this.transform);
 			}
 			this.enabled=false;

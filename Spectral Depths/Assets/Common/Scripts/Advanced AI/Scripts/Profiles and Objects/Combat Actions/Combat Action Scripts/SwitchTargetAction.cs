@@ -16,8 +16,9 @@ namespace EmeraldAI
         public override void UpdateAction(EmeraldSystem EmeraldComponent, ActionsClass ActionClass)
         {
             if (!CanExecute(EmeraldComponent, ActionClass))
+            {
                 return;
-
+            }
             SwitchTarget(EmeraldComponent, ActionClass);
         }
 

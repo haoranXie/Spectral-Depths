@@ -1,6 +1,7 @@
 using SpectralDepths.Tools;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace SpectralDepths.TopDown
@@ -14,13 +15,12 @@ namespace SpectralDepths.TopDown
     public class ProximityManager : PLSingleton<ProximityManager>, PLEventListener<TopDownEngineEvent>
     {
         [Header("Target")]
-
         /// whether or not to automatically grab the player from the LevelManager once the scene loads
         [Tooltip("whether or not to automatically grab the player from the LevelManager once the scene loads")]
         public bool AutomaticallySetPlayerAsTarget = true;
         /// the target to detect proximity with
         [Tooltip("the target to detect proximity with")]
-        public Transform ProximityTarget;
+        public List<Transform> ProximityTargets;
         /// in this mode, if there's no ProximityTarget, proximity managed objects will be disabled  
         [Tooltip("in this mode, if there's no ProximityTarget, proximity managed objects will be disabled")]
         public bool RequireProximityTarget = true;
@@ -82,7 +82,11 @@ namespace SpectralDepths.TopDown
         {
             if (AutomaticallySetPlayerAsTarget)
             {
-                ProximityTarget = LevelManager.Instance.Players[0].transform;
+                Debug.Log(LevelManager.Instance.Players.Count);
+                for(int i = 0; i<LevelManager.Instance.Players.Count;i++)
+                {
+                    ProximityTargets.Add(LevelManager.Instance.Players[i].transform);
+                }
                 _lastEvaluationAt = 0f;
             }            
         }
@@ -100,7 +104,7 @@ namespace SpectralDepths.TopDown
         /// </summary>
         protected virtual void EvaluateDistance()
         {
-            if (ProximityTarget == null)
+            if (ProximityTargets.Count == 0)
             {
                 if (RequireProximityTarget)
                 {
@@ -126,16 +130,19 @@ namespace SpectralDepths.TopDown
             }
             foreach(ProximityManaged proxy in ControlledObjects)
             {
-                float distance = Vector3.Distance(proxy.transform.position, ProximityTarget.position);
-                if (proxy.gameObject.activeInHierarchy && (distance > proxy.DisableDistance))
+                for(int i = 0; i<ProximityTargets.Count; i++)
                 {
-                    proxy.gameObject.SetActive(false);
-                    proxy.DisabledByManager = true;
-                }
-                if (!proxy.gameObject.activeInHierarchy && proxy.DisabledByManager && (distance < proxy.EnableDistance))
-                {
-                    proxy.gameObject.SetActive(true);
-                    proxy.DisabledByManager = false;
+                    float distance = Vector3.Distance(proxy.transform.position, ProximityTargets[i].position);
+                    if (proxy.gameObject.activeInHierarchy && (distance > proxy.DisableDistance))
+                    {
+                        proxy.gameObject.SetActive(false);
+                        proxy.DisabledByManager = true;
+                    }
+                    if (!proxy.gameObject.activeInHierarchy && proxy.DisabledByManager && (distance < proxy.EnableDistance))
+                    {
+                        proxy.gameObject.SetActive(true);
+                        proxy.DisabledByManager = false;
+                    }             
                 }
             }
         }
@@ -146,8 +153,9 @@ namespace SpectralDepths.TopDown
         /// <param name="engineEvent"></param>
         public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
         {
+            Debug.Log(engineEvent.EventType == TopDownEngineEventTypes.LevelStart);
             if ((engineEvent.EventType == TopDownEngineEventTypes.SpawnComplete)
-                || (engineEvent.EventType == TopDownEngineEventTypes.CharacterSwap))
+                || (engineEvent.EventType == TopDownEngineEventTypes.CharacterSwap) || (engineEvent.EventType == TopDownEngineEventTypes.LevelStart))
             {
                 SetPlayerAsTarget();
             }

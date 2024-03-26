@@ -242,7 +242,6 @@ namespace SpectralDepths.TopDown
 		{
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
 			RTSEvent.Trigger(RTSEventTypes.SwitchToRTS,_character,null);
-			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			CameraSystem.Instance.SwapToRTSCamera(this.transform);
 		}
 		/// <summary>
@@ -253,7 +252,6 @@ namespace SpectralDepths.TopDown
 		{
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOff,_character);
 			RTSEvent.Trigger(RTSEventTypes.SwitchToPlayer,_character,null);
-			if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=_character.transform;}
 			CameraSystem.Instance.SwapToPlayerCamera(_character);
 		}
 		/// <summary>
@@ -402,7 +400,6 @@ namespace SpectralDepths.TopDown
 					TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RTSOn,_character);
 					CameraSystem.Instance.SwapToRTSCamera(this.transform);
 				}
-				if(UsingProximityManager){ProximityManager.Instance.ProximityTarget=CameraSystem.Instance.transform;}
 			}
 		}
         public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
