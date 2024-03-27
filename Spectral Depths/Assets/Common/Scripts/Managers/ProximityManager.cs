@@ -130,13 +130,18 @@ namespace SpectralDepths.TopDown
             }
             foreach(ProximityManaged proxy in ControlledObjects)
             {
+                int outOfRangeCharacters = 0;
                 for(int i = 0; i<ProximityTargets.Count; i++)
                 {
                     float distance = Vector3.Distance(proxy.transform.position, ProximityTargets[i].position);
                     if (proxy.gameObject.activeInHierarchy && (distance > proxy.DisableDistance))
                     {
-                        proxy.gameObject.SetActive(false);
-                        proxy.DisabledByManager = true;
+                        outOfRangeCharacters+=1;
+                        if(outOfRangeCharacters==ProximityTargets.Count)
+                        {
+                            proxy.gameObject.SetActive(false);
+                            proxy.DisabledByManager = true;
+                        }
                     }
                     if (!proxy.gameObject.activeInHierarchy && proxy.DisabledByManager && (distance < proxy.EnableDistance))
                     {

@@ -81,7 +81,6 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("Enable/Disable Keyboard Horizontal Movement")]
         public bool UseKeyboardHorizontal = true;
 
-		private float _acceleration = 0f;
 		private InputManager _linkedInputManager;
         private float _horizontalInput;
         private float _verticalInput;
