@@ -251,7 +251,6 @@ namespace EmeraldAI
             }
             else
             { 
-                
                 AIAnimator.SetInteger("Weapon Type State", 1);
                 EmeraldComponent.CombatComponent.CurrentWeaponType = EmeraldCombat.WeaponTypes.Type1;
                 EmeraldComponent.DetectionComponent.PickTargetType = EmeraldComponent.CombatComponent.Type1PickTargetType;
@@ -699,6 +698,12 @@ namespace EmeraldAI
                     }
                 }
             }
+        }
+
+        void OnEnable()
+        {
+            if(EmeraldComponent==null) return;
+            InitializeWeaponTypeAnimationAndSettings();
         }
 
         /// <summary>

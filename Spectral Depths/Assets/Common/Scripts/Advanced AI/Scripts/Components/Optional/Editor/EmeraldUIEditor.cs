@@ -15,10 +15,10 @@ namespace EmeraldAI.Utility
 
         #region SerializedProperties
         //Ints
-        SerializedProperty MaxUIScaleSizeProp, DisplayUIInCombatHideDelayProp, DisplayUIWhenTakingDamageHideDelayProp;
+        SerializedProperty MaxUIScaleSizeProp, DisplayUIInCombatHideDelayProp, DisplayUIWhenTakingDamageHideDelayProp, DisplayUIWhenSelectedHideDelayProp;
 
         //Enums
-        SerializedProperty CreateHealthBarsProp, UseCustomFontAINameProp, UseCustomFontAILevelProp, CustomizeHealthBarProp, DisplayAINameProp, DisplayAITitleProp, DisplayAILevelProp, UseAINameUIOutlineEffectProp, UseAILevelUIOutlineEffectProp, DisplayUIInCombatProp, DisplayUIWhenTakingDamageProp, DisplayUIByPlayerProximityProp;
+        SerializedProperty CreateHealthBarsProp, UseCustomFontAINameProp, UseCustomFontAILevelProp, CustomizeHealthBarProp, DisplayAINameProp, DisplayAITitleProp, DisplayAILevelProp, UseAINameUIOutlineEffectProp, UseAILevelUIOutlineEffectProp, DisplayUIInCombatProp, DisplayUIWhenTakingDamageProp, DisplayUIWhenSelectedProp,  DisplayUIByPlayerProximityProp;
 
         //Bools
         SerializedProperty HideSettingsFoldout, UISettingsFoldoutProp, HealthBarsFoldoutProp, CombatTextFoldoutProp, NameTextFoldoutProp, LevelTextFoldoutProp;
@@ -54,6 +54,7 @@ namespace EmeraldAI.Utility
             MaxUIScaleSizeProp = serializedObject.FindProperty("MaxUIScaleSize");
             DisplayUIInCombatHideDelayProp = serializedObject.FindProperty("DisplayUIInCombatHideDelay");
             DisplayUIWhenTakingDamageHideDelayProp = serializedObject.FindProperty("DisplayUIWhenTakingDamageHideDelay");
+            DisplayUIWhenSelectedHideDelayProp = serializedObject.FindProperty("DisplayUIWHenSelectedHideDelay");
 
             //Floats
             AINameLineSpacingProp = serializedObject.FindProperty("AINameLineSpacing");
@@ -66,6 +67,7 @@ namespace EmeraldAI.Utility
             DisplayUIInCombatProp = serializedObject.FindProperty("DisplayUIInCombat");
             DisplayUIWhenTakingDamageProp = serializedObject.FindProperty("DisplayUIWhenTakingDamage");
             DisplayUIByPlayerProximityProp = serializedObject.FindProperty("DisplayUIByPlayerProximity");
+            DisplayUIWhenSelectedProp = serializedObject.FindProperty("DisplayUIWhenSelected");
             DisplayAINameProp = serializedObject.FindProperty("DisplayAIName");
             DisplayAITitleProp = serializedObject.FindProperty("DisplayAITitle");
             DisplayAILevelProp = serializedObject.FindProperty("DisplayAILevel");
@@ -207,6 +209,20 @@ namespace EmeraldAI.Utility
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(DisplayUIWhenTakingDamageHideDelayProp, new GUIContent("Damage UI Delay"));
                     CustomEditorProperties.CustomHelpLabelField("Controls how long after getting hit before the AI's UI is hidden", true);
+
+                    EditorGUILayout.Space();
+                    CustomEditorProperties.EndIndent();
+                }
+                EditorGUILayout.PropertyField(DisplayUIWhenSelectedProp, new GUIContent("Display UI when Selected"));
+                CustomEditorProperties.CustomHelpLabelField("Enables or disables the display of the AI's depending on whether or not a character is selected", true);
+
+                if (self.DisplayUIWhenSelected == YesOrNo.Yes)
+                {
+                    CustomEditorProperties.BeginIndent();
+                    
+                    EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(DisplayUIWhenSelectedHideDelayProp, new GUIContent("Selected UI Delay"));
+                    CustomEditorProperties.CustomHelpLabelField("Controls how long after getting unselected before the AI's UI is hidden", true);
 
                     EditorGUILayout.Space();
                     CustomEditorProperties.EndIndent();

@@ -21,6 +21,8 @@ namespace EmeraldAI
         public YesOrNo UseCustomHealthBar = YesOrNo.No;
         public YesOrNo DisplayUIInCombat = YesOrNo.No;
         public YesOrNo DisplayUIWhenTakingDamage = YesOrNo.No;
+        public YesOrNo DisplayUIWhenSelected = YesOrNo.No;
+
         public YesOrNo DisplayUIByPlayerProximity = YesOrNo.No;
 
         public YesOrNo DisplayAIName = YesOrNo.No;
@@ -40,6 +42,7 @@ namespace EmeraldAI
         public LayerMask UILayerMask = 0;
         public int MaxUIScaleSize = 16;
         public int DisplayUIInCombatHideDelay = 0;
+        public int DisplayUIWHenSelectedHideDelay = 0;
         public int DisplayUIWhenTakingDamageHideDelay = 0;
         public Text AINameUI;
         public Font AINameFont;
@@ -263,6 +266,18 @@ namespace EmeraldAI
                 }
             }
             
+        }
+
+        public void CharacterSelected()
+        {
+            if(DisplayUIWhenSelected == YesOrNo.No) return;
+            SetUI(true);
+        }
+
+        public void CharacterUnSeleceted()
+        {
+            if(DisplayUIWhenSelected == YesOrNo.No) return;
+            SetUI(false);
         }
 
         public void CombatEntered()
