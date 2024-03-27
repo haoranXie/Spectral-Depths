@@ -21,7 +21,7 @@ namespace SpectralDepths.TopDown
 
         void Start()
         {
-            StrainNumber.text = EnergyManager.Instance.Energy.ToString(); //+ "/" + EnergyManager.Instance.StartEnergy.ToString();
+            StrainNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString(); //+ "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
         }
 
         public virtual void OnMMEvent(StrainEvent engineEvent)
@@ -42,8 +42,8 @@ namespace SpectralDepths.TopDown
         }
 		void UpdateEnergyOnUI()
 		{
-            StrainNumber.text = EnergyManager.Instance.Energy.ToString(); //+ "/" + EnergyManager.Instance.StartEnergy.ToString();
-			StrainProgressBar.UpdateBar(EnergyManager.Instance.Energy, 0, EnergyManager.Instance.StartEnergy);
+            StrainNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString(); //+ "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
+			StrainProgressBar.UpdateBar(ManagerAbilities.Instance.CurrentEnergy, 0, ManagerAbilities.Instance.MaxEnergy);
 		}
 		protected virtual void OnEnable()
 		{

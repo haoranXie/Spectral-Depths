@@ -47,6 +47,7 @@ namespace SpectralDepths.TopDown
         /// </summary>
         protected virtual void Start()
         {
+            SetPlayerAsTarget();
             GrabControlledObjects();
         }
 
@@ -82,7 +83,6 @@ namespace SpectralDepths.TopDown
         {
             if (AutomaticallySetPlayerAsTarget)
             {
-                Debug.Log(LevelManager.Instance.Players.Count);
                 for(int i = 0; i<LevelManager.Instance.Players.Count;i++)
                 {
                     ProximityTargets.Add(LevelManager.Instance.Players[i].transform);
@@ -153,7 +153,6 @@ namespace SpectralDepths.TopDown
         /// <param name="engineEvent"></param>
         public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
         {
-            Debug.Log(engineEvent.EventType == TopDownEngineEventTypes.LevelStart);
             if ((engineEvent.EventType == TopDownEngineEventTypes.SpawnComplete)
                 || (engineEvent.EventType == TopDownEngineEventTypes.CharacterSwap) || (engineEvent.EventType == TopDownEngineEventTypes.LevelStart))
             {

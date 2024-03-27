@@ -28,38 +28,6 @@ namespace SpectralDepths.TopDown
 		public bool DeathSwitch = true;
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
-		[Header("Overdrive")]
-		[Tooltip("Overdrive Effect")]
-		public PLF_Player OverdrivePlayer;
-		[Tooltip("How much energy the Overdrive costs")]
-		public int OverdriveCost = 20;
-		[Tooltip("How long overdrive lasts")]
-		public float OverdriveLength = 5f;
-		/// whether or not to speed up the character during overdrive
-		[Tooltip("whether or not to speed up the character during overdrive")]
-		public bool SpeedUp = false;
-		[Tooltip("Multiplier to all player Action Speeds")]
-		[PLCondition("SpeedUp", true)]
-		public float OverdriveMultiplier = 1.3f;
-		/// whether or not to slow time during overdrive
-		[Tooltip("whether or not to slow time during overdrive")]
-		public bool SlowTime = false;
-		/// the new timescale to apply
-		[PLCondition("SlowTime", true)]
-		[Tooltip("the new timescale to apply")]
-		public float TimeScale = 0.5f;
-		/// the duration to apply the new timescale for
-		[PLCondition("SlowTime", true)]
-		[Tooltip("the duration to apply the new timescale for")]
-		public float Duration = 5f;
-		/// whether or not the timescale should be lerped
-		[Tooltip("whether or not the timescale should be lerped")]
-		[PLCondition("SlowTime", true)]
-		public bool LerpTimeScale = true;
-		/// the speed at which to lerp the timescale
-		[Tooltip("the speed at which to lerp the timescale")]
-		[PLCondition("SlowTime", true)]
-		public float LerpSpeed = 5f;
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
@@ -68,8 +36,6 @@ namespace SpectralDepths.TopDown
 		protected NavMeshAgent _navMeshAgent;
 		private bool _playerControlled;
 		private bool _companionsFollowing = false;
-		[HideInInspector] public bool _overdrived = false;
-		Coroutine coroutine;
 		protected override void Initialization()
 		{
 			base.Initialization();
@@ -97,23 +63,6 @@ namespace SpectralDepths.TopDown
 					break;
 			}
 		}
-
-		private IEnumerator OverdriveEffect()
-		{
-			if(SpeedUp){_animator.SetFloat("Overdrive Multiplier", OverdriveMultiplier);}
-			if(SlowTime){
-				if(Time.timeScale!=1){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
-				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, TimeScale, Duration, LerpTimeScale, LerpSpeed, true);
-			}
-			//We wait for the overdrive to finish
-			float elapsedTime = 0f;
-			while(elapsedTime <= OverdriveLength)
-			{
-				elapsedTime += Time.unscaledDeltaTime;
-				yield return null;
-			}
-			UnderDrive();
-		}
         
 		public override void EarlyProcessAbility()
 		{
@@ -138,10 +87,8 @@ namespace SpectralDepths.TopDown
 		{
 			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterKey))
 			{
-				//Turns off the overdrive for all other overdriven characters
-				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
-				//Unselects all characters
-				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.NotControlledCharacter, null);
+				//Turns off all other players during an intra quick swap
+				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.IntraQuickSwap, _character);
 				RTSEvent.Trigger(RTSEventTypes.UnselectedEveryone, null, null);
 				switch(_character.CharacterType)
 				{
@@ -159,17 +106,6 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToPlayer()
 		{
-			/*
-			if(_handleWeaponList[0].CurrentWeapon!=null)
-			{
-				for(int i = 0; i<_handleWeaponList.Count;i++)
-				{
-					_handleWeaponList[i].ChangeToPlayerVersionOfWeapon();
-				}
-			}
-			/*
-			_characterMovement.SetMovement(Vector3.zero);
-			*/
 			CharacterModeOn();
 			EmeraldModeOff();
 			TurnOffRTSMode();
@@ -180,22 +116,10 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToAI()
 		{
-			/*
-			if(_handleWeaponList[0].CurrentWeapon!=null)
-			{			
-				for(int i = 0; i<_handleWeaponList.Count;i++)
-				{
-					_handleWeaponList[i].ChangeToAIVersionOfWeapon();
-				}
-			}
-			/*
-			_characterMovement.SetMovement(Vector3.zero);
-			*/
 			_emeraldComponent.MovementComponent.StartingDestination = transform.position;
 			CharacterModeOff();
 			EmeraldModeOn();
 			TurnOnRTSMode();
-			UnderDrive();
 			TurnOffPlayerWeapon();
 			ResetCompanionAI();
 		}
@@ -289,33 +213,7 @@ namespace SpectralDepths.TopDown
             _animator.SetBool("Player Controls", false);
 			_characterController.enabled=false;
 			_character.CacheAbilities();
-		}
-		/// <summary>
-		/// Activates player animations and overdrives the player in various ways
-		/// </summary>
-		public void Overdrive()
-		{
-			_overdrived = true;
-            if(coroutine != null){StopCoroutine(coroutine);}
-			OverdrivePlayer?.PlayFeedbacks();
-            coroutine = StartCoroutine(OverdriveEffect());
-		}
-		/// <summary>
-		/// Reverses the effects of Overdrive and switches animations to AI controls
-		/// </summary>
-		public void UnderDrive()
-		{			
-            if(coroutine != null){StopCoroutine(coroutine);}
-			_overdrived = false;
-			_animator.SetFloat("Overdrive Multiplier", 1f);
-			EnergyManager.Instance.ResetOverdrive();
-			OverdrivePlayer?.StopFeedbacks();
-			if(_playerControlled){PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);}
-		}
-
-
-
-		
+		}		
 
 		/// <summary>
 		/// Called when the equipped weapon changes
@@ -391,7 +289,6 @@ namespace SpectralDepths.TopDown
 		protected override void OnDeath()
 		{
 			base.OnDeath();
-			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TurnOffOverdrive, _character);
 			if(DeathSwitch)
 			{	
 				//If under player control
@@ -402,20 +299,18 @@ namespace SpectralDepths.TopDown
 				}
 			}
 		}
+
         public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
         {
             switch (engineEvent.EventType)
             {
-                case TopDownEngineEventTypes.TurnOffOverdrive:
+                case TopDownEngineEventTypes.IntraQuickSwap:
 					//This only runs if the player WAS just under control or during an interswap
 					if(engineEvent.OriginCharacter!=_character && _playerControlled)
 					{
-						
-						StopCoroutine(OverdriveEffect());
 						_emeraldComponent.MovementComponent.StartingDestination = transform.position;
 						CharacterModeOff();
 						EmeraldModeOn();
-						UnderDrive();
 						_characterOrientation3D.RotationMode = CharacterOrientation3D.RotationModes.MovementDirection;
 						_animator.SetBool("Player Controls", false);
 						_emeraldComponent.CombatComponent.ExitCombat();
@@ -462,8 +357,5 @@ namespace SpectralDepths.TopDown
 			this.PLEventStopListening<TopDownEngineEvent> ();
 			if(_characterHandleWeapon!=null){_characterHandleWeapon.OnWeaponChanged-=OnWeaponChanged;}
         }
-
-
     }
-
 }

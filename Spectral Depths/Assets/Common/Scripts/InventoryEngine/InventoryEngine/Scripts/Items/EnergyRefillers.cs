@@ -10,11 +10,11 @@ namespace SpectralDepths.InventoryEngine
 	[CreateAssetMenu(fileName = "EnergyRefiller", menuName = "SpectralDepths/InventoryEngine/EnergyRefillerItem", order = 1)]
 	[Serializable]
 	/// <summary>
-	/// Energy Refiller Item
+	/// CurrentEnergy Refiller Item
 	/// </summary>
 	public class EnergyRefillerItem : InventoryItem 
 	{
-		[Header("Energy Refilled")]
+		[Header("CurrentEnergy Refilled")]
 		/// the amount of energy refilled by item
 		public int EnergyAmount;
 

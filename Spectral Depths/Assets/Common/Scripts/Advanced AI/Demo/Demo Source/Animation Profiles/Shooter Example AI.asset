@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shooter Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 1b27e5f7138ca4d429ab5f9cd615d460, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 010eb6dab1d3184449134899861797ff, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
