@@ -6,8 +6,6 @@ using System;
 using SpectralDepths.Feedbacks;
 using EmeraldAI;
 using UnityEngine.UI;
-
-
 using Random = UnityEngine.Random;
 
 namespace SpectralDepths.TopDown
@@ -76,6 +74,7 @@ namespace SpectralDepths.TopDown
 		/// the Health script associated to this Character, will be grabbed automatically if left empty
 		[Tooltip("the Health script associated to this Character, will be grabbed automatically if left empty")]
 		public Health CharacterHealth;
+		public GameObject Eyes;
         
 		[Header("Events")]
 		[PLInformation("Here you can define whether or not you want to have that character trigger events when changing state. See the PLTools' State Machine doc for more info.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
@@ -248,6 +247,7 @@ namespace SpectralDepths.TopDown
 				DeathMMFeedbacks?.Initialization(this.gameObject);
     				if(EmeraldComponent!=null){EmeraldComponent.AssignCharacter(this);}
 			}
+
 		}
 		
 		/// <summary>
@@ -910,7 +910,7 @@ namespace SpectralDepths.TopDown
 					_proximityManager.ProximityTargets.Remove(this.gameObject.transform);
 				}
 			}
-
+			if(Eyes!=null) Eyes.SetActive(false);
 			Vector3 spawnPosition = transform.position + Vector3.up * 0.5f;
 			if(ObjectToDropOnDeath!=null) Instantiate(ObjectToDropOnDeath, spawnPosition, Quaternion.identity);
 		}

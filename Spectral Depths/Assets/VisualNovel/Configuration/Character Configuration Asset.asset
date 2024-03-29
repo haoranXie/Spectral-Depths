@@ -121,3 +121,12 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     nameFontSize: 22
     dialogueFontSize: 18
+  - name: Narrator
+    alias: N
+    characterType: 0
+    nameColor: {r: 0, g: 0, b: 0, a: 1}
+    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    nameFontSize: 22
+    dialogueFontSize: 18

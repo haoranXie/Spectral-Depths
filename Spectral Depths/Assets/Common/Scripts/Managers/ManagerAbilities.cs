@@ -119,8 +119,14 @@ namespace SpectralDepths.TopDown
                 //If we're entering into Strategy Mode
                 if(!_strategyMode)
                 {
+                    
                     _strategyMode = true;
                     _strainIncreaseSpeed+=StrategyModeStrainSpeed;
+                    if(GameRTSController.Instance!=null)
+                    {
+                        GameRTSController.Instance.ShowAllCharacterIndicators();
+                        GameRTSController.Instance.NeverHideIndicators = true;
+                    } 
                     if(CurrentStrain<MaxStrain)
                     {
                         StrategyModeOn();                  
@@ -129,6 +135,11 @@ namespace SpectralDepths.TopDown
                 //If we're exiting Strategy Mode
                 else if(_strategyMode)
                 {
+                    if(GameRTSController.Instance!=null)
+                    {
+                        GameRTSController.Instance.NeverHideIndicators = false;
+                        GameRTSController.Instance.HideAllCharacterIndicators();
+                    } 
                     if(Time.timeScale!=1 || FullScreenEffectCoroutine!=null) ResetStrategyMode();
                     _strategyMode = false;
                     _strainIncreaseSpeed-=StrategyModeStrainSpeed;

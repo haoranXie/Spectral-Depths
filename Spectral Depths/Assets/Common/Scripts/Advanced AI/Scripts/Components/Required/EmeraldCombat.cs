@@ -491,6 +491,11 @@ namespace EmeraldAI
                 EmeraldCombatManager.GenerateAttack(EmeraldComponent, Type2Attacks);
         }
 
+        public Transform GetTransform()
+        {
+            return EmeraldComponent.transform;
+        }
+
         public void InvokeDoDamage ()
         {
             OnDoDamage?.Invoke();

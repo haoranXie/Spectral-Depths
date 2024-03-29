@@ -35,6 +35,8 @@ namespace SpectralDepths.TopDown
 		public LayerMask CharacterLayerMasks = LayerManager.PlayerSelectionLayerMask;
 		[Tooltip("the layers to consider where the selection box should form upwards up (usually the ground)")]
 		public LayerMask GroundLayerMasks = LayerManager.GroundLayerMask;
+		[Tooltip("Enemy and Ground layer masks for attack move command")]
+		public LayerMask EnemyAndGroundLayerMasks = LayerManager.GroundLayerMask;
 		[Tooltip("the color of the border of the selection box on UI")]
 		public Color SelectionBoxBorderColor = new Color(0.8f,0.8f,0.95f);
 		[Tooltip("the color of the selection box on UI")]
@@ -49,19 +51,41 @@ namespace SpectralDepths.TopDown
         
 		[Tooltip("A-Left Click Attack-Movement Indicator")]
         public GameObject AttackMovementClickIndicator;
+		[Tooltip("Line between Attack Movement Click Indicator")]
+        public GameObject AttackEdgeIndicator;
+		[Tooltip("Point between Edge Indicator")]
+        public GameObject AttackVertexIndicator;
+		[Tooltip("Indicator for attacking a specific target")]
+        public GameObject AttackTargetIndicator;
+		[Tooltip("Hold Position Indicator")]
+        public GameObject HoldPositionIndicator;
+		[Tooltip("Line between Hold Movement Click Indicator")]
+        public GameObject HoldEdgeIndicator;
+		[Tooltip("Point between Edge Indicator")]
+        public GameObject HoldVertexIndicator;
 		[Tooltip("Default Mouse")]
-        [SerializeField] private Texture2D _defualtCursor;
+        [SerializeField] public Texture2D DefaultCursor;
 		[Tooltip("A-Left Click Attack-Movement Mouse Indicator")]
-        [SerializeField] private Texture2D _defualtAttackCursor;
+        [SerializeField] public Texture2D DefaultAttackCursor;
+		[Tooltip("S-Left Click Hold-Movement Mouse Indicator")]
+        [SerializeField] public Texture2D DefaultHoldCursor;
 		[Header("RTS Audio Cues")]
 		[Tooltip("Character Switch Sound")]
         [SerializeField] private AudioSource _charSwitchSound;
 		[Tooltip("Command Sound")]
         [SerializeField] private AudioSource _commandSound;
-        public PLSimpleObjectPooler MovementClickIndicatorPool;
-        public PLSimpleObjectPooler AttackMovementClickIndicatorPool;
-        public PLSimpleObjectPooler MovementVertexIndicatorPool;
-        public PLSimpleObjectPooler MovementEdgeIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler MovementClickIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler AttackMovementClickIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler MovementVertexIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler MovementEdgeIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler AttackVertexIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler AttackEdgeIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler AttackTargetIndicatorPool;
+
+        [HideInInspector] public PLSimpleObjectPooler HoldPositionIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler HoldVertexIndicatorPool;
+        [HideInInspector] public PLSimpleObjectPooler HoldEdgeIndicatorPool;
+        [HideInInspector] public bool NeverHideIndicators = false;
 
         //Holdes all the selected Game Objects
         public Dictionary<int,Character> SelectedTable = new Dictionary<int, Character>();
@@ -71,9 +95,7 @@ namespace SpectralDepths.TopDown
         {
             Default,
             ForceAttack,
-            ForceHold,
-            ForcePatrol,
-            ForceTakeCover
+            ForceHold
         }
         //Position for where player clicks mouse
         private Vector3 p1;
@@ -98,7 +120,7 @@ namespace SpectralDepths.TopDown
         {
             dragSelect=false;
             canInput=true;
-            Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
+            Cursor.SetCursor(DefaultCursor, new Vector2(6,6), CursorMode.Auto);
             PLSimpleObjectPooler[] pLSimpleObjectPoolers = GetComponents<PLSimpleObjectPooler>();
             foreach(PLSimpleObjectPooler plSimpleObjectPool in pLSimpleObjectPoolers)
             {
@@ -118,7 +140,30 @@ namespace SpectralDepths.TopDown
                 {
                     MovementEdgeIndicatorPool = plSimpleObjectPool;
                 }
-
+                else if(plSimpleObjectPool.GameObjectToPool == AttackEdgeIndicator)
+                {
+                    AttackEdgeIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == AttackVertexIndicator)
+                {
+                    AttackVertexIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == AttackTargetIndicator)
+                {
+                    AttackTargetIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == HoldPositionIndicator)
+                {
+                    HoldPositionIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == HoldEdgeIndicator)
+                {
+                    HoldEdgeIndicatorPool = plSimpleObjectPool;
+                }
+                else if(plSimpleObjectPool.GameObjectToPool == HoldVertexIndicator)
+                {
+                    HoldVertexIndicatorPool = plSimpleObjectPool;
+                }
             }
         }
 
@@ -132,39 +177,63 @@ namespace SpectralDepths.TopDown
             }
         }
 
-        private void SwitchToDefaultCommand()
+        public void SwitchToDefaultCommand()
         {
-            Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
-            _curretCommand = Commands.Default;
-            p1 = Input.mousePosition;
+            if(_curretCommand!=Commands.Default)
+            {
+                Cursor.SetCursor(DefaultCursor, new Vector2(6,6), CursorMode.Auto);
+                _curretCommand = Commands.Default;
+                p1 = Input.mousePosition;
+            }
         }
-
-        private bool _commandAttackButtonIsPressed = false;
+        bool allowedToClickAttackButton = true;
+        bool allowedToClickHoldButton = true;
         private void HandleInput()
         {
-			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonDown && !_commandAttackButtonIsPressed)
+            if(dragSelect) return;
+			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonDown && allowedToClickAttackButton && SelectedTable.Count > 0)
 			{
-                switch(_curretCommand)
+                if(_curretCommand != Commands.ForceAttack)
                 {
-                    case(Commands.Default):
-                        if(!dragSelect)
-                        {
-                            Cursor.SetCursor(_defualtAttackCursor, new Vector2(6,6), CursorMode.Auto);
-                            _curretCommand = Commands.ForceAttack;
-                            _commandAttackButtonIsPressed = true; 
-                        }
-                        break;
-                    case(Commands.ForceAttack):
-                        Cursor.SetCursor(_defualtCursor, new Vector2(6,6), CursorMode.Auto);
-                        _curretCommand = Commands.Default;
-                        _commandAttackButtonIsPressed = true;  
-                        break;  
+                    allowedToClickAttackButton = false;
+                    Cursor.SetCursor(DefaultAttackCursor, new Vector2(6,6), CursorMode.Auto);
+                    _curretCommand = Commands.ForceAttack;  
                 }
+                //Pressing the attack button again cancels it
+                else
+                {  
+                    SwitchToDefaultCommand();
+                } 
             }
-			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonUp)
+			else if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonUp && !allowedToClickAttackButton)
 			{     
-                _commandAttackButtonIsPressed = false;
+                allowedToClickAttackButton = true;
 			}
+
+			if (Input.GetKeyDown(KeyCode.S) && allowedToClickHoldButton && SelectedTable.Count > 0)
+			{
+                if(_curretCommand != Commands.ForceAttack)
+                {
+                    allowedToClickHoldButton = false;
+                    Cursor.SetCursor(DefaultHoldCursor, new Vector2(6,6), CursorMode.Auto);
+                    _curretCommand = Commands.ForceHold;  
+                }
+                //Pressing the attack button again cancels it
+                else
+                {  
+                    SwitchToDefaultCommand();
+                } 
+            }
+			else if (Input.GetKeyUp(KeyCode.S) && !allowedToClickHoldButton)
+			{     
+                allowedToClickHoldButton = true;
+			}
+
+
+            if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            {
+                SwitchToDefaultCommand();
+            }
         }
         bool selectingButtonDown = false;
         /// <summary>
@@ -256,24 +325,15 @@ namespace SpectralDepths.TopDown
                     break;                   
                 case Commands.ForceAttack:
                     ForceAttack();
-                    break;
-                case Commands.ForcePatrol:
+                    DetectMovement();
                     break;
                 case Commands.ForceHold:
+                    ForceHold();
+                    DetectMovement();
                     break;          
-                case Commands.ForceTakeCover:
-                    ForceTakeCover();
-                    break;
                 
             }
         }
-
-
-        protected virtual void ForceTakeCover()
-        {
-
-        }
-
         /// <summary>
         /// Moves every selected character to right clicked point of mouse
         /// </summary>
@@ -286,14 +346,13 @@ namespace SpectralDepths.TopDown
 				RaycastHit distance;
 				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
 				{
+                    SwitchToDefaultCommand();
 					target=distance.point;
                     GameObject movementClickIndicator = MovementClickIndicatorPool.GetPooledGameObject();
                     movementClickIndicator.transform.position = distance.point;
                     movementClickIndicator.transform.rotation = Quaternion.identity;
                     movementClickIndicator.gameObject.SetActive(true);
-                    //Instantiate(MovementClickIndicator,distance.point,Quaternion.identity);
-                    RTSEvent.Trigger(RTSEventTypes.CommandForceMove,null,SelectedTable);
-                    SetPositions();
+                    SetOrderPositions(MovementVertexIndicatorPool);
 				}
 			}
 		}
@@ -307,49 +366,67 @@ namespace SpectralDepths.TopDown
 				Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.MousePosition);
 				//float distance;
 				RaycastHit distance;
-				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
+				if (Physics.Raycast(ray, out distance, 50000.0f, EnemyAndGroundLayerMasks))
 				{
-					target=distance.point;
-                    GameObject attackMovementClickIndicator = AttackMovementClickIndicatorPool.GetPooledGameObject();
-                    attackMovementClickIndicator.transform.position = distance.point;
-                    attackMovementClickIndicator.transform.rotation = Quaternion.identity;
-                    attackMovementClickIndicator.gameObject.SetActive(true);
-                    RTSEvent.Trigger(RTSEventTypes.CommandForceAttack,null,SelectedTable);
-                    SetPositions();
+                    target=distance.point;
+                    ICombat enemy = distance.collider.gameObject.GetComponentInParent<ICombat>();
+                    //If the player directly clicked on an enemy
+                    if(enemy!=null)
+                    {
+                        SetOrderPositions(AttackTargetIndicatorPool, enemy.GetTransform());
+                    }
+                    //Else if the player clicked on the ground
+                    else
+                    {
+                        SetOrderPositions(AttackVertexIndicatorPool);                
+                    }
 				}
-                SwitchToDefaultCommand();
 			}
 		}
         /// <summary>
-        /// Assigns each unit the same positions along where the player clicks
+        /// Force Hold
         /// </summary>
-        public void SetPositions()
+		protected virtual void ForceHold()
+		{
+			if (Input.GetMouseButtonDown(0))
+			{
+				Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.MousePosition);
+				//float distance;
+				RaycastHit distance;
+				if (Physics.Raycast(ray, out distance, 50000.0f, GroundLayerMasks))
+				{
+                    target=distance.point;
+                    SetOrderPositions(HoldVertexIndicatorPool);                
+				}
+			}
+		}
+
+        public void SetOrderPositions(PLSimpleObjectPooler orderVertexIndicatorPool, Transform targetCharacter = null)
         {
             foreach(KeyValuePair<int,Character> character in SelectedTable)
             {
                 if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                 {
-                    EmeraldAPI.Health.IgnoreGettingHit(character.Value.EmeraldComponent);
-                    EmeraldAPI.Movement.OrderAddCustomWaypoint(character.Value.EmeraldComponent, target);
-                    SetIndicators(character.Value.EmeraldComponent, target);
+                    AddOrder(character.Value.EmeraldComponent, target, orderVertexIndicatorPool);
+                    EmeraldAPI.Movement.EnterOrderedMode(character.Value.EmeraldComponent);
                 }
                 else
                 {
-                    EmeraldAPI.Health.IgnoreGettingHit(character.Value.EmeraldComponent);
-                    RemoveIndicators(character.Value.EmeraldComponent);
+                    RemoveOrders(character.Value.EmeraldComponent);
                     if(character.Value.EmeraldComponent.m_NavMeshAgent.isActiveAndEnabled)
                     {
-                        EmeraldAPI.Movement.OrderSetCustomDestination(character.Value.EmeraldComponent, target);
+                        AddOrder(character.Value.EmeraldComponent, target, orderVertexIndicatorPool);
+                        EmeraldAPI.Movement.EnterOrderedMode(character.Value.EmeraldComponent);  
+                        SwitchToDefaultCommand();               
                     }
                 }
-                //character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
-                //EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
-            }  
+            }
         }
+
         /// <summary>
         /// Assigns each unit a unique position along a line from where the player clicks
         /// </summary>
-        public void SetPositionsLine(){
+        public void SetPositionsLine(PLSimpleObjectPooler orderIndicatorPool){
             float[] distanceBetweenEachCharacter = {2f,4f,6f};
             int[] distanceBetweenEachRing = {1,2,3};
 
@@ -360,13 +437,13 @@ namespace SpectralDepths.TopDown
             {
                 if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
                 {
-                    EmeraldAPI.Movement.OrderAddCustomWaypoint(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex]);
-                    SetIndicators(character.Value.EmeraldComponent, target);
+                    AddOrder(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex], orderIndicatorPool);
                 }
                 else
                 {
-                    RemoveIndicators(character.Value.EmeraldComponent);
-                    EmeraldAPI.Movement.OrderSetCustomDestination(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex]);
+                    RemoveOrders(character.Value.EmeraldComponent);
+                    AddOrder(character.Value.EmeraldComponent, targetPositionList[targetPositionIndex], orderIndicatorPool);
+                    EmeraldAPI.Movement.EnterOrderedMode(character.Value.EmeraldComponent);
                 }
                 //character.Value.GetComponent<Character>().FindAbility<MouseDrivenPathfinderAI3D>().UpdatePosition(targetPositionList[targetPositionIndex]);
                 //EmeraldAPI.Movement.SetCustomDestination(character.Value.GetComponent<EmeraldSystem>(),targetPositionList[targetPositionIndex]);
@@ -377,32 +454,44 @@ namespace SpectralDepths.TopDown
         /// Sets and shows MovementEdge and MovementVertex indicators for specific character
         /// </summary>
         /// <param name="emeraldSystem"></param>
-        public void SetIndicators(EmeraldSystem emeraldSystem, Vector3 indicatorPosition)
+        public void AddOrder(EmeraldSystem emeraldSystem, Vector3 indicatorPosition, PLSimpleObjectPooler orderIndicatorPool, Transform targetToFollow = null)
         {
-            if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count == 1 ) return;
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator==null) emeraldSystem.MovementComponent.MovementEdgeIndicator = MovementEdgeIndicatorPool.GetPooledGameObject();
-            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList==null) emeraldSystem.MovementComponent.MovementVertexIndicatorList = new List<GameObject>();
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList==null) emeraldSystem.MovementComponent.OrderedWaypointsList = new List<Transform>();
             if(emeraldSystem.MovementComponent.MovementLineIndicator==null) emeraldSystem.MovementComponent.MovementLineIndicator = emeraldSystem.MovementComponent.MovementEdgeIndicator.GetComponent<LineRenderer>();
+            //if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count == 1 ) return;
 
-            emeraldSystem.MovementComponent.MovementLineIndicator.positionCount = emeraldSystem.MovementComponent.OrderedWaypointsList.Count;
-
+            emeraldSystem.MovementComponent.MovementLineIndicator.positionCount = emeraldSystem.MovementComponent.OrderedWaypointsList.Count+1;
 
             emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.SetActive(true);
 
-            GameObject movementVertexIndicator = MovementVertexIndicatorPool.GetPooledGameObject();
+            GameObject orderVertexIndicator = orderIndicatorPool.GetPooledGameObject();
             //Vector3 newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1];
             Vector3 newPosition = indicatorPosition;
+            if(targetToFollow != null) {newPosition = targetToFollow.position;}
             newPosition.y += (float)0.1;
-            movementVertexIndicator.transform.position = newPosition;
-            emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1,newPosition);
+            orderVertexIndicator.transform.position = newPosition;
+            if(orderVertexIndicator.GetComponent<Order>()) orderVertexIndicator.GetComponent<Order>().TargetCharacter = targetToFollow;
+
+            emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count,newPosition);
+            //We create an extra vertex if we have two vertices in order to form line which requires 3 verticies at least
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count==1)
+            {
+                emeraldSystem.MovementComponent.MovementLineIndicator.positionCount = 3;
+                newPosition.y -= (float)2;
+                emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(2,newPosition);
+            }
+            /*
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count > 1 )  emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count-1,newPosition);
             if(emeraldSystem.MovementComponent.OrderedWaypointsList.Count==2)
             {
-                newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-2];
+                newPosition = emeraldSystem.MovementComponent.OrderedWaypointsList[emeraldSystem.MovementComponent.OrderedWaypointsList.Count-2].position;
                 emeraldSystem.MovementComponent.MovementLineIndicator.SetPosition(emeraldSystem.MovementComponent.OrderedWaypointsList.Count-2,newPosition);
             } 
+            */
             
-            movementVertexIndicator.gameObject.SetActive(true);
-            emeraldSystem.MovementComponent.MovementVertexIndicatorList.Add(movementVertexIndicator);
+            orderVertexIndicator.gameObject.SetActive(true);
+            emeraldSystem.MovementComponent.OrderedWaypointsList.Add(orderVertexIndicator.transform);
     
         }
         /// <summary>
@@ -411,11 +500,11 @@ namespace SpectralDepths.TopDown
         /// <param name="emeraldSystem"></param>
         public void ShowIndicators(EmeraldSystem emeraldSystem)
         {
-            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList!=null)
             {
-                foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
+                foreach(Transform transform in emeraldSystem.MovementComponent.OrderedWaypointsList)
                 {
-                    foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=true;}
+                    foreach(Renderer renderer in transform.gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=true;}
                 }
             } 
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
@@ -428,11 +517,12 @@ namespace SpectralDepths.TopDown
         /// </summary>
         public void HideIndicators(EmeraldSystem emeraldSystem)
         {
-            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
+            if(NeverHideIndicators) return;
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList!=null)
             {
-                foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
+                foreach(Transform transform in emeraldSystem.MovementComponent.OrderedWaypointsList)
                 {   
-                    foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=false;}
+                    foreach(Renderer renderer in transform.gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=false;}
                 }
             } 
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
@@ -440,16 +530,16 @@ namespace SpectralDepths.TopDown
                 emeraldSystem.MovementComponent.MovementEdgeIndicator.gameObject.GetComponent<Renderer>().enabled = false;
             } 
         }
-        public void RemoveIndicators(EmeraldSystem emeraldSystem)
+        public void RemoveOrders(EmeraldSystem emeraldSystem)
         {
-            if(emeraldSystem.MovementComponent.MovementVertexIndicatorList!=null)
+            if(emeraldSystem.MovementComponent.OrderedWaypointsList!=null)
             {
-                foreach(GameObject gameObject in emeraldSystem.MovementComponent.MovementVertexIndicatorList)
+                foreach(Transform transform in emeraldSystem.MovementComponent.OrderedWaypointsList)
                 {
-                    gameObject.SetActive(false);
-                    foreach(Renderer renderer in gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=true;}
+                    transform.gameObject.SetActive(false);
+                    foreach(Renderer renderer in transform.gameObject.GetComponentsInChildren<Renderer>()){renderer.enabled=true;}
                 }
-                emeraldSystem.MovementComponent.MovementVertexIndicatorList = null;
+                emeraldSystem.MovementComponent.OrderedWaypointsList = null;
             } 
             if(emeraldSystem.MovementComponent.MovementEdgeIndicator!=null)
             {
@@ -477,7 +567,7 @@ namespace SpectralDepths.TopDown
         {
             foreach(KeyValuePair<int,Character> character in SelectedTable)
             {
-                RemoveIndicators(character.Value.EmeraldComponent);
+                RemoveOrders(character.Value.EmeraldComponent);
             } 
         }
 
@@ -567,6 +657,25 @@ namespace SpectralDepths.TopDown
                 var rect = GetScreenRect(p1,Input.mousePosition);
                 DrawScreenRect(rect,SelectionBoxColor);
                 DrawScreenRectBorder(rect,2,SelectionBoxBorderColor);
+            }
+        }
+
+        public void ShowAllCharacterIndicators()
+        {
+            foreach (Character character in LevelManager.Instance.Players)
+            {
+                ShowIndicators(character.GetComponent<EmeraldSystem>());
+            }
+        }
+
+        public void HideAllCharacterIndicators()
+        {
+            foreach (Character character in LevelManager.Instance.Players)
+            {
+                if(!SelectedTable.ContainsValue(character))
+                {
+                    HideIndicators(character.GetComponent<EmeraldSystem>());
+                }
             }
         }
 

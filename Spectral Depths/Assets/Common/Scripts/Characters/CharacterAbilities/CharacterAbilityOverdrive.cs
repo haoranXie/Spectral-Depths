@@ -111,7 +111,7 @@ namespace SpectralDepths.TopDown
 			TurnOffRTSMode();
 			OnWeaponChanged();
 			_emeraldComponent.CombatComponent.ClearTarget();
-			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();}
+			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();_emeraldComponent.BehaviorsComponent.IsOrdered =false;GameRTSController.Instance.SwitchToDefaultCommand();}
 		}
 
 		private void SwitchToAI()

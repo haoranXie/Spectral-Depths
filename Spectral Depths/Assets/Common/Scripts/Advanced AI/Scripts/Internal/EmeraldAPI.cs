@@ -256,14 +256,6 @@ namespace EmeraldAI
                     EmeraldComponent.HealthComponent.InstantlyRefillAIHealth();
                 }
             }
-            /// <summary>
-            /// Doesn't target enemies when getting hit
-            /// </summary>
-            /// <param name="EmeraldComponent"></param>
-            public static void IgnoreGettingHit(EmeraldSystem EmeraldComponent)
-            {
-                EmeraldComponent.HealthComponent.IgnoreGettingHit = true;
-            }
 
             /// <summary>
             /// Updates the AI's Current and Max Health.
@@ -463,14 +455,14 @@ namespace EmeraldAI
             /// Puts the the AI's behavior to Ordered and removes all checkpoints
             /// </summary>
             /// <param name="EmeraldComponent"> The AI's EmeraldSystem who will use this API call.</param>
-            public static void OrderSetCustomDestination(EmeraldSystem EmeraldComponent, Vector3 DestinationPosition)
+            public static void OrderSetCustomDestination(EmeraldSystem EmeraldComponent, Transform DestinationPosition)
             {
                 EmeraldComponent.MovementComponent.ResetOrderedMovement();
                 EmeraldComponent.MovementComponent.OrderedWaypointsList.Add(DestinationPosition);
                 EmeraldComponent.BehaviorsComponent.IsOrdered=true;
                 if(EmeraldComponent.BehaviorsComponent.BehaviorState != "Ordered") EmeraldComponent.BehaviorsComponent.ChangeBehaviourType("Ordered");
                 if(EmeraldComponent.CombatComponent.CombatState){EmeraldComponent.CombatComponent.ExitCombat();}
-                EmeraldComponent.DetectionComponentOn = false;
+                //EmeraldComponent.DetectionComponentOn = false;
                 EmeraldComponent.MovementComponent.SetNonDelayedDestination(EmeraldComponent.MovementComponent.OrderedWaypointsList[0]);
             }
 
@@ -481,7 +473,7 @@ namespace EmeraldAI
             /// Puts the AI's behaviour to Ordered
             /// </summary>
             /// <param name="EmeraldComponent"> The AI's EmeraldSystem who will use this API call.</param>
-            public static void OrderAddCustomWaypoint(EmeraldSystem EmeraldComponent, Vector3 DestinationPosition)
+            public static void OrderAddCustomWaypoint(EmeraldSystem EmeraldComponent, Transform DestinationPosition)
             {
                 if(EmeraldComponent.MovementComponent.OrderedWaypointsList.Count == 0)
                 {
@@ -490,6 +482,19 @@ namespace EmeraldAI
                 else
                 {                
                     EmeraldComponent.MovementComponent.OrderedWaypointsList.Add(DestinationPosition);
+                }
+            }
+
+            public static void EnterOrderedMode(EmeraldSystem EmeraldComponent)
+            {
+                if(EmeraldComponent.MovementComponent.OrderedWaypointsList.Count <= 1)
+                {
+                    EmeraldComponent.MovementComponent.ResetOrderedMovement();
+                    EmeraldComponent.BehaviorsComponent.IsOrdered=true;
+                    if(EmeraldComponent.BehaviorsComponent.BehaviorState != "Ordered") EmeraldComponent.BehaviorsComponent.ChangeBehaviourType("Ordered");
+                    if(EmeraldComponent.CombatComponent.CombatState){EmeraldComponent.CombatComponent.ExitCombat();}
+                    EmeraldComponent.DetectionComponentOn = false;
+                    EmeraldComponent.MovementComponent.SetNonDelayedOrderedDestination();        
                 }
             }
 

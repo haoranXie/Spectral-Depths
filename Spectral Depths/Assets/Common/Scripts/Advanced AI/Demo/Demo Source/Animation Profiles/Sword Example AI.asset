@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 136ccff009e6c5a419fc495e64af4768, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 06c76261f2684a04f8cd53920204b25d, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
@@ -139,11 +139,11 @@ MonoBehaviour:
       Mirror: 0
     TurnLeft:
       AnimationSpeed: 0.8
-      AnimationClip: {fileID: 7400000, guid: 0000872662c8fb241bf2ab6cc00dd461, type: 3}
+      AnimationClip: {fileID: 7400000, guid: 1ed5f7f6808b6e04b8b12bc89198a33d, type: 2}
       Mirror: 0
     TurnRight:
       AnimationSpeed: 0.8
-      AnimationClip: {fileID: 7400000, guid: 0000872662c8fb241bf2ab6cc00dd461, type: 3}
+      AnimationClip: {fileID: 7400000, guid: c0142f1701545f742a4a931f58feab40, type: 2}
       Mirror: 0
     HitList:
     - AnimationSpeed: 1

@@ -55,7 +55,6 @@ namespace EmeraldAI
         public int WaypointIndex = 0;
         public int OrderedWaypointIndex = 0;
         public List<Vector3> WaypointsList = new List<Vector3>();
-        public List<Vector3> OrderedWaypointsList = new List<Vector3>();
         public float DestinationAdjustedAngle;
         public Vector3 DestinationDirection;
         public bool RotateTowardsTarget = false;
@@ -73,7 +72,7 @@ namespace EmeraldAI
         public bool LockTurning;
         public bool ReturningToStartInProgress = false;
         public bool AIAgentActive = false;
-        public List<GameObject> MovementVertexIndicatorList;
+        public List<Transform> OrderedWaypointsList;
         public GameObject MovementEdgeIndicator;
         public LineRenderer MovementLineIndicator;
         public delegate void ReachedDestinationHandler();
@@ -130,6 +129,7 @@ namespace EmeraldAI
         float BackupTimer;
         Coroutine BackupCoroutine;
         Vector3 ActionDirection;
+        bool canProceedToNextOrder = true;
         #endregion
 
         void Start()
@@ -271,6 +271,22 @@ namespace EmeraldAI
             LockTurning = false;
             AIAnimator.SetBool("Idle Active", false);
             MovementInitialized = true;
+        }
+
+        public void SetNonDelayedDestination(Transform Destination)
+        {
+            m_NavMeshAgent.destination = Destination.position;
+            LockTurning = false;
+            AIAnimator.SetBool("Idle Active", false);
+            MovementInitialized = true;
+        }
+
+        public void SetNonDelayedOrderedDestination()
+        {
+            LockTurning = false;
+            AIAnimator.SetBool("Idle Active", false);
+            MovementInitialized = true;
+            ActUponNextWayPoint(OrderedWaypointsList[0]);
         }
 
         /// <summary>
@@ -630,34 +646,87 @@ namespace EmeraldAI
         void NextOrderedWaypoint()
         {
             if (!m_NavMeshAgent.pathPending)
-            {
+            {   
                 float WaypointStoppingDistance = OrderedWaypointIndex < OrderedWaypointsList.Count ? (m_NavMeshAgent.stoppingDistance + 1.25f) : StoppingDistance;
                 if (m_NavMeshAgent.remainingDistance <= WaypointStoppingDistance)
                 {
+                    if(!canProceedToNextOrder)
+                    {
+                        m_NavMeshAgent.isStopped = true;
+                        return;
+                    }
                     OrderedWaypointIndex++;
                     if(OrderedWaypointIndex>=OrderedWaypointsList.Count)
                     {
                         ReachedOrderedWaypoint();
                     }
-                    if (m_NavMeshAgent.enabled && OrderedWaypointIndex<OrderedWaypointsList.Count)
+                    else if (m_NavMeshAgent.enabled && OrderedWaypointIndex<OrderedWaypointsList.Count)
                     {
-                        m_NavMeshAgent.destination = OrderedWaypointsList[OrderedWaypointIndex];
+                        ActUponNextWayPoint(OrderedWaypointsList[OrderedWaypointIndex]);
                     }
                 }
             }
             CheckPath(m_NavMeshAgent.destination);             
+        }
+
+        void ActUponNextWayPoint(Transform nextOrderWaypoint)
+        {
+            m_NavMeshAgent.destination = OrderedWaypointsList[OrderedWaypointIndex].position;
+
+            Order order = nextOrderWaypoint.GetComponent<Order>();
+            if(order==null) { return; }
+            
+            //If this order parameter is true, the AI will target enemies that hit the AI
+            if(order.IgnoreGettingHit)
+            {
+                EmeraldComponent.HealthComponent.IgnoreGettingHit = true;
+            }
+            else
+            {
+                EmeraldComponent.HealthComponent.IgnoreGettingHit = false;
+            }
+
+            //If this order is true, the AI will automatically attack nearby enemies
+            if(order.AttackNearbyEnemies)
+            {
+                EmeraldComponent.DetectionComponentOn = true;
+                EmeraldComponent.BehaviorsComponent.DetectEnemies = true;
+            }
+            else
+            {
+                EmeraldComponent.DetectionComponentOn = false;
+                EmeraldComponent.BehaviorsComponent.DetectEnemies = false;
+            }
+
+            //If this order is true, the AI will no longer be allowed to move
+            if(order.HoldPosition)
+            {
+                canProceedToNextOrder = false;
+            }
+            else
+            {
+                m_NavMeshAgent.isStopped = false;
+                canProceedToNextOrder = true;
+            }
+
+            if(order.AttackTargetCharacter)
+            {
+                EmeraldAPI.Combat.OverrideCombatTarget(EmeraldComponent, order.TargetCharacter);
+            }
+
         }
         /// <summary>
         /// Used when reaching ordered waypoint
         /// </summary>
         public void ReachedOrderedWaypoint()
         {
-            if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1];}
-            OrderedWaypointsList.Clear();
+            if (WanderType == WanderTypes.Stationary && EmeraldComponent.m_NavMeshAgent.enabled){StartingDestination=OrderedWaypointsList[OrderedWaypointIndex-1].position;}
+            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveOrders(EmeraldComponent);
             ReachedDestination = true;
             LockTurning = false;
             if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
-            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
+            m_NavMeshAgent.isStopped = false;
+            canProceedToNextOrder = true;
             OnReachedDestination?.Invoke();
             OnReachedOrderedWaypoint?.Invoke();
         }
@@ -828,7 +897,6 @@ namespace EmeraldAI
         public void OrderedMovement()
         {
             if (DefaultMovementPaused) return;
-
             if (m_NavMeshAgent.remainingDistance <= m_NavMeshAgent.stoppingDistance + 1.5f && MovementInitialized)
             {
                 NextOrderedWaypoint();
@@ -852,7 +920,7 @@ namespace EmeraldAI
         {
             m_NavMeshAgent.stoppingDistance = 0.1f;
             m_NavMeshAgent.autoBraking = false;
-            OrderedWaypointsList.Clear();
+            //OrderedWaypointsList.Clear();
             OrderedWaypointIndex=0;
             ResetWanderSettings();
         }
@@ -1045,6 +1113,7 @@ namespace EmeraldAI
             if (BackupCoroutine != null) StopCoroutine(BackupCoroutine);
             EmeraldComponent.AIAnimator.SetBool("Walk Backwards", false);
             EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+            
             BackingUpTimer = 0;
             BackupTimer = 0;
         }
@@ -1193,7 +1262,14 @@ namespace EmeraldAI
             BackingUpTimer = 0;
 
             //Stops this if AI is under orders
-            if (EmeraldComponent.BehaviorsComponent.IsOrdered) return;
+            if (EmeraldComponent.BehaviorsComponent.IsOrdered && OrderedWaypointsList!=null)
+            {
+                m_NavMeshAgent.stoppingDistance = StoppingDistance;
+                if(OrderedWaypointsList.Count==0) return;
+                EmeraldComponent.m_NavMeshAgent.ResetPath();
+                EmeraldComponent.m_NavMeshAgent.destination = OrderedWaypointsList[OrderedWaypointIndex].position;
+                return;
+            }
             //Resets the AI's stopping distances.
             if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
             else m_NavMeshAgent.stoppingDistance = 0.1f;
@@ -1281,11 +1357,11 @@ namespace EmeraldAI
         /// </summary>
         public void ResetMovement()
         {
-            OrderedWaypointsList.Clear();
             ReachedDestination = true;
             LockTurning = false;
             if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
-            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveIndicators(EmeraldComponent);
+            
+            if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveOrders(EmeraldComponent);
         }
     }
 }

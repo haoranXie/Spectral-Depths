@@ -37,5 +37,7 @@ namespace EmeraldAI
         /// Used through Emerald AI to trigger stunned mechanics, however, can also be extended to trigger stunned mechanics through custom character controllers, given they have them.
         /// </summary>
         void TriggerStun(float StunLength);
+
+        Transform GetTransform();
     }
 }

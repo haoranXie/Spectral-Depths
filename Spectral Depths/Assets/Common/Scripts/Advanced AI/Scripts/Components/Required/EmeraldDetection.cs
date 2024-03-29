@@ -256,6 +256,7 @@ namespace EmeraldAI
             else if (!TargetObstructed && EmeraldComponent.CombatComponent.CombatState && !EmeraldComponent.AnimationComponent.IsBackingUp)
             {
                 EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+                
             }
         }
 
@@ -492,6 +493,7 @@ namespace EmeraldAI
             DetectionRadius = StartingDetectionRadius;
             FieldOfViewAngle = StartingFieldOfViewAngle;
             EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+            
             EmeraldComponent.AnimationComponent.IsTurning = false;
             EmeraldComponent.CombatComponent.DeathDelayActive = false;
             EmeraldComponent.CombatComponent.DeathDelayTimer = 0;
