@@ -11,6 +11,7 @@ public class DamageAIByExplosion : MonoBehaviour
 {
     public LayerMask EmeraldAILayer;
     public int DamageAmount = 200;
+    public int PoiseDamage = 200;
     public int ExplosionRadius = 4;
     public int ExplosionForce = 400;
     public GameObject ExplosionEffect;
@@ -51,10 +52,10 @@ public class DamageAIByExplosion : MonoBehaviour
         {
             int DamageMitigation = Mathf.RoundToInt((1f - Vector3.Distance(hitCollider.transform.position, transform.position) / ExplosionRadius) * DamageAmount);
             int ForceMitigation = Mathf.RoundToInt((1f - Vector3.Distance(hitCollider.transform.position, transform.position) / ExplosionRadius) * ExplosionForce);
-            
+            int PoiseDamageMitigation = Mathf.RoundToInt((1f - Vector3.Distance(hitCollider.transform.position, transform.position) / ExplosionRadius) * PoiseDamage);
             if (hitCollider.GetComponent<IDamageable>() != null)
             {
-                hitCollider.GetComponent<IDamageable>().Damage(DamageMitigation, transform, ForceMitigation);
+                hitCollider.GetComponent<IDamageable>().Damage(DamageMitigation, transform, ForceMitigation, false, PoiseDamageMitigation);
             }
         }
         SpawnExplosionSound();

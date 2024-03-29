@@ -24,9 +24,15 @@ namespace SpectralDepths.TopDown
         public Sprite CharacterIcon;
 		[Header("Custom Stats")]
         public bool UseCustomStat = false;
-		[Tooltip("Name assigned to character inside the UI. NOT used for identification")]
+		[Tooltip("Assigns new custom stats if the stat is no longer 0")]
 		[PLCondition("UseCustomStat", true)] 
-        public int StartHealth = -1;
+        public int StartHealth = 0;
+		[PLCondition("UseCustomStat", true)] 
+        public float StartPoise = 0;
+		[PLCondition("UseCustomStat", true)] 
+        public float PoiseResistance = 0;
+		[PLCondition("UseCustomStat", true)] 
+        public float PoiseResetTime = 0;
         private Character _character;
         private EmeraldSystem _emeraldComponent;
         private EmeraldHealth _emeraldHealth;
@@ -97,11 +103,12 @@ namespace SpectralDepths.TopDown
             {
                 if(_emeraldHealth!=null)
                 {
-                    if(StartHealth!=-1) _emeraldHealth.StartHealth = StartHealth;
+                    if(StartHealth!=0) _emeraldHealth.StartHealth = StartHealth;
+                    if(StartPoise!=0) _emeraldHealth.StartPoise = StartPoise;
+                    if(PoiseResistance!=0) _emeraldHealth.PoiseResistance = PoiseResistance;
+                    if(PoiseResetTime!=0) _emeraldHealth.PoiseResetTime = PoiseResetTime;
                 }
             }
-
-
 		}
     }
 }

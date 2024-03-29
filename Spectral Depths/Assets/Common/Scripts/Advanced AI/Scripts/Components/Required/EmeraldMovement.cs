@@ -650,9 +650,13 @@ namespace EmeraldAI
                 float WaypointStoppingDistance = OrderedWaypointIndex < OrderedWaypointsList.Count ? (m_NavMeshAgent.stoppingDistance + 1.25f) : StoppingDistance;
                 if (m_NavMeshAgent.remainingDistance <= WaypointStoppingDistance)
                 {
+                    //This should only be false if the character is meant to hold position
                     if(!canProceedToNextOrder)
                     {
                         m_NavMeshAgent.isStopped = true;
+                        EmeraldComponent.HealthComponent.IgnoreGettingHit = false;
+                        EmeraldComponent.DetectionComponentOn = true;
+                        EmeraldComponent.BehaviorsComponent.DetectEnemies = true;
                         return;
                     }
                     OrderedWaypointIndex++;
@@ -671,7 +675,7 @@ namespace EmeraldAI
 
         void ActUponNextWayPoint(Transform nextOrderWaypoint)
         {
-            m_NavMeshAgent.destination = OrderedWaypointsList[OrderedWaypointIndex].position;
+            if(m_NavMeshAgent.isActiveAndEnabled) m_NavMeshAgent.destination = OrderedWaypointsList[OrderedWaypointIndex].position;
 
             Order order = nextOrderWaypoint.GetComponent<Order>();
             if(order==null) { return; }
@@ -702,6 +706,9 @@ namespace EmeraldAI
             if(order.HoldPosition)
             {
                 canProceedToNextOrder = false;
+                EmeraldComponent.HealthComponent.IgnoreGettingHit = true;
+                EmeraldComponent.DetectionComponentOn = false;
+                EmeraldComponent.BehaviorsComponent.DetectEnemies = false;
             }
             else
             {
@@ -725,7 +732,7 @@ namespace EmeraldAI
             ReachedDestination = true;
             LockTurning = false;
             if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
-            m_NavMeshAgent.isStopped = false;
+            if(m_NavMeshAgent.isActiveAndEnabled) m_NavMeshAgent.isStopped = false;
             canProceedToNextOrder = true;
             OnReachedDestination?.Invoke();
             OnReachedOrderedWaypoint?.Invoke();

@@ -59,6 +59,11 @@ MonoBehaviour:
       MinAmount: 20
       MaxAmount: 40
       RagdollForce: 100
+    BasePoiseDamageSettings:
+      UseRandomAmounts: 0
+      BaseAmount: 200
+      MinAmount: 30
+      MaxAmount: 50
     CriticalHitSettings:
       CriticalHitOdds: 6.25
       CriticalHitMultiplier: 1.1

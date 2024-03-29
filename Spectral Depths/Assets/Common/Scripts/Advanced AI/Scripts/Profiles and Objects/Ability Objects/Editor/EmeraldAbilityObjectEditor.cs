@@ -316,8 +316,11 @@ namespace EmeraldAI.Utility
                 CustomEditorProperties.BeginIndent(45);
                 EditorGUILayout.PropertyField(property.FindPropertyRelative("BaseDamageSettings"));
                 CustomEditorProperties.EndIndent();
-                //Base Damage
-
+                //Base Poise Damage
+                GUILayout.Space(5);
+                CustomEditorProperties.BeginIndent(45);
+                EditorGUILayout.PropertyField(property.FindPropertyRelative("BasePoiseDamageSettings"));
+                CustomEditorProperties.EndIndent();
                 //Critical Hits
                 CustomEditorProperties.BeginIndent(45);
                 EditorGUILayout.PropertyField(property.FindPropertyRelative("UseCriticalHits"));

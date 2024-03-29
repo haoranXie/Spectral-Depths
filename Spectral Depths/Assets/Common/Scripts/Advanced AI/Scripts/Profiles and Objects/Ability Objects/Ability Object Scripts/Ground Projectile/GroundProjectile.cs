@@ -330,7 +330,7 @@ namespace EmeraldAI
                 if (m_IDamageable != null)
                 {
                     bool IsCritHit = CurrentAbilityData.DamageSettings.GenerateCritHit();
-                    m_IDamageable.Damage(CurrentAbilityData.DamageSettings.GenerateDamage(IsCritHit), Owner.transform, CurrentAbilityData.DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit);
+                    m_IDamageable.Damage(CurrentAbilityData.DamageSettings.GenerateDamage(IsCritHit), Owner.transform, CurrentAbilityData.DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit, CurrentAbilityData.DamageSettings.GeneratePoiseDamage());
                     CurrentAbilityData.DamageSettings.DamageTargetOverTime(CurrentAbilityData, CurrentAbilityData.DamageSettings, Owner, Target);
                     m_AudioSource.Stop();
                 }
@@ -342,7 +342,7 @@ namespace EmeraldAI
             else if (m_LocationBasedDamageArea != null)
             {
                 bool IsCritHit = CurrentAbilityData.DamageSettings.GenerateCritHit();
-                m_LocationBasedDamageArea.DamageArea(CurrentAbilityData.DamageSettings.GenerateDamage(IsCritHit), Owner.transform, CurrentAbilityData.DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit);
+                m_LocationBasedDamageArea.DamageArea(CurrentAbilityData.DamageSettings.GenerateDamage(IsCritHit), Owner.transform, CurrentAbilityData.DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit, CurrentAbilityData.DamageSettings.GeneratePoiseDamage());
                 CurrentAbilityData.DamageSettings.DamageTargetOverTime(CurrentAbilityData, CurrentAbilityData.DamageSettings, Owner, m_ICombat.TargetTransform().gameObject);
                 m_AudioSource.Stop();
             }

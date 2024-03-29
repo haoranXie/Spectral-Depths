@@ -65,7 +65,7 @@ namespace EmeraldAI
             if (m_IDamageable != null)
             {
                 bool IsCritHit = CurrentAbilityData.DamageSettings.GenerateCritHit();
-                m_IDamageable.Damage(CurrentAbilityData.DamageSettings.GenerateDamage(IsCritHit), Owner.transform, CurrentAbilityData.DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit);
+                m_IDamageable.Damage(CurrentAbilityData.DamageSettings.GenerateDamage(IsCritHit), Owner.transform, CurrentAbilityData.DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit, CurrentAbilityData.DamageSettings.GeneratePoiseDamage());
                 CurrentAbilityData.DamageSettings.DamageTargetOverTime(CurrentAbilityData, CurrentAbilityData.DamageSettings, Owner, Target);
             }
             else

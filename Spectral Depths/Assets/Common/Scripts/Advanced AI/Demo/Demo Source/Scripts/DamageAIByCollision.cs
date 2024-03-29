@@ -12,6 +12,7 @@ namespace EmeraldAI.Example
     {
         public bool IsTrigger = false;
         public int DamageAmount = 10;
+        public int PoiseDamageAmount = 50;
         public int RagdollForceAmount = 50;
 
         private void OnTriggerEnter(Collider collision)
@@ -21,7 +22,7 @@ namespace EmeraldAI.Example
             //Damages an AI to the collided object
             if (collision.gameObject.GetComponent<IDamageable>() != null)
             {
-                collision.gameObject.GetComponent<IDamageable>().Damage(DamageAmount, transform, RagdollForceAmount);
+                collision.gameObject.GetComponent<IDamageable>().Damage(DamageAmount, transform, RagdollForceAmount, false, PoiseDamageAmount);
             }
             //Damages an AI's location based damage component
             else if (collision.gameObject.GetComponent<LocationBasedDamageArea>() != null)
@@ -38,7 +39,7 @@ namespace EmeraldAI.Example
             //Damages an AI to the collided object
             if (collision.gameObject.GetComponent<IDamageable>() != null)
             {
-                collision.gameObject.GetComponent<IDamageable>().Damage(DamageAmount, transform, RagdollForceAmount);
+                collision.gameObject.GetComponent<IDamageable>().Damage(DamageAmount, transform, RagdollForceAmount, false, PoiseDamageAmount);
             }
             //Damages an AI's location based damage component
             else if (collision.gameObject.GetComponent<LocationBasedDamageArea>() != null)
