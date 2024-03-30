@@ -26,6 +26,28 @@ public class CanvasGroupController
 
     public Coroutine Show(float speed = 1f, bool immediate = false)
     {
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //My own
+        rootCG = DialogueSystem.instance.dialogueContainer.root.GetComponent<CanvasGroup>();
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+
         if (isShowing)
             return co_showing;
 
@@ -42,6 +64,24 @@ public class CanvasGroupController
 
     public Coroutine Hide(float speed = 1f, bool immediate = false)
     {
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //My own
+        rootCG = DialogueSystem.instance.dialogueContainer.root.GetComponent<CanvasGroup>();
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
         if (isHiding)
             return co_hiding;
 

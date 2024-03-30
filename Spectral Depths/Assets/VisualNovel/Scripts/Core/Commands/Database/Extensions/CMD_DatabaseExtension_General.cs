@@ -2,6 +2,8 @@ using DIALOGUE;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
+using TMPro;
 using UnityEngine;
 
 namespace COMMANDS
@@ -22,6 +24,10 @@ namespace COMMANDS
             //Dialogue Box Controls
             database.AddCommand("showdb", new Func<string[], IEnumerator>(ShowDialogueBox));
             database.AddCommand("hidedb", new Func<string[], IEnumerator>(HideDialogueBox));
+
+            //MY OWN Switch Dialogue Bar
+            database.AddCommand("usebigdb", new Func<string[], IEnumerator>(UseBigDialogueBox));
+            database.AddCommand("usesmalldb", new Func<string[], IEnumerator>(UseSmallDialogueBox));
         }
 
         private static IEnumerator Wait(string data)
@@ -82,6 +88,22 @@ namespace COMMANDS
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, defaultValue: false);
 
             yield return DialogueSystem.instance.Hide(speed, immediate);
+        }
+
+        //MY OWN
+        public DialogueContainer dialogueContainer;
+        private static IEnumerator UseBigDialogueBox(string[] data)
+        {
+            DialogueSystem.instance.dialogueContainer.root = GameObject.Find("Big Root Container");
+            DialogueSystem.instance.dialogueContainer.dialogueText = GameObject.Find("Big Root Container").GetComponentInChildren<TextMeshProUGUI>();
+            yield return null;
+        }
+
+        private static IEnumerator UseSmallDialogueBox(string[] data)
+        {
+            DialogueSystem.instance.dialogueContainer.root = GameObject.Find("Root Container");
+            DialogueSystem.instance.dialogueContainer.dialogueText = GameObject.Find("Root Container").GetComponentInChildren<TextMeshProUGUI>();
+            yield return null;
         }
     }
 }
