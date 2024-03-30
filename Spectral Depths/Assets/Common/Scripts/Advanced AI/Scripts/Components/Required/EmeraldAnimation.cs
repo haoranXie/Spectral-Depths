@@ -700,6 +700,12 @@ namespace EmeraldAI
             }
         }
 
+        void OnEnable()
+        {
+            if(EmeraldComponent==null) return;
+            InitializeWeaponTypeAnimationAndSettings();
+        }
+
         /// <summary>
         /// Delays the call to disable the Emerald AI components until after the death animation has finished playing.
         /// </summary>

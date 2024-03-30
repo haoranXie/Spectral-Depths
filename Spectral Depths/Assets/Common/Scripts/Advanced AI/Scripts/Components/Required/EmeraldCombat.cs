@@ -236,10 +236,11 @@ namespace EmeraldAI
                     {
                         CombatActions[i].emeraldAction.UpdateAction(EmeraldComponent, CombatActions[i]);
                         var Conditions = (((int)CombatActions[i].emeraldAction.CooldownConditions) & ((int)EmeraldComponent.AnimationComponent.CurrentAnimationState)) != 0;
-
                         //Only update the cooldown timer if the conditions are met for this action.
                         if (Conditions && !EmeraldComponent.AIAnimator.GetBool("Attack") && !CombatActions[i].IsActive)
+                        {
                             CombatActions[i].CooldownLengthTimer += Time.deltaTime;
+                        }
                     }
                 }
             }
@@ -488,6 +489,11 @@ namespace EmeraldAI
                 EmeraldCombatManager.GenerateAttack(EmeraldComponent, Type1Attacks);
             else if (CurrentWeaponType == WeaponTypes.Type2)
                 EmeraldCombatManager.GenerateAttack(EmeraldComponent, Type2Attacks);
+        }
+
+        public Transform GetTransform()
+        {
+            return EmeraldComponent.transform;
         }
 
         public void InvokeDoDamage ()

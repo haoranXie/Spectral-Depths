@@ -16,8 +16,9 @@ namespace EmeraldAI
         public override void UpdateAction(EmeraldSystem EmeraldComponent, ActionsClass ActionClass)
         {
             if (!CanExecute(EmeraldComponent, ActionClass))
+            {
                 return;
-
+            }
             SwitchTarget(EmeraldComponent, ActionClass);
         }
 
@@ -35,10 +36,8 @@ namespace EmeraldAI
         /// </summary>
         void SwitchTarget (EmeraldSystem EmeraldComponent, ActionsClass ActionClass)
         {
-            Debug.Log("hmm");
             if (EmeraldComponent.AnimationComponent.IsAttacking || EmeraldComponent.AIAnimator.GetBool("Attack"))
                 return;
-            Debug.Log("ok");
             EmeraldComponent.DetectionComponent.SearchForTarget(PickTargetType);
             ActionClass.CooldownLengthTimer = 0;
         }

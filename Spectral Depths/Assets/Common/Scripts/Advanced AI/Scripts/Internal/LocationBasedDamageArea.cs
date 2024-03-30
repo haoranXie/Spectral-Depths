@@ -12,11 +12,11 @@ namespace EmeraldAI
         /// Call this function instead if you want to utilize the Location Based Damage feature. Ensure that the AI you are damaging has a Location Based Damage script applied to where 
         /// the EmeraldAISystem script is and that you have pressed the Get Colliders button on the Location Based Damage component.
         /// </summary>
-        public void DamageArea(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 0, bool CriticalHit = false)
+        public void DamageArea(int DamageAmount, Transform AttackerTransform = null, int RagdollForce = 0, bool CriticalHit = false, float PoiseDamage = 50)
         {
             DamageAmount = Mathf.RoundToInt(DamageAmount * DamageMultiplier);
             IDamageable m_IDamageable = EmeraldComponent.GetComponent<IDamageable>();
-            m_IDamageable.Damage(DamageAmount, AttackerTransform, RagdollForce, CriticalHit);
+            m_IDamageable.Damage(DamageAmount, AttackerTransform, RagdollForce, CriticalHit, PoiseDamage);
             if (!EmeraldComponent.AnimationComponent.IsBlocking) CreateImpactEffect(transform.position, true);
             if (m_IDamageable.Health <= 0)
                 EmeraldComponent.CombatComponent.RagdollTransform = transform;

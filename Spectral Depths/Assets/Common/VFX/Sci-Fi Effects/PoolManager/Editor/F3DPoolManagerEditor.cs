@@ -10,7 +10,6 @@ using FORGE3D;
 [Serializable]
 public class F3DPoolManagerEditor : Editor
 {
-    [MenuItem("Window/FORGE3D/Pool Manager")]
     public static void OpenPoolManager()
     {
         F3DPoolManager manager = GameObject.FindObjectOfType<F3DPoolManager>();

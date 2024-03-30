@@ -76,6 +76,11 @@ namespace EmeraldAI
             }
         }
 
+        public Transform GetTransform()
+        {
+            return transform;
+        }
+
         /// <summary>
         /// Resets this Non-AI target to its default settings before it was killed. This includes health, layer, and tag.
         /// </summary>

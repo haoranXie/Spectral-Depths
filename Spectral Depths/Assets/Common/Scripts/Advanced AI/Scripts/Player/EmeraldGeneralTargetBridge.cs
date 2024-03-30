@@ -7,7 +7,6 @@ namespace EmeraldAI
 {
     [RequireComponent(typeof(TargetPositionModifier))]
     [RequireComponent(typeof(FactionExtension))]
-    [HelpURL("https://black-horizon-studios.gitbook.io/emerald-ai-wiki/getting-started/setting-up-a-player-with-emerald-ai")]
     public class EmeraldGeneralTargetBridge : MonoBehaviour, IDamageable, ICombat
     {
         public int StartingHealth = 50;
@@ -86,6 +85,10 @@ namespace EmeraldAI
         }
 
         public Transform TargetTransform()
+        {
+            return transform;
+        }
+        public Transform GetTransform()
         {
             return transform;
         }

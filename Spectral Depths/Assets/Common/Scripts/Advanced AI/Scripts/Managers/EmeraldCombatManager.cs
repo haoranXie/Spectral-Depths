@@ -105,6 +105,7 @@ namespace EmeraldAI.Utility
             if (EmeraldComponent.CombatComponent.AttackDistance > EmeraldComponent.DetectionComponent.DetectionRadius) EmeraldComponent.CombatComponent.AttackDistance = EmeraldComponent.DetectionComponent.DetectionRadius;
             EmeraldComponent.CombatComponent.TooCloseDistance = AttackData.TooCloseDistance;
             if (EmeraldComponent.CombatComponent.CombatState) EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.CombatComponent.AttackDistance;
+            
         }
 
         /// <summary>
@@ -266,7 +267,7 @@ namespace EmeraldAI.Utility
             foreach (Rigidbody R in EmeraldComponent.GetComponentsInChildren<Rigidbody>())
             {
                 R.isKinematic = true;
-                if ((R.gameObject.layer ==23)){R.isKinematic=false;}
+                if ((R.gameObject.layer ==23) || (R.gameObject.layer ==24)){R.isKinematic=false;}
             }
 
             if (EmeraldComponent.LBDComponent != null)
@@ -275,11 +276,8 @@ namespace EmeraldAI.Utility
             foreach (Collider C in EmeraldComponent.GetComponentsInChildren<Collider>())
             {
                 C.enabled = false;
-                if ((C.gameObject.layer ==23)){C.enabled=true;}
+                if ((C.gameObject.layer ==23) || (C.gameObject.layer ==24)){C.enabled=true;}
             }
-
-
-
             EmeraldComponent.GetComponent<BoxCollider>().enabled = true;
         }
 

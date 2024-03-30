@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SpectralDepths.TopDown;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,7 +18,9 @@ public class IntroLoadScreen : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        
         // Play the animation
+        VNEvent.Trigger(VNEventTypes.DisableVNScene, null);
         animator.SetTrigger("UI");
         PlayWithFadeIn(bgm,5f);
         // Unsubscribe from the event to prevent multiple subscriptions

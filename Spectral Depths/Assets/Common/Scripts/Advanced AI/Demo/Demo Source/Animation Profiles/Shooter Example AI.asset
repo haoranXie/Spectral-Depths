@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shooter Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 1b27e5f7138ca4d429ab5f9cd615d460, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 81272e8fde06f4e45b5fb964e2133f27, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
   AnimatorCullingMode: 0
   WalkFoldout: 0
   RunFoldout: 0
-  TurnFoldout: 0
+  TurnFoldout: 1
   NonCombatDeathFoldout: 0
   NonCombatAnimationsFoldout: 1
   NonCombatIdleFoldout: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   Type2IdleFoldout: 0
   Type1AttacksFoldout: 0
   Type2AttacksFoldout: 0
-  Type1EquipsFoldout: 1
+  Type1EquipsFoldout: 0
   Type2EquipsFoldout: 0
   Type1CombatAnimationsFoldout: 1
   Type2CombatAnimationsFoldout: 0
@@ -142,11 +142,11 @@ MonoBehaviour:
       Mirror: 0
     TurnLeft:
       AnimationSpeed: 1
-      AnimationClip: {fileID: 7400000, guid: 154a724602422044c91070a5f3c67c11, type: 3}
+      AnimationClip: {fileID: 7400000, guid: e155231d6b1cccd4cb7518e4b664cecf, type: 3}
       Mirror: 0
     TurnRight:
       AnimationSpeed: 1
-      AnimationClip: {fileID: 7400000, guid: 154a724602422044c91070a5f3c67c11, type: 3}
+      AnimationClip: {fileID: 7400000, guid: c1f88274db7ed854e8e0e42fc2a99dc9, type: 3}
       Mirror: 0
     HitList:
     - AnimationSpeed: 1

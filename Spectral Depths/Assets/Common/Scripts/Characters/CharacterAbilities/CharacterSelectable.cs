@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EmeraldAI;
 using SpectralDepths.Tools;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("collider to select the character")]
 		public Collider SelectedCollider;
 
+        private EmeraldUI _emeraldUI;
         
         public bool selected;
         public bool OnlySelected; //True if character is only one selected 
@@ -28,6 +30,7 @@ namespace SpectralDepths.TopDown{
         {
             base.Initialization();
             SelectedVisual.gameObject.SetActive(false);
+            _emeraldUI = GetComponent<EmeraldUI>();
         }
 
         public virtual void OnMMEvent(RTSEvent rtsEvent){
@@ -54,11 +57,13 @@ namespace SpectralDepths.TopDown{
         public void Selected(){
             selected=true;
             SelectedVisual.gameObject.SetActive(true);
+            if(_emeraldUI!=null) _emeraldUI.CharacterSelected();
         }
 
         public void DeSelected(){
             selected=false;
             OnlySelected=false;
+            if(_emeraldUI!=null) _emeraldUI.CharacterUnSeleceted();
             SelectedVisual.gameObject.SetActive(false);
         }
 

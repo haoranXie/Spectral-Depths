@@ -52,7 +52,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 			
-			ProximityManager proximityManager = ProximityManager.Current;
+			ProximityManager proximityManager = ProximityManager.Instance;
 			if (proximityManager != null) 
 			{
 				var targets = proximityManager.ControlledObjects;

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TestDialogueHiding : MonoBehaviour
 {
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -20,4 +21,5 @@ public class TestDialogueHiding : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.UpArrow))
             DialogueSystem.instance.dialogueContainer.Show();
     }
+    */
 }

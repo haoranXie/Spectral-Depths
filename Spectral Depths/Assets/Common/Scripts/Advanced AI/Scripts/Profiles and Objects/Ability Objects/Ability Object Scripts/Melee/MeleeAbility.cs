@@ -46,7 +46,7 @@ namespace EmeraldAI
             if (m_IDamageable != null)
             {
                 bool IsCritHit = DamageSettings.GenerateCritHit();
-                m_IDamageable.Damage(DamageSettings.GenerateDamage(IsCritHit), Owner.transform, DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit);
+                m_IDamageable.Damage(DamageSettings.GenerateDamage(IsCritHit), Owner.transform, DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit, DamageSettings.GeneratePoiseDamage());
                 DamageSettings.DamageTargetOverTime(this, DamageSettings, Owner, m_ICombat.TargetTransform().gameObject);
                 EmeraldComponent.AnimationComponent.PlayRecoilAnimation();
                 if (EmeraldComponent.CombatComponent.DeathDelayTimer < 0.1f && !m_ICombat.IsBlocking()) AbilityData.SpawnEffectAndSound(Owner, Target.GetComponent<ICombat>().DamagePosition(), MeleeSettings.ImpactEffect, MeleeSettings.ImpactEffectTimeoutSeconds, MeleeSettings.ImpactSoundsList);
@@ -96,7 +96,7 @@ namespace EmeraldAI
                 if (m_IDamageable != null)
                 {
                     bool IsCritHit = DamageSettings.GenerateCritHit();
-                    m_IDamageable.Damage(DamageSettings.GenerateDamage(IsCritHit), Owner.transform, DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit);
+                    m_IDamageable.Damage(DamageSettings.GenerateDamage(IsCritHit), Owner.transform, DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit, DamageSettings.GeneratePoiseDamage());
                     DamageSettings.DamageTargetOverTime(this, DamageSettings, Owner, m_ICombat.TargetTransform().gameObject);
                     EmeraldComponent.AnimationComponent.PlayRecoilAnimation();
                     if (EmeraldComponent.CombatComponent.DeathDelayTimer < 0.1f && !m_ICombat.IsBlocking()) AbilityData.SpawnEffectAndSound(Owner, Target.GetComponent<ICombat>().DamagePosition(), MeleeSettings.ImpactEffect, MeleeSettings.ImpactEffectTimeoutSeconds, MeleeSettings.ImpactSoundsList);
@@ -109,7 +109,7 @@ namespace EmeraldAI
             else if (m_LocationBasedDamageArea != null)
             {
                 bool IsCritHit = DamageSettings.GenerateCritHit();
-                m_LocationBasedDamageArea.DamageArea(DamageSettings.GenerateDamage(IsCritHit), Owner.transform, DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit);
+                m_LocationBasedDamageArea.DamageArea(DamageSettings.GenerateDamage(IsCritHit), Owner.transform, DamageSettings.BaseDamageSettings.RagdollForce, IsCritHit, DamageSettings.GeneratePoiseDamage());
                 DamageSettings.DamageTargetOverTime(this, DamageSettings, Owner, m_ICombat.TargetTransform().gameObject);
                 EmeraldComponent.AnimationComponent.PlayRecoilAnimation();
                 if (EmeraldComponent.CombatComponent.DeathDelayTimer < 0.1f && !m_ICombat.IsBlocking()) AbilityData.SpawnEffectAndSound(Owner, Target.transform.position, MeleeSettings.ImpactEffect, MeleeSettings.ImpactEffectTimeoutSeconds, MeleeSettings.ImpactSoundsList);

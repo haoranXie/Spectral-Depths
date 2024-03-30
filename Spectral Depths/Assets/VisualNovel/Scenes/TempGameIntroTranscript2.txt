@@ -1,4 +1,4 @@
-CreateCharacter(Alice), CreateCharacter(Cheshire)
+CreateCharacter(Narrator), CreateCharacter(Alice), CreateCharacter(Cheshire)
 SetLayerMedia(background base)
 Alice.SetPosition(0.5)
 Alice.Show()
@@ -8,7 +8,7 @@ Narrator "I wake up to feel a numbing pain in my head.{a} My hand unconciously r
 StopSFX(static)
 PlaySong("BaldrSky" -v 0.6)
 
-Alice "What a weird dream...{c}"
+Alice "What a weird dream..."
 As I start to become aware of my surroundings, I start piecing together the fragments of my dream, hoping to find a clue that could aid us on our mission.{a} I take out my device and start writting down everything I remember.
 The ⍓︎□︎◆︎❒︎ Empire{a}, The Golden Age{a}, The Spire,...{a} Some of the things I remembered were familiar to me, but most were not.{a} Who were the three geniuses?{a} What's The Golden Age?"
 My train of thoughts gets interrupted by the sound of the door knocking

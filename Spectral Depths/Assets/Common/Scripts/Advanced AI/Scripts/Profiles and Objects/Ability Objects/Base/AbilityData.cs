@@ -825,6 +825,7 @@ namespace EmeraldAI
             public bool UseDamageOverTime;
 
             public BaseDamageClass BaseDamageSettings;
+            public BasePoiseDamageClass BasePoiseDamageSettings;
 
             [System.Serializable]
             public class BaseDamageClass
@@ -842,6 +843,21 @@ namespace EmeraldAI
                 public int MaxAmount = 10;
                 [Tooltip("Controls the force that will be applied to AI using ragdolls at the time of death.")]
                 public int RagdollForce = 25;
+            }
+            [System.Serializable]
+            public class BasePoiseDamageClass
+            {
+                [Tooltip("Controls whether or not Randomized Damage is used for this ability.")]
+                public bool UseRandomAmounts;
+                [DrawIf("UseRandomAmounts", false)]
+                [Tooltip("Controls the base damage for this ability.")]
+                public int BaseAmount = 50;
+                [DrawIf("UseRandomAmounts", true)]
+                [Tooltip("Controls the minimum damage that can be generated for this ability.")]
+                public int MinAmount = 30;
+                [DrawIf("UseRandomAmounts", true)]
+                [Tooltip("Controls the maxmimum damage that can be generated for this ability.")]
+                public int MaxAmount = 50;
             }
 
             public CriticalHitClass CriticalHitSettings;
@@ -889,8 +905,15 @@ namespace EmeraldAI
                 if (!BaseDamageSettings.UseRandomAmounts) DamageAmount = BaseDamageSettings.BaseAmount;
                 else if (BaseDamageSettings.UseRandomAmounts) DamageAmount = Random.Range(BaseDamageSettings.MinAmount, BaseDamageSettings.MaxAmount + 1);
                 if (UseCriticalHits && IsCritHit) DamageAmount = DamageAmount + Mathf.FloorToInt(DamageAmount * (CriticalHitSettings.CriticalHitMultiplier * 0.01f));
-
                 return DamageAmount;
+            }
+
+            public int GeneratePoiseDamage()
+            {
+                int PoiseDamageAmount = 0;
+                if (!BasePoiseDamageSettings.UseRandomAmounts) PoiseDamageAmount = BasePoiseDamageSettings.BaseAmount;
+                else if (BasePoiseDamageSettings.UseRandomAmounts) PoiseDamageAmount = Random.Range(BasePoiseDamageSettings.MinAmount, BasePoiseDamageSettings.MaxAmount + 1);
+                return PoiseDamageAmount;
             }
 
             /// <summary>

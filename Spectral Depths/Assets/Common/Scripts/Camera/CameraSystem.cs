@@ -20,6 +20,7 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("Camera for following player topdown action")]
 		public CinemachineVirtualCamera PlayerCamera;
 		[Header("Speed")]
+        /*
 		/// movespeed of camera
 		[Tooltip("horizontal movespeed of camera")]
 		public float MovementSpeed = 14f;
@@ -35,6 +36,10 @@ namespace SpectralDepths.TopDown{
 		/// the speed threshold after which the character is not considered idle anymore
 		[Tooltip("the speed threshold after which the character is not considered idle anymore")]
 		public float IdleThreshold = 0.05f;
+        */
+        public float edgeScrollSpeed = 5f; // Speed of edge scrolling
+        public float edgeScrollAcceleration = 2f; // Acceleration factor
+        public float edgeMaxSpeed = 10f; // Maximum speed of edge scrolling
 
         [Header("Camera Movement Settings")]
 		[Tooltip("rotatespeed of camera")]
@@ -42,7 +47,7 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("DragPanSpeedMult of camera")]
 		public float DragPanSpeedMult = 1f;
 		[Tooltip("How far mouse has to be move to scroll (Higher means more sensitive)")]
-        public int EdgeScrollSize = 5;
+        public float edgeScrollSize = 20f; // Size of the edge scroll zone
 		[Tooltip("Scroll Speed")]
         public float ZoomSpeed = 5f;
 		[Tooltip("Max FOV Scroll")]
@@ -76,7 +81,6 @@ namespace SpectralDepths.TopDown{
 		[Tooltip("Enable/Disable Keyboard Horizontal Movement")]
         public bool UseKeyboardHorizontal = true;
 
-		private float _acceleration = 0f;
 		private InputManager _linkedInputManager;
         private float _horizontalInput;
         private float _verticalInput;
@@ -141,24 +145,37 @@ namespace SpectralDepths.TopDown{
         private void MoveCamera()
         {
             SetMovement();
-            /*
-            _moveDir = transform.forward * _inputDir.z + transform.right * _inputDir.x;
-            _moveDir = _moveDir.normalized;
 
-            //Moves the camera in Input Direction mutliplied by MoveSpeed
-            transform.eulerAngles += new Vector3 (0,_rotateDir*RotateSpeed*Time.deltaTime,0);
-            Vector3 targetPosition = transform.position + _moveDir * MovementSpeed * Time.deltaTime;
+        }
+        private void SetMovement()
+        {
+            // Calculate acceleration based on distance from screen edge
+            float distanceFromEdgeX = Mathf.Abs(Input.mousePosition.x - Screen.width / 2f) / (Screen.width / 2f);
+            float distanceFromEdgeY = Mathf.Abs(Input.mousePosition.y - Screen.height / 2f) / (Screen.height / 2f);
+            float accelerationX = Mathf.Lerp(1f, edgeScrollAcceleration, distanceFromEdgeX);
+            float accelerationY = Mathf.Lerp(1f, edgeScrollAcceleration, distanceFromEdgeY);
+
+            // Calculate speed based on acceleration
+            float speedX = edgeScrollSpeed * accelerationX;
+            float speedY = edgeScrollSpeed * accelerationY;
+
+            // Limit maximum speed
+            speedX = Mathf.Clamp(speedX, 0f, edgeMaxSpeed);
+            speedY = Mathf.Clamp(speedY, 0f, edgeMaxSpeed);
+
+            // Move the camera
+            Vector3 moveDirection = new Vector3(_inputDir.x * speedX, 0f, _inputDir.z * speedY);
             if(MovementBounds!=null)
             {
-                if(!MovementBounds.bounds.Contains(targetPosition))
+                if(!MovementBounds.bounds.Contains(transform.position + moveDirection))
                 {
                     return;
                 }
             }
-            transform.position = Vector3.Lerp(transform.position, targetPosition, 0.9f); // You can adjust the interpolation factor (0.1f) for smoother or quicker movement
-            //Turns the camera based on Rotate Input Direction
-            */
+            transform.eulerAngles += new Vector3 (0,_rotateDir*RotateSpeed*Time.deltaTime,0);
+            transform.Translate(moveDirection * Time.deltaTime);
         }
+        /*
 		protected virtual void SetMovement()
 		{
 			_movementVector = Vector3.zero;
@@ -222,6 +239,8 @@ namespace SpectralDepths.TopDown{
             // Update the position of the object
             transform.position = targetPosition;
 		} 
+
+        */
         /// <summary>
         /// Sets camera movement on x and z axis based on input
         /// </summary>
@@ -289,14 +308,26 @@ namespace SpectralDepths.TopDown{
         /// </summary>
         private void InputEdgeScrollCamera()
         {
-            //Mouse is at Left Side
-            if(Input.mousePosition.x<EdgeScrollSize) _inputDir.x = -1f; 
-            //Mouse is at Bottom Side
-            if(Input.mousePosition.y<EdgeScrollSize) _inputDir.z = -1f;
-            //Mouse is at Right Side
-            if(Input.mousePosition.x>Screen.width - EdgeScrollSize) _inputDir.x = +1f; 
-            //Mouse is at Top Side
-            if(Input.mousePosition.y>Screen.height - EdgeScrollSize) _inputDir.z = +1f;
+            // Reset input direction
+            _inputDir = Vector3.zero;
+
+            // Calculate normalized direction based on mouse position
+            Vector3 mousePosition = Input.mousePosition;
+            float screenWidth = Screen.width;
+            float screenHeight = Screen.height;
+
+            if (mousePosition.x < edgeScrollSize)
+                _inputDir.x = -1f;
+            else if (mousePosition.x > screenWidth - edgeScrollSize)
+                _inputDir.x = 1f;
+
+            if (mousePosition.y < edgeScrollSize)
+                _inputDir.z = -1f;
+            else if (mousePosition.y > screenHeight - edgeScrollSize)
+                _inputDir.z = 1f;
+
+            // Normalize the direction vector
+            _inputDir.Normalize();
         }
         /// <summary>
         /// Moves camera zoom via FOV

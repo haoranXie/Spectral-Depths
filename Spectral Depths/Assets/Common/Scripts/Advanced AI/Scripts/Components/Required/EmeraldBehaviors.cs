@@ -68,7 +68,7 @@ namespace EmeraldAI
         [HideInInspector] public bool BehaviorSettingsFoldout;
         [HideInInspector] public bool CustomSettingsFoldout;
         #endregion
-
+        [HideInInspector] public bool DetectEnemies = true;
         public virtual void Start()
         {
             InitailizeBehaviors();
@@ -394,7 +394,8 @@ namespace EmeraldAI
         /// </summary>
         public virtual void ResetState ()
         {
-            BehaviorState = "Non Combat";
+            if(IsOrdered) BehaviorState = "Ordered";
+            else{BehaviorState = "Non Combat";}
             CautiousTimer = 0;
             UpdateFleePositionTimer = 0;
             GiveUpTimer = 0;
@@ -406,7 +407,8 @@ namespace EmeraldAI
         /// </summary>
         public virtual void OnKilledTarget()
         {
-            BehaviorState = "Non Combat";
+            if(IsOrdered) BehaviorState = "Ordered";
+            else{BehaviorState = "Non Combat";}
             GiveUpTimer = 0;
             EmeraldComponent.AnimationComponent.WarningAnimationTriggered = false;
         }
@@ -417,7 +419,7 @@ namespace EmeraldAI
         /// </summary>
         public virtual void OnDetectTarget()
         {
-            if(!IsOrdered)
+            if(DetectEnemies)
             {
                 BehaviorState = "Cautious";
                 EmeraldComponent.m_NavMeshAgent.SetDestination(transform.position);
@@ -426,7 +428,8 @@ namespace EmeraldAI
 
         public virtual void ExitOrderedBehaviour()
         {
-            IsOrdered=false;
+            DetectEnemies=true;
+            IsOrdered = false;
             BehaviorState = "Non Combat";
         }
 

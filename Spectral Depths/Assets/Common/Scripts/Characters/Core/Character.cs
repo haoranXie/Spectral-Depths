@@ -6,8 +6,6 @@ using System;
 using SpectralDepths.Feedbacks;
 using EmeraldAI;
 using UnityEngine.UI;
-
-
 using Random = UnityEngine.Random;
 
 namespace SpectralDepths.TopDown
@@ -34,16 +32,9 @@ namespace SpectralDepths.TopDown
 		/// the possible character types : player controller or AI (controlled by the computer)
 		public enum CharacterTypes { Player, AI }
 
-		[PLInformation("The Character script is the mandatory basis for all Character abilities. Your character can either be a Non Player Character, controlled by an AI, or a Player character, controlled by the player. In this case, you'll need to specify a CharacterID, which must match the one specified in your InputManager. Usually 'Player1', 'Player2', etc.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
-		[Tooltip("Scriptable Object that distributes various character data into components")]
-		public CharacterData CharacterComponentData;
 		/// Is the character player-controlled or controlled by an AI ?
 		[Tooltip("Is the character player-controlled or controlled by an AI ?")]
 		public CharacterTypes CharacterType = CharacterTypes.AI;
-		[Tooltip("Name assigned to character inside the UI. NOT used for identification")]
-		public String CharacterName;
-		[Tooltip("Name assigned to character inside the UI. NOT used for identification")]
-		public Sprite CharacterIcon;
 		/// Only used if the character is player-controlled. The CharacterID must match an input manager's CharacterID. It's also used to match Unity's input settings. So you'll be safe if you keep to Player1, Player2, Player3 or Player4
 		[Tooltip("Only used if the character is player-controlled. The CharacterID must match an input manager's CharacterID. It's also used to match Unity's input settings. So you'll be safe if you keep to Player1, Player2, Player3 or Player4")]
 		public string CharacterID = "";
@@ -83,6 +74,7 @@ namespace SpectralDepths.TopDown
 		/// the Health script associated to this Character, will be grabbed automatically if left empty
 		[Tooltip("the Health script associated to this Character, will be grabbed automatically if left empty")]
 		public Health CharacterHealth;
+		public GameObject Eyes;
         
 		[Header("Events")]
 		[PLInformation("Here you can define whether or not you want to have that character trigger events when changing state. See the PLTools' State Machine doc for more info.",SpectralDepths.Tools.PLInformationAttribute.InformationType.Info,false)]
@@ -127,6 +119,9 @@ namespace SpectralDepths.TopDown
 		/// the direction of the camera associated to this character
 		public Vector3 CameraDirection { get; protected set; }
 
+		[HideInInspector] public string CharacterName;
+		[HideInInspector] public string CharacterClass;
+		[HideInInspector] public Sprite CharacterIcon;
 		protected CharacterAbility[] _characterAbilities;
 		protected bool _abilitiesCachedOnce = false;
 		protected TopDownController _controller;
@@ -162,7 +157,7 @@ namespace SpectralDepths.TopDown
 		protected bool _onReviveRegistered;
 		protected Coroutine _conditionChangeCoroutine;
 		protected CharacterStates.CharacterConditions _lastState;
-
+		protected ProximityManager _proximityManager;
 
 		/// <summary>
 		/// Initializes this instance of the character
@@ -170,7 +165,6 @@ namespace SpectralDepths.TopDown
 		protected virtual void Awake()
 		{		
 			Initialization();
-			SetupCharacter();
 		}
 
 		/// <summary>
@@ -215,9 +209,13 @@ namespace SpectralDepths.TopDown
 			Orientation2D = FindAbility<CharacterOrientation2D>();
 			Orientation3D = FindAbility<CharacterOrientation3D>();
 			_characterPersistence = FindAbility<CharacterPersistence>();
-
+			
 			AssignAnimator();
 
+			if(ProximityManager.Instance!=null)
+			{
+				_proximityManager = ProximityManager.Instance;
+			}
 			// instantiate camera target
 			if (CameraTarget == null)
 			{
@@ -245,40 +243,11 @@ namespace SpectralDepths.TopDown
    			//If the Emerald AI Component is being used
 			if(UseEmeraldAI)
 			{
+				if(EmeraldComponent==null) EmeraldComponent = GetComponent<EmeraldSystem>();
 				DeathMMFeedbacks?.Initialization(this.gameObject);
     				if(EmeraldComponent!=null){EmeraldComponent.AssignCharacter(this);}
 			}
-		}
-		/// <summary>
-		/// Sets up the character depending on CharacterData given in
-		/// </summary>
 
-		protected void SetupCharacter()
-		{
-			if(CharacterComponentData == null) return;
-			UpdateIdentity();
-			UpdateStats();
-		}
-		/// <summary>
-		/// Re-updates all the character's identifiers 
-		/// </summary>
-		public void UpdateIdentity()
-		{
-			if(string.IsNullOrEmpty(CharacterName)){CharacterName = CharacterComponentData.name;}
-			if(CharacterIcon==null){CharacterIcon = CharacterComponentData.Icon;}
-		}	
-
-		/// <summary>
-		/// Re-updates all the character's stats by redistributing values through the CharacterData
-		/// </summary>
-		public void UpdateStats()
-		{
-			if(EmeraldComponent == null) return;
-			EmeraldHealth emeraldHealth = EmeraldComponent.GetComponent<EmeraldHealth>();
-			emeraldHealth.StartHealth = CharacterComponentData.MaxHealth;
-			emeraldHealth.StartPoise = CharacterComponentData.MaxPoise;
-			emeraldHealth.PoiseResistance = CharacterComponentData.PoiseResistance;
-			emeraldHealth.PoiseResetTime = CharacterComponentData.PoiseResetTime;
 		}
 		
 		/// <summary>
@@ -934,6 +903,14 @@ namespace SpectralDepths.TopDown
 				characterAbility.enabled = false;
 			}
 
+			if(_proximityManager!=null)
+			{
+				if(_proximityManager.ProximityTargets.Contains(this.gameObject.transform))
+				{
+					_proximityManager.ProximityTargets.Remove(this.gameObject.transform);
+				}
+			}
+			if(Eyes!=null) Eyes.SetActive(false);
 			Vector3 spawnPosition = transform.position + Vector3.up * 0.5f;
 			if(ObjectToDropOnDeath!=null) Instantiate(ObjectToDropOnDeath, spawnPosition, Quaternion.identity);
 		}

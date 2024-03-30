@@ -48,11 +48,11 @@ namespace EmeraldAI
         //Current amount of poise. When Poise reaches 0, the characters plays a hit animation
         public float Poise;
         //Starting amount of poise
-        public float StartPoise;
+        public float StartPoise = 100;
         //the amount of time before a character's current poise resets to starting poise
         public float PoiseResetTime;
         //multiplier for the amount of poise damage recived
-        public float PoiseResistance;
+        public float PoiseResistance = 1;
         
         #endregion
 

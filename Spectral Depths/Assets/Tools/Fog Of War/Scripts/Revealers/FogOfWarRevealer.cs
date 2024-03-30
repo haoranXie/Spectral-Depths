@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using EmeraldAI;
 #if UNITY_EDITOR
 using UnityEngine.Profiling;
 #endif
@@ -102,6 +103,7 @@ namespace FOW
             ConstantDensity,
             EdgeDetect,
         };
+
         public struct SightRay
         {
             public bool hit;

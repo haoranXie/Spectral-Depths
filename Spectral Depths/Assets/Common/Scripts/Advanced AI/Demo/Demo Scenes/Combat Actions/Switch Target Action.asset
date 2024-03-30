@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c415f3eab79c174cbdde5fce52a9ad4, type: 3}
   m_Name: Switch Target Action
   m_EditorClassIdentifier: 
-  EnterConditions: 822
+  EnterConditions: 818
   ExitConditions: 0
-  CooldownConditions: 6074
-  CooldownLength: 0.5
+  CooldownConditions: 6078
+  CooldownLength: 0.3
   UseCooldown: 1
   HideSettingsFoldout: 0
   DefaultSettingsFoldout: 1
