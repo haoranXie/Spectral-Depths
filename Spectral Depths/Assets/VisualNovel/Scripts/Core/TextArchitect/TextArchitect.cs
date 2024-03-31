@@ -135,24 +135,8 @@ public class TextArchitect
         //
         //
         //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
         //My own
         tmpro_ui = DialogueSystem.instance.dialogueContainer.dialogueText;
-        //
-        //
-        //
         //
         //
         //
@@ -174,8 +158,35 @@ public class TextArchitect
     /// <param name="text"></param>
     public Coroutine Append(string text)
     {
+        //
+        //
+        //
+        //
+        //
+        //My own
+        tmpro_ui = DialogueSystem.instance.dialogueContainer.dialogueText;
+        //
+        //
+        //
+        //
         preText = currentText;
         targetText = text;
+
+        Stop();
+
+        buildProcess = builder.Build();
+        return buildProcess;
+    }
+
+    //MY OWN
+    //
+    //
+    //
+    public Coroutine Nextline(string text)
+    {
+        tmpro_ui = DialogueSystem.instance.dialogueContainer.dialogueText;
+        preText = currentText;
+        targetText = "\n" + text;
 
         Stop();
 

@@ -16,3 +16,5 @@ MonoBehaviour:
     type: 2}
   defaultTextColor: {r: 1, g: 1, b: 1, a: 1}
   defaultFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+  defaultDialogueFontSize: 18
+  defaultNameFontSize: 22

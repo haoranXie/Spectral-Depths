@@ -150,7 +150,7 @@ namespace DIALOGUE
 
                 yield return WaitForDialogueSegmentSignalToBeTriggered(segment);
 
-                yield return BuildDialogue(segment.dialogue, segment.appendText);
+                yield return BuildDialogue(segment.dialogue, segment.appendText, segment.nextlineText); //ADDED segment.nextlineText
             }
         }
 
@@ -160,10 +160,12 @@ namespace DIALOGUE
             {
                 case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.C:
                 case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.A:
+                case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.L: //MY OWN
                     yield return WaitForUserInput();
                     break;
                 case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.WC:
                 case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.WA:
+                case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.WL: //MY OWN
                     yield return new WaitForSeconds(segment.signalDelay);
                     break;
                 default:
@@ -171,13 +173,23 @@ namespace DIALOGUE
             }
         }
 
-        IEnumerator BuildDialogue(string dialogue, bool append = false)
+        IEnumerator BuildDialogue(string dialogue, bool append = false, bool nextline = false) //ADDED bool nextline = false
         {
-            //Build the dialogue
+            //ORIGINALLY
+            /**
             if (!append)
-                architect.Build(dialogue);
+            architect.Build(dialogue);
             else
                 architect.Append(dialogue);
+            **/
+
+            //Build the dialogue
+            if (append)
+                architect.Append(dialogue);
+            else if (nextline)
+                architect.Nextline(dialogue);
+            else
+                architect.Build(dialogue);
 
             //Wait for the dialogue to complete.
             while (architect.isBuilding)

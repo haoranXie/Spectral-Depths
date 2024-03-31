@@ -1,0 +1,71 @@
+CreateCharacter("A Pleasant Voice" as "Dead Girl"), CreateCharacter("Me" as "Alice"), CreateCharacter("Carrie" as "Dead Girl"), CreateCharacter("BigDialogueBox"), usebigdb(), showdb(), SetLayerMedia(background "BaseCeiling"), PlaySong("SadnessRoom")
+
+BigDialogueBox "I am dragged awake by an uneasy silence.{l} Diminished only slightly by the comforting hum of machines.{l} The stone-cold floor presses against my back.{l} While my gaze fixes upon the smoke-clouded ceiling"
+
+The familiar smell of chemicals still lingers in the air
+Despite the medley of aromas that had infiltrated
+
+I lay on the floor, unable to move
+And unable to remember anything
+Yet for some reason, it didn't bother me at all
+At that moment, contentment was found in watching time go by
+
+After a while, I sense a motion to my left
+And so I call out to it
+In the distance, I hear a quiet voice respond
+A Pleasant Voice
+
+A Pleasant Voice "Chuckle* Your senses are still as sharp as ever."
+And I thought today would be the day I could finally give you a jump scare.
+
+BigDialogueBox "She slowly shuffles towards me, lying down by my side"
+I try to take a glance at the strange person but my head would not move
+She starts reminiscing about things I've no recollection of
+
+A Pleasant Voice "...chopped up five batches of chives and..."
+
+BigDialogueBox "Names that were alien to me"
+
+A Pleasant Voice "...took JuJu by the leg and dragged..."
+
+BigDialogueBox "and jokes I didn't understand"
+
+A Pleasant Voice "...because he was unbalanced"
+"HAHAHAHAH, you get it?..."
+
+BigDialogueBox "She sounded so happy that I couldn't bring myself to ruin the moment"
+I just laid there and listened
+occaisionally responding vaguely to keep the conversation going
+occaisionally sensing tinges of sadness in her words
+
+A Pleasant Voice "Looking back, everyone sure had a lot of fun with your crazy ideas."
+So Director, lets make even more fun memories together with everyone, ok?
+
+BigDialogueBox "I could almost imagine the big grin on her face as she said that"
+It made me wish I could've responded with a yes
+
+BigDialogueBox "..."
+
+A Pleasant Voice "What's wrong?"
+You're even less talkative than usual today.
+
+Me "Sorry"
+I don't remember anything
+...
+What your name?
+
+A Pleasant Voice "..."
+.....
+.......
+Pftttttt
+HAHAHAHAAAHA
+You may have lost your memories, but you haven't changed one bit
+Still never speaking up for yourself
+You probably felt bad so you didn't stop me
+I must've sounded crazy to you
+HAHAAHHAHA
+You can call me....{a}Carrie
+
+Me "Then Carrie,{a} can you tell me about myself?"
+
+Carrie "You betcha, we have...{a} more than enough time."

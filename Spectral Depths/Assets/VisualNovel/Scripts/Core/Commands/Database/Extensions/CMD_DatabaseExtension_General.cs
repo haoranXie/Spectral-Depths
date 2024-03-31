@@ -98,7 +98,6 @@ namespace COMMANDS
             DialogueSystem.instance.dialogueContainer.dialogueText = GameObject.Find("Big Root Container").GetComponentInChildren<TextMeshProUGUI>();
             yield return null;
         }
-
         private static IEnumerator UseSmallDialogueBox(string[] data)
         {
             DialogueSystem.instance.dialogueContainer.root = GameObject.Find("Root Container");

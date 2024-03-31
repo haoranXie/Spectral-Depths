@@ -7,7 +7,7 @@ namespace DIALOGUE
     public class DL_DIALOGUE_DATA
     {
         public List<DIALOGUE_SEGMENT> segments;
-        private const string segmentIdentifierPattern = @"\{[ca]\}|\{w[ca]\s\d*\.?\d*\}";
+        private const string segmentIdentifierPattern = @"\{[cal]\}|\{w[cal]\s\d*\.?\d*\}"; //CHANGED "ca" to "cal"
 
         public DL_DIALOGUE_DATA(string rawDialogue)
         {
@@ -65,9 +65,10 @@ namespace DIALOGUE
             public StartSignal startSignal;
             public float signalDelay;
 
-            public enum StartSignal { NONE, C, A, WA, WC }
+            public enum StartSignal { NONE, C, A, L, WA, WC, WL} //ADDED "L" and "WL"
 
             public bool appendText => startSignal == StartSignal.A || startSignal == StartSignal.WA;
+            public bool nextlineText => startSignal == StartSignal.L || startSignal == StartSignal.WL;
         }
 
     }

@@ -77,7 +77,7 @@ public class TABuilder_Fade : TABuilder
 
         while(true)
         {
-            float fadeSpeed = (architect.hurryUp ? architect.charactersPerCycle * 5 : architect.charactersPerCycle) * architect.speed * 4f;
+            float fadeSpeed = (architect.hurryUp ? architect.charactersPerCycle * 5 : architect.charactersPerCycle) * architect.speed * 50f; //ORIGINALLY 4
 
             for (int i = minRange; i < maxRange; i++)
             {

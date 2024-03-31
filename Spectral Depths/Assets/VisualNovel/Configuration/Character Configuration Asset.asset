@@ -13,42 +13,6 @@ MonoBehaviour:
   m_Name: Character Configuration Asset
   m_EditorClassIdentifier: 
   characters:
-  - name: Stella
-    alias: s
-    characterType: 1
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
-    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
-    nameFontSize: 22
-    dialogueFontSize: 18
-  - name: Elen
-    alias: e
-    characterType: 0
-    nameColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
-    dialogueColor: {r: 1, g: 0.66342473, b: 0.43867922, a: 1}
-    nameFont: {fileID: 11400000, guid: 1f9987afb925cfc46ad034ca97acfba8, type: 2}
-    dialogueFont: {fileID: 11400000, guid: e94f9ea549dac6348b79fb33e9451f34, type: 2}
-    nameFontSize: 0
-    dialogueFontSize: 0
-  - name: Benjamin
-    alias: ben
-    characterType: 0
-    nameColor: {r: 0.5613208, g: 1, b: 0.6207038, a: 1}
-    dialogueColor: {r: 0.4764151, g: 1, b: 0.8675948, a: 1}
-    nameFont: {fileID: 11400000, guid: a6a9963a494a04c47bfb712ccfd23da3, type: 2}
-    dialogueFont: {fileID: 11400000, guid: d22ea559779c55a4cbbc1aae11309bf6, type: 2}
-    nameFontSize: 22
-    dialogueFontSize: 18
-  - name: Female Student 2
-    alias: fs2
-    characterType: 1
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
-    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
-    nameFontSize: 22
-    dialogueFontSize: 18
   - name: Raelin
     alias: r
     characterType: 2
@@ -67,42 +31,6 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     nameFontSize: 22
     dialogueFontSize: 18
-  - name: Mao
-    alias: ma
-    characterType: 3
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    nameFontSize: 0
-    dialogueFontSize: 0
-  - name: Natori
-    alias: na
-    characterType: 3
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    nameFontSize: 0
-    dialogueFontSize: 0
-  - name: Rice
-    alias: ri
-    characterType: 3
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    nameFontSize: 0
-    dialogueFontSize: 0
-  - name: Koharu
-    alias: ko
-    characterType: 3
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    nameFontSize: 22
-    dialogueFontSize: 18
   - name: Alice
     alias: Alice
     characterType: 1
@@ -115,18 +43,36 @@ MonoBehaviour:
   - name: Cheshire
     alias: Cheshire
     characterType: 1
-    nameColor: {r: 1, g: 0.787515, b: 0.5235849, a: 1}
-    dialogueColor: {r: 0.9333334, g: 0.48235297, b: 0.11764707, a: 1}
+    nameColor: {r: 0.9725491, g: 0.83921576, b: 0.6745098, a: 1}
+    dialogueColor: {r: 0.9716981, g: 0.8387393, b: 0.6737718, a: 1}
     nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     nameFontSize: 22
     dialogueFontSize: 18
   - name: Narrator
-    alias: N
+    alias: Narrator
     characterType: 0
-    nameColor: {r: 0, g: 0, b: 0, a: 1}
+    nameColor: {r: 1, g: 1, b: 1, a: 1}
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     nameFontSize: 22
     dialogueFontSize: 18
+  - name: A Pleasant Voice
+    alias: Carrie
+    characterType: 0
+    nameColor: {r: 0.92269397, g: 0.67058825, b: 1, a: 1}
+    dialogueColor: {r: 0.9215687, g: 0.67058825, b: 1, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    nameFontSize: 22
+    dialogueFontSize: 18
+  - name: BigDialogueBox
+    alias: Big Dialogue Box
+    characterType: 0
+    nameColor: {r: 1, g: 1, b: 1, a: 1}
+    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+    nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
+    nameFontSize: 22
+    dialogueFontSize: 35
