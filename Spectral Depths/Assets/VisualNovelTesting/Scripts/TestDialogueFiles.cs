@@ -6,7 +6,7 @@ using SpectralDepths.TopDown;
 using SpectralDepths.Tools;
 
 
-public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
+public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>, PLEventListener<TopDownEngineEvent>
 {
     [SerializeField] private TextAsset fileToRead = null;
     public Canvas VNCanvas;
@@ -43,8 +43,19 @@ public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
         switch (engineEvent.EventType)
         {
             case VNEventTypes.ChangeVNScene:
+                ChangeVNScene(engineEvent.FileToRead);
                 break;
             case VNEventTypes.DisableVNScene:
+                DisableVNScene();
+                break;
+        }
+    }
+
+    public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+    {
+        switch (engineEvent.EventType)
+        {
+            case TopDownEngineEventTypes.SwitchToGameMode:
                 DisableVNScene();
                 break;
         }
@@ -56,15 +67,19 @@ public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
         VNCanvas.gameObject.SetActive(false);
     }
 
-    void ChangeVNScene()
+    void ChangeVNScene(TextAsset fileToRead)
     {
         _runVN = true;
+        this.fileToRead = fileToRead;
         VNCanvas.gameObject.SetActive(true);
+        StartConversation();
     }
 
     protected virtual void OnEnable()
     {
         this.PLEventStartListening<VNEvent> ();
+        this.PLEventStartListening<TopDownEngineEvent> ();
+
     }
 
     /// <summary>
@@ -73,7 +88,7 @@ public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
     protected virtual void OnDisable()
     {
         this.PLEventStopListening<VNEvent> ();
+        this.PLEventStopListening<TopDownEngineEvent> ();
+
     }
-
-
 }

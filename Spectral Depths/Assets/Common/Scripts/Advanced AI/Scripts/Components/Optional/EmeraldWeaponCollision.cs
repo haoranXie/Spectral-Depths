@@ -12,7 +12,7 @@ namespace EmeraldAI
         public bool WeaponCollisionFoldout;
         public BoxCollider WeaponCollider;
         public Color CollisionBoxColor = new Color(1, 0.85f, 0, 0.25f);
-
+        public string WeaponName;
         public List<Transform> HitTargets = new List<Transform>();
 
         public bool OnCollision;
@@ -34,7 +34,7 @@ namespace EmeraldAI
 
         public void EnableWeaponCollider(string Name)
         {
-            if (gameObject.name == Name)
+            if (gameObject.name == Name || WeaponName == Name)
             {
                 if (gameObject.GetComponent<Collider>() == null)
                     return;
@@ -46,7 +46,7 @@ namespace EmeraldAI
 
         public void DisableWeaponCollider(string Name)
         {
-            if (gameObject.name == Name)
+            if (gameObject.name == Name || WeaponName == Name)
             {
                 if (gameObject.GetComponent<Collider>() == null)
                     return;

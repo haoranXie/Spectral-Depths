@@ -28,6 +28,8 @@ namespace SpectralDepths.TopDown
 		public bool DeathSwitch = true;
 		[Tooltip("Whether using performance optimizer")]
 		public bool UsingProximityManager = false;
+		[Tooltip("How fast strain decreases after the strain cooldown time is elapsed")]
+        public float OverdriveStrainSpeed = 5f;
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
@@ -36,6 +38,7 @@ namespace SpectralDepths.TopDown
 		protected NavMeshAgent _navMeshAgent;
 		private bool _playerControlled;
 		private bool _companionsFollowing = false;
+	
 		protected override void Initialization()
 		{
 			base.Initialization();
@@ -87,6 +90,8 @@ namespace SpectralDepths.TopDown
 		{
 			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterKey))
 			{
+				//If we're using Manager Abilities, then you can't override when strain is maxed
+				if(ManagerAbilities.Instance !=null){ if(ManagerAbilities.Instance.CurrentStrain==ManagerAbilities.Instance.MaxStrain){return;}}
 				//Turns off all other players during an intra quick swap
 				TopDownEngineEvent.Trigger(TopDownEngineEventTypes.IntraQuickSwap, _character);
 				RTSEvent.Trigger(RTSEventTypes.UnselectedEveryone, null, null);
@@ -112,9 +117,10 @@ namespace SpectralDepths.TopDown
 			OnWeaponChanged();
 			_emeraldComponent.CombatComponent.ClearTarget();
 			if(_emeraldComponent.BehaviorsComponent.IsOrdered){_emeraldComponent.MovementComponent.ReachedOrderedWaypoint();_emeraldComponent.BehaviorsComponent.IsOrdered =false;GameRTSController.Instance.SwitchToDefaultCommand();}
+
 		}
 
-		private void SwitchToAI()
+		public void SwitchToAI()
 		{
 			_emeraldComponent.MovementComponent.StartingDestination = transform.position;
 			CharacterModeOff();
@@ -213,6 +219,7 @@ namespace SpectralDepths.TopDown
             _animator.SetBool("Player Controls", false);
 			_characterController.enabled=false;
 			_character.CacheAbilities();
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RemoveControlledCharacter, _character);
 		}		
 
 		/// <summary>

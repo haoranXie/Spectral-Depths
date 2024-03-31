@@ -21,7 +21,7 @@ namespace SpectralDepths.TopDown
     /// Handles the usage, logic, and management of the special abilities usable by the manager of an expedition
     /// </summary>
 
-    public class ManagerAbilities : PLSingleton<ManagerAbilities>, PLEventListener<EnergyEvent>, PLEventListener<StrainEvent>
+    public class ManagerAbilities : PLSingleton<ManagerAbilities>, PLEventListener<EnergyEvent>, PLEventListener<StrainEvent>, PLEventListener<TopDownEngineEvent>
     {
         [PLInformation("ManagerAbilities handles the usage, logic, and management of the special abilities usable by the manager of an expedition",PLInformationAttribute.InformationType.Info,false)]
         [Header("Settings")]
@@ -95,12 +95,12 @@ namespace SpectralDepths.TopDown
         float _strainDecreaseSpeed = 0;
         Coroutine _strainDecreaseCoroutine;
         bool _regenStrain = false;
+        private Character _overridenCharacter;
         protected override void Awake ()
         {
             base.Awake();
             CurrentEnergy = MaxEnergy;
             _strainDecreaseSpeed = BaseStrainDecreaseRate;
-            StrainText.text = 0.ToString();
         }
 
         void Update()
@@ -175,6 +175,7 @@ namespace SpectralDepths.TopDown
                 if(CurrentStrain==MaxStrain)
                 {
                     if(Time.timeScale!=1) ResetStrategyMode();
+                    if(_overridenCharacter!=null) _overridenCharacter.GetComponent<CharacterAbilityOverdrive>().SwitchToAI();
                     if(StrainBarFrame.sprite != StrainBarFrameMaxed){StrainBarFrame.sprite = StrainBarFrameMaxed; StrainBarFrame.color = StrainBarFrameMaxedColor;}
                     _strainIncreaseSpeed = 0;
                     _strategyMode = false;
@@ -187,7 +188,7 @@ namespace SpectralDepths.TopDown
             CurrentStrain+=amount;
             CurrentStrain = Mathf.Clamp(CurrentStrain, 0f, MaxStrain);
             StrainBar.UpdateBar(Mathf.RoundToInt(CurrentStrain), 0f, Mathf.RoundToInt(MaxStrain));
-            StrainText.text = Mathf.RoundToInt(CurrentStrain).ToString();
+            StrainText.text = Mathf.RoundToInt(CurrentStrain).ToString()+"/"+Mathf.RoundToInt(MaxStrain).ToString();
         }
 
         void DecreaseStrain(float amount)
@@ -195,7 +196,7 @@ namespace SpectralDepths.TopDown
             CurrentStrain-=amount;
             CurrentStrain = Mathf.Clamp(CurrentStrain, 0f, MaxStrain);
             StrainBar.UpdateBar(Mathf.RoundToInt(CurrentStrain), 0f, Mathf.RoundToInt(MaxStrain));
-            StrainText.text = Mathf.RoundToInt(CurrentStrain).ToString();
+            StrainText.text = Mathf.RoundToInt(CurrentStrain).ToString()+"/"+Mathf.RoundToInt(MaxStrain).ToString();
         }
 
         private void StrategyModeOn()
@@ -292,6 +293,7 @@ namespace SpectralDepths.TopDown
                 case EnergyEventTypes.RecoverEnergy:
                     RestoreEnergy(engineEvent.AmountOfEnergy);
                     break;
+                    
             }       
         }
 
@@ -304,6 +306,30 @@ namespace SpectralDepths.TopDown
             }       
         }
 
+        public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+        {
+            switch (engineEvent.EventType)
+            {
+                case TopDownEngineEventTypes.NewControlledCharacter:
+                    if(_overridenCharacter !=null) _strainIncreaseSpeed -= _overridenCharacter.GetComponent<CharacterAbilityOverdrive>().OverdriveStrainSpeed;
+                    _overridenCharacter = engineEvent.OriginCharacter;
+                    _strainIncreaseSpeed += _overridenCharacter.GetComponent<CharacterAbilityOverdrive>().OverdriveStrainSpeed;
+                break;
+                case TopDownEngineEventTypes.RemoveControlledCharacter:
+                    if(_overridenCharacter !=null)
+                    {
+                        if(_overridenCharacter==engineEvent.OriginCharacter)
+                        {
+                            _strainIncreaseSpeed -=  _overridenCharacter.GetComponent<CharacterAbilityOverdrive>().OverdriveStrainSpeed;
+                            _overridenCharacter = null;
+                        }
+                    }
+                break;
+            }       
+        }
+
+
+
 
         public void ResetStrategyMode()
         {
@@ -315,6 +341,7 @@ namespace SpectralDepths.TopDown
 		{
 			this.PLEventStartListening<EnergyEvent> ();
 			this.PLEventStartListening<StrainEvent> ();
+			this.PLEventStartListening<TopDownEngineEvent> ();
 		}
 
 		/// <summary>
@@ -324,6 +351,7 @@ namespace SpectralDepths.TopDown
 		{
 			this.PLEventStopListening<EnergyEvent> ();
 			this.PLEventStartListening<StrainEvent> ();
+			this.PLEventStartListening<TopDownEngineEvent> ();
         }
 
 

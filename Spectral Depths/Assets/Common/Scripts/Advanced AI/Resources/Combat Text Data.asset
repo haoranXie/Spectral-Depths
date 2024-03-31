@@ -19,11 +19,11 @@ MonoBehaviour:
   AITextColor: {r: 0.875, g: 0.8086207, b: 0.59191173, a: 1}
   AICritTextColor: {r: 1, g: 0.43448275, b: 0, a: 1}
   HealingTextColor: {r: 0, g: 1, b: 0, a: 1}
-  TextFont: {fileID: 12800000, guid: f67d81aa5e239f04bb57c4d8b401ad25, type: 3}
+  TextFont: {fileID: 12800000, guid: b68e00dc1fa51f44fa7561f608fe3ac3, type: 3}
   FontSize: 25
   MaxFontSize: 15
   AnimationType: 3
   CombatTextTargets: 0
   OutlineEffect: 0
   UseAnimateFontSize: 0
-  DefaultHeight: 1.75
+  DefaultHeight: 1

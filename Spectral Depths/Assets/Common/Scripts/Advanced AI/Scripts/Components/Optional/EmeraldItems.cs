@@ -442,6 +442,7 @@ namespace EmeraldAI
             if(_characterHandleWeapon.CurrentWeapon==null) return;
             for(int i = 0; i<Type1EquippableWeapons.Count; i++)
             {
+                if(Type1EquippableWeapons[i].HeldObject.GetComponent<Weapon>()==null) continue;
                 if(string.Equals(_characterHandleWeapon.CurrentWeapon.gameObject.name, Type1EquippableWeapons[i].HeldObject.gameObject.name)  || string.Equals(_characterHandleWeapon.CurrentWeapon.GetComponent<Weapon>().WeaponName, Type1EquippableWeapons[i].HeldObject.GetComponent<Weapon>().WeaponName))
                 {
                     EquippableWeapons equippableWeapon = new EquippableWeapons();
@@ -467,7 +468,7 @@ namespace EmeraldAI
         //Meant to override with a scriptable item type from Inventory
         protected void ChangeType1Weapons(InventoryItem[] inventoryItems)
         {
-            Type1EquippableWeapons.Clear();
+            //Type1EquippableWeapons.Clear();
             foreach(InventoryItem inventoryItem in inventoryItems)
             {
                 EquippableWeapons equippableWeapon = new EquippableWeapons();

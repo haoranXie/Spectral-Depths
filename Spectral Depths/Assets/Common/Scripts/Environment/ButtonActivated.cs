@@ -484,11 +484,12 @@ namespace SpectralDepths.TopDown
 		/// <param name="collider">Something colliding with the water.</param>
 		protected virtual void TriggerEnter(GameObject collider)
 		{            
+			
 			if (!CheckConditions(collider))
 			{
 				return;
 			}
-
+			
 			// if we can only activate this zone when grounded, we check if we have a controller and if it's not grounded,
 			// we do nothing and exit
 			if (CanOnlyActivateIfGrounded)
@@ -505,6 +506,7 @@ namespace SpectralDepths.TopDown
 					}
 				}
 			}
+			
 			// at this point the object is colliding and authorized, we add it to our list
 			_collidingObjects.Add(collider.gameObject);
 			if (!TestForLastObject(collider))
@@ -512,7 +514,7 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 			EnterFeedback?.PlayFeedbacks(this.transform.position);
-
+			
 			if (ShouldUpdateState)
 			{
 				_characterButtonActivation = collider.gameObject.PLGetComponentNoAlloc<Character>()?.FindAbility<CharacterButtonActivation>();
@@ -523,12 +525,12 @@ namespace SpectralDepths.TopDown
 					_characterButtonActivation.InButtonAutoActivatedZone = AutoActivation;
 				}
 			}
-
+			
 			if (AutoActivation)
 			{
 				_autoActivationCoroutine = StartCoroutine(TriggerButtonActionCo());
 			}	
-
+			
 			// if we're not already showing the prompt and if the zone can be activated, we show it
 			if (ShowPromptWhenColliding)
 			{

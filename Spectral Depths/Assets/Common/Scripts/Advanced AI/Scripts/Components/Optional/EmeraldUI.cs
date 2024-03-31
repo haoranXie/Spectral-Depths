@@ -19,6 +19,7 @@ namespace EmeraldAI
         public bool NameTextFoldout;
         public bool LevelTextFoldout;
         public YesOrNo UseCustomHealthBar = YesOrNo.No;
+        public YesOrNo DisplayUIOnCanvas = YesOrNo.No;
         public YesOrNo DisplayUIInCombat = YesOrNo.No;
         public YesOrNo DisplayUIWhenTakingDamage = YesOrNo.No;
         public YesOrNo DisplayUIWhenSelected = YesOrNo.No;

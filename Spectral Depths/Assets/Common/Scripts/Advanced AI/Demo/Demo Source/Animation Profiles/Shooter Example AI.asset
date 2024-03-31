@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shooter Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 81272e8fde06f4e45b5fb964e2133f27, type: 2}
+  AIAnimator: {fileID: 9100000, guid: a945113573af29446b4f5321453596b5, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
@@ -22,12 +22,12 @@ MonoBehaviour:
     Example AI.overrideController
   AnimatorCullingMode: 0
   WalkFoldout: 0
-  RunFoldout: 0
+  RunFoldout: 1
   TurnFoldout: 1
   NonCombatDeathFoldout: 0
   NonCombatAnimationsFoldout: 1
   NonCombatIdleFoldout: 0
-  NonCombatHitFoldout: 0
+  NonCombatHitFoldout: 1
   EmotesFoldout: 0
   Type1IdleFoldout: 0
   Type2IdleFoldout: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EmeraldAI;
 using SpectralDepths.TopDown;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,9 +11,9 @@ public class IntroLoadScreen : MonoBehaviour
     [SerializeField] public AudioClip bgm;
     [SerializeField] public Canvas IntroCanvas;
     [SerializeField] public Animator animator;
+    [SerializeField] public Transform initialPoint;
     void Awake()
     {
-        Application.targetFrameRate = 60;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -25,6 +26,16 @@ public class IntroLoadScreen : MonoBehaviour
         PlayWithFadeIn(bgm,5f);
         // Unsubscribe from the event to prevent multiple subscriptions
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public void CustomStart()
+    {
+        foreach(Character character in LevelManager.Instance.Players)
+        {
+            Debug.Log("hi");
+            EmeraldSystem emeraldSystem = character.GetComponent<EmeraldSystem>();
+            EmeraldAPI.Movement.SetCustomDestination(emeraldSystem, initialPoint.position);
+        }
     }
 
 

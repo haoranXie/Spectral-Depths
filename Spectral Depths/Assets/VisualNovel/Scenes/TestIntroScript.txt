@@ -1,0 +1,25 @@
+CreateCharacter(Narrator), CreateCharacter(Alice), CreateCharacter(Cheshire)
+Alice.SetPosition(0.5)
+Alice.Show()
+
+PlaySFX(Static -loop true)
+Narrator "I wake up to feel a numbing pain in my head.{a} My hand unconciously reaches for the radio in an attempt to subside the pain in my head"
+StopSFX(static)
+
+Alice "What a weird dream..."
+As I start to become aware of my surroundings, I start piecing together the fragments of my dream, hoping to find a clue that could aid us on our mission.{a} I take out my device and start writting down everything I remember.
+The ⍓︎□︎◆︎❒︎ Empire{a}, The Golden Age{a}, The Spire,...{a} Some of the things I remembered were familiar to me, but most were not.{a} Who were the three geniuses?{a} What's The Golden Age?"
+My train of thoughts gets interrupted by the sound of the door knocking
+
+PlaySFX("DoorKnock" -v 1.5)
+wait(1)
+
+Alice "Come in" wait(1), Alice.Move(-x 0.1), Cheshire.setPosition(0.7), Cheshire.Show()
+A familiar face shows itself
+
+Cheshire "..."
+Did you learn an...{a} Nevermind.
+It's Time.{a} If we leave now we'll be able to get there with fifteen minutes to spare"
+
+Alice "Alright, let's go"
+switchtogamemode()

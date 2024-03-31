@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Example AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 06c76261f2684a04f8cd53920204b25d, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 1603a471f55b0da41a78888a1849baa6, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0
@@ -23,10 +23,10 @@ MonoBehaviour:
   AnimatorCullingMode: 0
   WalkFoldout: 0
   RunFoldout: 0
-  TurnFoldout: 1
+  TurnFoldout: 0
   NonCombatDeathFoldout: 0
   NonCombatAnimationsFoldout: 1
-  NonCombatIdleFoldout: 0
+  NonCombatIdleFoldout: 1
   NonCombatHitFoldout: 0
   EmotesFoldout: 0
   Type1IdleFoldout: 0

@@ -18,7 +18,7 @@ namespace EmeraldAI.Utility
         SerializedProperty MaxUIScaleSizeProp, DisplayUIInCombatHideDelayProp, DisplayUIWhenTakingDamageHideDelayProp, DisplayUIWhenSelectedHideDelayProp;
 
         //Enums
-        SerializedProperty CreateHealthBarsProp, UseCustomFontAINameProp, UseCustomFontAILevelProp, CustomizeHealthBarProp, DisplayAINameProp, DisplayAITitleProp, DisplayAILevelProp, UseAINameUIOutlineEffectProp, UseAILevelUIOutlineEffectProp, DisplayUIInCombatProp, DisplayUIWhenTakingDamageProp, DisplayUIWhenSelectedProp,  DisplayUIByPlayerProximityProp;
+        SerializedProperty CreateHealthBarsProp, UseCustomFontAINameProp, UseCustomFontAILevelProp, CustomizeHealthBarProp, DisplayAINameProp, DisplayAITitleProp, DisplayAILevelProp, UseAINameUIOutlineEffectProp, UseAILevelUIOutlineEffectProp, DisplayUIInCombatProp, DisplayUIWhenTakingDamageProp, DisplayUIWhenSelectedProp,  DisplayUIByPlayerProximityProp, DisplayUIOnCanvasProp;
 
         //Bools
         SerializedProperty HideSettingsFoldout, UISettingsFoldoutProp, HealthBarsFoldoutProp, CombatTextFoldoutProp, NameTextFoldoutProp, LevelTextFoldoutProp;
@@ -67,6 +67,7 @@ namespace EmeraldAI.Utility
             DisplayUIInCombatProp = serializedObject.FindProperty("DisplayUIInCombat");
             DisplayUIWhenTakingDamageProp = serializedObject.FindProperty("DisplayUIWhenTakingDamage");
             DisplayUIByPlayerProximityProp = serializedObject.FindProperty("DisplayUIByPlayerProximity");
+            DisplayUIOnCanvasProp = serializedObject.FindProperty("DisplayUIOnCanvas");
             DisplayUIWhenSelectedProp = serializedObject.FindProperty("DisplayUIWhenSelected");
             DisplayAINameProp = serializedObject.FindProperty("DisplayAIName");
             DisplayAITitleProp = serializedObject.FindProperty("DisplayAITitle");
@@ -155,10 +156,13 @@ namespace EmeraldAI.Utility
                 CustomEditorProperties.TextTitleWithDescription("UI Setup", "Controls the use and setup of Emerald's built-in UI." +
                 "You have three options regarding how the UI can be displayed", true);
 
-                EditorGUILayout.PropertyField(DisplayUIByPlayerProximityProp, new GUIContent("Display UI by Player Proximity"));
-                CustomEditorProperties.CustomHelpLabelField("Enables or disables the display of the AI's depending on the player's proximity", true);
+                EditorGUILayout.PropertyField(DisplayUIOnCanvasProp, new GUIContent("Display UI On Canvas"));
+                CustomEditorProperties.CustomHelpLabelField("Whether or not to display the UI on the canvas itself", true);
                 GUI.backgroundColor = new Color(1f, 1, 0.25f, 0.25f);
                 GUI.backgroundColor = Color.white;
+
+                EditorGUILayout.PropertyField(DisplayUIByPlayerProximityProp, new GUIContent("Display UI by Player Proximity"));
+                CustomEditorProperties.CustomHelpLabelField("Enables or disables the display of the AI's depending on the player's proximity", true);
 
                 if (self.DisplayUIByPlayerProximity == YesOrNo.Yes)
                 {

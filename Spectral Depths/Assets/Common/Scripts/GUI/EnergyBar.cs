@@ -21,7 +21,7 @@ namespace SpectralDepths.TopDown
 
         void Start()
         {
-            EnergyNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString(); //+ "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
+            EnergyNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString() + "/" + ManagerAbilities.Instance.MaxEnergy.ToString();; 
         }
 
         public virtual void OnMMEvent(EnergyEvent engineEvent)
@@ -42,7 +42,7 @@ namespace SpectralDepths.TopDown
         }
 		void UpdateEnergyOnUI()
 		{
-            EnergyNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString(); //+ "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
+            EnergyNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString() + "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
 			EnergyProgressBar.UpdateBar(ManagerAbilities.Instance.CurrentEnergy, 0, ManagerAbilities.Instance.MaxEnergy);
 		}
 		protected virtual void OnEnable()

@@ -3,18 +3,21 @@ using UnityEngine.UI;
 using System.Collections;
 using SpectralDepths.Tools;
 using UnityEngine.EventSystems;
-
+using SpectralDepths.Feedbacks;
+using System.Collections.Generic;
 namespace SpectralDepths.TopDown
 {
 	/// <summary>
 	/// Handles all GUI effects and changes
 	/// </summary>
 	[AddComponentMenu("Spectral Depths/Managers/GUIManager")]
-	public class GUIManager : PLSingleton<GUIManager> 
+	public class GUIManager : PLSingleton<GUIManager>, PLEventListener<TopDownEngineEvent>
 	{
 		/// the main canvas
 		[Tooltip("the main canvas")]
 		public Canvas MainCanvas;
+		[Tooltip("animator used for special UI animations")]
+		public Animator AnimationPlayer;
 		/// the game object that contains the heads up display (avatar, health, points...)
 		[Tooltip("the game object that contains the heads up display (avatar, health, points...)")]
 		public GameObject HUD;
@@ -48,7 +51,10 @@ namespace SpectralDepths.TopDown
 		/// the pattern to apply to format the display of points
 		[Tooltip("the pattern to apply to format the display of points")]
 		public string PointsTextPattern = "000000";
+		[Tooltip("List of gameobjects used for turtorial section")]
+		public List<GameObject> TurtorialNotifications;
 
+		bool _checkForClick = false;
 
 		protected float _initialJoystickAlpha;
 		protected float _initialButtonsAlpha;
@@ -62,6 +68,18 @@ namespace SpectralDepths.TopDown
 			base.Awake();
 
 			Initialization();
+		}
+
+		private void Update()
+		{
+			if(_checkForClick)
+			{
+				if (Input.GetMouseButtonDown(0))
+				{
+					AnimationPlayer.SetTrigger("TurtorialNotificationOff");
+					_checkForClick = false;
+				}
+			}
 		}
 
 		protected virtual void Initialization()
@@ -330,5 +348,57 @@ namespace SpectralDepths.TopDown
 				}    
 			}
 		}
+
+		public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+		{
+			switch (engineEvent.EventType)
+			{
+				case TopDownEngineEventTypes.ActiveCinematicMode:
+					AnimationPlayer.SetTrigger("CinematicOn");
+					break;
+				case TopDownEngineEventTypes.TurnOffCinematicMode:
+					AnimationPlayer.SetTrigger("CinematicOff");
+					break;
+				case TopDownEngineEventTypes.SwitchToGameMode:
+					AnimationPlayer.SetTrigger("CinematicOff");
+					break;
+			}
+		}
+		public virtual void Pause()
+		{	
+			// if time is not already stopped		
+			PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, 0f, 0f, false, 0f, true);
+			LevelManager.Instance.ToggleCharacterPause();
+		}
+		public virtual void UnPause()
+		{	
+			PLTimeScaleEvent.Trigger(PLTimeScaleMethods.Unfreeze, 1f, 0f, false, 0f, false);
+			LevelManager.Instance.ToggleCharacterPause();
+		}
+		public virtual void HideAllTurtorialNotifications()
+		{
+			foreach(GameObject turtorialNotification in TurtorialNotifications)
+			{
+				turtorialNotification.gameObject.SetActive(false);
+			}
+		}
+		public virtual void CheckForClick()
+		{
+			_checkForClick = true;
+		}
+		protected virtual void OnEnable()
+		{
+			this.PLEventStartListening<TopDownEngineEvent> ();
+		}
+
+		/// <summary>
+		/// OnDisable, we stop listening to events.
+		/// </summary>
+		protected virtual void OnDisable()
+		{
+			this.PLEventStopListening<TopDownEngineEvent> ();
+		}
+
+
 	}
 }
