@@ -4,6 +4,7 @@ using TMPro;
 using System.Reflection;
 using System.Linq;
 using System;
+using DIALOGUE;
 
 public class TextArchitect
 {
@@ -128,6 +129,36 @@ public class TextArchitect
     /// <param name="text"></param>
     public Coroutine Build(string text)
     {
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //My own
+        tmpro_ui = DialogueSystem.instance.dialogueContainer.dialogueText;
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
         preText = "";
         targetText = text;
 
@@ -158,6 +189,7 @@ public class TextArchitect
     /// <param name="text"></param>
     public void SetText(string text)
     {
+        //My Own
         preText = "";
         targetText = text;
 
