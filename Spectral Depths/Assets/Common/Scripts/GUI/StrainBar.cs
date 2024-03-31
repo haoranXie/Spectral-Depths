@@ -42,7 +42,7 @@ namespace SpectralDepths.TopDown
         }
 		void UpdateEnergyOnUI()
 		{
-            StrainNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString(); //+ "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
+            StrainNumber.text = ManagerAbilities.Instance.CurrentEnergy.ToString() + "/" + ManagerAbilities.Instance.MaxEnergy.ToString();
 			StrainProgressBar.UpdateBar(ManagerAbilities.Instance.CurrentEnergy, 0, ManagerAbilities.Instance.MaxEnergy);
 		}
 		protected virtual void OnEnable()

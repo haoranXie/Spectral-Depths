@@ -34,6 +34,7 @@ MonoBehaviour:
     CreateSoundsList: []
   MeleeSettings:
     Enabled: 1
+    FriendlyFire: 0
     ImpactEffect: {fileID: 0}
     ImpactEffectTimeoutSeconds: 2
     ImpactSoundsList:
@@ -48,16 +49,21 @@ MonoBehaviour:
     OddsToStun: 15
     StunLength: 3
   DamageSettings:
-    Foldout: 1
+    Foldout: 0
     Enabled: 1
     UseCriticalHits: 0
     UseDamageOverTime: 0
     BaseDamageSettings:
       UseRandomAmounts: 1
-      BaseAmount: 5
+      BaseAmount: 500
       MinAmount: 6
       MaxAmount: 12
       RagdollForce: 100
+    BasePoiseDamageSettings:
+      UseRandomAmounts: 0
+      BaseAmount: 50
+      MinAmount: 30
+      MaxAmount: 50
     CriticalHitSettings:
       CriticalHitOdds: 6.25
       CriticalHitMultiplier: 1.1

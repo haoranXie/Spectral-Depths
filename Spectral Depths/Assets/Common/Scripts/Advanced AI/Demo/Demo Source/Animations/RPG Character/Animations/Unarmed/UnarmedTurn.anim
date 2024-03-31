@@ -20899,7 +20899,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.31666666
+  - time: 0.32158375
     functionName: WalkFootstepSound
     data: 
     objectReferenceParameter: {fileID: 0}

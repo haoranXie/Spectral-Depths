@@ -43,6 +43,7 @@ public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
         switch (engineEvent.EventType)
         {
             case VNEventTypes.ChangeVNScene:
+                ChangeVNScene(engineEvent.FileToRead);
                 break;
             case VNEventTypes.DisableVNScene:
                 DisableVNScene();
@@ -56,10 +57,12 @@ public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
         VNCanvas.gameObject.SetActive(false);
     }
 
-    void ChangeVNScene()
+    void ChangeVNScene(TextAsset fileToRead)
     {
         _runVN = true;
+        this.fileToRead = fileToRead;
         VNCanvas.gameObject.SetActive(true);
+        StartConversation();
     }
 
     protected virtual void OnEnable()
@@ -74,6 +77,4 @@ public class TestDialogueFiles : MonoBehaviour, PLEventListener<VNEvent>
     {
         this.PLEventStopListening<VNEvent> ();
     }
-
-
 }

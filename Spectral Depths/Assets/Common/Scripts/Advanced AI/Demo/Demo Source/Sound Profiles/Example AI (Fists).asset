@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Example AI (Fists)
   m_EditorClassIdentifier: 
   IdleSoundsFoldout: 0
-  FootstepSoundsFoldout: 1
+  FootstepSoundsFoldout: 0
   InteractSoundsFoldout: 0
   EquipAndUnequipSoundsFoldout: 0
   AttackSoundsFoldout: 1
-  InjuredSoundsFoldout: 1
+  InjuredSoundsFoldout: 0
   BlockSoundsFoldout: 1
-  DeathSoundsFoldout: 1
-  WarningSoundsFoldout: 1
+  DeathSoundsFoldout: 0
+  WarningSoundsFoldout: 0
   IdleSoundsSeconds: 0
   IdleSoundsSecondsMin: 5
   IdleSoundsSecondsMax: 10
@@ -31,7 +31,7 @@ MonoBehaviour:
   RangedUnsheatheWeapon: {fileID: 0}
   IdleSounds: []
   AttackSounds:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 4599631ade924b14aae7ec6c20a8b8ad, type: 3}
   InjuredSounds: []
   WarningSounds: []
   DeathSounds: []
@@ -41,7 +41,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0ab6c8d4069ae974aa31e8853691d3ac, type: 3}
   - {fileID: 8300000, guid: a5969bcbc184fe2478763e35ba1016e1, type: 3}
   - {fileID: 8300000, guid: 3966906e3da819648b231d8a82d56df2, type: 3}
-  BlockingSounds: []
+  BlockingSounds:
+  - {fileID: 8300000, guid: d01a4268c641198419d4cbe1b47bf47b, type: 3}
   IdleVolume: 1
   WalkFootstepVolume: 0.25
   RunFootstepVolume: 0.5

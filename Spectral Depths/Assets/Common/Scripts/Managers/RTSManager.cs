@@ -827,6 +827,18 @@ namespace SpectralDepths.TopDown
                 case TopDownEngineEventTypes.RTSOff:
                     RTSMode=false;
                     break;
+                case TopDownEngineEventTypes.ActiveCinematicMode:
+                    if(RTSMode)
+                    {
+                        canInput=false;
+                    }
+                    break;
+                case TopDownEngineEventTypes.TurnOffCinematicMode:
+                    if(RTSMode)
+                    {
+                        canInput=true;
+                    }
+                    break;
             }
                     
         }

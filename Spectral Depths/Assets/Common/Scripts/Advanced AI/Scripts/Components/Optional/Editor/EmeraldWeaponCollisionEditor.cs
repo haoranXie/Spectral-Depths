@@ -12,7 +12,7 @@ namespace EmeraldAI.Utility
     {
         GUIStyle FoldoutStyle;
         Texture WeaponCollisionEditorIcon;
-        SerializedProperty CollisionBoxColor, HideSettingsFoldout, WeaponCollisionFoldout;
+        SerializedProperty CollisionBoxColor, HideSettingsFoldout, WeaponCollisionFoldout, WeaponName;
 
         void OnEnable()
         {
@@ -20,6 +20,7 @@ namespace EmeraldAI.Utility
             EmeraldWeaponCollision self = (EmeraldWeaponCollision)target;
             self.WeaponCollider = self.GetComponent<BoxCollider>();
             CollisionBoxColor = serializedObject.FindProperty("CollisionBoxColor");
+            WeaponName = serializedObject.FindProperty("WeaponName");
             HideSettingsFoldout = serializedObject.FindProperty("HideSettingsFoldout");
             WeaponCollisionFoldout = serializedObject.FindProperty("WeaponCollisionFoldout");
         }
@@ -56,6 +57,10 @@ namespace EmeraldAI.Utility
 
                 EditorGUILayout.PropertyField(CollisionBoxColor, new GUIContent("Collision Box Color"));
                 CustomEditorProperties.CustomHelpLabelField("Controls the color of the Collision Box.", true);
+
+                EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(WeaponName, new GUIContent("WeaponName"));
+                CustomEditorProperties.CustomHelpLabelField("Weapons are turned or turned off depending on their weapon name", true);
 
                 EditorGUILayout.Space();
                 CustomEditorProperties.EndFoldoutWindowBox();

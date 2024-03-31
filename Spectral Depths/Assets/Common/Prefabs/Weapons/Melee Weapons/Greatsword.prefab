@@ -274,6 +274,7 @@ MonoBehaviour:
   WeaponCollisionFoldout: 1
   WeaponCollider: {fileID: 633452854318295614}
   CollisionBoxColor: {r: 1, g: 0.85, b: 0, a: 0.25}
+  WeaponName: 
   HitTargets: []
   OnCollision: 0
   EmeraldComponent: {fileID: 0}
