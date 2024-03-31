@@ -839,6 +839,12 @@ namespace SpectralDepths.TopDown
                         canInput=true;
                     }
                     break;
+                case TopDownEngineEventTypes.SwitchToGameMode:
+                    if(RTSMode)
+                    {
+                        canInput=true;
+                    }
+                    break;
             }
                     
         }

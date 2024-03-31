@@ -50,9 +50,9 @@ namespace SpectralDepths.TopDown
 		IntraQuickSwap,
 		NewControlledCharacter,
 		RemoveControlledCharacter,
-		
 		ActiveCinematicMode,
-		TurnOffCinematicMode
+		TurnOffCinematicMode,
+		SwitchToGameMode
 	}
 
 	/// <summary>

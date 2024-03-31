@@ -354,20 +354,20 @@ namespace SpectralDepths.TopDown
 			switch (engineEvent.EventType)
 			{
 				case TopDownEngineEventTypes.ActiveCinematicMode:
-					AnimationPlayer.SetTrigger("CinematicOff");
+					AnimationPlayer.SetTrigger("CinematicOn");
 					break;
 				case TopDownEngineEventTypes.TurnOffCinematicMode:
-					AnimationPlayer.SetTrigger("CinematicOn");
+					AnimationPlayer.SetTrigger("CinematicOff");
+					break;
+				case TopDownEngineEventTypes.SwitchToGameMode:
+					AnimationPlayer.SetTrigger("CinematicOff");
 					break;
 			}
 		}
 		public virtual void Pause()
 		{	
 			// if time is not already stopped		
-			if (Time.timeScale>0.0f)
-			{
-				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, 0f, 0f, false, 0f, true);
-			}
+			PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, 0f, 0f, false, 0f, true);
 			LevelManager.Instance.ToggleCharacterPause();
 		}
 		public virtual void UnPause()

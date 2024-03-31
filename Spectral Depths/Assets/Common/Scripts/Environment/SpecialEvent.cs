@@ -5,7 +5,7 @@ using SpectralDepths.Feedbacks;
 
 namespace SpectralDepths.TopDown
 {
-	public class SpecialEvent : ButtonActivated
+	public class SpecialEvent : ButtonActivated, PLEventListener<TopDownEngineEvent>
 	{
 
 		[Header("Special Events")]
@@ -22,7 +22,8 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Reference to the gameobject notification")]
 		[PLCondition("NotificationToTrigger", true)] 
 		[SerializeField] private GameObject _notificationToShow = null;
-
+		public bool ConsecutiveNotification = false;
+		private bool _justActivatedVn = false;
 		/// <summary>
 		/// When the button is pressed we start modifying the timescale
 		/// </summary>
@@ -44,15 +45,12 @@ namespace SpectralDepths.TopDown
 		}
 		private void ActivateVNMode()
 		{
+			_justActivatedVn = true;
 			//TopDownEngineEvent.Trigger(TopDownEngineEventTypes.TogglePause, null);
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.ActiveCinematicMode, null);
 			VNEvent.Trigger(VNEventTypes.ChangeVNScene,fileToRead);
 		}
 
-		/// <summary>
-		/// When exiting, and if needed, we reset the time scale
-		/// </summary>
-		/// <param name="collider"></param>
 		public override void TriggerExitAction(GameObject collider)
 		{
 			if (!CheckConditions(collider))
@@ -65,7 +63,25 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 		}
+		public virtual void OnMMEvent(TopDownEngineEvent engineEvent)
+		{
+			switch (engineEvent.EventType)
+			{
+				case TopDownEngineEventTypes.SwitchToGameMode:
+					if(_justActivatedVn)
+					{
+						_justActivatedVn = false;
+						if(ConsecutiveNotification) StartCoroutine(DelayShowNotification());
+					}
+					break;
+			}
+		}
 
+		IEnumerator DelayShowNotification()
+		{
+			yield return new WaitForSeconds(1);
+			ShowNotification();
+		}
 		/// <summary>
 		/// Pauses the game without Menu
 		/// </summary>
@@ -77,6 +93,18 @@ namespace SpectralDepths.TopDown
 				PLTimeScaleEvent.Trigger(PLTimeScaleMethods.For, 0f, 0f, false, 0f, true);
 			}
 			LevelManager.Instance.ToggleCharacterPause();
+		}
+
+		protected override void OnEnable()
+		{
+			base.OnEnable();
+			this.PLEventStartListening<TopDownEngineEvent>();
+		}
+
+		protected override void OnDisable()
+		{
+			base.OnDisable();
+			this.PLEventStopListening<TopDownEngineEvent>();
 		}
 	}
 }

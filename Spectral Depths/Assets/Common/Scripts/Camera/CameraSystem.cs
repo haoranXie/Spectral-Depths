@@ -19,6 +19,8 @@ namespace SpectralDepths.TopDown{
 		public CinemachineVirtualCamera RTSCamera;
 		[Tooltip("Camera for following player topdown action")]
 		public CinemachineVirtualCamera PlayerCamera;
+		[Tooltip("Cinematic camera to switch from usually out of cutscenes")]
+		public CinemachineVirtualCamera CinematicCamera;
 		[Header("Speed")]
         /*
 		/// movespeed of camera
@@ -127,6 +129,14 @@ namespace SpectralDepths.TopDown{
 			PLCameraEvent.Trigger(PLCameraEventTypes.StartFollowing);
             RTSCamera.Priority=0;
             PlayerCamera.Priority=1;
+        }
+
+        public void SwapOutOfCinematicCamera()
+        {
+            Vector3 newPosition = LevelManager.Instance.Players[0].transform.position;
+            newPosition.z+=10;
+            transform.position = newPosition;
+            CinematicCamera.Priority = 0;
         }
 
 
@@ -405,6 +415,9 @@ namespace SpectralDepths.TopDown{
                     break;
                 case TopDownEngineEventTypes.RTSOff:
                     _canInput = false;
+                    break;
+                case TopDownEngineEventTypes.SwitchToGameMode:
+                    SwapOutOfCinematicCamera();
                     break;
             }
                     

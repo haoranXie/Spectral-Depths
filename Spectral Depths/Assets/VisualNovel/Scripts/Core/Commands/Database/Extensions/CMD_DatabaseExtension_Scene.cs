@@ -17,6 +17,7 @@ namespace COMMANDS
         new public static void Extend(CommandDatabase database)
         {
             database.AddCommand("loadscene", new Action<string[]>(LoadNewScene));
+            database.AddCommand("switchtogamemode", new Action<string[]>(SwitchToGameMode));
         }
 
         private static void LoadNewScene(string[] data)
@@ -39,6 +40,11 @@ namespace COMMANDS
             {
                 PLAdditiveSceneLoadingManager.LoadScene(targetSceneName,loadingSceneName);  
             }
+        }
+
+        private static void SwitchToGameMode(string[] data)
+        {
+            TopDownEngineEvent.Trigger(TopDownEngineEventTypes.SwitchToGameMode, null);
         }
 
     }
