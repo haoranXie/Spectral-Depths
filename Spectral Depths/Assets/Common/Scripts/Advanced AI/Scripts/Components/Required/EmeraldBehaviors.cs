@@ -30,7 +30,7 @@ namespace EmeraldAI
         public float FollowingStoppingDistance = 2f;
         public bool IsAiming;
         //True as long as character is under orders
-        public bool IsOrdered;
+        public bool IsOrdered = false;
 
         public delegate void StartFleeHandler();
         public event StartFleeHandler OnFlee;
@@ -195,6 +195,7 @@ namespace EmeraldAI
         /// </summary>
         public virtual void AggressiveBehavior()
         {
+            //if(EmeraldComponent.CombatTarget==null) BehaviorState = "Non Combat"; 
             if (EmeraldComponent.CombatComponent.CombatState && EmeraldComponent.MovementComponent.AIAgentActive && EmeraldComponent.CombatTarget)
             {
                 //Only attempt to chase and attack the current target if a path exists to them.
@@ -247,6 +248,7 @@ namespace EmeraldAI
         /// </summary>
         public virtual void WanderBehavior()
         {
+            //if(IsOrdered) BehaviorState = "Ordered";
             if (EmeraldComponent.MovementComponent.AIAgentActive && !EmeraldComponent.CombatComponent.CombatState && !EmeraldComponent.CombatComponent.DeathDelayActive)
             {
                 if (!EmeraldComponent.TargetToFollow)
@@ -382,6 +384,7 @@ namespace EmeraldAI
         /// </summary>
         public virtual void CancelCombat()
         {
+            
             EmeraldComponent.CombatComponent.ClearTarget();
             EmeraldComponent.CombatComponent.DeathDelayActive = true;
             EmeraldComponent.m_NavMeshAgent.SetDestination(transform.position + EmeraldComponent.transform.forward * (EmeraldComponent.MovementComponent.StoppingDistance * 1.5f));
@@ -407,8 +410,14 @@ namespace EmeraldAI
         /// </summary>
         public virtual void OnKilledTarget()
         {
-            if(IsOrdered) BehaviorState = "Ordered";
-            else{BehaviorState = "Non Combat";}
+            if(IsOrdered) 
+            {
+                BehaviorState = "Ordered";
+            }
+            else
+            {
+                BehaviorState = "Non Combat"; 
+            }
             GiveUpTimer = 0;
             EmeraldComponent.AnimationComponent.WarningAnimationTriggered = false;
         }

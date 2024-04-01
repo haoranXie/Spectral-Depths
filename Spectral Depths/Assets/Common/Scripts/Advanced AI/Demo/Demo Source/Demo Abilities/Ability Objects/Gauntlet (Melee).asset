@@ -56,8 +56,8 @@ MonoBehaviour:
     BaseDamageSettings:
       UseRandomAmounts: 1
       BaseAmount: 500
-      MinAmount: 24
-      MaxAmount: 36
+      MinAmount: 32
+      MaxAmount: 40
       RagdollForce: 100
     BasePoiseDamageSettings:
       UseRandomAmounts: 0

@@ -1,0 +1,479 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8adbcef431b91047a8f193c07acec97, type: 3}
+  m_Name: Katana
+  m_EditorClassIdentifier: 
+  EmeraldAnimationComponent: {fileID: 0}
+  AIAnimator: {fileID: 9100000, guid: bf1461e407a3e67428a8919bf98b13ad, type: 2}
+  AnimatorControllerGenerated: 1
+  AnimationsUpdated: 0
+  AnimationListsChanged: 0
+  MissingRuntimeController: 0
+  FilePath: Assets/Common/Scripts/Advanced AI/Demo/Demo Source/Animator Controllers/Katana.overrideController
+  AnimatorCullingMode: 0
+  WalkFoldout: 0
+  RunFoldout: 0
+  TurnFoldout: 0
+  NonCombatDeathFoldout: 0
+  NonCombatAnimationsFoldout: 0
+  NonCombatIdleFoldout: 0
+  NonCombatHitFoldout: 0
+  EmotesFoldout: 0
+  Type1IdleFoldout: 0
+  Type2IdleFoldout: 0
+  Type1AttacksFoldout: 0
+  Type2AttacksFoldout: 0
+  Type1EquipsFoldout: 0
+  Type2EquipsFoldout: 0
+  Type1CombatAnimationsFoldout: 0
+  Type2CombatAnimationsFoldout: 0
+  Type1DeathFoldout: 0
+  Type2DeathFoldout: 0
+  Type1HitFoldout: 0
+  Type2HitFoldout: 0
+  Type1BlockFoldout: 0
+  Type2BlockFoldout: 0
+  Type1CombatWalkFoldout: 0
+  Type1CombatRunFoldout: 0
+  Type1CombatTurnFoldout: 0
+  Type2CombatWalkFoldout: 0
+  Type2CombatRunFoldout: 0
+  Type2CombatTurnFoldout: 0
+  Type1StrafeFoldout: 0
+  Type2StrafeFoldout: 0
+  Type1DodgeFoldout: 0
+  Type2DodgeFoldout: 0
+  AnimationProfileFoldout: 0
+  AnimatorSettingsFoldout: 0
+  Type1HitConditions: -1
+  Type2HitConditions: -1
+  Type1HitAnimationCooldown: 0.1
+  Type2HitAnimationCooldown: 0.1
+  EmoteAnimationList: []
+  NonCombatAnimations:
+    IdleList:
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: f616a2e271f109447b49d45d058a4084, type: 3}
+      Mirror: 0
+    IdleStationary:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: f616a2e271f109447b49d45d058a4084, type: 3}
+      Mirror: 0
+    IdleWarning:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 4c6c01279956cc840a2b373c4e4f29b9, type: 3}
+      Mirror: 0
+    WalkForward:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 3c062a023b171594a82e7fae98bfca28, type: 3}
+      Mirror: 0
+    WalkRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 78b88b4bedf2dcc4a9d1006af8d6903a, type: 3}
+      Mirror: 0
+    WalkBack:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForwardLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForwardRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: b5f843a881d240549947cbcbf8b53ef9, type: 3}
+      Mirror: 0
+    RunForward:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 441d559bb88277b4aac39e463eff9177, type: 3}
+      Mirror: 0
+    RunRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 6fe994730da455846a2619155a81c9b5, type: 3}
+      Mirror: 0
+    RunBack:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    TurnLeft:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 1827226128182048838, guid: 2fbce467df4f1e043a949bd8d60bd61b,
+        type: 3}
+      Mirror: 0
+    TurnRight:
+      AnimationSpeed: 1.2
+      AnimationClip: {fileID: 1827226128182048838, guid: 36c5bd736c47509429ec30bdb81064a0,
+        type: 3}
+      Mirror: 0
+    HitList:
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: cf58c17e5a396064d88de8a1c32822ce, type: 3}
+      Mirror: 0
+    DeathList: []
+    StrafeLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    StrafeRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    BlockIdle:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    BlockHit:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    DodgeLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    DodgeBack:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    DodgeRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    Recoil:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    Stunned:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    PutAwayWeapon:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    PullOutWeapon:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    AttackList: []
+  Type1Animations:
+    IdleList: []
+    IdleStationary:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: f616a2e271f109447b49d45d058a4084, type: 3}
+      Mirror: 0
+    IdleWarning:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: f616a2e271f109447b49d45d058a4084, type: 3}
+      Mirror: 0
+    WalkLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 4c6c01279956cc840a2b373c4e4f29b9, type: 3}
+      Mirror: 0
+    WalkForward:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 3c062a023b171594a82e7fae98bfca28, type: 3}
+      Mirror: 0
+    WalkRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 78b88b4bedf2dcc4a9d1006af8d6903a, type: 3}
+      Mirror: 0
+    WalkBack:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 44f15519ee1b49f42aa09afa6c3b1364, type: 3}
+      Mirror: 0
+    WalkForwardLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: a0868176f04744645ad27574c088e444, type: 3}
+      Mirror: 0
+    WalkForwardRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: f9fbe5bff252853439474ddd0e2e7d49, type: 3}
+      Mirror: 0
+    WalkBackLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: d9e8f5e2a6a708047a9a5ca329c59a9e, type: 3}
+      Mirror: 0
+    WalkBackRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: b83d51966ad32d94c8129f24f7ff40dc, type: 3}
+      Mirror: 0
+    RunLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: fdc93f0be1d9d2c44ad602c884d03aff, type: 3}
+      Mirror: 0
+    RunForward:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 441d559bb88277b4aac39e463eff9177, type: 3}
+      Mirror: 0
+    RunRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 6fe994730da455846a2619155a81c9b5, type: 3}
+      Mirror: 0
+    RunBack:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 347699a89a7c92d468e8f2fcb66547bf, type: 3}
+      Mirror: 0
+    RunForwardLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 9791ba6001af41f4195c7ec27fe28603, type: 3}
+      Mirror: 0
+    RunForwardRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 3221ecca15cc04c4ca51b60ff33f69cb, type: 3}
+      Mirror: 0
+    RunBackLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: b657a6495be320c498e3e8f17152a881, type: 3}
+      Mirror: 0
+    RunBackRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: b31ceb4221880e947b3dff84d6f7f70d, type: 3}
+      Mirror: 0
+    TurnLeft:
+      AnimationSpeed: 0.7
+      AnimationClip: {fileID: 1827226128182048838, guid: 2fbce467df4f1e043a949bd8d60bd61b,
+        type: 3}
+      Mirror: 0
+    TurnRight:
+      AnimationSpeed: 0.7
+      AnimationClip: {fileID: 1827226128182048838, guid: 36c5bd736c47509429ec30bdb81064a0,
+        type: 3}
+      Mirror: 0
+    HitList:
+    - AnimationSpeed: 0.9
+      AnimationClip: {fileID: 7400000, guid: cf58c17e5a396064d88de8a1c32822ce, type: 3}
+      Mirror: 0
+    DeathList: []
+    StrafeLeft:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 5e05fb7a9332fcf43a271bff046899df, type: 3}
+      Mirror: 0
+    StrafeRight:
+      AnimationSpeed: 2
+      AnimationClip: {fileID: 7400000, guid: 09d48dd1e54cf4a4e8d2aeaaedb1a43d, type: 3}
+      Mirror: 0
+    BlockIdle:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: fe09d69bd98991f4d84f6c67e4e3492c, type: 3}
+      Mirror: 0
+    BlockHit:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400002, guid: fe09d69bd98991f4d84f6c67e4e3492c, type: 3}
+      Mirror: 0
+    DodgeLeft:
+      AnimationSpeed: 1.25
+      AnimationClip: {fileID: 7400000, guid: 85036d2a075f4194cb8ebcc064ff055f, type: 3}
+      Mirror: 0
+    DodgeBack:
+      AnimationSpeed: 1.25
+      AnimationClip: {fileID: 7400000, guid: 3e067541000ce9e47a877222db11c176, type: 3}
+      Mirror: 0
+    DodgeRight:
+      AnimationSpeed: 1.25
+      AnimationClip: {fileID: 7400000, guid: 6688c6061085aaf49be4ec40baa7cfc5, type: 3}
+      Mirror: 0
+    Recoil:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: f8cbd01bd5b649048bf365e4ece13d69, type: 3}
+      Mirror: 0
+    Stunned:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: 5b3833fc8bf3c7d4eb21a48c14ead54b, type: 3}
+      Mirror: 0
+    PutAwayWeapon:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    PullOutWeapon:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    AttackList:
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: 81e073fa2fefb6f4aa9d9dbf0cd3e5d8, type: 3}
+      Mirror: 0
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: 83dea9c104495b940b4a0f36baaaad57, type: 3}
+      Mirror: 0
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: 7cac73c2336bb004683c714fb771b962, type: 3}
+      Mirror: 0
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: f3d1225ae8d42924fa0698b1e2a4057d, type: 3}
+      Mirror: 0
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: 892de13d6a6884a4e8b8965bf2fc27af, type: 3}
+      Mirror: 0
+    - AnimationSpeed: 1
+      AnimationClip: {fileID: 7400000, guid: 00a28cb25fc8dad40bf3248b50123b32, type: 3}
+      Mirror: 0
+  Type2Animations:
+    IdleList: []
+    IdleStationary:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    IdleWarning:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkLeft:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForward:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkRight:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBack:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForwardLeft:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkForwardRight:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackLeft:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    WalkBackRight:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunLeft:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForward:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunRight:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBack:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardLeft:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunForwardRight:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackLeft:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    RunBackRight:
+      AnimationSpeed: 1
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    TurnLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    TurnRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    HitList: []
+    DeathList: []
+    StrafeLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    StrafeRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    BlockIdle:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    BlockHit:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    DodgeLeft:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    DodgeBack:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    DodgeRight:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    Recoil:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    Stunned:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    PutAwayWeapon:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    PullOutWeapon:
+      AnimationSpeed: 0
+      AnimationClip: {fileID: 0}
+      Mirror: 0
+    AttackList: []

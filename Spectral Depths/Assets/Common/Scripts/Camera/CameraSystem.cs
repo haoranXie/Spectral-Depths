@@ -98,6 +98,7 @@ namespace SpectralDepths.TopDown{
 		protected float _movementSpeed;
         protected Vector2 _currentInput;
         protected bool _canInput = true;
+        private bool firstSwap = true;
 
 
         protected override void Awake(){
@@ -118,7 +119,9 @@ namespace SpectralDepths.TopDown{
 
         public void SwapToRTSCamera(Transform initialPosition)
         {
-            transform.position=initialPosition.position;
+            Vector3 newPosition = initialPosition.position;
+            newPosition.z+=1;
+            transform.position = newPosition;
             PlayerCamera.Priority=0;
             RTSCamera.Priority=1;
         }
@@ -133,10 +136,14 @@ namespace SpectralDepths.TopDown{
 
         public void SwapOutOfCinematicCamera()
         {
+            if(firstSwap)
+            {
             Vector3 newPosition = LevelManager.Instance.Players[0].transform.position;
             newPosition.z+=10;
             transform.position = newPosition;
             CinematicCamera.Priority = 0;
+            firstSwap = false;
+            }
         }
 
 

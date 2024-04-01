@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EmeraldAI.Utility;
+using SpectralDepths.TopDown;
 
 namespace EmeraldAI
 {
@@ -63,7 +64,14 @@ namespace EmeraldAI
 
         void Start ()
         {
-            CurrentHealth = StartingHealth;
+            if(GetComponent<CharacterStat>()!=null)
+            {
+                if(GetComponent<CharacterStat>().CurrentHealth==0) CurrentHealth = StartingHealth;
+            } 
+            else
+            {
+                CurrentHealth = StartingHealth;
+            }
             Poise = StartPoise;
             EmeraldComponent = GetComponentInParent<EmeraldSystem>();
             EmeraldComponent.CombatComponent.OnExitCombat += StartHealing; //Subscribe to the OnExitCombat event for StartHealing
@@ -115,7 +123,7 @@ namespace EmeraldAI
                 Health -= CalculatedDamage;
 
             //Display the damage dealt through the Combat Text System, given that it's enabled.
-            if (CalculatedDamage > 0) CombatTextSystem.Instance.CreateCombatTextAI(CalculatedDamage, EmeraldComponent.CombatComponent.DamagePosition(), CriticalHit, false);
+            if (CalculatedDamage > 0) CombatTextSystem.Instance.CreateCombatText(CalculatedDamage, EmeraldComponent.CombatComponent.DamagePosition(), CriticalHit, false, gameObject.CompareTag("Player"));
 
             //In order to have the most reliable On Do Damage events, simply invoke the attacker's OnDoDoamage callback through a public function, given it is an Emerald AI agent.
             if (AttackerTransform != null)

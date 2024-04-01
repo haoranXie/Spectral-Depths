@@ -28,6 +28,8 @@ namespace SpectralDepths.TopDown
 		[PLCondition("UseCustomStat", true)] 
         public int StartHealth = 0;
 		[PLCondition("UseCustomStat", true)] 
+        public int CurrentHealth = 0;
+		[PLCondition("UseCustomStat", true)] 
         public float StartPoise = 0;
 		[PLCondition("UseCustomStat", true)] 
         public float PoiseResistance = 0;
@@ -93,6 +95,7 @@ namespace SpectralDepths.TopDown
                 if(_emeraldHealth!=null)
                 {
                     _emeraldHealth.StartHealth = CharacterComponentData.MaxHealth;
+                    _emeraldHealth.CurrentHealth = _emeraldHealth.StartHealth;
                     _emeraldHealth.StartPoise = CharacterComponentData.MaxPoise;
                     _emeraldHealth.PoiseResistance = CharacterComponentData.PoiseResistance;
                     _emeraldHealth.PoiseResetTime = CharacterComponentData.PoiseResetTime;
@@ -104,6 +107,7 @@ namespace SpectralDepths.TopDown
                 if(_emeraldHealth!=null)
                 {
                     if(StartHealth!=0) _emeraldHealth.StartHealth = StartHealth;
+                    if(CurrentHealth!=0) _emeraldHealth.CurrentHealth = CurrentHealth;
                     if(StartPoise!=0) _emeraldHealth.StartPoise = StartPoise;
                     if(PoiseResistance!=0) _emeraldHealth.PoiseResistance = PoiseResistance;
                     if(PoiseResetTime!=0) _emeraldHealth.PoiseResetTime = PoiseResetTime;

@@ -129,7 +129,7 @@ namespace EmeraldAI
             TargetDetectionActive = true;
             FirstTimeInCombat = true;
             SwitchWeaponTime = Random.Range((float)SwitchWeaponTimeMin, SwitchWeaponTimeMax + 1);
-            DeathDelay = Random.Range(MinResumeWander, MaxResumeWander + 1);
+            DeathDelay = Random.Range(MinResumeWander, MaxResumeWander);
             Invoke(nameof(InitializeAttacks), 0.1f);
         }
 
@@ -180,7 +180,6 @@ namespace EmeraldAI
             if (DeathDelayActive)
             {
                 DeathDelayTimer += Time.deltaTime;
-
                 if (DeathDelayTimer > DeathDelay)
                 {
                     ExitCombat();
@@ -211,6 +210,7 @@ namespace EmeraldAI
         /// </summary>
         public void ExitCombat ()
         {
+            
             CombatState = false;
             SwitchWeaponTimer = 0;
             ClearTarget();
@@ -310,6 +310,7 @@ namespace EmeraldAI
                 DeathDelay = Random.Range(MinResumeWander, MaxResumeWander + 1);
                 DeathDelayActive = true;
                 EmeraldComponent.m_NavMeshAgent.ResetPath();
+                
                 ClearTarget();
             }
         }
@@ -327,7 +328,8 @@ namespace EmeraldAI
                     DeathDelay = Random.Range(MinResumeWander, MaxResumeWander + 1);
                     DeathDelayActive = true;
                     EmeraldComponent.m_NavMeshAgent.ResetPath();
-                    Invoke(nameof(ClearTarget), 0.75f);
+                    
+                    //Invoke(nameof(ClearTarget), 0.75f);
                 }
             }
         }
@@ -337,6 +339,7 @@ namespace EmeraldAI
         /// </summary>
         public void ClearTarget()
         {
+            
             if (EmeraldComponent.CombatTarget != null)
             {
                 //Remove the CurrentTarget from the AI's LineOfSightTargets list.

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shield AI
   m_EditorClassIdentifier: 
   EmeraldAnimationComponent: {fileID: 0}
-  AIAnimator: {fileID: 9100000, guid: 22c534afc58845b49a2c2cfe0acf4b3a, type: 2}
+  AIAnimator: {fileID: 9100000, guid: 1a91a6af417ce6942807ed93c859284b, type: 2}
   AnimatorControllerGenerated: 1
   AnimationsUpdated: 0
   AnimationListsChanged: 0

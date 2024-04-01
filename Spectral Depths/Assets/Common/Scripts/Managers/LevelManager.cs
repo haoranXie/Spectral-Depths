@@ -93,6 +93,9 @@ namespace SpectralDepths.TopDown
 		/// if this is true, an event will be triggered on player instantiation to set the range target of all feedbacks to it
 		[Tooltip("if this is true, an event will be triggered on player instantiation to set the range target of all feedbacks to it")]
 		public bool SetPlayerAsFeedbackRangeCenter = false;
+
+		public TextAsset vnText;
+
         
 		/// the level limits, camera and player won't go beyond this point.
 		public Bounds LevelBounds {  get { return (_collider==null)? new Bounds(): _collider.bounds; } }
@@ -109,6 +112,9 @@ namespace SpectralDepths.TopDown
 		protected int _savedPoints;
 		protected Collider _collider;
 		protected Vector3 _initialSpawnPointPosition;
+		public bool CustomDeath = false;
+
+
 		
 		/// <summary>
 		/// On awake, instantiates the player
@@ -375,9 +381,15 @@ namespace SpectralDepths.TopDown
 		/// </summary>
 		public virtual void PlayerDead(Character playerCharacter)
 		{
-			if (Players.Count < 2)
+			if(LevelManager.Instance.Players.Contains(playerCharacter)){LevelManager.Instance.Players.Remove(playerCharacter);}
+			if (Players.Count < 1)
 			{
-				StartCoroutine (PlayerDeadCo ());
+				if(CustomDeath==false) StartCoroutine (PlayerDeadCo ());
+				else
+				{
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.ActiveCinematicMode, null);
+			VNEvent.Trigger(VNEventTypes.ChangeVNScene,vnText);
+				}
 			}
 		}
 

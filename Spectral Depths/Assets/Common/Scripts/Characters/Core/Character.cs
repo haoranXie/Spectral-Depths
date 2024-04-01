@@ -913,6 +913,7 @@ namespace SpectralDepths.TopDown
 			if(Eyes!=null) Eyes.SetActive(false);
 			Vector3 spawnPosition = transform.position + Vector3.up * 0.5f;
 			if(ObjectToDropOnDeath!=null) Instantiate(ObjectToDropOnDeath, spawnPosition, Quaternion.identity);
+			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.PlayerDeath, this);
 		}
 
 

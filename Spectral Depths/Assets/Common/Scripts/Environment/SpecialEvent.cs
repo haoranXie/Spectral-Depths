@@ -2,13 +2,15 @@ using UnityEngine;
 using System.Collections;
 using SpectralDepths.Tools;
 using SpectralDepths.Feedbacks;
+using System.Collections.Generic;
+using EmeraldAI;
 
 namespace SpectralDepths.TopDown
 {
 	public class SpecialEvent : ButtonActivated, PLEventListener<TopDownEngineEvent>
 	{
 
-		[Header("Special Events")]
+		[Header("UI Driven Events")]
 
 		/// the new timescale to apply
 		[Tooltip("Whether to trigger a VN Scene")]
@@ -22,7 +24,16 @@ namespace SpectralDepths.TopDown
 		[Tooltip("Reference to the gameobject notification")]
 		[PLCondition("NotificationToTrigger", true)] 
 		[SerializeField] private GameObject _notificationToShow = null;
+		[SerializeField] private AudioSource _audioSource;
+		[SerializeField] private AudioClip _notificationClip = null;		
 		public bool ConsecutiveNotification = false;
+		[Header("Game Driven Events")]
+		[Tooltip("Whether or not to trigger movements")]
+		public bool MovementToTrigger;
+		[PLCondition("MovementToTrigger", true)] 
+		public Transform PointToMoveTowards;
+		public List<EmeraldSystem> Characters;
+		public bool CustomDeath;
 		private bool _justActivatedVn = false;
 		/// <summary>
 		/// When the button is pressed we start modifying the timescale
@@ -34,14 +45,25 @@ namespace SpectralDepths.TopDown
 				return;
 			}
 			base.TriggerButtonAction();
+			if(CustomDeath) LevelManager.Instance.CustomDeath = true;
 			if(VNScene) ActivateVNMode();
 			else if(NotificationToTrigger) ShowNotification();
+			else if(MovementToTrigger) MoveCharacters();
 		}
 
 		private void ShowNotification()
 		{
+			if(_audioSource!=null){_audioSource.PlayOneShot(_notificationClip);}
 			_notificationToShow.gameObject.SetActive(true);
 			if(GUIManager.Instance!=null) GUIManager.Instance.AnimationPlayer.SetTrigger("TurtorialNotificationOn");
+		}
+
+		private void MoveCharacters()
+		{
+			foreach(EmeraldSystem character in Characters)
+			{
+				EmeraldAPI.Movement.SetCustomDestination(character, PointToMoveTowards.position);
+			}
 		}
 		private void ActivateVNMode()
 		{
@@ -79,8 +101,9 @@ namespace SpectralDepths.TopDown
 
 		IEnumerator DelayShowNotification()
 		{
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(0.5f);
 			ShowNotification();
+
 		}
 		/// <summary>
 		/// Pauses the game without Menu

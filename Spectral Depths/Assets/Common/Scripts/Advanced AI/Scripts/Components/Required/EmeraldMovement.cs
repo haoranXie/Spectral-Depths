@@ -208,7 +208,6 @@ namespace EmeraldAI
             m_NavMeshAgent.updateUpAxis = false;
             m_NavMeshAgent.speed = 0;
             if (MovementType == MovementTypes.NavMeshDriven) m_NavMeshAgent.acceleration = 75;
-
             if (m_NavMeshAgent.enabled)
             {
                 if (WanderType == WanderTypes.Destination)
@@ -1369,6 +1368,56 @@ namespace EmeraldAI
             if (WanderType != WanderTypes.Waypoints) m_NavMeshAgent.stoppingDistance = StoppingDistance;
             
             if(GameRTSController.Instance!=null) GameRTSController.Instance.RemoveOrders(EmeraldComponent);
+        }
+
+        private void OnEnable()
+        {
+            if (m_NavMeshAgent==null) return;
+            if (m_NavMeshAgent.enabled)
+            {
+                if (WanderType == WanderTypes.Destination)
+                {
+                    m_NavMeshAgent.autoBraking = false;
+                    ReachedDestination = true;
+                    StartCoroutine(SetDelayedDestination(SingleDestination));
+                    CheckPath(SingleDestination);
+                }
+                else if (WanderType == WanderTypes.Waypoints)
+                {
+                    if (WaypointType != WaypointTypes.Random)
+                    {
+                        if (WaypointsList.Count > 0)
+                        {
+                            m_NavMeshAgent.stoppingDistance = 0.1f;
+                            m_NavMeshAgent.autoBraking = false;
+                            StartCoroutine(SetDelayedDestination(WaypointsList[WaypointIndex]));
+                        }
+                    }
+                    else if (WaypointType == WaypointTypes.Random)
+                    {
+                        if (WaypointsList.Count > 0)
+                        {
+                            WaypointIndex = Random.Range(0, WaypointsList.Count);
+                            StartCoroutine(SetDelayedDestination(WaypointsList[WaypointIndex]));
+                            m_NavMeshAgent.autoBraking = false;
+                        }
+                    }
+
+                    if (WaypointsList.Count == 0)
+                    {
+                        WanderType = WanderTypes.Stationary;
+                        ReachedDestination = true;
+                        m_NavMeshAgent.stoppingDistance = StoppingDistance;
+                        MovementInitialized = true;
+                    }
+                }
+                else if (WanderType == WanderTypes.Stationary || WanderType == WanderTypes.Dynamic || WanderType == WanderTypes.Custom)
+                {
+                    ReachedDestination = true;
+                    m_NavMeshAgent.autoBraking = false;
+                    StartCoroutine(SetDelayedDestination(StartingDestination));
+                }
+            }
         }
     }
 }

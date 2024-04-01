@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Spectral Depths/Assets/VisualNovel/Resources/Characters/Azai.meta
 guid: 69b234ea7ff91084fbc5dbce353159e2
 folderAsset: yes
+========
+guid: c27163fc2ddeb4544abcdd382f3d60d1
+>>>>>>>> Stashed changes:Spectral Depths/Assets/Scenes/Sci-Fi Enviornments/Sci-Fi Corridors/URP_HDRP/HDRP_STYLIZED - Sci-Fi Corridor.unitypackage.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

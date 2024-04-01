@@ -109,7 +109,7 @@ public class HS_DemoShooting : MonoBehaviour
     void Update()
     {
         //Single shoot
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetMouseButtonDown(0))
         {
             camAnim.Play(camAnim.clip.name);
             GetPooledObjects(Prefab, FirePoint.transform.position, FirePoint.transform.rotation);

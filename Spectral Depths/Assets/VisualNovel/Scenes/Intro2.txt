@@ -1,28 +1,31 @@
-﻿CreateCharacter("Azai"), CreateCharacter("Goon"), showdb(), Azai.Show()
+﻿CreateCharacter("Goon")
+CreateCharacter("Azai")
 
+setLayerMedia(background "Transparent" -i true), Azai.Show()
+usesmalldb(), showdb()
 Azai.unhighlight()
-Goon as Pebbles "These things again???"
-
-Goon as El "What are they?"
-I feel like they've been appearing more and more frequently recently
-
-Goon as Ren "Hmm"
-They look like security guards for some kind of facillity.{a} Probably related to the abundance of energy pipes in this area.
+Goon as El "Boss, You seem out of it.{a} Is your headache back again?"
 
 Azai.highlight()
-Azai "..."
+Azai "Yeah, but it's no big deal.{a} I can barely feel it."
 Azai.unhighlight()
 
-Goon as Ren "(But why are these pipes so thick? Only the ones close to The Tower are normally this big)"
-(We could fit a truck in this thing, let alone walk through it.)
+Goon as Pebbles "Are you sure? We can postpone the plan till tomorrow. Your health is more important."
 
-Goon as El "You can count on Ren to have an answer to anything!"
-
-Goon as Ren "Oh shut it would you"
+Goon as Ren "I agree, we can't risk you getting injured"
 
 Azai.highlight()
-Now's not the time for chit-chat boys.
-The enemies are approacing.{a} Get ready for combat.
-Azai.unhighlight(), Azai.hide()
+Azai "I'm fine.{a} This tiny headache's nothing compared to what we've been through."
+You guys are more worn out then I am if anything.
+Stop worrying about nothing and get ready.
+Follow my lead!
+WE'RE KILLING THAT BASTARD TODAY!
+Azai.unhighlight()
 
+Goon as El "YEAHHH!!!"
+Goon as Pebbles "WE WILL AVENGE OUR FALLEN COMRADES!!!"
+Goon as Ren "HE'LL PAY FOR EVERYTHING HE'S DONE!!!"
+
+Azai.hide();
 hideui()
+switchtogamemode()

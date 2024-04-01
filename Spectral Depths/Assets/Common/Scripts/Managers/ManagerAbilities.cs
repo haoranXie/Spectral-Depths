@@ -91,7 +91,7 @@ namespace SpectralDepths.TopDown
         public float elapsedTime;
         Coroutine SoundCoroutine;
         bool _strategyMode;
-        float _strainIncreaseSpeed = 0;
+        public float _strainIncreaseSpeed = 0;
         float _strainDecreaseSpeed = 0;
         Coroutine _strainDecreaseCoroutine;
         bool _regenStrain = false;
@@ -101,6 +101,12 @@ namespace SpectralDepths.TopDown
             base.Awake();
             CurrentEnergy = MaxEnergy;
             _strainDecreaseSpeed = BaseStrainDecreaseRate;
+        }
+
+        private void Start()
+        {
+            StrainText.text = Mathf.RoundToInt(CurrentStrain).ToString()+"/"+Mathf.RoundToInt(MaxStrain).ToString();
+            UpdateEnergy(MaxEnergy, CurrentEnergy);
         }
 
         void Update()

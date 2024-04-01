@@ -68,11 +68,11 @@ namespace EmeraldAI
         [HideInInspector] public LocationBasedDamage LBDComponent;
         #endregion
 
-        [HideInInspector] public bool AnimationComponentOn = true;
-        [HideInInspector] public bool MovementComponentOn = true;
-        [HideInInspector] public bool BehaviorsComponentOn = true;
-        [HideInInspector] public bool DetectionComponentOn = true;
-        [HideInInspector] public bool CombatComponentOn = true;
+         public bool AnimationComponentOn = true;
+        public bool MovementComponentOn = true;
+        public bool BehaviorsComponentOn = true;
+        public bool DetectionComponentOn = true;
+        public bool CombatComponentOn = true;
 
         [HideInInspector] public Character CharacterComponent;
 

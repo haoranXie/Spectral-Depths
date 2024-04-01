@@ -32,7 +32,6 @@ public class IntroLoadScreen : MonoBehaviour
     {
         foreach(Character character in LevelManager.Instance.Players)
         {
-            Debug.Log("hi");
             EmeraldSystem emeraldSystem = character.GetComponent<EmeraldSystem>();
             EmeraldAPI.Movement.SetCustomDestination(emeraldSystem, initialPoint.position);
         }

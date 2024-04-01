@@ -53,6 +53,7 @@ namespace SpectralDepths.TopDown
                     characterSlot.ModelName.text = characters[i].CharacterClass;
                     characterSlot.Icon.sprite = characters[i].CharacterIcon;
                     characterSlot.Key.sprite = Resources.Load<Sprite>("UI/btn_number_"+((i+1).ToString()));
+                    if(i!=0) characterSlot.Key.enabled = false;
                     EmeraldHealth health = characters[i].EmeraldComponent.GetComponent<EmeraldHealth>();
                     if(health!=null){characterSlot.HealthNumber.text = health.CurrentHealth.ToString();}//  + "/" + health.StartingHealth.ToString();}
                 }

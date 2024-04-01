@@ -49,7 +49,7 @@ MonoBehaviour:
     OddsToStun: 15
     StunLength: 3
   DamageSettings:
-    Foldout: 0
+    Foldout: 1
     Enabled: 1
     UseCriticalHits: 0
     UseDamageOverTime: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
       UseRandomAmounts: 1
       BaseAmount: 5
       MinAmount: 20
-      MaxAmount: 40
+      MaxAmount: 35
       RagdollForce: 100
     BasePoiseDamageSettings:
       UseRandomAmounts: 0

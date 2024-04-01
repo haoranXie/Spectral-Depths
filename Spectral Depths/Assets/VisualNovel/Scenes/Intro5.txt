@@ -40,3 +40,4 @@ Cheshire "Cmon, liven up a bit would you"
 This district is finally clean of gangs. Now we can finally get on with our main mission.
 
 Alice "Yup, time to find out what's up that spire."
+LoadScene(-n "Demo_End" -l "PLAdditiveLoadingScreenFastFade")

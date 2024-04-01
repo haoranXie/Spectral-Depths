@@ -44,7 +44,8 @@ namespace EmeraldAI.Utility
             HealthBarDamage = transform.Find("AI Health Bar Background/AI Health Bar (Damage)").GetComponent<Image>();
             AINameUI = transform.Find("AI Name Text").GetComponent<Text>();
             AILevelUI = transform.Find("AI Level Text").GetComponent<Text>();
-
+            HealthBar.fillAmount = ((float)EmeraldHeath.Health / (float)EmeraldHeath.StartHealth);
+            HealthBarDamage.fillAmount = HealthBar.fillAmount;
             EmeraldHeath.OnDeath += FadeOutUI; //Subscribe FadeOutUI to the OnDeath delegate.
             EmeraldHeath.OnTakeDamage += TransitionDamage; //Subscribe TransitionDamage to the OnTakeDamage delegate.
             EmeraldHeath.OnTakeCritDamage += TransitionDamage; //Subscribe TransitionDamage to the OnTakeCritDamage delegate.
@@ -194,8 +195,8 @@ namespace EmeraldAI.Utility
                 CG.alpha = newColor1.a;
                 AINameUI.color = new Color(AINameUI.color.r, AINameUI.color.g, AINameUI.color.b, newColor1.a);
                 AILevelUI.color = new Color(AILevelUI.color.r, AILevelUI.color.g, AILevelUI.color.b, newColor1.a);
-                HealthBar.fillAmount = 1;
-                HealthBarDamage.fillAmount = 1;
+                //HealthBar.fillAmount = 1;
+                //HealthBarDamage.fillAmount = 1;
             }
         }
 

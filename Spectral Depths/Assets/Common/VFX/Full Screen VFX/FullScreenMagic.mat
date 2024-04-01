@@ -39,10 +39,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _OutlineThickness: 0.02
-    - _VignetteItensity: 1.6
+    - _VignetteItensity: 0
     - _VignettePower: 7.6
     - _VoranoiDensity: 49.5
-    - _VoranoiIntensity: 2
+    - _VoranoiIntensity: 0
     - _VoranoiPower: 3.59
     - _VoranoiSpeed: 3.87
     m_Colors:

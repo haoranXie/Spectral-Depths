@@ -191,6 +191,10 @@ namespace SpectralDepths.TopDown
         private void HandleInput()
         {
             if(dragSelect) return;
+            if (Input.GetKeyDown(KeyCode.BackQuote))
+            {
+                foreach (Character character in LevelManager.Instance.Players) AddSelected(character.gameObject);
+            }
 			if (InputManager.Instance.CommandAttackMoveButton.State.CurrentState == PLInput.ButtonStates.ButtonDown && allowedToClickAttackButton && SelectedTable.Count > 0)
 			{
                 if(_curretCommand != Commands.ForceAttack)

@@ -47,6 +47,7 @@ namespace SpectralDepths.TopDown
             EmeraldComponent.HealthComponent.OnTakeCritDamage += UpdateHealthOnUi; //Subscribe TransitionDamage to the OnTakeCritDamage delegate.
             EmeraldComponent.HealthComponent.OnHealRateTick += UpdateHealthOnUi; //Subscribe TransitionHealing to the OnHealRateTick delegate.
             EmeraldComponent.HealthComponent.OnHealthChange += UpdateHealthOnUi; //Subscribe UpdateHealthUI to the OnHealthChange delegate.
+            UpdateHealthOnUi();
 		}
 
 		void OnDeathUI()

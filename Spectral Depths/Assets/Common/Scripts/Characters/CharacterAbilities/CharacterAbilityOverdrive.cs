@@ -30,6 +30,7 @@ namespace SpectralDepths.TopDown
 		public bool UsingProximityManager = false;
 		[Tooltip("How fast strain decreases after the strain cooldown time is elapsed")]
         public float OverdriveStrainSpeed = 5f;
+		public PLF_Player pLF_Player;
 		protected CharacterOrientation3D _characterOrientation3D;
 		protected CharacterController _characterController;
 		protected CharacterSelectable _characterSelectable;
@@ -83,13 +84,29 @@ namespace SpectralDepths.TopDown
 					if(!_companionsFollowing){SetCompanionAI();}
 					else{ResetCompanionAI();}
 				}
+				if(Input.GetKeyDown(KeyCode.F))
+				{
+					AbilityOn();
+				}
 			}
         }
 
+		protected void AbilityOn()
+		{
+			pLF_Player?.PlayFeedbacks();
+			_animator.SetFloat("Overdrive Multiplier", 1.4f);
+		}
+
+		protected void AbilityOff()
+		{
+			pLF_Player?.StopFeedbacks();
+			_animator.SetFloat("Overdrive Multiplier", 1f);
+		}
 		protected void QuickSwap()
 		{
 			if(Input.GetKeyDown(KeyCode.Alpha0 + CharacterKey))
 			{
+				if(CharacterKey!=1) return;
 				//If we're using Manager Abilities, then you can't override when strain is maxed
 				if(ManagerAbilities.Instance !=null){ if(ManagerAbilities.Instance.CurrentStrain==ManagerAbilities.Instance.MaxStrain){return;}}
 				//Turns off all other players during an intra quick swap
@@ -111,6 +128,7 @@ namespace SpectralDepths.TopDown
 
 		private void SwitchToPlayer()
 		{
+			
 			CharacterModeOn();
 			EmeraldModeOff();
 			TurnOffRTSMode();
@@ -220,6 +238,7 @@ namespace SpectralDepths.TopDown
 			_characterController.enabled=false;
 			_character.CacheAbilities();
 			TopDownEngineEvent.Trigger(TopDownEngineEventTypes.RemoveControlledCharacter, _character);
+			AbilityOff();
 		}		
 
 		/// <summary>
@@ -335,6 +354,7 @@ namespace SpectralDepths.TopDown
 
 		public void ResetCompanionAI()
 		{
+			
 			_companionsFollowing = false;
 			foreach(Character character in LevelManager.Instance.Players)
 			{

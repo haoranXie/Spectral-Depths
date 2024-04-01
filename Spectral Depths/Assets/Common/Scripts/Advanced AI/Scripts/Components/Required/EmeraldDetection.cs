@@ -159,6 +159,8 @@ namespace EmeraldAI
         {
             if (EmeraldComponent.BehaviorsComponent.CurrentBehaviorType == EmeraldBehaviors.BehaviorTypes.Passive) return; //Don't allow passive AI to use line of sight
             if (!EmeraldComponent.DetectionComponentOn) return;
+            //
+            //Debug.Log(EmeraldComponent.CombatComponent.CombatState);
             if (!EmeraldComponent.CombatComponent.CombatState || EmeraldComponent.CombatComponent.DeathDelayActive)
             {
                 LineOfSightDetection();
@@ -478,7 +480,7 @@ namespace EmeraldAI
         {
             //Don't assign the newly detected target if it's the same as the current target. 
             if (EmeraldComponent.CombatTarget == DetectedTarget) return;
-            EmeraldAI.Utility.EmeraldCombatManager.ActivateCombatState(EmeraldComponent); //Active the Combat State
+                        EmeraldAI.Utility.EmeraldCombatManager.ActivateCombatState(EmeraldComponent); //Active the Combat State
             ResetDetectionValues(); //Once a target has been found, reset some of its settings back to their defaults.
             GetTargetInfo(DetectedTarget);
             EmeraldComponent.CombatTarget = DetectedTarget;
@@ -584,6 +586,7 @@ namespace EmeraldAI
             EmeraldSystem TargetEmeraldComponent = Target.GetComponentInParent<EmeraldSystem>(); //Attempt to get the Target's EmeraldComponent
             if (TargetEmeraldComponent != null)
             {
+                
                 if (TargetEmeraldComponent.CombatTarget == transform) TargetEmeraldComponent.CombatComponent.ClearTarget(); //If the Target is another AI, clear its targets
                 TargetEmeraldComponent.DetectionComponent.CurrentFollowers.Add(transform); //Add this AI as a follower of the leader AI
                 if (TargetEmeraldComponent.CombatComponent.CombatState) TargetEmeraldComponent.CombatComponent.DeathDelayActive = true;
@@ -597,7 +600,7 @@ namespace EmeraldAI
                     FactionRelationsList = TargetEmeraldComponent.DetectionComponent.FactionRelationsList; //Make the Faction Relations List the same as the AI's new Target to Follow
                 }
             }
-
+            
             if (Target == EmeraldComponent.CombatTarget) EmeraldComponent.CombatComponent.ClearTarget();
             if (EmeraldComponent.CombatComponent.CombatState) EmeraldComponent.CombatComponent.DeathDelayActive = true;
             //EmeraldComponent.m_NavMeshAgent.stoppingDistance = EmeraldComponent.MovementComponent.FollowingStoppingDistance;
@@ -667,6 +670,7 @@ namespace EmeraldAI
         }
         public virtual void ExitOrderedBehaviour()
         {
+            
             EmeraldComponent.CombatTarget = null;
             EmeraldComponent.DetectionComponentOn = true;
         }

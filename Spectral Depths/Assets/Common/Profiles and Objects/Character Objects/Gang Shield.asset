@@ -15,7 +15,7 @@ MonoBehaviour:
   CharacterName: 
   Class: Shielder
   Icon: {fileID: 21300000, guid: 0952c7a5e776022458be6bba5de3c5df, type: 3}
-  MaxHealth: 350
+  MaxHealth: 400
   MaxPoise: 100
   PoiseResistance: 0.3
   PoiseResetTime: 5
