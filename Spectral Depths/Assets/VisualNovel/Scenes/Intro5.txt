@@ -1,0 +1,42 @@
+﻿CreateCharacter("Azai"), CreateCharacter("Goon"), CreateCharacter("Alice"), CreateCharacter("Cheshire"), showdb(), Azai.SetPosition(0.3), Azai.Show(), SetLayerMedia(background "BG Observatory")
+
+Narrator "We stood no chance"
+
+Goon as Pebbles "EL!!!"
+REN!!!
+WAKE UP! YOU CAN'T BE MOVING ON WITHOUT ME
+GOD DAM IT
+BOSS, LETS CHARGE TOGETHER AND FINISH AND HIM
+
+Azai "..."
+
+Goon as Peb "Boss?..."
+ah
+HAHA
+SO THATS HOW IT IS
+
+Azai "Cheshire, finish him off"
+
+Cheshire.Show()
+Cheshire "It wouldn't hurt to say a please would it?"
+Azai "..."
+Cheshire "Alright, alright"
+
+Goon as Peb "NOO, PLS DON'T"
+
+hidedb(), Azai.hide(), SetLayerMedia(background "Base")
+showdb(),
+
+Cheshire.SetPosition(0.7), Cheshire.show()
+Alice.SetPosition(0.5), Alice.Show()
+
+Cheshire "SUCCESS!"
+You were so convincing with your performance, that even I was fooled.
+You have that inner gangster in you.
+
+Alice "Yeah, good job to you too"
+
+Cheshire "Cmon, liven up a bit would you"
+This district is finally clean of gangs. Now we can finally get on with our main mission.
+
+Alice "Yup, time to find out what's up that spire."

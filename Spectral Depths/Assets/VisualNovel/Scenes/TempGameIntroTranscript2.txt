@@ -1,4 +1,4 @@
-CreateCharacter(Narrator), CreateCharacter(Alice), CreateCharacter(Cheshire)
+CreateCharacter(Narrator), CreateCharacter(Alice), CreateCharacter(Cheshire), showdb()
 SetLayerMedia(background base)
 Alice.SetPosition(0.5)
 Alice.Show()

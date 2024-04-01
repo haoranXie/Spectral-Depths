@@ -79,8 +79,8 @@ MonoBehaviour:
   - name: Goon
     alias: Goon
     characterType: 0
-    nameColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
-    dialogueColor: {r: 0.87843144, g: 0.87843144, b: 0.87843144, a: 1}
+    nameColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+    dialogueColor: {r: 0.54901963, g: 0.54901963, b: 0.54901963, a: 1}
     nameFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     dialogueFont: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
     nameFontSize: 22
