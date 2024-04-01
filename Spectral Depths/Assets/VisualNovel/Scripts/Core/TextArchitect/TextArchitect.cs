@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Linq;
 using System;
 using DIALOGUE;
+using Unity.VisualScripting.FullSerializer;
 
 public class TextArchitect
 {

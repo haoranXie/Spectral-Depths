@@ -1,52 +1,75 @@
-CreateCharacter("A Pleasant Voice" as "Dead Girl"), CreateCharacter("Me" as "Alice"), CreateCharacter("Carrie" as "Dead Girl"), CreateCharacter("BigDialogueBox"), usebigdb(), showdb(), SetLayerMedia(background "BaseCeiling"), PlaySong("SadnessRoom")
+﻿CreateCharacter("Dead Girl"), CreateCharacter("Me" as "Alice"), CreateCharacter("Dead Girl"), CreateCharacter("BigDialogueBox"), usebigdb(), showdb(), SetLayerMedia(background "BaseCeiling"), PlaySong("TraceofTears"), CreateCharacter("Goon1"), CreateCharacter("Azai")
 
-BigDialogueBox "I am dragged awake by an uneasy silence.{l} Diminished only slightly by the comforting hum of machines.{l} The stone-cold floor presses against my back.{l} While my gaze fixes upon the smoke-clouded ceiling"
+BigDialogueBox "I am pulled awake by an uneasy silence.{l}Diminished only slightly by the comforting hum of machines."
+My body shivers against the stone-cold floor.{l}As my gaze fixes upon the smoke-clouded ceiling.
+A familiar smell of chemicals lingers in the air.{l}Admist a medly of foreign scents
+I lie still on the ground{l}unable to move{l}Unable to remember anything{l}Yet for some reason, it does not bother me
+I was content with watching the smoke in the room swirl about.
 
-The familiar smell of chemicals still lingers in the air
-Despite the medley of aromas that had infiltrated
+hidedb()
+wait(1)
+showdb()
 
-I lay on the floor, unable to move
-And unable to remember anything
-Yet for some reason, it didn't bother me at all
-At that moment, contentment was found in watching time go by
+Time passes
+The layer of smoke have gotten thinner
+I can seee
 
-After a while, I sense a motion to my left
-And so I call out to it
-In the distance, I hear a quiet voice respond
-A Pleasant Voice
+hidedb()
+wait(1)
+showdb()
 
-A Pleasant Voice "Chuckle* Your senses are still as sharp as ever."
-And I thought today would be the day I could finally give you a jump scare.
+More time passes
+I sense a motion to my left{l} I call out to it{l}In the distance, a quiet voice responds{l}A Pleasant Voice‎
 
-BigDialogueBox "She slowly shuffles towards me, lying down by my side"
-I try to take a glance at the strange person but my head would not move
+hidedb(-i true), usesmalldb(), showdb()
+
+Dead Girl as A Pleasant Voice "Chuckle* Your senses are still as sharp as ever."
+And I thought today I could finally give you a jump scare.
+
+hidedb(-i true), usebigdb(), showdb()
+
+BigDialogueBox "She slowly shuffles towards me, lying down by my side.{l}I try to take a glance at the strange person that approached{l}but I could not."
 She starts reminiscing about things I've no recollection of
 
-A Pleasant Voice "...chopped up five batches of chives and..."
+hidedb(-i true), usesmalldb(), showdb()
+
+Dead Girl as A Pleasant Voice "...chopped up five batches of chives and..."
+
+hidedb(-i true), usebigdb(), showdb()
 
 BigDialogueBox "Names that were alien to me"
 
-A Pleasant Voice "...took JuJu by the leg and dragged..."
+hidedb(-i true), usesmalldb(), showdb()
+
+Dead Girl as A Pleasant Voice "...took JuJu by the leg and dragged..."
+
+hidedb(-i true), usebigdb(), showdb()
 
 BigDialogueBox "and jokes I didn't understand"
 
-A Pleasant Voice "...because he was unbalanced"
+hidedb(-i true), usesmalldb(), showdb()
+
+Dead Girl as A Pleasant Voice "...because he was unbalanced"
 "HAHAHAHAH, you get it?..."
 
-BigDialogueBox "She sounded so happy that I couldn't bring myself to ruin the moment"
-I just laid there and listened
-occaisionally responding vaguely to keep the conversation going
-occaisionally sensing tinges of sadness in her words
+hidedb(-i true), usebigdb(), showdb()
 
-A Pleasant Voice "Looking back, everyone sure had a lot of fun with your crazy ideas."
+BigDialogueBox "There was such joy in her voice that interrupting her did not seem right{l}I laid there and listened{l}making vague comments on her stories{l}occaisionally sensing tinges of sadness in her words"
+
+hidedb(-i true), usesmalldb(), showdb()
+
+Dead Girl as A Pleasant Voice "Everyone sure had a lot of fun with your crazy ideas."
 So Director, lets make even more fun memories together with everyone, ok?
 
-BigDialogueBox "I could almost imagine the big grin on her face as she said that"
-It made me wish I could've responded with a yes
+hidedb(-i true), usebigdb(), showdb()
 
-BigDialogueBox "..."
+BigDialogueBox "I could almost imagine the big grin on her face as she said that.{l}It made me wish I could've responded with a yes"
 
-A Pleasant Voice "What's wrong?"
+hidedb(-i true), usesmalldb(), showdb()
+
+Narrator "..."
+
+Dead Girl as A Pleasant Voice "What's wrong?"
 You're even less talkative than usual today.
 
 Me "Sorry"
@@ -54,7 +77,7 @@ I don't remember anything
 ...
 What your name?
 
-A Pleasant Voice "..."
+Dead Girl as A Pleasant Voice "..."
 .....
 .......
 Pftttttt
@@ -68,4 +91,47 @@ You can call me....{a}Carrie
 
 Me "Then Carrie,{a} can you tell me about myself?"
 
-Carrie "You betcha, we have...{a} more than enough time."
+Dead Girl as Carrie "You betcha, we have...{a} more than enough time."
+
+StopSong(), SetLayerMedia(background "Black" -i true), hidedb(-i true),
+wait(3)
+usebigdb(), showdb() 
+
+Narrator "Gasp*"
+
+Cheshire "That dream again?"
+
+Narrator "..."
+
+Cheshire "Wan..."
+
+Narrator "Not right now.{a} We should get ready."
+Today we finish this.
+
+Cheshire "Alright"
+
+hidedb(-i true)
+wait(1)
+setLayerMedia(background "Transparent" -i true), Azai.Show()
+usesmalldb(), showdb()
+
+Goon as El "Boss, you're awake!"
+You don't look too well.{a} Is your headache back again?
+
+Azai "Yeah, but it's no big deal.{a} I can barely feel it."
+
+Goon as Pebbles "Are you sure? We can postpone the plan till tomorrow. Your health is more important."
+
+Goon as Ren "I agree, we can't risk you getting injured"
+
+Azai "I'm fine.{a} This tiny headache's nothing compared to what we've been through.
+You guys are more worn out then I am if anything."
+Stop worrying about nothing and get ready.
+We're killing that bastard today.
+
+Goon as El "YEAHHH!!!"
+Pebbles as Goon "WE WILL AVENGE OUR FALLEN COMRADES!!!"
+Ren as Goon "HE'LL PAY FOR EVERYTHING HE'S DONE!!!"
+
+Azai.hide();
+hideui()

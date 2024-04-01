@@ -48,6 +48,7 @@ namespace COMMANDS
             parameters.TryGetValue(PARAM_SPEED, out speed, defaultValue: 1f);
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, defaultValue: false);
 
+            DialogueSystem.instance.dialogueContainer.dialogueText.text = ""; //MY OWN
             yield return DialogueSystem.instance.dialogueContainer.Show(speed, immediate);
         }
 
