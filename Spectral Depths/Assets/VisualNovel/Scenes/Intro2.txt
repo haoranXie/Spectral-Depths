@@ -1,0 +1,28 @@
+﻿CreateCharacter("Azai"), CreateCharacter("Goon"), showdb(), Azai.Show()
+
+Azai.unhighlight()
+Goon as Pebbles "These things again???"
+
+Goon as El "What are they?"
+I feel like they've been appearing more and more frequently recently
+
+Goon as Ren "Hmm"
+They look like security guards for some kind of facillity.{a} Probably related to the abundance of energy pipes in this area.
+
+Azai.highlight()
+Azai "..."
+Azai.unhighlight()
+
+Goon as Ren "(But why are these pipes so thick? Only the ones close to The Tower are normally this big)"
+(We could fit a truck in this thing, let alone walk through it.)
+
+Goon as El "You can count on Ren to have an answer to anything!"
+
+Goon as Ren "Oh shut it would you"
+
+Azai.highlight()
+Now's not the time for chit-chat boys.
+The enemies are approacing.{a} Get ready for combat.
+Azai.unhighlight(), Azai.hide()
+
+hideui()
