@@ -40,10 +40,10 @@ public class GenerateDataStream : MonoBehaviour
 
     //these two arrays contain the values for the line chart
     public float[] x_value;
-    public float[] y_Open_value;
-    public float[] y_Close_value;
-    public float[] y_min_value;
-    public float[] y_Max_value;
+    public float[] _stockOpenValue;
+    public float[] _stockCloseValue;
+    public float[] _stockMinValue;
+    public float[] _stockMaxValue;
 
     //maximum values for x and y
     public float xmax, ymax, xmin, ymin;
@@ -59,11 +59,12 @@ public class GenerateDataStream : MonoBehaviour
     //this is the initial conditions for the simulation
     public float min_seed_value = 100;
     public float max_seed_value = 200;
-    public float vol=10;
+    public float Volatility=10;
 
-    //these are the gameobjects containing the markers
-    GameObject[] goMaxMin;
-    GameObject[] goOpenClose;
+    //Game Object Acting as the Max and Min value of a Candle
+    GameObject[] CandleMaxMin;
+    //Game Object Acting as the Open and CLose value of a Candle
+    GameObject[] CanleOpenClose;
 
     // intermediate vectors
     Vector3[] vMax ;
@@ -113,15 +114,15 @@ public class GenerateDataStream : MonoBehaviour
     {
         //we use float values
         x_value = new float[arraySize];
-        y_Open_value = new float[arraySize];
-        y_Close_value = new float[arraySize];
-        y_min_value = new float[arraySize];
-        y_Max_value = new float[arraySize];
+        _stockOpenValue = new float[arraySize];
+        _stockCloseValue = new float[arraySize];
+        _stockMinValue = new float[arraySize];
+        _stockMaxValue = new float[arraySize];
 
 
         //initialize the values of the gameobjects
-        goMaxMin = new GameObject[arraySize];
-        goOpenClose = new GameObject[arraySize];
+        CandleMaxMin = new GameObject[arraySize];
+        CanleOpenClose = new GameObject[arraySize];
 
         float ym = Random.Range(min_seed_value, max_seed_value);
 
@@ -136,35 +137,35 @@ public class GenerateDataStream : MonoBehaviour
         {
 
             //obtaining values of the finantial behaviour
-            ym = ym + Random.Range(-vol, vol);
-            float yM = Mathf.Round(ym * Random.Range(1+vol/1000,1+vol/100));
+            ym = ym + Random.Range(-Volatility, Volatility);
+            float yM = Mathf.Round(ym * Random.Range(1+Volatility/1000,1+Volatility/100));
 
             float yo = Random.Range(ym, yM);
             float yc = Random.Range(ym, yM);
 
             x_value[i] = i;
-            y_Open_value[i] =yo;
-            y_Close_value[i] =yc;
-            y_min_value[i] =ym;
-            y_Max_value[i] =yM;
+            _stockOpenValue[i] =yo;
+            _stockCloseValue[i] =yc;
+            _stockMinValue[i] =ym;
+            _stockMaxValue[i] =yM;
 
             xmax = Mathf.Max(xmax, x_value[i]);
-            ymax = Mathf.Max(ymax, y_Max_value[i]);
+            ymax = Mathf.Max(ymax, _stockMaxValue[i]);
 
             xmin = Mathf.Min(xmin, x_value[i]);
-            ymin = Mathf.Min(ymin, y_min_value[i]);
+            ymin = Mathf.Min(ymin, _stockMinValue[i]);
 
          }
 
         //obtainning the value of y AND INITIAL CONDITIONS FOR SIMULATION
-        y_value = Random.Range(y_min_value[nb_initial_Ticks-1], y_Max_value[nb_initial_Ticks-1]);
-        y_Open_value[nb_initial_Ticks] = y_value;
-        y_min_value[nb_initial_Ticks] = y_value;
-        y_Max_value[nb_initial_Ticks] = y_value;
+        y_value = Random.Range(_stockMinValue[nb_initial_Ticks-1], _stockMaxValue[nb_initial_Ticks-1]);
+        _stockOpenValue[nb_initial_Ticks] = y_value;
+        _stockMinValue[nb_initial_Ticks] = y_value;
+        _stockMaxValue[nb_initial_Ticks] = y_value;
         x_value[nb_initial_Ticks] = nb_initial_Ticks;
 
-        goOpenClose[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-        goMaxMin[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+        CanleOpenClose[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+        CandleMaxMin[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
 
 
 
@@ -215,10 +216,10 @@ public class GenerateDataStream : MonoBehaviour
         for (int i = 0; i < nb_initial_Ticks; i++)
         {
             xmax = Mathf.Max(xmax, x_value[i]);
-            ymax = Mathf.Max(ymax, y_Max_value[i]);
+            ymax = Mathf.Max(ymax, _stockMaxValue[i]);
 
             xmin = Mathf.Min(xmin, x_value[i]);
-            ymin = Mathf.Min(ymin, y_min_value[i]);
+            ymin = Mathf.Min(ymin, _stockMinValue[i]);
         }
 
 
@@ -274,7 +275,7 @@ public class GenerateDataStream : MonoBehaviour
 
 
         
-        // create horizontal lines
+        // create horizontal lines representing Per Share Dollar Value
         for (int j = 0; j <=nb__div; j++)
         {
             horiz_line[j] = GameObject.Instantiate(prefab_HORIZ, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
@@ -297,80 +298,80 @@ public class GenerateDataStream : MonoBehaviour
         for (int i=0; i<nb_initial_Ticks;i++)
         {
             //get maximum point
-            vMax[i] = new Vector3(x_value[i]*a/xmax-a/2, y_Max_value[i]*tf_FactorA+tf_FactorB-b/2,0);
+            vMax[i] = new Vector3(x_value[i]*a/xmax-a/2, _stockMaxValue[i]*tf_FactorA+tf_FactorB-b/2,0);
             
             //get the minimum point
-            vmin[i] = new Vector3(x_value[i] * a / xmax - a / 2, y_min_value[i] *tf_FactorA +tf_FactorB- b / 2,0);
+            vmin[i] = new Vector3(x_value[i] * a / xmax - a / 2, _stockMinValue[i] *tf_FactorA +tf_FactorB- b / 2,0);
 
             //get the open point
-            vop[i] = new Vector3(x_value[i] * a / xmax - a / 2, y_Open_value[i] * tf_FactorA + tf_FactorB - b / 2, 0);
+            vop[i] = new Vector3(x_value[i] * a / xmax - a / 2, _stockOpenValue[i] * tf_FactorA + tf_FactorB - b / 2, 0);
 
             //get the close point
-            vcl[i] = new Vector3(x_value[i] * a / xmax - a / 2, y_Close_value[i] * tf_FactorA + tf_FactorB - b / 2, 0);
+            vcl[i] = new Vector3(x_value[i] * a / xmax - a / 2, _stockCloseValue[i] * tf_FactorA + tf_FactorB - b / 2, 0);
 
 
             
             //instantiate a line between max and min markers
-            if (y_Close_value[i]>=y_Open_value[i])
+            if (_stockCloseValue[i]>=_stockOpenValue[i])
             {
-                goMaxMin[i] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                CandleMaxMin[i] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
             }
             else
             {
-                goMaxMin[i] = GameObject.Instantiate(prefab_DOWN, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                CandleMaxMin[i] = GameObject.Instantiate(prefab_DOWN, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
             }
 
             //set the text to the limits
-            goMaxMin[i].transform.GetChild(2).GetComponent<Text>().text = "$"+ Mathf.Round(y_Max_value[i]);
-            goMaxMin[i].transform.GetChild(3).GetComponent<Text>().text = "$" + Mathf.Round(y_min_value[i]);
+            CandleMaxMin[i].transform.GetChild(2).GetComponent<Text>().text = "$"+ Mathf.Round(_stockMaxValue[i]);
+            CandleMaxMin[i].transform.GetChild(3).GetComponent<Text>().text = "$" + Mathf.Round(_stockMinValue[i]);
 
 
-            goMaxMin[i].transform.SetParent(line_container.transform);
+            CandleMaxMin[i].transform.SetParent(line_container.transform);
 
             Vector3 dir = (vMax[i] - vmin[i]) / 2;
 
-            goMaxMin[i].transform.localPosition = vmin[i] + dir;
-            goMaxMin[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2*dir.magnitude, L_width);
-            goMaxMin[i].transform.right = dir;
+            CandleMaxMin[i].transform.localPosition = vmin[i] + dir;
+            CandleMaxMin[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2*dir.magnitude, L_width);
+            CandleMaxMin[i].transform.right = dir;
 
 
             //instantiate a line between open and close markers
-            if (y_Close_value[i] >= y_Open_value[i])
+            if (_stockCloseValue[i] >= _stockOpenValue[i])
             {
-                goOpenClose[i] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                CanleOpenClose[i] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
 
-                goOpenClose[i].transform.SetParent(line_container.transform);
+                CanleOpenClose[i].transform.SetParent(line_container.transform);
 
                 dir = (vcl[i] - vop[i]) / 2;
 
-                goOpenClose[i].transform.localPosition = vop[i] + dir;
-                goOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
-                goOpenClose[i].transform.right = dir;
+                CanleOpenClose[i].transform.localPosition = vop[i] + dir;
+                CanleOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
+                CanleOpenClose[i].transform.right = dir;
 
 
                 //set the text to the limits
-                goOpenClose[i].transform.GetChild(2).GetComponent<Text>().text = "$" + Mathf.Round(y_Close_value[i]);
-                goOpenClose[i].transform.GetChild(3).GetComponent<Text>().text = "$" + Mathf.Round(y_Open_value[i]);
+                CanleOpenClose[i].transform.GetChild(2).GetComponent<Text>().text = "$" + Mathf.Round(_stockCloseValue[i]);
+                CanleOpenClose[i].transform.GetChild(3).GetComponent<Text>().text = "$" + Mathf.Round(_stockOpenValue[i]);
 
 
             }
             else   //invert direction
             {
-                goOpenClose[i] = GameObject.Instantiate(prefab_DOWN, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                CanleOpenClose[i] = GameObject.Instantiate(prefab_DOWN, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
 
 
-                goOpenClose[i].transform.SetParent(line_container.transform);
+                CanleOpenClose[i].transform.SetParent(line_container.transform);
 
                 dir = (vop[i] - vcl[i]) / 2;
 
-                goOpenClose[i].transform.localPosition = vcl[i] + dir;
-                goOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
-                goOpenClose[i].transform.right = dir;
+                CanleOpenClose[i].transform.localPosition = vcl[i] + dir;
+                CanleOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
+                CanleOpenClose[i].transform.right = dir;
 
 
                 //set the text to the limits
-                goOpenClose[i].transform.GetChild(2).GetComponent<Text>().text = "$" + Mathf.Round(y_Open_value[i]);
-                goOpenClose[i].transform.GetChild(3).GetComponent<Text>().text = "$" + Mathf.Round(y_Close_value[i]);
+                CanleOpenClose[i].transform.GetChild(2).GetComponent<Text>().text = "$" + Mathf.Round(_stockOpenValue[i]);
+                CanleOpenClose[i].transform.GetChild(3).GetComponent<Text>().text = "$" + Mathf.Round(_stockCloseValue[i]);
             }
             
             
@@ -393,9 +394,9 @@ public class GenerateDataStream : MonoBehaviour
 
         Vector3 dir = (vMax[i] - vmin[i]) / 2;
 
-        goMaxMin[i].transform.localPosition = vmin[i] + dir;
-        goMaxMin[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, L_width);
-        goMaxMin[i].transform.right = dir;
+        CandleMaxMin[i].transform.localPosition = vmin[i] + dir;
+        CandleMaxMin[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, L_width);
+        CandleMaxMin[i].transform.right = dir;
     }
 
     void setMarker_oc(float px, float pyo, float pyc)
@@ -411,22 +412,22 @@ public class GenerateDataStream : MonoBehaviour
         {
             Vector3 dir = (vcl[i] - vop[i]) / 2;
 
-            goOpenClose[i].transform.localPosition = vop[i] + dir;
-            goOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
-            goOpenClose[i].transform.right = dir;
-            goOpenClose[i].transform.GetComponent<Image>().color = colUP;
-            goMaxMin[i].transform.GetComponent<Image>().color = colUP;
+            CanleOpenClose[i].transform.localPosition = vop[i] + dir;
+            CanleOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
+            CanleOpenClose[i].transform.right = dir;
+            CanleOpenClose[i].transform.GetComponent<Image>().color = colUP;
+            CandleMaxMin[i].transform.GetComponent<Image>().color = colUP;
         }
         else
         {
             Vector3 dir = (vop[i] - vcl[i]) / 2;
 
-            goOpenClose[i].transform.localPosition = vcl[i] + dir;
-            goOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
-            goOpenClose[i].transform.GetComponent<Image>().color = colDOWN;
-            goMaxMin[i].transform.GetComponent<Image>().color = colDOWN;
+            CanleOpenClose[i].transform.localPosition = vcl[i] + dir;
+            CanleOpenClose[i].transform.GetComponent<RectTransform>().sizeDelta = new Vector2(2 * dir.magnitude, M_width);
+            CanleOpenClose[i].transform.GetComponent<Image>().color = colDOWN;
+            CandleMaxMin[i].transform.GetComponent<Image>().color = colDOWN;
 
-            goOpenClose[i].transform.right = dir;
+            CanleOpenClose[i].transform.right = dir;
         }
 
     }
@@ -553,16 +554,16 @@ public class GenerateDataStream : MonoBehaviour
 
         if (elapsed >tick_latency)
         {
-            y_value = y_value + Random.Range(-vol/5, vol/5);
+            y_value = y_value + Random.Range(-Volatility/5, Volatility/5);
 
             //TRADING VALUES MUST BE UPDATED
             updateTradingValues();
 
-            y_min_value[nb_initial_Ticks-1 ] = Mathf.Min(y_value,y_min_value[nb_initial_Ticks -1]);
-            y_Max_value[nb_initial_Ticks-1 ] = Mathf.Max(y_value, y_Max_value[nb_initial_Ticks -1]);
+            _stockMinValue[nb_initial_Ticks-1 ] = Mathf.Min(y_value,_stockMinValue[nb_initial_Ticks -1]);
+            _stockMaxValue[nb_initial_Ticks-1 ] = Mathf.Max(y_value, _stockMaxValue[nb_initial_Ticks -1]);
 
             //CHECK IF LIMITS ARE OUT OF CHART 
-            if (y_min_value[nb_initial_Ticks - 1] < ymin || y_Max_value[nb_initial_Ticks - 1] > ymax)
+            if (_stockMinValue[nb_initial_Ticks - 1] < ymin || _stockMaxValue[nb_initial_Ticks - 1] > ymax)
             {
                 replot();
 
@@ -575,8 +576,8 @@ public class GenerateDataStream : MonoBehaviour
             lineH.transform.GetChild(1).GetComponent<Text>().text = "$" + Mathf.Round( y_value);
             lineH.transform.forward = transform.forward;
 
-            setMarker_oc((float) nb_initial_Ticks - 1, y_Open_value[nb_initial_Ticks], y_value);
-            setMarker_mM((float) nb_initial_Ticks - 1, y_min_value[nb_initial_Ticks - 1], y_Max_value[nb_initial_Ticks - 1]);
+            setMarker_oc((float) nb_initial_Ticks - 1, _stockOpenValue[nb_initial_Ticks], y_value);
+            setMarker_mM((float) nb_initial_Ticks - 1, _stockMinValue[nb_initial_Ticks - 1], _stockMaxValue[nb_initial_Ticks - 1]);
                 
             elapsed = 0;
 
@@ -584,20 +585,20 @@ public class GenerateDataStream : MonoBehaviour
 
             if(elapsed2>tick_duration)
             {
-                y_Close_value[nb_initial_Ticks ] = y_value;
+                _stockCloseValue[nb_initial_Ticks ] = y_value;
 
                 //increase the points by one
                 nb_initial_Ticks += 1;
 
 
                 //obtainning the value of y AND NEXT CONDITIONS FOR SIMULATION
-                //y_value = y_value + Random.Range(-vol / 5, vol / 5);
-                y_Open_value[nb_initial_Ticks] = y_value;
-                y_min_value[nb_initial_Ticks] = y_value;
-                y_Max_value[nb_initial_Ticks] = y_value;
+                //y_value = y_value + Random.Range(-Volatility / 5, Volatility / 5);
+                _stockOpenValue[nb_initial_Ticks] = y_value;
+                _stockMinValue[nb_initial_Ticks] = y_value;
+                _stockMaxValue[nb_initial_Ticks] = y_value;
                 x_value[nb_initial_Ticks] = nb_initial_Ticks;
-                goOpenClose[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
-                goMaxMin[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                CanleOpenClose[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                CandleMaxMin[nb_initial_Ticks] = GameObject.Instantiate(prefab_UP, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
 
                 replot();
 
