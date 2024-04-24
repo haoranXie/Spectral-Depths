@@ -6,8 +6,6 @@ using TMPro;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using UnityEditor.UIElements;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class AIStoreController : Agent

@@ -32,6 +32,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/VisualNovel/Scenes/TempGameIntro2.unity
     guid: 065b211a2daf1954ea1871bcdf1c971c
+  - enabled: 1
+    path: Assets/Tools/Economy Simulator/Scenes/PlaceholderEconomy.unity
+    guid: c1c2c5471a0981c4aaf35a5ff0057e0d
+  - enabled: 1
+    path: Assets/Scenes/Menus/Level Selection/LevelSelection.unity
+    guid: b1ac878e487fd3447ae4152b1594c1fa
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: be9e408e4c37d3a46bbdfbaf7c2a25e5,
       type: 2}

@@ -17,8 +17,8 @@ public class PieChartController : MonoBehaviour
     void Awake()
     {
         // set set default color
-        ColorUtility.TryParseHtmlString("#7FFF00AA", out aiColor);
-        ColorUtility.TryParseHtmlString("#FF6347AA", out regColor);
+        //ColorUtility.TryParseHtmlString("#7FFF00AA", out aiColor);
+        //ColorUtility.TryParseHtmlString("#FF6347AA", out regColor);
 
         graphContainer = GetComponent<RectTransform>();
         aiShare = graphContainer.Find("aiShare").GetComponent<Image>();

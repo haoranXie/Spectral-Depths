@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 public class CustomerController : MonoBehaviour

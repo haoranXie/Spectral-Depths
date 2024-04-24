@@ -41,8 +41,8 @@ public class GraphsController : MonoBehaviour
     void Awake()
     {
         // set set default color
-        UnityEngine.ColorUtility.TryParseHtmlString("#7FFF00AA", out aiColor);
-        UnityEngine.ColorUtility.TryParseHtmlString("#FF6347AA", out regColor);
+        //UnityEngine.ColorUtility.TryParseHtmlString("#7FFF00AA", out aiColor);
+        //UnityEngine.ColorUtility.TryParseHtmlString("#FF6347AA", out regColor);
 
         graphContainer = transform.Find("Graph").GetComponent<RectTransform>();
         labelTemplateX = graphContainer.Find("labelTemplateX").GetComponent<RectTransform>();
