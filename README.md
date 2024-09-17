@@ -1,10 +1,24 @@
 # Spectral Depths
-Spectral Depths is a sci-fi, soulslike, management, dungeon crawler game set in a cyberpunk future dominated by corporations until one day a mysterious spire shimmers into existence. The player takes on the role of a corporate manager directing expeditions into the reality-bending spire while uncovering the truths of the city. 
+![Unity Version](https://img.shields.io/badge/Unity-2022.3.9f1-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
-## How to install and contribute to the project
-1. Clone this Project
-2. Install Unity Hub
-3. Install Unity Editor Version "2022.3.9f1"
-4. Open Cloned Project with said Unity Editor Version
-5. Contact members to be added into Notion Custom Wiki
+### Welcome to Spectral Depths! 🎮
+Spectral Depths is a sci-fi, soulslike dungeon crawler, set in a cyberpunk future. You take on the role of a corporate manager, directing expeditions into a reality-bending spire that mysteriously appeared in the city. Navigate complex strategy, unravel hidden lore, and survive intense combat encounters.
 
+🏆 **Winner of the E1D GameJam**, hosted by Video Games Clubs of America!
+
+## 🖼 Screenshots
+![Gameplay]()
+
+*Explore the surreal world of Spectral Depths.*
+
+## Key Features
+- **Soulslike Combat**: Intense, skill-based combat with a futuristic twist.
+- **Expedition Management**: Strategically send out corporate teams to explore the spire.
+- **Cyberpunk World**: Immerse yourself in a dystopian world controlled by mega-corporations.
+- **Reality-Bending Mysteries**: Uncover dark secrets hidden in the spire's twisted reality.
+
+## 🛠 Installation
+1. **Clone the repository**  
+   Run the following command in your terminal:
+   ```bash
+   git clone https://github.com/haoranXie/Spectral-Depths.git
