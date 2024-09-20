@@ -7,7 +7,7 @@ Spectral Depths is a sci-fi, soulslike dungeon crawler, set in a cyberpunk futur
 🏆 **Winner of the E1D GameJam**, hosted by Video Games Clubs of America!
 
 ## 🖼 Screenshots
-![Gameplay]()
+![Gameplay](https://github.com/haoranXie/Spectral-Depths/blob/main/3D-Assets/TitleScreen.png)
 
 *Explore the surreal world of Spectral Depths.*
 
