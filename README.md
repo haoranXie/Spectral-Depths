@@ -17,8 +17,5 @@ Spectral Depths is a sci-fi, soulslike dungeon crawler, set in a cyberpunk futur
 - **Cyberpunk World**: Immerse yourself in a dystopian world controlled by mega-corporations.
 - **Reality-Bending Mysteries**: Uncover dark secrets hidden in the spire's twisted reality.
 
-## 🛠 Installation
-1. **Clone the repository**  
-   Run the following command in your terminal:
-   ```bash
-   git clone https://github.com/haoranXie/Spectral-Depths.git
+## Getting Started
+A good idea is to look at the notion documentation on instructions for writers, programmers, and artists. Please contact haoranxie2005@gmail.com for access to the notion.
