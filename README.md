@@ -7,9 +7,15 @@ Spectral Depths is a sci-fi, soulslike dungeon crawler, set in a cyberpunk futur
 🏆 **Winner of the E1D GameJam**, hosted by Video Games Clubs of America!
 
 ## 🖼 Screenshots
-![Gameplay](https://github.com/haoranXie/Spectral-Depths/blob/main/3D-Assets/TitleScreen.png)
 
-*Explore the surreal world of Spectral Depths.*
+<p align="center">
+  <img src="https://github.com/haoranXie/Spectral-Depths/blob/main/3D-Assets/TitleScreen.png" alt="Title Screen" width="250"/>
+  <img src="https://github.com/haoranXie/Spectral-Depths/blob/main/3D-Assets/StrategyScreen.png" alt="Strategy Screen" width="250"/>
+  <img src="https://github.com/haoranXie/Spectral-Depths/blob/main/3D-Assets/VNScreen.png" alt="VN Screen" width="250"/>
+  <img src="https://github.com/haoranXie/Spectral-Depths/blob/main/3D-Assets/VNScreen2.png" alt="VN Screen 2" width="250"/>
+</p>
+
+*Explore the surreal world, manage expeditions, and engage in narrative-rich choices.*
 
 ## Key Features
 - **Soulslike Combat**: Intense, skill-based combat with a futuristic twist.
@@ -18,4 +24,4 @@ Spectral Depths is a sci-fi, soulslike dungeon crawler, set in a cyberpunk futur
 - **Reality-Bending Mysteries**: Uncover dark secrets hidden in the spire's twisted reality.
 
 ## Getting Started
-A good idea is to look at the notion documentation on instructions for writers, programmers, and artists. Please contact haoranxie2005@gmail.com for access to the notion.
+A good idea is to look at the Notion documentation on instructions for writers, programmers, and artists. Please contact haoranxie2005@gmail.com for access to the Notion.
